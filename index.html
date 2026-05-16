@@ -1,0 +1,1402 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>项目详情 - PM阶段任务提醒</title>
+  <style>
+    :root {
+      --page-max: 1670px;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-muted: #f7f9fc;
+      --line: #e7ebf2;
+      --line-strong: #d9e0ea;
+      --text: #252a34;
+      --text-secondary: #667085;
+      --text-tertiary: #98a2b3;
+      --primary: #1769ff;
+      --primary-weak: #eaf2ff;
+      --success: #17a667;
+      --success-weak: #e8f7ef;
+      --warning: #f79009;
+      --warning-weak: #fff4df;
+      --danger: #f04438;
+      --danger-weak: #ffeceb;
+      --neutral-tag: #eef2f6;
+      --shadow: 0 10px 28px rgba(16, 24, 40, .08);
+      --radius: 8px;
+      --radius-sm: 6px;
+      --topbar: 50px;
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    .app {
+      width: min(100%, var(--page-max));
+      margin: 0 auto;
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: var(--topbar);
+      background: rgba(255, 255, 255, .96);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(10px);
+    }
+
+    .crumbs,
+    .top-actions,
+    .icon-text,
+    .project-actions,
+    .stat-grid,
+    .tabs,
+    .stage-meta,
+    .task-status,
+    .filters,
+    .section-head,
+    .task-row {
+      display: flex;
+      align-items: center;
+    }
+
+    .crumbs {
+      gap: 10px;
+      color: #8b95a5;
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .hamburger {
+      width: 18px;
+      height: 14px;
+      display: inline-grid;
+      gap: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      height: 2px;
+      background: #4f5b6b;
+      border-radius: 1px;
+    }
+
+    .top-actions {
+      gap: 18px;
+      color: #5d6676;
+    }
+
+    .avatar {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #9ed4ff 0%, #4d8fff 100%);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .content {
+      padding: 18px 20px 34px;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .project-card {
+      padding: 22px 20px 30px;
+    }
+
+    .project-top {
+      display: grid;
+      grid-template-columns: minmax(640px, 1fr) 450px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .project-code {
+      color: #344054;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .project-title {
+      margin: 0 0 22px;
+      font-size: 26px;
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .info-grid {
+      width: 860px;
+      max-width: 100%;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(150px, 1fr));
+      gap: 14px 26px;
+      padding: 18px 18px;
+      border-radius: var(--radius);
+      background: var(--surface-muted);
+      color: #344054;
+    }
+
+    .info-item b {
+      color: #1f2a44;
+      font-weight: 700;
+    }
+
+    .more-link {
+      color: #8592a6;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .more-link::after {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      transform: rotate(45deg);
+      margin-left: 6px;
+      vertical-align: 1px;
+    }
+
+    .project-side {
+      display: grid;
+      gap: 38px;
+      justify-items: stretch;
+    }
+
+    .project-actions {
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .btn {
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: #344054;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .18s ease;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(23, 105, 255, .12);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      color: #fff;
+      filter: brightness(.97);
+    }
+
+    .btn-danger {
+      background: #f97316;
+      border-color: #f97316;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      color: #fff;
+      border-color: #ea580c;
+      filter: brightness(.98);
+      box-shadow: 0 4px 12px rgba(249, 115, 22, .20);
+    }
+
+    .btn-ghost {
+      background: #fff;
+      border-color: transparent;
+      color: #566176;
+    }
+
+    .stat-grid {
+      justify-content: space-between;
+      text-align: center;
+      gap: 24px;
+    }
+
+    .stat-label {
+      color: #98a2b3;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 5px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .status-running {
+      color: #fff;
+      background: #32a532;
+      box-shadow: 0 12px 22px rgba(50, 165, 50, .22);
+    }
+
+    .status-done {
+      color: var(--success);
+      background: var(--success-weak);
+    }
+
+    .status-pending {
+      color: #8b95a5;
+      background: #e9edf4;
+    }
+
+    .nav-panel {
+      margin-top: 16px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .tabs {
+      height: 52px;
+      gap: 46px;
+      padding: 0 16px;
+      white-space: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab {
+      height: 52px;
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      color: #8d96a7;
+      font-weight: 800;
+      letter-spacing: 0;
+      cursor: pointer;
+    }
+
+    .tab.active {
+      color: var(--primary);
+    }
+
+    .tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 2px 2px 0 0;
+    }
+
+    .tabs .setting {
+      margin-left: auto;
+      color: var(--primary);
+      gap: 6px;
+    }
+
+    .tab-panel {
+      margin-top: 10px;
+    }
+
+    .tab-panel[hidden] {
+      display: none;
+    }
+
+    .placeholder-panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      padding: 20px;
+    }
+
+    .placeholder-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .placeholder-item {
+      min-height: 94px;
+      border: 1px solid var(--line);
+      background: var(--surface-muted);
+      padding: 14px;
+      border-radius: var(--radius-sm);
+    }
+
+    .placeholder-item b {
+      display: block;
+      color: #1d2939;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+
+    .placeholder-item span {
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .stage-strip {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(180px, 1fr));
+      gap: 16px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .stage-card {
+      min-height: 96px;
+      background: #eef2f7;
+      border: 1px solid transparent;
+      padding: 13px 12px 12px;
+      position: relative;
+      color: #9aa3af;
+    }
+
+    .stage-card.active {
+      background: #fff;
+      border-color: #dbe6ff;
+      box-shadow: 0 8px 18px rgba(23, 105, 255, .10);
+    }
+
+    .stage-card.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+      background: var(--primary);
+    }
+
+    .stage-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: #4a4f59;
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .stage-card.active .stage-title {
+      color: #2c3444;
+    }
+
+    .stage-meta {
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 9px;
+      color: #9aa3af;
+    }
+
+    .stage-meta b {
+      color: #8f98a8;
+      font-weight: 600;
+    }
+
+    .stage-note {
+      margin-top: 14px;
+      padding: 16px 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .stage-note h3,
+    .section-title {
+      margin: 0;
+      color: #1d2939;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .stage-note p {
+      margin: 10px 0 0;
+      color: #536178;
+      font-size: 15px;
+    }
+
+    .pm-workbench {
+      margin-top: 18px;
+    }
+
+    .todo-panel,
+    .table-panel {
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .todo-panel {
+      padding: 18px 18px 14px;
+    }
+
+    .section-head {
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .section-kicker {
+      color: var(--primary);
+      font-weight: 900;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .progress-summary {
+      min-width: 220px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .progress-copy {
+      display: flex;
+      justify-content: space-between;
+      color: #667085;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: #edf2f8;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar span {
+      display: block;
+      height: 100%;
+      width: 33.333%;
+      background: linear-gradient(90deg, #17a667, #50c878);
+      border-radius: inherit;
+      transition: width .2s ease;
+    }
+
+    .task-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .task-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 14px 14px 14px 13px;
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .task-card:hover {
+      border-color: #c7d7ff;
+      box-shadow: 0 8px 18px rgba(23, 105, 255, .08);
+    }
+
+    .task-card.is-done {
+      background: linear-gradient(0deg, rgba(232, 247, 239, .55), rgba(232, 247, 239, .55)), #fff;
+      border-color: #bfe8d2;
+    }
+
+    .task-index {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--primary-weak);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+    }
+
+    .task-card.is-done .task-index {
+      background: var(--success);
+      color: #fff;
+    }
+
+    .task-main h4 {
+      margin: 1px 0 7px;
+      color: #1d2939;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .task-main p {
+      margin: 0;
+      color: #667085;
+      line-height: 1.62;
+    }
+
+    .task-meta {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag-blue {
+      background: var(--primary-weak);
+      color: var(--primary);
+    }
+
+    .tag-green {
+      background: var(--success-weak);
+      color: var(--success);
+    }
+
+    .tag-orange {
+      background: var(--warning-weak);
+      color: #b54708;
+    }
+
+    .tag-gray {
+      background: var(--neutral-tag);
+      color: #667085;
+    }
+
+    .task-status {
+      grid-column: 2;
+      justify-content: flex-end;
+      gap: 10px;
+      min-width: 126px;
+      padding-top: 2px;
+    }
+
+    .complete-action {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      font-weight: 900;
+      cursor: pointer;
+      padding: 4px 0;
+    }
+
+    .check-arrow {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      color: var(--success);
+      font-weight: 900;
+    }
+
+    .check-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--success);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      line-height: 1;
+      box-shadow: 0 8px 16px rgba(23, 166, 103, .18);
+    }
+
+    .check-icon::after {
+      content: "";
+      width: 11px;
+      height: 6px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translate(1px, -1px);
+    }
+
+    .task-card.is-done .complete-action {
+      display: none;
+    }
+
+    .task-card.is-done .check-arrow {
+      display: inline-flex;
+    }
+
+    .toolbar {
+      margin-top: 18px;
+      padding: 12px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .filters {
+      gap: 10px;
+    }
+
+    .filter {
+      height: 30px;
+      padding: 0 12px;
+      border-radius: 5px;
+      background: #fff;
+      border: 1px solid var(--line);
+      color: #475467;
+      font-weight: 800;
+    }
+
+    .filter.active {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .table-panel {
+      padding: 16px 18px 24px;
+      margin-top: 0;
+      overflow: hidden;
+    }
+
+    .table-panel + .table-panel {
+      margin-top: 18px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      margin-top: 16px;
+    }
+
+    table {
+      border-collapse: collapse;
+      min-width: 1500px;
+      width: 100%;
+      background: #fff;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      height: 47px;
+      border-bottom: 1px solid var(--line);
+      padding: 0 14px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #3d4451;
+      font-weight: 600;
+    }
+
+    th {
+      background: #f5f7fa;
+      color: #344054;
+      font-weight: 900;
+    }
+
+    td.center,
+    th.center {
+      text-align: center;
+    }
+
+    .status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #475467;
+      font-weight: 800;
+    }
+
+    .status-dot::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      background: var(--warning);
+      border-radius: 50%;
+    }
+
+    .done-dot::before {
+      background: var(--success);
+    }
+
+    .blue-link {
+      color: var(--primary);
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      flex: 0 0 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    @media (max-width: 1360px) {
+      .project-top {
+        grid-template-columns: 1fr;
+      }
+
+      .task-list {
+        grid-template-columns: 1fr;
+      }
+
+      .project-side {
+        gap: 18px;
+      }
+
+      .project-actions,
+      .stat-grid {
+        justify-content: flex-start;
+      }
+
+      .stage-strip {
+        grid-template-columns: repeat(7, minmax(210px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        padding: 0 14px;
+      }
+
+      .content {
+        padding: 14px 12px 28px;
+      }
+
+      .project-card {
+        padding: 18px 14px 22px;
+      }
+
+      .project-title {
+        font-size: 22px;
+      }
+
+      .info-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        text-align: left;
+      }
+
+      .section-head,
+      .toolbar,
+      .task-card {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .task-card {
+        grid-template-columns: 32px minmax(0, 1fr);
+      }
+
+      .task-status {
+        grid-column: 2;
+        justify-content: flex-start;
+      }
+
+      .todo-panel,
+      .table-panel {
+        padding: 14px;
+      }
+
+      .placeholder-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg aria-hidden="true" width="0" height="0" style="position:absolute">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8"></path><path d="M13.7 21a2 2 0 0 1-3.4 0"></path></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="m9 9 6 6"></path></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24"><path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"></path><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.9 2.9l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.9-2.9l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.9-2.9l.1.1a1.7 1.7 0 0 0 1.8.3h.1a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h.1a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.9 2.9l-.1.1a1.7 1.7 0 0 0-.3 1.8v.1a1.7 1.7 0 0 0 1.5 1h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"></path></symbol>
+  </svg>
+
+  <div class="app">
+    <header class="topbar">
+      <div class="crumbs">
+        <span class="hamburger" aria-label="菜单"><span></span><span></span><span></span></span>
+        <span>工作台</span>
+        <span>/</span>
+        <span>详情页</span>
+      </div>
+      <div class="top-actions">
+        <svg class="icon"><use href="#i-search"></use></svg>
+        <svg class="icon"><use href="#i-bell"></use></svg>
+        <span class="avatar">樊</span>
+        <span>樊威威 ▾</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <section class="panel project-card">
+        <div class="project-top">
+          <div>
+            <div class="project-code">SCA220HCM2506281</div>
+            <h1 class="project-title">EA888 E5 VCT</h1>
+            <div class="info-grid">
+              <div class="info-item"><b>销售责任单元：</b>宁波</div>
+              <div class="info-item"><b>客户品牌：</b>Volkswagen</div>
+              <div class="info-item"><b>产品类别：</b>VT</div>
+              <div class="info-item"><b>产品：</b>VCT</div>
+              <div class="info-item"><b>系统：</b>VVT系统</div>
+              <div class="info-item"><b>LRP Type：</b>LRPV1</div>
+              <div class="info-item"><b>PM：</b>Wu Zhuoren</div>
+              <div class="info-item more-link">更多项目信息</div>
+            </div>
+          </div>
+          <aside class="project-side">
+            <div class="project-actions">
+              <button class="btn" type="button"><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
+              <button class="btn btn-danger" type="button"><svg class="icon"><use href="#i-stop"></use></svg>终止项目</button>
+            </div>
+            <div class="stat-grid" aria-label="项目关键状态">
+              <div>
+                <div class="stat-label">Rank</div>
+                <div class="stat-value">A</div>
+              </div>
+              <div>
+                <div class="stat-label">SOP</div>
+                <div class="stat-value">2027-12</div>
+              </div>
+              <div>
+                <div class="stat-label">阶段</div>
+                <div class="stat-value">PKO</div>
+              </div>
+              <div>
+                <div class="stat-label">Status</div>
+                <span class="status-pill status-running">进行中</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="pm-workbench">
+        <div class="todo-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">PM 提醒</div>
+              <h2 class="section-title">当前任务提醒</h2>
+            </div>
+            <div class="progress-summary">
+              <div class="progress-copy"><span id="progressText">已完成 1/3</span><span id="progressPercent">33%</span></div>
+              <div class="progress-bar"><span id="progressBar"></span></div>
+            </div>
+          </div>
+
+          <div class="task-list">
+            <article class="task-card is-done" data-task>
+              <div class="task-index">1</div>
+              <div class="task-main">
+                <h4>录入项目计划关键时间节点</h4>
+                <p>通过“项目计划”录入客户要求的时间节点，并补充 BW 内部时间节点及项目整体时间节点，保证后续 Gate 计划可追踪。</p>
+                <div class="task-meta">
+                  <span class="tag tag-blue">项目计划</span>
+                  <span class="tag tag-green">已完成</span>
+                  <span class="tag tag-gray">PM负责</span>
+                </div>
+              </div>
+              <div class="task-status">
+                <button class="complete-action" type="button">标记完成</button>
+                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
+              </div>
+            </article>
+
+            <article class="task-card" data-task>
+              <div class="task-index">2</div>
+              <div class="task-main">
+                <h4>配置 Gate1 至 Gate6 任务负责人</h4>
+                <p>点击“任务管理”，为 Gate1 至 Gate6 配置任务负责人及完成时间节点；未指定负责人时，任务表格保持醒目待办状态。</p>
+                <div class="task-meta">
+                  <span class="tag tag-blue">任务管理</span>
+                  <span class="tag tag-orange">待完成</span>
+                  <span class="tag tag-gray">跨部门协同</span>
+                </div>
+              </div>
+              <div class="task-status">
+                <button class="complete-action" type="button">标记完成</button>
+                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
+              </div>
+            </article>
+
+            <article class="task-card" data-task>
+              <div class="task-index">3</div>
+              <div class="task-main">
+                <h4>完成 PKO 阶段任务闭环</h4>
+                <p>完成前两项后，在 PKO 任务下将对应任务点击完成；系统同步更新阶段完成度，并以绿色对号箭头展示已完成结果。</p>
+                <div class="task-meta">
+                  <span class="tag tag-blue">PKO任务</span>
+                  <span class="tag tag-orange">待完成</span>
+                  <span class="tag tag-gray">阶段闭环</span>
+                </div>
+              </div>
+              <div class="task-status">
+                <button class="complete-action" type="button">标记完成</button>
+                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="nav-panel">
+        <nav class="tabs" aria-label="项目详情导航">
+          <button class="tab active" type="button" data-tab-target="development" aria-selected="true">项目开发任务</button>
+          <button class="tab" type="button" data-tab-target="bom" aria-selected="false">生产BOM</button>
+          <button class="tab" type="button" data-tab-target="requirements" aria-selected="false">客户要求</button>
+          <button class="tab" type="button" data-tab-target="plan" aria-selected="false">项目计划</button>
+          <button class="tab" type="button" data-tab-target="issues" aria-selected="false">问题清单</button>
+          <button class="tab" type="button" data-tab-target="samples" aria-selected="false">关联样件</button>
+          <button class="tab" type="button" data-tab-target="quality" aria-selected="false">质量管控（8D）</button>
+          <button class="tab" type="button" data-tab-target="team" aria-selected="false">团队成员</button>
+          <button class="tab" type="button" data-tab-target="library" aria-selected="false">资料库</button>
+          <button class="tab setting" type="button"><svg class="icon"><use href="#i-gear"></use></svg>设置页签顺序</button>
+        </nav>
+      </section>
+
+      <div class="tab-panel active" data-tab-panel="development">
+        <section class="stage-strip" aria-label="项目阶段">
+          <article class="stage-card">
+            <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
+            <div class="stage-meta"><span>Sales</span><b>Zack</b></div>
+            <div class="stage-meta"><span>时间</span><b>2025-05-12 ~ 2025-10-12</b></div>
+          </article>
+          <article class="stage-card active">
+            <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
+            <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+            <div class="stage-meta"><span>时间</span><b>-</b></div>
+          </article>
+          <article class="stage-card">
+            <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
+            <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+            <div class="stage-meta"><span>时间</span><b>-</b></div>
+          </article>
+          <article class="stage-card">
+            <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
+            <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+            <div class="stage-meta"><span>时间</span><b>-</b></div>
+          </article>
+          <article class="stage-card">
+            <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
+            <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+            <div class="stage-meta"><span>时间</span><b>-</b></div>
+          </article>
+          <article class="stage-card">
+            <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
+            <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+            <div class="stage-meta"><span>时间</span><b>-</b></div>
+          </article>
+          <article class="stage-card">
+            <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
+            <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+            <div class="stage-meta"><span>时间</span><b>-</b></div>
+          </article>
+        </section>
+
+      <section class="stage-note">
+        <h3>阶段说明</h3>
+        <p>作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。</p>
+      </section>
+
+      <div class="toolbar">
+        <div class="filters">
+          <button class="filter active" type="button">全部 (6)</button>
+          <button class="filter" type="button">待完成 (5)</button>
+          <button class="filter" type="button">已逾期 (0)</button>
+          <button class="filter" type="button">已完成 (1)</button>
+        </div>
+        <div class="project-actions">
+          <button class="btn btn-ghost" type="button">审核记录</button>
+          <button class="btn btn-primary" type="button">任务管理</button>
+        </div>
+      </div>
+
+      <section class="table-panel">
+        <div class="section-head">
+          <h2 class="section-title">Customer(3)</h2>
+        </div>
+        <div class="table-wrap">
+          <table aria-label="Customer任务列表">
+            <colgroup>
+              <col style="width:64px">
+              <col style="width:110px">
+              <col style="width:360px">
+              <col style="width:520px">
+              <col style="width:86px">
+              <col style="width:100px">
+              <col style="width:128px">
+              <col style="width:110px">
+              <col style="width:110px">
+              <col style="width:70px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="center">编号</th>
+                <th>K-PAC ID</th>
+                <th>K-PAC Title</th>
+                <th>Description</th>
+                <th>负责人</th>
+                <th>负责部门</th>
+                <th>任务类型</th>
+                <th>起止时间</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center">1</td>
+                <td>GPM_GR-12</td>
+                <td>Customer Requirements (Volumes, Key dates, others)</td>
+                <td>Gate 0, PKO, Gate 1: Verify customer requirements and share them with internal team</td>
+                <td>未指定</td>
+                <td>Sales</td>
+                <td><span class="tag tag-orange">关键任务</span></td>
+                <td>-</td>
+                <td><span class="status-dot">待完成</span></td>
+                <td><a class="blue-link" href="#">-</a></td>
+              </tr>
+              <tr>
+                <td class="center">2</td>
+                <td>GPM_GR-14</td>
+                <td>RFQ / Gate0 / Quotation</td>
+                <td>Kick off and lead internal RFQ. Generate Gate Zero document. Quotation package</td>
+                <td>未指定</td>
+                <td>Sales</td>
+                <td><span class="tag tag-gray">普通任务</span></td>
+                <td>-</td>
+                <td><span class="status-dot">待完成</span></td>
+                <td><a class="blue-link" href="#">-</a></td>
+              </tr>
+              <tr>
+                <td class="center">3</td>
+                <td>GPM_GR-15</td>
+                <td>Commercial Kick Off</td>
+                <td>PKO Gate: Every program detail including design, price, volume and terms &amp; conditions</td>
+                <td>未指定</td>
+                <td>Sales</td>
+                <td><span class="tag tag-gray">普通任务</span></td>
+                <td>-</td>
+                <td><span class="status-dot">待完成</span></td>
+                <td><a class="blue-link" href="#">-</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="table-panel">
+        <div class="section-head">
+          <h2 class="section-title">Plan and Define(3)</h2>
+        </div>
+        <div class="table-wrap">
+          <table aria-label="Plan and Define任务列表">
+            <colgroup>
+              <col style="width:64px">
+              <col style="width:110px">
+              <col style="width:360px">
+              <col style="width:520px">
+              <col style="width:86px">
+              <col style="width:100px">
+              <col style="width:128px">
+              <col style="width:110px">
+              <col style="width:110px">
+              <col style="width:70px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="center">编号</th>
+                <th>K-PAC ID</th>
+                <th>K-PAC Title</th>
+                <th>Description</th>
+                <th>负责人</th>
+                <th>负责部门</th>
+                <th>任务类型</th>
+                <th>起止时间</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="center">1</td>
+                <td>GPM_PD-01</td>
+                <td>Project Plan Key Milestones</td>
+                <td>Input customer key dates, BW internal milestones and project timeline baseline</td>
+                <td>张工</td>
+                <td>PMO</td>
+                <td><span class="tag tag-blue">阶段任务</span></td>
+                <td>2026-05-20</td>
+                <td><span class="status-dot done-dot">已完成</span></td>
+                <td><a class="blue-link" href="#">查看</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="bom" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Production BOM</div>
+              <h2 class="section-title">生产BOM</h2>
+            </div>
+            <button class="btn btn-primary" type="button">新增BOM行</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>总成 BOM</b><span>展示 AE 创建并由 SCM 确认后的 BOM 主结构。</span></div>
+            <div class="placeholder-item"><b>子零件清单</b><span>承接 AQE / SQD 拆解后的子零件开发任务。</span></div>
+            <div class="placeholder-item"><b>变更记录</b><span>跟踪版本、替代料和供应商确认状态。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="requirements" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Customer Requirements</div>
+              <h2 class="section-title">客户要求</h2>
+            </div>
+            <button class="btn btn-primary" type="button">维护要求</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>客户节点</b><span>OTS、PPAP、SOP 等客户要求时间节点。</span></div>
+            <div class="placeholder-item"><b>技术要求</b><span>产品规格、验证要求、特殊特性与交付边界。</span></div>
+            <div class="placeholder-item"><b>商务要求</b><span>价格、年用量、条款及 RFQ 输入信息。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="plan" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Project Plan</div>
+              <h2 class="section-title">项目计划</h2>
+            </div>
+            <button class="btn btn-primary" type="button">编辑计划</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>客户里程碑</b><span>客户 OTS、PPAP、SOP 节点维护。</span></div>
+            <div class="placeholder-item"><b>BW 内部里程碑</b><span>内部 OTS 对应 Gate4，PPAP 对应 Gate5，SOP 对应 Gate6。</span></div>
+            <div class="placeholder-item"><b>Gate 计划</b><span>标准流程覆盖 Gate1 至 Gate6，简化流程覆盖 Gate1 至 Gate3。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="issues" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Issue List</div>
+              <h2 class="section-title">问题清单</h2>
+            </div>
+            <button class="btn btn-primary" type="button">新增问题</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>开放问题</b><span>记录跨职能阻塞项和责任人。</span></div>
+            <div class="placeholder-item"><b>风险等级</b><span>按影响范围、紧急程度和 Gate 节点排序。</span></div>
+            <div class="placeholder-item"><b>关闭验证</b><span>问题关闭需保留措施和验证结果。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="samples" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Samples</div>
+              <h2 class="section-title">关联样件</h2>
+            </div>
+            <button class="btn btn-primary" type="button">登记样件</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>样件批次</b><span>关联样件编号、批次和交付节点。</span></div>
+            <div class="placeholder-item"><b>试制状态</b><span>同步制造、质量、供应商样件准备状态。</span></div>
+            <div class="placeholder-item"><b>交付记录</b><span>沉淀样件发运、客户接收与反馈。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="quality" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Quality Control</div>
+              <h2 class="section-title">质量管控（8D）</h2>
+            </div>
+            <button class="btn btn-primary" type="button">发起8D</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>质量问题</b><span>记录客户、内部和供应商质量问题。</span></div>
+            <div class="placeholder-item"><b>8D进展</b><span>跟踪 D1 至 D8 责任人、措施和完成状态。</span></div>
+            <div class="placeholder-item"><b>经验沉淀</b><span>关闭后同步至资料库，支持后续项目复用。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="team" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Team</div>
+              <h2 class="section-title">团队成员</h2>
+            </div>
+            <button class="btn btn-primary" type="button">调整成员</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>项目经理</b><span>PM 主导 Gate 推进、评审和 Hand Over。</span></div>
+            <div class="placeholder-item"><b>工程与供应链</b><span>AE、SCM 协作完成 BOM 创建和确认。</span></div>
+            <div class="placeholder-item"><b>质量与供应商开发</b><span>AQE、SQD 管理 APQP 拆解与子零件开发。</span></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="tab-panel" data-tab-panel="library" hidden>
+        <section class="placeholder-panel">
+          <div class="section-head">
+            <div>
+              <div class="section-kicker">Library</div>
+              <h2 class="section-title">资料库</h2>
+            </div>
+            <button class="btn btn-primary" type="button">上传资料</button>
+          </div>
+          <div class="placeholder-grid">
+            <div class="placeholder-item"><b>项目文档</b><span>集中管理 RFQ、会议纪要、Gate 审批资料。</span></div>
+            <div class="placeholder-item"><b>质量资料</b><span>归档 APQP、PPAP、8D 和验证报告。</span></div>
+            <div class="placeholder-item"><b>交接资料</b><span>Hand Over 阶段形成最终交付包。</span></div>
+          </div>
+        </section>
+      </div>
+
+    </main>
+  </div>
+
+  <script>
+    const taskCards = Array.from(document.querySelectorAll("[data-task]"));
+    const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
+    const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
+    const progressText = document.getElementById("progressText");
+    const progressPercent = document.getElementById("progressPercent");
+    const progressBar = document.getElementById("progressBar");
+
+    function refreshProgress() {
+      const done = taskCards.filter((card) => card.classList.contains("is-done")).length;
+      const total = taskCards.length;
+      const percent = Math.round((done / total) * 100);
+      progressText.textContent = `已完成 ${done}/${total}`;
+      progressPercent.textContent = `${percent}%`;
+      progressBar.style.width = `${percent}%`;
+    }
+
+    taskCards.forEach((card) => {
+      const button = card.querySelector(".complete-action");
+      button.addEventListener("click", () => {
+        card.classList.add("is-done");
+        const pendingTag = Array.from(card.querySelectorAll(".tag")).find((tag) => tag.textContent.trim() === "待完成");
+        if (pendingTag) {
+          pendingTag.textContent = "已完成";
+          pendingTag.classList.remove("tag-orange");
+          pendingTag.classList.add("tag-green");
+        }
+        refreshProgress();
+      });
+    });
+
+    tabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        const target = tab.dataset.tabTarget;
+
+        tabs.forEach((item) => {
+          const isActive = item === tab;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-selected", String(isActive));
+        });
+
+        tabPanels.forEach((panel) => {
+          panel.hidden = panel.dataset.tabPanel !== target;
+        });
+      });
+    });
+
+    refreshProgress();
+  </script>
+</body>
+</html>
