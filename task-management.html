@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>阶段任务管理</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --muted: #f4f6f9;
+      --line: #e4e8ef;
+      --line-strong: #d7dee8;
+      --text: #252a34;
+      --secondary: #667085;
+      --tertiary: #98a2b3;
+      --primary: #1769ff;
+      --primary-weak: #eaf2ff;
+      --danger: #f04438;
+      --danger-weak: #fff1f0;
+      --success: #16a163;
+      --success-weak: #e9f8f0;
+      --warning: #f79009;
+      --warning-weak: #fff6e6;
+      --shadow: 0 18px 42px rgba(16, 24, 40, .12);
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--surface);
+    }
+
+    .topbar {
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, .96);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 17px;
+      font-weight: 900;
+    }
+
+    .brand-mark {
+      width: 4px;
+      height: 28px;
+      border-radius: 4px;
+      background: var(--primary);
+    }
+
+    .stage-tabs {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .stage-tab {
+      min-width: 76px;
+      height: 34px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      color: #344054;
+      background: #f0f3f8;
+      font-weight: 800;
+      padding: 0 16px;
+    }
+
+    .stage-tab.active {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 8px 16px rgba(23, 105, 255, .16);
+    }
+
+    .content {
+      padding: 24px 26px 110px;
+    }
+
+    .stage-card {
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      background: #fff;
+      overflow: hidden;
+      margin-bottom: 18px;
+    }
+
+    .stage-head {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 26px;
+      background: #fbfcff;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stage-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .stage-index {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: var(--primary);
+      font-weight: 900;
+      font-size: 14px;
+    }
+
+    .stage-summary {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--secondary);
+      font-weight: 800;
+      font-size: 13px;
+      margin-left: 10px;
+    }
+
+    .stage-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stage-toggle {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      font-weight: 900;
+    }
+
+    .stage-body {
+      padding: 24px 26px 26px;
+    }
+
+    .stage-card.collapsed .stage-body {
+      display: none;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) minmax(260px, 1fr);
+      gap: 20px 42px;
+      margin-bottom: 24px;
+    }
+
+    .form-grid .wide {
+      grid-column: 1 / -1;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+    }
+
+    .field-row label {
+      text-align: right;
+      color: #344054;
+      font-weight: 850;
+    }
+
+    .required::before {
+      content: "*";
+      color: var(--danger);
+      margin-right: 2px;
+    }
+
+    .field,
+    .task-input,
+    .task-select,
+    .library-filter input,
+    .library-filter select {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line-strong);
+      border-radius: 5px;
+      background: #fff;
+      color: #344054;
+      padding: 0 11px;
+      font-weight: 650;
+    }
+
+    textarea.field {
+      min-height: 42px;
+      padding-top: 9px;
+      resize: vertical;
+    }
+
+    .field:focus,
+    .task-input:focus,
+    .task-select:focus,
+    .library-filter input:focus,
+    .library-filter select:focus {
+      outline: 2px solid rgba(23, 105, 255, .16);
+      border-color: var(--primary);
+    }
+
+    .is-invalid {
+      border-color: var(--danger) !important;
+      background: var(--danger-weak) !important;
+    }
+
+    .task-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+      margin-bottom: 16px;
+    }
+
+    .task-section-head h2 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      background: #fff;
+      color: #344054;
+      padding: 0 14px;
+      font-weight: 850;
+      white-space: nowrap;
+      transition: .16s ease;
+    }
+
+    .btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 6px 16px rgba(23, 105, 255, .10);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      color: #fff;
+      filter: brightness(.98);
+    }
+
+    .btn-danger {
+      color: #b42318;
+      border-color: #fecdca;
+      background: #fff;
+    }
+
+    .table-shell {
+      border: 1px solid var(--line);
+      overflow-x: auto;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1550px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      height: 52px;
+      border-bottom: 1px solid var(--line);
+      padding: 0 10px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #3d4451;
+      font-weight: 650;
+    }
+
+    th {
+      background: #f5f7fa;
+      color: #344054;
+      font-weight: 900;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .group-row td {
+      height: 30px;
+      background: #f6f7f9;
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .title-cell {
+      font-weight: 900;
+      color: #2f3645;
+    }
+
+    .desc-cell {
+      white-space: normal;
+      line-height: 1.35;
+    }
+
+    .type-select {
+      padding-left: 25px;
+      background-image: radial-gradient(circle at 13px 50%, #667085 0 3px, transparent 4px);
+      background-repeat: no-repeat;
+    }
+
+    .type-select.critical {
+      background-image: radial-gradient(circle at 13px 50%, #f04438 0 3px, transparent 4px);
+    }
+
+    .link-button {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      padding: 4px 0;
+      font-weight: 900;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 5px;
+      background: #eef2f6;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .tag-blue {
+      color: var(--primary);
+      background: var(--primary-weak);
+    }
+
+    .tag-orange {
+      color: #b54708;
+      background: var(--warning-weak);
+    }
+
+    .tag-green {
+      color: var(--success);
+      background: var(--success-weak);
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 18;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: rgba(255, 255, 255, .96);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, .38);
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal {
+      width: min(1120px, 100%);
+      max-height: min(88vh, 940px);
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      overflow: hidden;
+      border-radius: 7px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .modal-head,
+    .modal-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .close-button {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: var(--tertiary);
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .library-filter {
+      display: grid;
+      grid-template-columns: 92px minmax(220px, 1fr) 90px minmax(220px, 1fr) auto auto;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 24px 10px;
+    }
+
+    .library-filter label {
+      color: #475467;
+      font-weight: 850;
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 8px 24px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .category-tab {
+      height: 34px;
+      border: 0;
+      border-radius: 5px;
+      background: #f0f2f6;
+      color: #344054;
+      padding: 0 16px;
+      font-weight: 850;
+    }
+
+    .category-tab.active {
+      color: #fff;
+      background: var(--primary);
+    }
+
+    .library-list {
+      overflow-y: auto;
+      display: grid;
+      gap: 16px;
+      padding: 20px 24px;
+      background: #fff;
+    }
+
+    .library-card {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      background: #fff;
+    }
+
+    .library-card h3 {
+      margin: 0 0 7px;
+      color: #2f3645;
+      font-size: 18px;
+    }
+
+    .library-card p {
+      margin: 0;
+      color: var(--secondary);
+      line-height: 1.4;
+    }
+
+    .library-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .modal-foot {
+      justify-content: flex-end;
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 86px;
+      z-index: 70;
+      transform: translateX(-50%);
+      min-width: 260px;
+      max-width: min(760px, calc(100vw - 32px));
+      padding: 12px 16px;
+      border: 1px solid #bfe8d2;
+      border-radius: 6px;
+      color: #067647;
+      background: var(--success-weak);
+      box-shadow: var(--shadow);
+      text-align: center;
+      font-weight: 850;
+    }
+
+    .toast.error {
+      color: #b42318;
+      border-color: #fecdca;
+      background: var(--danger-weak);
+    }
+
+    .toast[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      .topbar {
+        height: auto;
+        min-height: 58px;
+        padding: 14px;
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .stage-tabs {
+        justify-content: flex-start;
+      }
+
+      .content {
+        padding: 16px 12px 110px;
+      }
+
+      .stage-head,
+      .task-section-head {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px;
+      }
+
+      .stage-body {
+        padding: 16px;
+      }
+
+      .form-grid,
+      .library-filter {
+        grid-template-columns: 1fr;
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+
+      .field-row label {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <span>Stage Configuration</span>
+      </div>
+      <nav class="stage-tabs" id="stageTabs" aria-label="阶段快速切换"></nav>
+    </header>
+
+    <main class="content" id="stageList"></main>
+
+    <footer class="bottom-bar">
+      <button class="btn" type="button" id="backButton">返回</button>
+      <button class="btn btn-primary" type="button" id="submitButton">提交</button>
+    </footer>
+  </div>
+
+  <div class="modal-backdrop" id="libraryModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="libraryTitle">
+      <div class="modal-head">
+        <h2 id="libraryTitle">子任务库</h2>
+        <button class="close-button" type="button" id="closeLibrary" aria-label="关闭">×</button>
+      </div>
+      <div class="library-filter">
+        <label for="libraryKeyword">K-PAC Title</label>
+        <input id="libraryKeyword" type="search" placeholder="Please Input">
+        <label for="libraryResponsible">Responsible</label>
+        <select id="libraryResponsible">
+          <option value="">Please Selected</option>
+          <option>Sales</option>
+          <option>PM</option>
+          <option>AE</option>
+          <option>SCM</option>
+          <option>AQE</option>
+          <option>SQD</option>
+          <option>Finance</option>
+          <option>MLT</option>
+        </select>
+        <button class="btn btn-primary" type="button" id="searchLibrary">Search</button>
+        <button class="btn" type="button" id="resetLibrary">Reset</button>
+      </div>
+      <div class="category-tabs" id="categoryTabs"></div>
+      <div class="library-list" id="libraryList"></div>
+      <div class="modal-foot">
+        <button class="btn" type="button" id="cancelLibrary">取消</button>
+        <button class="btn btn-primary" type="button" id="confirmLibrary">确定</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script>
+    const people = ["Danny Fang", "Wu Zhuoren", "Zhang Gong", "Li Na", "Wang Wei", "Chen Jie", "Sun Qiang"];
+    const stageNames = ["CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6"];
+    const categories = ["All", "Customer", "Plan and Define", "Process Design and Development", "Product Design and Development", "Production and Logistic", "Quality Plan", "Supply Chain Definition"];
+    const taskLibrary = [
+      {
+        id: "GPM_GR-12",
+        title: "Customer Requirements (Volumes, Key dates, others)",
+        description: "Gate 0, PKO, Gate 1: Verify customer requirements and share them with team. Gate 4: Verify PPAP and Post PPAP milestones. Gate 5: Verify SOP milestones.",
+        category: "Customer",
+        ownerRole: "Sales",
+        version: "V2",
+        deliverable: "RSM / Financial Walk if needed",
+        critical: true
+      },
+      {
+        id: "GPM_GR-14",
+        title: "RFQ / Gate0 / Quotation",
+        description: "Kick off and lead internal RFQ. Generate Gate Zero document. Quotation package.",
+        category: "Customer",
+        ownerRole: "Sales",
+        version: "V2",
+        deliverable: "MP-SA-001 B",
+        critical: false
+      },
+      {
+        id: "GPM_GR-125",
+        title: "Pre-RFQ activities",
+        description: "To agree and sign NDA with customer before the start of information exchange and engage legal office when necessary.",
+        category: "Customer",
+        ownerRole: "Sales",
+        version: "V1",
+        deliverable: "",
+        critical: false
+      },
+      {
+        id: "GPM_GR-1",
+        title: "Gate0 Financial Model (RSM)",
+        description: "Prepare program assumptions, financial model and RSM package for Gate0 review.",
+        category: "Plan and Define",
+        ownerRole: "Finance",
+        version: "V2",
+        deliverable: "Gate 0 RSM",
+        critical: true
+      },
+      {
+        id: "GPM_GR-2",
+        title: "Gate 0 MLT Approval",
+        description: "Check the approved Gate0 program assumptions and keep them as a reference for the PKO and AR preparation.",
+        category: "Plan and Define",
+        ownerRole: "MLT",
+        version: "V2",
+        deliverable: "Gate 0 Form",
+        critical: false
+      },
+      {
+        id: "GPM_GR-122",
+        title: "Lessons Learned Review",
+        description: "Gather lessons learned that apply to the program and request team members to investigate applicable risks.",
+        category: "Plan and Define",
+        ownerRole: "PM",
+        version: "V1",
+        deliverable: "Lessons Learned",
+        critical: false
+      },
+      {
+        id: "GPM_PD-01",
+        title: "Project Plan Key Milestones",
+        description: "Input customer key dates, BW internal milestones and project timeline baseline.",
+        category: "Plan and Define",
+        ownerRole: "PM",
+        version: "V2",
+        deliverable: "Project Plan",
+        critical: true
+      },
+      {
+        id: "GPM_AE-08",
+        title: "Create Product BOM",
+        description: "AE creates product BOM draft and confirms structure, material and engineering notes before pushing to SCM.",
+        category: "Product Design and Development",
+        ownerRole: "AE",
+        version: "V1",
+        deliverable: "BOM Draft",
+        critical: true
+      },
+      {
+        id: "GPM_SCM-04",
+        title: "SCM BOM Review",
+        description: "SCM reviews sourcing feasibility, supplier readiness and purchasing assumptions in the BOM.",
+        category: "Supply Chain Definition",
+        ownerRole: "SCM",
+        version: "V1",
+        deliverable: "BOM Review",
+        critical: false
+      },
+      {
+        id: "GPM_AQE-03",
+        title: "Assembly APQP Plan",
+        description: "PM creates assembly APQP based on confirmed BOM, AQE decomposes sub-assembly and child part development tasks.",
+        category: "Quality Plan",
+        ownerRole: "AQE",
+        version: "V2",
+        deliverable: "APQP Plan",
+        critical: true
+      },
+      {
+        id: "GPM_SQD-07",
+        title: "Supplier Child Part Development",
+        description: "SQD aligns child part development plan with suppliers and synchronizes key milestones.",
+        category: "Process Design and Development",
+        ownerRole: "SQD",
+        version: "V1",
+        deliverable: "Supplier Plan",
+        critical: false
+      }
+    ];
+
+    const stageConfigs = stageNames.map((name, index) => ({
+      name,
+      leader: index === 0 ? "Danny Fang" : index === 1 ? "Wu Zhuoren" : "",
+      start: index === 0 ? "2026-05-18" : "",
+      end: index === 0 ? "2026-05-30" : "",
+      comments: "",
+      collapsed: index !== 0,
+      tasks: index === 0
+        ? taskLibrary.slice(0, 6).map((task, taskIndex) => ({
+          uid: `${name}-${task.id}-${taskIndex}`,
+          ...task,
+          owner: "Danny Fang",
+          start: "",
+          end: task.critical ? "2026-05-30" : "",
+          source: "library"
+        }))
+        : []
+    }));
+
+    const stageList = document.getElementById("stageList");
+    const stageTabs = document.getElementById("stageTabs");
+    const libraryModal = document.getElementById("libraryModal");
+    const libraryKeyword = document.getElementById("libraryKeyword");
+    const libraryResponsible = document.getElementById("libraryResponsible");
+    const categoryTabs = document.getElementById("categoryTabs");
+    const libraryList = document.getElementById("libraryList");
+    const toast = document.getElementById("toast");
+    let currentStageName = "CKO";
+    let libraryStageName = "CKO";
+    let currentCategory = "All";
+    let toastTimer;
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function showToast(message, isError = false) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.classList.toggle("error", isError);
+      toast.hidden = false;
+      toastTimer = setTimeout(() => {
+        toast.hidden = true;
+      }, 2800);
+    }
+
+    function getStage(name) {
+      return stageConfigs.find((stage) => stage.name === name);
+    }
+
+    function personOptions(value) {
+      return [`<option value="">Please Select</option>`, ...people.map((person) => `<option ${person === value ? "selected" : ""}>${person}</option>`)].join("");
+    }
+
+    function typeOptions(isCritical) {
+      return `
+        <option value="critical" ${isCritical ? "selected" : ""}>Critical Mission</option>
+        <option value="regular" ${!isCritical ? "selected" : ""}>Regular Mission</option>
+      `;
+    }
+
+    function renderTabs() {
+      stageTabs.innerHTML = stageConfigs.map((stage) => `
+        <button class="stage-tab ${stage.name === currentStageName ? "active" : ""}" type="button" data-jump="${stage.name}">${stage.name}</button>
+      `).join("");
+    }
+
+    function renderStages() {
+      renderTabs();
+      stageList.innerHTML = stageConfigs.map((stage, index) => {
+        const criticalCount = stage.tasks.filter((task) => task.critical).length;
+        const groupedTasks = categories.filter((category) => category !== "All").map((category) => {
+          const tasks = stage.tasks.filter((task) => task.category === category);
+          if (!tasks.length) return "";
+
+          return `
+            <tr class="group-row"><td colspan="11">${category}</td></tr>
+            ${tasks.map((task, taskIndex) => `
+              <tr data-row="${task.uid}" data-stage="${stage.name}">
+                <td class="center"><input type="checkbox" data-row-check></td>
+                <td class="center">${taskIndex + 1}</td>
+                <td>${escapeHtml(task.id)}</td>
+                <td class="title-cell">${task.source === "manual"
+                  ? `<input class="task-input" type="text" value="${escapeHtml(task.title)}" data-task-field="title">`
+                  : escapeHtml(task.title)}
+                </td>
+                <td class="desc-cell">${task.source === "manual"
+                  ? `<input class="task-input" type="text" value="${escapeHtml(task.description || "")}" data-task-field="description">`
+                  : escapeHtml(task.description || "-")}
+                </td>
+                <td><select class="task-select" data-task-field="owner">${personOptions(task.owner)}</select></td>
+                <td><select class="task-select type-select ${task.critical ? "critical" : ""}" data-task-field="critical">${typeOptions(task.critical)}</select></td>
+                <td><input class="task-input" type="date" value="${task.start}" data-task-field="start"></td>
+                <td><input class="task-input" type="date" value="${task.end}" data-task-field="end"></td>
+                <td>${task.source === "manual" ? "手动新增" : "子任务库"}</td>
+                <td><button class="link-button" type="button" data-delete>Delete</button></td>
+              </tr>
+            `).join("")}
+          `;
+        }).join("");
+
+        return `
+          <article class="stage-card ${stage.collapsed ? "collapsed" : ""}" id="stage-${stage.name}" data-stage-card="${stage.name}">
+            <header class="stage-head">
+              <div class="stage-title">
+                <span class="stage-index">${index + 1}</span>
+                <span>${stage.name}</span>
+                <span class="stage-summary">
+                  <span>${stage.tasks.length} 个任务</span>
+                  <span>${criticalCount} 个关键任务</span>
+                </span>
+              </div>
+              <div class="stage-actions">
+                <button class="stage-toggle" type="button" data-toggle="${stage.name}">${stage.collapsed ? "展开" : "收起"}</button>
+              </div>
+            </header>
+            <div class="stage-body">
+              <div class="form-grid">
+                <div class="field-row">
+                  <label class="required">Phase Leader</label>
+                  <select class="field" data-stage-field="leader" data-stage-name="${stage.name}">${personOptions(stage.leader)}</select>
+                </div>
+                <div class="field-row">
+                  <label class="required">Start Time</label>
+                  <input class="field" type="date" value="${stage.start}" data-stage-field="start" data-stage-name="${stage.name}">
+                </div>
+                <div class="field-row">
+                  <label class="required">End Time</label>
+                  <input class="field" type="date" value="${stage.end}" data-stage-field="end" data-stage-name="${stage.name}">
+                </div>
+                <div class="field-row wide">
+                  <label>Comments</label>
+                  <textarea class="field" placeholder="Please Input" data-stage-field="comments" data-stage-name="${stage.name}">${escapeHtml(stage.comments)}</textarea>
+                </div>
+              </div>
+
+              <div class="task-section-head">
+                <h2>Task list</h2>
+                <div class="toolbar">
+                  <button class="btn btn-primary" type="button" data-open-library="${stage.name}">子任务库</button>
+                  <button class="btn" type="button" data-add-manual="${stage.name}">手动新增</button>
+                  <button class="btn btn-danger" type="button" data-bulk-delete="${stage.name}">批量移除</button>
+                </div>
+              </div>
+
+              <div class="table-shell">
+                <table aria-label="${stage.name}任务清单">
+                  <colgroup>
+                    <col style="width:48px">
+                    <col style="width:58px">
+                    <col style="width:130px">
+                    <col style="width:360px">
+                    <col style="width:350px">
+                    <col style="width:155px">
+                    <col style="width:180px">
+                    <col style="width:150px">
+                    <col style="width:150px">
+                    <col style="width:96px">
+                    <col style="width:88px">
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th class="center"><input type="checkbox" data-select-all="${stage.name}"></th>
+                      <th class="center">ID</th>
+                      <th>K-PAC ID</th>
+                      <th>K-PAC Title</th>
+                      <th>Description</th>
+                      <th>负责人</th>
+                      <th>Task Type</th>
+                      <th>Start Time</th>
+                      <th>End Time</th>
+                      <th>来源</th>
+                      <th>Operation</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${stage.tasks.length ? groupedTasks : `<tr><td colspan="11" class="center">暂无任务，可通过子任务库添加或手动新增</td></tr>`}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function updateStageField(control) {
+      const stage = getStage(control.dataset.stageName);
+      stage[control.dataset.stageField] = control.value;
+      control.classList.remove("is-invalid");
+    }
+
+    function updateTaskField(control) {
+      const row = control.closest("[data-row]");
+      const stage = getStage(row.dataset.stage);
+      const task = stage.tasks.find((item) => item.uid === row.dataset.row);
+      if (control.dataset.taskField === "critical") {
+        task.critical = control.value === "critical";
+        control.classList.toggle("critical", task.critical);
+      } else {
+        task[control.dataset.taskField] = control.value;
+      }
+      control.classList.remove("is-invalid");
+    }
+
+    function addManualTask(stageName) {
+      const stage = getStage(stageName);
+      const next = stage.tasks.length + 1;
+      stage.tasks.push({
+        uid: `${stageName}-manual-${Date.now()}`,
+        id: `MANUAL-${String(next).padStart(2, "0")}`,
+        title: "手动新增任务",
+        description: "请补充任务执行要求",
+        category: "Plan and Define",
+        ownerRole: "PM",
+        version: "V1",
+        deliverable: "",
+        critical: false,
+        owner: "",
+        start: "",
+        end: "",
+        source: "manual"
+      });
+      stage.collapsed = false;
+      currentStageName = stageName;
+      renderStages();
+      showToast("已新增手动任务，请指定是否为关键任务及负责人。");
+    }
+
+    function deleteTask(stageName, uid) {
+      const stage = getStage(stageName);
+      stage.tasks = stage.tasks.filter((task) => task.uid !== uid);
+      renderStages();
+      showToast("任务已删除。");
+    }
+
+    function bulkDelete(stageName) {
+      const checked = Array.from(document.querySelectorAll(`[data-stage="${stageName}"] [data-row-check]:checked`)).map((item) => item.closest("[data-row]").dataset.row);
+      if (!checked.length) {
+        showToast("请先勾选需要移除的任务。", true);
+        return;
+      }
+      const stage = getStage(stageName);
+      stage.tasks = stage.tasks.filter((task) => !checked.includes(task.uid));
+      renderStages();
+      showToast(`已移除 ${checked.length} 个任务。`);
+    }
+
+    function renderCategories() {
+      categoryTabs.innerHTML = categories.map((category) => `
+        <button class="category-tab ${category === currentCategory ? "active" : ""}" type="button" data-category="${category}">${category}</button>
+      `).join("");
+    }
+
+    function renderLibrary() {
+      renderCategories();
+      const keyword = libraryKeyword.value.trim().toLowerCase();
+      const responsible = libraryResponsible.value;
+      const existing = new Set((getStage(libraryStageName)?.tasks || []).map((task) => task.id));
+      const items = taskLibrary.filter((task) => {
+        const matchCategory = currentCategory === "All" || task.category === currentCategory;
+        const matchKeyword = !keyword || task.title.toLowerCase().includes(keyword) || task.id.toLowerCase().includes(keyword);
+        const matchResponsible = !responsible || task.ownerRole === responsible;
+        return matchCategory && matchKeyword && matchResponsible;
+      });
+
+      libraryList.innerHTML = items.length ? items.map((task) => `
+        <article class="library-card">
+          <input type="checkbox" value="${task.id}" ${existing.has(task.id) ? "checked" : ""} data-library-check>
+          <div>
+            <h3>${escapeHtml(task.title)}</h3>
+            <p>${escapeHtml(task.description || "Without description")}</p>
+            <div class="library-tags">
+              <span class="tag">ID: ${escapeHtml(task.id)}</span>
+              <span class="tag">${escapeHtml(task.version)}</span>
+              <span class="tag tag-blue">${escapeHtml(task.category)}</span>
+              ${task.deliverable ? `<span class="tag">${escapeHtml(task.deliverable)}</span>` : ""}
+              <span class="tag">${escapeHtml(task.ownerRole)}</span>
+              <span class="tag ${task.critical ? "tag-orange" : ""}">${task.critical ? "关键任务" : "普通任务"}</span>
+            </div>
+          </div>
+        </article>
+      `).join("") : `<div class="library-card"><div></div><div><h3>没有匹配任务</h3><p>调整筛选条件后再试。</p></div></div>`;
+    }
+
+    function openLibrary(stageName) {
+      libraryStageName = stageName;
+      currentCategory = "All";
+      libraryKeyword.value = "";
+      libraryResponsible.value = "";
+      libraryModal.hidden = false;
+      renderLibrary();
+    }
+
+    function closeLibrary() {
+      libraryModal.hidden = true;
+    }
+
+    function confirmLibrary() {
+      const selectedIds = Array.from(document.querySelectorAll("[data-library-check]:checked")).map((item) => item.value);
+      const stage = getStage(libraryStageName);
+      const existing = new Set(stage.tasks.map((task) => task.id));
+      let added = 0;
+      selectedIds.forEach((id) => {
+        if (existing.has(id)) return;
+        const source = taskLibrary.find((task) => task.id === id);
+        stage.tasks.push({
+          uid: `${libraryStageName}-${id}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          ...source,
+          owner: people[0],
+          start: "",
+          end: source.critical ? stage.end : "",
+          source: "library"
+        });
+        added += 1;
+      });
+      stage.collapsed = false;
+      currentStageName = libraryStageName;
+      closeLibrary();
+      renderStages();
+      showToast(added ? `已添加 ${added} 个子任务。` : "已保留当前选择，未新增重复任务。");
+    }
+
+    function validateConfig() {
+      let valid = true;
+      const messages = [];
+      document.querySelectorAll(".is-invalid").forEach((item) => item.classList.remove("is-invalid"));
+
+      stageConfigs.forEach((stage) => {
+        const card = document.querySelector(`[data-stage-card="${stage.name}"]`);
+        if (!stage.leader || !stage.start || !stage.end) {
+          valid = false;
+          messages.push(`${stage.name} 的阶段负责人、开始时间和完成时间必填`);
+          stage.collapsed = false;
+          card?.classList.remove("collapsed");
+          card?.querySelectorAll("[data-stage-field]").forEach((field) => {
+            if (field.dataset.stageField !== "comments" && !field.value) field.classList.add("is-invalid");
+          });
+        }
+        if (stage.start && stage.end && stage.start > stage.end) {
+          valid = false;
+          messages.push(`${stage.name} 阶段开始时间不能晚于完成时间`);
+        }
+
+        stage.tasks.forEach((task) => {
+          const row = document.querySelector(`[data-row="${task.uid}"]`);
+          if (task.critical && !task.end) {
+            valid = false;
+            messages.push(`${stage.name} 关键任务「${task.title}」必须填写 End Time`);
+            stage.collapsed = false;
+            card?.classList.remove("collapsed");
+            row?.querySelector('[data-task-field="end"]')?.classList.add("is-invalid");
+          }
+          if (task.start && task.end && task.start > task.end) {
+            valid = false;
+            messages.push(`${stage.name} 任务「${task.title}」开始时间不能晚于结束时间`);
+            row?.querySelector('[data-task-field="start"]')?.classList.add("is-invalid");
+            row?.querySelector('[data-task-field="end"]')?.classList.add("is-invalid");
+          }
+        });
+      });
+
+      if (!valid) {
+        showToast([...new Set(messages)].slice(0, 3).join("；"), true);
+      }
+      return valid;
+    }
+
+    stageList.addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-toggle]");
+      const openButton = event.target.closest("[data-open-library]");
+      const addButton = event.target.closest("[data-add-manual]");
+      const deleteButton = event.target.closest("[data-delete]");
+      const bulkButton = event.target.closest("[data-bulk-delete]");
+
+      if (toggle) {
+        const stage = getStage(toggle.dataset.toggle);
+        stage.collapsed = !stage.collapsed;
+        currentStageName = stage.name;
+        renderStages();
+      }
+      if (openButton) openLibrary(openButton.dataset.openLibrary);
+      if (addButton) addManualTask(addButton.dataset.addManual);
+      if (bulkButton) bulkDelete(bulkButton.dataset.bulkDelete);
+      if (deleteButton) {
+        const row = deleteButton.closest("[data-row]");
+        deleteTask(row.dataset.stage, row.dataset.row);
+      }
+    });
+
+    stageList.addEventListener("input", (event) => {
+      if (event.target.matches("[data-stage-field]")) updateStageField(event.target);
+      if (event.target.matches("[data-task-field]")) updateTaskField(event.target);
+    });
+
+    stageList.addEventListener("change", (event) => {
+      const selectAll = event.target.closest("[data-select-all]");
+      if (selectAll) {
+        document.querySelectorAll(`[data-stage="${selectAll.dataset.selectAll}"] [data-row-check]`).forEach((box) => {
+          box.checked = selectAll.checked;
+        });
+      }
+    });
+
+    stageTabs.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-jump]");
+      if (!button) return;
+      const stage = getStage(button.dataset.jump);
+      stage.collapsed = false;
+      currentStageName = stage.name;
+      renderStages();
+      document.getElementById(`stage-${stage.name}`).scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    categoryTabs.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-category]");
+      if (!button) return;
+      currentCategory = button.dataset.category;
+      renderLibrary();
+    });
+
+    document.getElementById("searchLibrary").addEventListener("click", renderLibrary);
+    document.getElementById("resetLibrary").addEventListener("click", () => {
+      libraryKeyword.value = "";
+      libraryResponsible.value = "";
+      currentCategory = "All";
+      renderLibrary();
+    });
+    document.getElementById("closeLibrary").addEventListener("click", closeLibrary);
+    document.getElementById("cancelLibrary").addEventListener("click", closeLibrary);
+    document.getElementById("confirmLibrary").addEventListener("click", confirmLibrary);
+    libraryModal.addEventListener("click", (event) => {
+      if (event.target === libraryModal) closeLibrary();
+    });
+
+    document.getElementById("submitButton").addEventListener("click", () => {
+      if (validateConfig()) showToast("提交成功，阶段时间与任务配置已通过校验。");
+    });
+
+    document.getElementById("backButton").addEventListener("click", () => {
+      showToast("已返回上一页。静态原型中保留当前配置。");
+    });
+
+    renderStages();
+  </script>
+</body>
+</html>

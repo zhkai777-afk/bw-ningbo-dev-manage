@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博格华纳项目开发 - 待办任务中心</title>
+    <style>
+        :root {
+            --primary: #3370FF;
+            --primary-hover: #2860E0;
+            --primary-light: #F2F5FF;
+            --success: #00B42A;
+            --success-light: #E8FFEA;
+            --warning: #FF7D00;
+            --warning-light: #FFF7E8;
+            --danger: #F53F3F;
+            --danger-light: #FFECE8;
+            --text-primary: #1F2329;
+            --text-secondary: #646A73;
+            --text-tertiary: #8F959E;
+            --border: #DEE0E3;
+            --bg-base: #F5F6F7;
+            --bg-white: #FFFFFF;
+            --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.04);
+            --radius: 8px;
+            --radius-sm: 4px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: var(--bg-base);
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .page-container {
+            max-width: 1670px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px 32px;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.2px;
+        }
+
+        .header-subtitle {
+            font-size: 13px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        .role-switcher {
+            display: flex;
+            flex-wrap: wrap;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .role-btn {
+            padding: 6px 16px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .role-btn:hover { color: var(--text-primary); }
+        .role-btn.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover { border-color: var(--border); }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .stat-trend {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 8px;
+        }
+
+        .stat-card.primary { border-top: 3px solid var(--primary); }
+        .stat-card.success { border-top: 3px solid var(--success); }
+        .stat-card.warning { border-top: 3px solid var(--warning); }
+        .stat-card.danger { border-top: 3px solid var(--danger); }
+
+        /* Section */
+        .section {
+            background: var(--bg-white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+
+        .section-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 6px 16px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .btn-primary:hover { background: var(--primary-hover); }
+
+        .btn-default {
+            background: white;
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+        .btn-default:hover { background: var(--bg-base); }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        .btn-success:hover { opacity: 0.9; }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        .btn-danger:hover { opacity: 0.9; }
+
+        .btn-sm { padding: 4px 12px; font-size: 13px; }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            background: #FAFBFC;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-align: left;
+            padding: 12px 24px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+            vertical-align: middle;
+        }
+
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: #FAFBFC; }
+
+        .cell-main {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .cell-sub {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .tag-blue { background: var(--primary-light); color: var(--primary); }
+        .tag-green { background: var(--success-light); color: var(--success); }
+        .tag-orange { background: var(--warning-light); color: var(--warning); }
+        .tag-red { background: var(--danger-light); color: var(--danger); }
+        .tag-gray { background: #F2F3F5; color: var(--text-secondary); }
+        .tag-yellow { background: #FFF7E8; color: #D46B08; }
+
+        /* Avatar */
+        .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            margin-right: 8px;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: white;
+            border-radius: var(--radius);
+            width: 720px;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            animation: modalSlide 0.2s ease-out;
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title { font-size: 16px; font-weight: 600; }
+
+        .modal-close {
+            width: 32px; height: 32px;
+            border: none; background: transparent;
+            cursor: pointer; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: var(--text-tertiary);
+        }
+        .modal-close:hover { background: var(--bg-base); color: var(--text-primary); }
+
+        .modal-body { padding: 24px; overflow-y: auto; max-height: 60vh; }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        /* Form Elements */
+        .form-group { margin-bottom: 20px; }
+        .form-label {
+            display: block;
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        .form-label .required { color: var(--danger); margin-left: 2px; }
+
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(51,112,255,0.15);
+        }
+        .form-textarea { resize: vertical; min-height: 80px; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Info display in modal */
+        .info-card {
+            background: #FAFBFC;
+            border-radius: var(--radius-sm);
+            padding: 12px 16px;
+            margin-bottom: 12px;
+        }
+        .info-card-label {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-bottom: 4px;
+        }
+        .info-card-value {
+            font-size: 14px;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        /* Task detail sections in modal */
+        .task-section {
+            margin-bottom: 24px;
+        }
+        .task-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+        .timeline-item {
+            display: flex;
+            gap: 12px;
+            padding-bottom: 16px;
+            position: relative;
+        }
+        .timeline-item:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 11px;
+            top: 24px;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+        .timeline-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+        .timeline-content {
+            flex: 1;
+            padding-top: 2px;
+        }
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+        .timeline-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--text-primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            z-index: 2000;
+            opacity: 0;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            color: var(--text-tertiary);
+        }
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 12px;
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .page-container { padding: 16px; }
+            .stats-row { grid-template-columns: 1fr; }
+            .header { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .data-table th, .data-table td { padding: 10px 12px; }
+            .section-header { flex-direction: column; gap: 12px; align-items: flex-start; }
+        }
+
+        /* Utility */
+        .text-right { text-align: right; }
+        .flex { display: flex; }
+        .items-center { align-items: center; }
+        .gap-2 { gap: 8px; }
+        .hidden { display: none !important; }
+        .mb-0 { margin-bottom: 0 !important; }
+
+        /* Approval buttons */
+        .approval-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .stage-config-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .stage-config-item {
+            display: grid;
+            grid-template-columns: 120px 1fr 140px 140px;
+            gap: 10px;
+            align-items: center;
+            background: #FAFBFC;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px;
+        }
+
+        .review-option-group {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .review-option {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            cursor: pointer;
+            background: var(--bg-white);
+            transition: all 0.2s;
+            font-size: 13px;
+        }
+
+        .review-option input { margin-right: 6px; }
+        .review-option.green { border-color: rgba(0,180,42,0.35); background: var(--success-light); }
+        .review-option.yellow { border-color: rgba(255,125,0,0.35); background: var(--warning-light); }
+        .review-option.red { border-color: rgba(245,63,63,0.35); background: var(--danger-light); }
+
+        .approval-matrix {
+            display: grid;
+            gap: 8px;
+            background: #FAFBFC;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+        }
+
+        .approval-member-row {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 10px;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 768px) {
+            .stage-config-item, .review-option-group, .approval-member-row { grid-template-columns: 1fr; }
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-dot.pending { background: var(--warning); }
+        .status-dot.done { background: var(--success); }
+        .status-dot.review { background: var(--primary); }
+
+        /* Table cell description clamp */
+        .cell-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <div>
+                    <div class="header-title">📋 待办任务中心</div>
+                    <div class="header-subtitle">博格华纳项目开发管理系统 · 任务统一入口</div>
+                </div>
+            </div>
+            <div class="role-switcher">
+                <button class="role-btn active" data-role="pm">👤 PM</button>
+                <button class="role-btn" data-role="ae">🔧 AE</button>
+                <button class="role-btn" data-role="scm">📦 SCM</button>
+                <button class="role-btn" data-role="manager">✅ 职能经理</button>
+                <button class="role-btn" data-role="owner">📌 任务负责人</button>
+                <button class="role-btn" data-role="reviewer">🛡️ 审核小组成员</button>
+            </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row" id="statsRow">
+            <div class="stat-card primary">
+                <div class="stat-label">待处理任务</div>
+                <div class="stat-value" id="statPending">3</div>
+                <div class="stat-trend">需尽快处理</div>
+            </div>
+            <div class="stat-card warning">
+                <div class="stat-label">待审核任务</div>
+                <div class="stat-value" id="statReview">1</div>
+                <div class="stat-trend">等待审批</div>
+            </div>
+            <div class="stat-card success">
+                <div class="stat-label">已完成任务</div>
+                <div class="stat-value" id="statDone">8</div>
+                <div class="stat-trend">本月累计</div>
+            </div>
+            <div class="stat-card danger">
+                <div class="stat-label">已逾期任务</div>
+                <div class="stat-value" id="statOverdue">0</div>
+                <div class="stat-trend">暂无逾期</div>
+            </div>
+        </div>
+
+        <!-- PM View -->
+        <div id="pmView">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        📋 我的待办任务
+                        <span class="badge" id="pmBadge">3</span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('pm', 'all')">全部</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('pm', 'pending')">待处理</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('pm', 'done')">已完成</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>任务名称</th>
+                            <th>所属项目</th>
+                            <th>阶段</th>
+                            <th>任务描述</th>
+                            <th>创建时间</th>
+                            <th>要求完成时间</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pmTable">
+                        <tr data-status="pending" data-task-type="config_pko">
+                            <td><div class="cell-main">配置项目任务</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-blue">PKO</span></td>
+                            <td><div class="cell-desc">配置PKO阶段任务清单、分配负责人及计划时间</div></td>
+                            <td>2026-05-10 09:00</td>
+                            <td>2026-05-17</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('config_pko', '配置项目任务')">处理</button></td>
+                        </tr>
+                        <tr data-status="pending" data-task-type="launch_review">
+                            <td><div class="cell-main">发起阶段审核</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">Gate 1阶段任务已全部完成，需发起阶段完成审核</div></td>
+                            <td>2026-05-13 14:30</td>
+                            <td>2026-05-15</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('launch_review', '发起阶段审核')">处理</button></td>
+                        </tr>
+                        <tr data-status="pending" data-task-type="task_review">
+                            <td><div class="cell-main">任务审核</div></td>
+                            <td><div class="cell-main">Project-B · 电子水泵模块</div></td>
+                            <td><span class="tag tag-orange">Gate 2</span></td>
+                            <td><div class="cell-desc">审核任务负责人提交的DFMEA分析文档编制任务完成申请</div></td>
+                            <td>2026-05-14 10:00</td>
+                            <td>2026-05-16</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('task_review', '任务审核')">处理</button></td>
+                        </tr>
+                        <tr data-status="done" data-task-type="config_pko" class="hidden">
+                            <td><div class="cell-main">配置项目任务</div></td>
+                            <td><div class="cell-main">Project-B · 电子水泵模块</div></td>
+                            <td><span class="tag tag-blue">PKO</span></td>
+                            <td><div class="cell-desc">配置PKO阶段任务清单、分配负责人及计划时间</div></td>
+                            <td>2026-05-05 09:00</td>
+                            <td>2026-05-08</td>
+                            <td><button class="btn btn-default btn-sm" disabled>已完成</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state hidden" id="pmEmpty">
+                    <div class="empty-icon">🎉</div>
+                    <div>暂无待办任务</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AE View -->
+        <div id="aeView" class="hidden">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        🔧 AE待办任务
+                        <span class="badge" id="aeBadge">1</span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('ae', 'all')">全部</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('ae', 'pending')">待处理</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('ae', 'done')">已完成</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>任务名称</th>
+                            <th>所属项目</th>
+                            <th>阶段</th>
+                            <th>任务描述</th>
+                            <th>创建时间</th>
+                            <th>要求完成时间</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="aeTable">
+                        <tr data-status="pending" data-task-type="create_bom">
+                            <td><div class="cell-main">创建生产BOM</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">根据设计图纸创建生产BOM，包含物料清单、用量及层级关系</div></td>
+                            <td>2026-05-12 10:00</td>
+                            <td>2026-05-19</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('create_bom', '创建生产BOM')">处理</button></td>
+                        </tr>
+                        <tr data-status="done" data-task-type="create_bom" class="hidden">
+                            <td><div class="cell-main">创建生产BOM</div></td>
+                            <td><div class="cell-main">Project-C · PTC加热器</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">根据设计图纸创建生产BOM，包含物料清单、用量及层级关系</div></td>
+                            <td>2026-05-01 09:00</td>
+                            <td>2026-05-08</td>
+                            <td><button class="btn btn-default btn-sm" disabled>已完成</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state hidden" id="aeEmpty">
+                    <div class="empty-icon">🎉</div>
+                    <div>暂无待办任务</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCM View -->
+        <div id="scmView" class="hidden">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        📦 SCM待办任务
+                        <span class="badge" id="scmBadge">1</span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('scm', 'all')">全部</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('scm', 'pending')">待处理</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('scm', 'done')">已完成</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>任务名称</th>
+                            <th>所属项目</th>
+                            <th>阶段</th>
+                            <th>任务描述</th>
+                            <th>创建时间</th>
+                            <th>要求完成时间</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="scmTable">
+                        <tr data-status="pending" data-task-type="edit_bom">
+                            <td><div class="cell-main">编辑生产BOM</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">基于AE创建的BOM进行供应链信息补充，完善供应商、采购周期等信息</div></td>
+                            <td>2026-05-13 11:00</td>
+                            <td>2026-05-20</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('edit_bom', '编辑生产BOM')">处理</button></td>
+                        </tr>
+                        <tr data-status="done" data-task-type="edit_bom" class="hidden">
+                            <td><div class="cell-main">编辑生产BOM</div></td>
+                            <td><div class="cell-main">Project-C · PTC加热器</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">基于AE创建的BOM进行供应链信息补充，完善供应商、采购周期等信息</div></td>
+                            <td>2026-05-02 10:00</td>
+                            <td>2026-05-09</td>
+                            <td><button class="btn btn-default btn-sm" disabled>已完成</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state hidden" id="scmEmpty">
+                    <div class="empty-icon">🎉</div>
+                    <div>暂无待办任务</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Functional Manager View -->
+        <div id="managerView" class="hidden">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        ✅ 职能经理待办任务
+                        <span class="badge" id="managerBadge">2</span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('manager', 'all')">全部</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('manager', 'pending')">待处理</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('manager', 'done')">已完成</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>任务名称</th>
+                            <th>所属项目</th>
+                            <th>阶段</th>
+                            <th>任务描述</th>
+                            <th>创建时间</th>
+                            <th>要求完成时间</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="managerTable">
+                        <tr data-status="pending" data-task-type="approve_task">
+                            <td><div class="cell-main">审批任务完成</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">审批任务负责人提交的客户需求确认表签署任务完成申请</div></td>
+                            <td>2026-05-14 09:00</td>
+                            <td>2026-05-16</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('approve_task', '审批任务完成')">处理</button></td>
+                        </tr>
+                        <tr data-status="pending" data-task-type="approve_task">
+                            <td><div class="cell-main">审批任务完成</div></td>
+                            <td><div class="cell-main">Project-B · 电子水泵模块</div></td>
+                            <td><span class="tag tag-orange">Gate 2</span></td>
+                            <td><div class="cell-desc">审批任务负责人提交的检具设计方案评审任务完成申请</div></td>
+                            <td>2026-05-14 15:00</td>
+                            <td>2026-05-17</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('approve_task', '审批任务完成')">处理</button></td>
+                        </tr>
+                        <tr data-status="done" data-task-type="approve_task" class="hidden">
+                            <td><div class="cell-main">审批任务完成</div></td>
+                            <td><div class="cell-main">Project-C · PTC加热器</div></td>
+                            <td><span class="tag tag-blue">PKO</span></td>
+                            <td><div class="cell-desc">审批任务负责人提交的项目计划确认任务完成申请</div></td>
+                            <td>2026-05-06 10:00</td>
+                            <td>2026-05-08</td>
+                            <td><button class="btn btn-default btn-sm" disabled>已完成</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state hidden" id="managerEmpty">
+                    <div class="empty-icon">🎉</div>
+                    <div>暂无待办任务</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Owner View -->
+        <div id="ownerView" class="hidden">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        📌 任务负责人待办任务
+                        <span class="badge" id="ownerBadge">3</span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('owner', 'all')">全部</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('owner', 'pending')">待处理</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('owner', 'done')">已完成</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>任务名称</th>
+                            <th>所属项目</th>
+                            <th>阶段</th>
+                            <th>任务描述</th>
+                            <th>创建时间</th>
+                            <th>要求完成时间</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ownerTable">
+                        <tr data-status="pending" data-task-type="execute_task">
+                            <td><div class="cell-main">DFMEA分析文档编制</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-orange">Gate 2</span></td>
+                            <td><div class="cell-desc">编制设计失效模式与影响分析文档，识别潜在失效模式并制定预防措施</div></td>
+                            <td>2026-05-10 09:00</td>
+                            <td>2026-05-18</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('execute_task', 'DFMEA分析文档编制')">完成</button></td>
+                        </tr>
+                        <tr data-status="pending" data-task-type="execute_task">
+                            <td><div class="cell-main">初始过程流程图绘制</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-orange">Gate 2</span></td>
+                            <td><div class="cell-desc">绘制从原材料到成品的完整制造过程流程图，标注关键工序</div></td>
+                            <td>2026-05-10 09:00</td>
+                            <td>2026-05-20</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('execute_task', '初始过程流程图绘制')">完成</button></td>
+                        </tr>
+                        <tr data-status="pending" data-task-type="execute_task">
+                            <td><div class="cell-main">材料规格书确认</div></td>
+                            <td><div class="cell-main">Project-C · PTC加热器</div></td>
+                            <td><span class="tag tag-orange">Gate 2</span></td>
+                            <td><div class="cell-desc">确认关键原材料技术规格书，与供应商达成一致并签署</div></td>
+                            <td>2026-05-11 10:00</td>
+                            <td>2026-05-15</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('execute_task', '材料规格书确认')">完成</button></td>
+                        </tr>
+                        <tr data-status="done" data-task-type="execute_task" class="hidden">
+                            <td><div class="cell-main">客户需求确认表签署</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">确认并签署客户需求文档，确保所有技术要求已明确</div></td>
+                            <td>2026-05-01 09:00</td>
+                            <td>2026-05-05</td>
+                            <td><button class="btn btn-default btn-sm" disabled>已完成</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state hidden" id="ownerEmpty">
+                    <div class="empty-icon">🎉</div>
+                    <div>暂无待办任务</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Committee View -->
+        <div id="reviewerView" class="hidden">
+            <div class="section">
+                <div class="section-header">
+                    <div class="section-title">
+                        🛡️ 审核小组成员待办任务
+                        <span class="badge" id="reviewerBadge">2</span>
+                    </div>
+                    <div class="section-actions">
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('reviewer', 'all')">全部</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('reviewer', 'pending')">待处理</button>
+                        <button class="btn btn-default btn-sm" onclick="filterTasks('reviewer', 'done')">已完成</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>审核任务</th>
+                            <th>所属项目</th>
+                            <th>阶段</th>
+                            <th>PM发起说明</th>
+                            <th>发起时间</th>
+                            <th>要求完成时间</th>
+                            <th style="width: 100px">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reviewerTable">
+                        <tr data-status="pending" data-task-type="gate_review">
+                            <td><div class="cell-main">Gate 1 阶段审核</div></td>
+                            <td><div class="cell-main">Project-A · 涡轮增压器总成</div></td>
+                            <td><span class="tag tag-green">Gate 1</span></td>
+                            <td><div class="cell-desc">PM已发起阶段审核，需每位审核小组成员独立给出红黄绿结论</div></td>
+                            <td>2026-05-15 09:30</td>
+                            <td>2026-05-17</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('gate_review', 'Gate 1 阶段审核')">审核</button></td>
+                        </tr>
+                        <tr data-status="pending" data-task-type="gate_review">
+                            <td><div class="cell-main">Gate 2 阶段审核</div></td>
+                            <td><div class="cell-main">Project-B · 电子水泵模块</div></td>
+                            <td><span class="tag tag-orange">Gate 2</span></td>
+                            <td><div class="cell-desc">阶段任务完成率100%，等待审核小组逐一审批</div></td>
+                            <td>2026-05-15 14:00</td>
+                            <td>2026-05-18</td>
+                            <td><button class="btn btn-primary btn-sm" onclick="handleTask('gate_review', 'Gate 2 阶段审核')">审核</button></td>
+                        </tr>
+                        <tr data-status="done" data-task-type="gate_review" class="hidden">
+                            <td><div class="cell-main">PKO 阶段审核</div></td>
+                            <td><div class="cell-main">Project-C · PTC加热器</div></td>
+                            <td><span class="tag tag-blue">PKO</span></td>
+                            <td><div class="cell-desc">本人已审批通过，阶段审核已归档</div></td>
+                            <td>2026-05-06 10:00</td>
+                            <td>2026-05-08</td>
+                            <td><button class="btn btn-default btn-sm" disabled>已完成</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state hidden" id="reviewerEmpty">
+                    <div class="empty-icon">🎉</div>
+                    <div>暂无待办任务</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Handle Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title" id="taskModalTitle">📝 处理任务</div>
+                <button class="modal-close" onclick="closeModal('taskModal')">×</button>
+            </div>
+            <div class="modal-body" id="taskModalBody">
+                <!-- Dynamic content will be injected here -->
+            </div>
+            <div class="modal-footer" id="taskModalFooter">
+                <button class="btn btn-default" onclick="closeModal('taskModal')">取消</button>
+                <button class="btn btn-primary" id="taskModalConfirm" onclick="confirmTask()">确认提交</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Role switching
+        const roleStats = {
+            pm: { pending: 3, review: 1, done: 8, overdue: 0 },
+            ae: { pending: 1, review: 0, done: 3, overdue: 0 },
+            scm: { pending: 1, review: 0, done: 2, overdue: 0 },
+            manager: { pending: 2, review: 2, done: 10, overdue: 0 },
+            owner: { pending: 3, review: 0, done: 6, overdue: 1 },
+            reviewer: { pending: 2, review: 2, done: 5, overdue: 0 }
+        };
+
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const role = btn.dataset.role;
+                switchRole(role);
+            });
+        });
+
+        function switchRole(role) {
+            ['pm', 'ae', 'scm', 'manager', 'owner', 'reviewer'].forEach(r => {
+                document.getElementById(r + 'View').classList.add('hidden');
+            });
+            document.getElementById(role + 'View').classList.remove('hidden');
+
+            const stats = roleStats[role];
+            document.getElementById('statPending').textContent = stats.pending;
+            document.getElementById('statReview').textContent = stats.review;
+            document.getElementById('statDone').textContent = stats.done;
+            document.getElementById('statOverdue').textContent = stats.overdue;
+        }
+
+        // Task handling modal
+        let currentTaskType = '';
+        let currentTaskName = '';
+
+        function handleTask(taskType, taskName) {
+            currentTaskType = taskType;
+            currentTaskName = taskName;
+            document.getElementById('taskModalTitle').textContent = '📝 ' + taskName;
+
+            const body = document.getElementById('taskModalBody');
+            body.innerHTML = generateTaskModalContent(taskType, taskName);
+
+            // Adjust footer buttons based on task type
+            const footer = document.getElementById('taskModalFooter');
+            if (taskType === 'gate_review') {
+                footer.innerHTML = `
+                    <button class="btn btn-default" onclick="closeModal('taskModal')">取消</button>
+                    <button class="btn btn-primary" onclick="submitGateReview()">提交审核结论</button>
+                `;
+            } else if (taskType === 'task_review' || taskType === 'approve_task') {
+                footer.innerHTML = `
+                    <button class="btn btn-default" onclick="closeModal('taskModal')">取消</button>
+                    <button class="btn btn-danger" onclick="rejectTask()">驳回</button>
+                    <button class="btn btn-success" onclick="approveTask()">通过</button>
+                `;
+            } else if (taskType === 'launch_review') {
+                footer.innerHTML = `
+                    <button class="btn btn-default" onclick="closeModal('taskModal')">取消</button>
+                    <button class="btn btn-primary" onclick="confirmLaunch()">确认发起</button>
+                `;
+            } else {
+                footer.innerHTML = `
+                    <button class="btn btn-default" onclick="closeModal('taskModal')">取消</button>
+                    <button class="btn btn-primary" onclick="confirmTask()">确认完成</button>
+                `;
+            }
+
+            document.getElementById('taskModal').classList.add('active');
+        }
+
+        function generateTaskModalContent(taskType, taskName) {
+            // Base info section - common for all tasks
+            let html = `
+                <div class="task-section">
+                    <div class="task-section-title">📋 任务基本信息</div>
+                    <div class="form-row-3">
+                        <div class="info-card">
+                            <div class="info-card-label">任务名称</div>
+                            <div class="info-card-value">${taskName}</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">所属项目</div>
+                            <div class="info-card-value">Project-A · 涡轮增压器总成</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">当前阶段</div>
+                            <div class="info-card-value">PKO / Gate 1 / Gate 2</div>
+                        </div>
+                    </div>
+                    <div class="form-row-3">
+                        <div class="info-card">
+                            <div class="info-card-label">创建时间</div>
+                            <div class="info-card-value">2026-05-10 09:00</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">要求完成时间</div>
+                            <div class="info-card-value">2026-05-17</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">任务状态</div>
+                            <div class="info-card-value"><span class="tag tag-orange">待处理</span></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Task-specific content
+            switch(taskType) {
+                case 'config_pko':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">⚙️ 配置阶段负责人和计划时间</div>
+                            <div class="form-group">
+                                <label class="form-label">项目阶段配置 <span class="required">*</span></label>
+                                <div class="stage-config-list">
+                                    <div class="stage-config-item">
+                                        <strong>PKO</strong>
+                                        <select class="form-select">
+                                            <option>李明 - PM</option>
+                                            <option>张三 - AE</option>
+                                            <option>王五 - AQE</option>
+                                        </select>
+                                        <input type="date" class="form-input" value="2026-05-18">
+                                        <input type="date" class="form-input" value="2026-05-22">
+                                    </div>
+                                    <div class="stage-config-item">
+                                        <strong>Gate 1</strong>
+                                        <select class="form-select">
+                                            <option>李明 - PM</option>
+                                            <option>王五 - AQE</option>
+                                            <option>赵六 - SQD</option>
+                                        </select>
+                                        <input type="date" class="form-input" value="2026-05-23">
+                                        <input type="date" class="form-input" value="2026-05-31">
+                                    </div>
+                                    <div class="stage-config-item">
+                                        <strong>Gate 2</strong>
+                                        <select class="form-select">
+                                            <option>李明 - PM</option>
+                                            <option>张三 - AE</option>
+                                            <option>钱七 - SCM</option>
+                                        </select>
+                                        <input type="date" class="form-input" value="2026-06-01">
+                                        <input type="date" class="form-input" value="2026-06-20">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label">流程分支</label>
+                                    <select class="form-select">
+                                        <option>标准流程：Gate1 至 Gate6</option>
+                                        <option>简化流程：Gate1 至 Gate3</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">任务下发方式</label>
+                                    <select class="form-select">
+                                        <option>按阶段计划自动生成待办</option>
+                                        <option>保存后由PM手动下发</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">任务清单配置</label>
+                                <div style="background:#FAFBFC;border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border);">
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                        <span style="font-size:13px;font-weight:500;">已配置任务 (3)</span>
+                                        <button class="btn btn-default btn-sm">+ 添加任务</button>
+                                    </div>
+                                    <div style="font-size:13px;color:var(--text-secondary);line-height:2;">
+                                        1. AE 创建并确认BOM · 任务负责人：张三<br>
+                                        2. SCM 补充供应链BOM信息 · 任务负责人：钱七<br>
+                                        3. AQE 根据BOM创建总成APQP · 任务负责人：王五
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">备注说明</label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入配置说明..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'launch_review':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">🚀 发起阶段审核</div>
+                            <div class="form-group">
+                                <label class="form-label">审核类型</label>
+                                <select class="form-select">
+                                    <option>阶段完成审核 (Gate Review)</option>
+                                    <option>里程碑审核</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">审核小组成员</label>
+                                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;">
+                                    <span class="tag tag-blue">张三 · 技术</span>
+                                    <span class="tag tag-blue">李四 · 质量</span>
+                                    <span class="tag tag-blue">王五 · 工艺</span>
+                                    <span class="tag tag-blue">钱七 · 供应链</span>
+                                    <span class="tag tag-gray" style="cursor:pointer">+ 添加成员</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">审核规则</label>
+                                <div class="approval-matrix">
+                                    <div class="approval-member-row">
+                                        <strong>张三 · 技术</strong>
+                                        <span class="tag tag-gray">待审核</span>
+                                        <span>需独立提交红黄绿结论</span>
+                                    </div>
+                                    <div class="approval-member-row">
+                                        <strong>李四 · 质量</strong>
+                                        <span class="tag tag-gray">待审核</span>
+                                        <span>所有成员完成后汇总阶段结论</span>
+                                    </div>
+                                    <div class="approval-member-row">
+                                        <strong>王五 · 工艺</strong>
+                                        <span class="tag tag-gray">待审核</span>
+                                        <span>黄色结论必须录入条件和原因</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">阶段任务完成概况</label>
+                                <div style="background:#FAFBFC;border-radius:var(--radius-sm);padding:12px;">
+                                    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                                        <span style="font-size:13px;color:var(--text-secondary)">任务完成率</span>
+                                        <span style="font-size:13px;font-weight:600">100% (8/8)</span>
+                                    </div>
+                                    <div style="width:100%;height:6px;background:#E5E6EB;border-radius:3px;overflow:hidden;">
+                                        <div style="height:100%;background:var(--primary);border-radius:3px;width:100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">审核说明</label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入审核说明..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'task_review':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">📋 任务完成审核</div>
+                            <div class="form-group">
+                                <label class="form-label">申请人</label>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <span class="avatar">张</span>
+                                    <span style="font-size:14px;">张三 - 高级工程师</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">申请时间</label>
+                                <div class="form-input" style="background:#FAFBFC;">2026-05-14 10:00</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">交付物</label>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <span class="tag tag-blue">DFMEA分析报告_v1.2.pdf</span>
+                                    <span class="tag tag-blue">风险评估表.xlsx</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">任务完成说明</label>
+                                <div class="form-textarea" style="background:#FAFBFC;min-height:60px;">已完成DFMEA分析文档编制，识别了12项潜在失效模式，制定了相应的预防措施。</div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">审核意见 <span class="required">*</span></label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入审核意见..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'create_bom':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">🔧 创建生产BOM</div>
+                            <div class="form-group">
+                                <label class="form-label">BOM版本 <span class="required">*</span></label>
+                                <input type="text" class="form-input" placeholder="例如：V1.0">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">BOM类型</label>
+                                <select class="form-select">
+                                    <option>生产BOM</option>
+                                    <option>研发BOM</option>
+                                    <option>销售BOM</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">物料清单</label>
+                                <div style="background:#FAFBFC;border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border);">
+                                    <table style="width:100%;font-size:13px;border-collapse:collapse;">
+                                        <thead>
+                                            <tr style="color:var(--text-secondary);border-bottom:1px solid var(--border);">
+                                                <th style="text-align:left;padding:6px;">层级</th>
+                                                <th style="text-align:left;padding:6px;">物料编码</th>
+                                                <th style="text-align:left;padding:6px;">物料名称</th>
+                                                <th style="text-align:left;padding:6px;">用量</th>
+                                                <th style="text-align:left;padding:6px;">单位</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding:6px;">1</td>
+                                                <td style="padding:6px;">MAT-001</td>
+                                                <td style="padding:6px;">涡轮壳体</td>
+                                                <td style="padding:6px;">1</td>
+                                                <td style="padding:6px;">PCS</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:6px;">2</td>
+                                                <td style="padding:6px;">MAT-002</td>
+                                                <td style="padding:6px;">叶轮总成</td>
+                                                <td style="padding:6px;">1</td>
+                                                <td style="padding:6px;">PCS</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div style="text-align:center;margin-top:8px;">
+                                        <button class="btn btn-default btn-sm">+ 添加物料</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">备注</label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入备注..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'edit_bom':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">📦 编辑生产BOM</div>
+                            <div class="form-group">
+                                <label class="form-label">BOM版本</label>
+                                <div class="form-input" style="background:#FAFBFC;">V1.0 (AE创建)</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">供应链信息补充</label>
+                                <div style="background:#FAFBFC;border-radius:var(--radius-sm);padding:12px;border:1px solid var(--border);">
+                                    <table style="width:100%;font-size:13px;border-collapse:collapse;">
+                                        <thead>
+                                            <tr style="color:var(--text-secondary);border-bottom:1px solid var(--border);">
+                                                <th style="text-align:left;padding:6px;">物料编码</th>
+                                                <th style="text-align:left;padding:6px;">物料名称</th>
+                                                <th style="text-align:left;padding:6px;">供应商</th>
+                                                <th style="text-align:left;padding:6px;">采购周期(天)</th>
+                                                <th style="text-align:left;padding:6px;">最小起订量</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td style="padding:6px;">MAT-001</td>
+                                                <td style="padding:6px;">涡轮壳体</td>
+                                                <td style="padding:6px;"><input type="text" class="form-input" style="padding:4px 8px;font-size:12px;" placeholder="供应商"></td>
+                                                <td style="padding:6px;"><input type="number" class="form-input" style="padding:4px 8px;font-size:12px;" placeholder="天数"></td>
+                                                <td style="padding:6px;"><input type="number" class="form-input" style="padding:4px 8px;font-size:12px;" placeholder="数量"></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:6px;">MAT-002</td>
+                                                <td style="padding:6px;">叶轮总成</td>
+                                                <td style="padding:6px;"><input type="text" class="form-input" style="padding:4px 8px;font-size:12px;" placeholder="供应商"></td>
+                                                <td style="padding:6px;"><input type="number" class="form-input" style="padding:4px 8px;font-size:12px;" placeholder="天数"></td>
+                                                <td style="padding:6px;"><input type="number" class="form-input" style="padding:4px 8px;font-size:12px;" placeholder="数量"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">备注</label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入备注..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'approve_task':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">✅ 审批任务完成</div>
+                            <div class="form-group">
+                                <label class="form-label">任务负责人</label>
+                                <div style="display:flex;align-items:center;gap:8px;">
+                                    <span class="avatar">张</span>
+                                    <span style="font-size:14px;">张三 - 高级工程师</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">任务名称</label>
+                                <div class="form-input" style="background:#FAFBFC;">客户需求确认表签署</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">完成时间</label>
+                                <div class="form-input" style="background:#FAFBFC;">2026-05-14 16:30</div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">交付物</label>
+                                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                    <span class="tag tag-blue">客户需求确认表_签署版.pdf</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">完成说明</label>
+                                <div class="form-textarea" style="background:#FAFBFC;min-height:60px;">已与客户端确认所有技术需求，双方已签署确认表。</div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">审批意见 <span class="required">*</span></label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入审批意见..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'execute_task':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">📌 任务执行</div>
+                            <div class="form-group">
+                                <label class="form-label">任务执行说明 <span class="required">*</span></label>
+                                <textarea class="form-textarea" rows="3" placeholder="请描述任务执行情况及结果..."></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">上传交付物</label>
+                                <div style="border:2px dashed var(--border);border-radius:var(--radius-sm);padding:24px;text-align:center;color:var(--text-tertiary);cursor:pointer;">
+                                    <div style="font-size:24px;margin-bottom:8px;">📎</div>
+                                    <div style="font-size:13px;">点击上传或拖拽文件至此</div>
+                                    <div style="font-size:12px;margin-top:4px;">支持 PDF、Word、Excel、图片等格式</div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">备注</label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入备注..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                case 'gate_review':
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">🛡️ 阶段审核结论</div>
+                            <div class="form-group">
+                                <label class="form-label">阶段完成概况</label>
+                                <div class="approval-matrix">
+                                    <div class="approval-member-row">
+                                        <strong>阶段任务</strong>
+                                        <span class="tag tag-green">8/8完成</span>
+                                        <span>PM已完成任务审核并发起阶段审核</span>
+                                    </div>
+                                    <div class="approval-member-row">
+                                        <strong>张三 · 技术</strong>
+                                        <span class="tag tag-green">绿色通过</span>
+                                        <span>技术资料满足Gate准入要求</span>
+                                    </div>
+                                    <div class="approval-member-row">
+                                        <strong>李四 · 质量</strong>
+                                        <span class="tag tag-gray">待审核</span>
+                                        <span>等待本人或其他成员提交结论</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">审核选项 <span class="required">*</span></label>
+                                <div class="review-option-group">
+                                    <label class="review-option green">
+                                        <input type="radio" name="gateDecision" value="green" checked onchange="toggleConditionReason()">
+                                        绿色 - 通过
+                                        <div class="cell-sub">阶段可进入下一Gate</div>
+                                    </label>
+                                    <label class="review-option yellow">
+                                        <input type="radio" name="gateDecision" value="yellow" onchange="toggleConditionReason()">
+                                        黄色 - 待条件通过
+                                        <div class="cell-sub">满足条件后可继续推进</div>
+                                    </label>
+                                    <label class="review-option red">
+                                        <input type="radio" name="gateDecision" value="red" onchange="toggleConditionReason()">
+                                        红色 - 不通过
+                                        <div class="cell-sub">退回PM整改后重新发起</div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group hidden" id="conditionReasonGroup">
+                                <label class="form-label">待条件通过原因 <span class="required">*</span></label>
+                                <textarea class="form-textarea" rows="3" placeholder="请选择黄色时录入未满足项、关闭条件和责任人..."></textarea>
+                            </div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">审核意见</label>
+                                <textarea class="form-textarea" rows="2" placeholder="请输入阶段审核意见..."></textarea>
+                            </div>
+                        </div>
+                    `;
+                    break;
+
+                default:
+                    html += `
+                        <div class="task-section">
+                            <div class="task-section-title">📝 任务处理</div>
+                            <div class="form-group mb-0">
+                                <label class="form-label">处理说明 <span class="required">*</span></label>
+                                <textarea class="form-textarea" rows="3" placeholder="请输入处理说明..."></textarea>
+                            </div>
+                        </div>
+                    `;
+            }
+
+            return html;
+        }
+
+        // Modal actions
+        function closeModal(id) {
+            document.getElementById(id).classList.remove('active');
+        }
+
+        function confirmTask() {
+            closeModal('taskModal');
+            showToast('任务处理成功 · ' + currentTaskName);
+            // In real app, would update the task status
+        }
+
+        function confirmLaunch() {
+            closeModal('taskModal');
+            showToast('阶段审核已发起 · 通知已发送给审核小组成员');
+        }
+
+        function toggleConditionReason() {
+            const selected = document.querySelector('input[name="gateDecision"]:checked');
+            const group = document.getElementById('conditionReasonGroup');
+            if (!selected || !group) return;
+            group.classList.toggle('hidden', selected.value !== 'yellow');
+        }
+
+        function submitGateReview() {
+            const selected = document.querySelector('input[name="gateDecision"]:checked');
+            const decisionText = {
+                green: '绿色通过',
+                yellow: '黄色待条件通过',
+                red: '红色不通过'
+            }[selected ? selected.value : 'green'];
+            closeModal('taskModal');
+            showToast('阶段审核已提交 · ' + decisionText);
+        }
+
+        function approveTask() {
+            closeModal('taskModal');
+            showToast('审核已通过 · ' + currentTaskName);
+        }
+
+        function rejectTask() {
+            closeModal('taskModal');
+            showToast('审核已驳回 · ' + currentTaskName);
+        }
+
+        // Filter tasks
+        function filterTasks(role, filter) {
+            const rows = document.querySelectorAll('#' + role + 'Table tr');
+            let visible = 0;
+            rows.forEach(row => {
+                const status = row.getAttribute('data-status');
+                if (filter === 'all' || status === filter) {
+                    row.classList.remove('hidden');
+                    visible++;
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+            document.getElementById(role + 'Empty').classList.toggle('hidden', visible > 0);
+            updateBadge(role);
+        }
+
+        function updateBadge(role) {
+            const pending = document.querySelectorAll('#' + role + 'Table tr[data-status="pending"]:not(.hidden)').length;
+            document.getElementById(role + 'Badge').textContent = pending;
+        }
+
+        // Toast
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        // Close modal on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', e => {
+                if (e.target === overlay) overlay.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>

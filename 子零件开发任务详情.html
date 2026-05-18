@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>项目详情 - PM阶段任务提醒</title>
+  <title>子零件开发任务详情</title>
   <style>
     :root {
       --page-max: 1670px;
@@ -3432,7 +3432,7 @@
         <div class="project-top">
           <div>
             <div class="project-code">SCA220HCM2506281</div>
-            <h1 class="project-title">EA888 E5 VCT</h1>
+            <h1 class="project-title">PHASER INSERT</h1>
             <div class="info-grid">
               <div class="info-item"><b>销售责任单元：</b>宁波</div>
               <div class="info-item"><b>客户品牌：</b>Volkswagen</div>
@@ -3460,7 +3460,7 @@
               </div>
               <div>
                 <div class="stat-label">阶段</div>
-                <div class="stat-value" data-current-stage-label>PKO</div>
+                <div class="stat-value" data-current-stage-label>Gate1</div>
               </div>
               <div>
                 <div class="stat-label">Status</div>
@@ -3471,83 +3471,13 @@
         </div>
       </section>
 
-      <section class="pm-workbench">
-        <div class="todo-panel">
-          <div class="section-head">
-            <div>
-              <div class="section-kicker">PM 提醒</div>
-              <h2 class="section-title">当前任务提醒</h2>
-            </div>
-            <div class="progress-summary">
-              <div class="progress-copy"><span id="progressText">已完成 1/3</span><span id="progressPercent">33%</span></div>
-              <div class="progress-bar"><span id="progressBar"></span></div>
-            </div>
-          </div>
-
-          <div class="task-list">
-            <article class="task-card is-done" data-task>
-              <div class="task-index">1</div>
-              <div class="task-main">
-                <h4>录入项目计划关键时间节点</h4>
-                <p>通过“项目计划”录入客户要求的时间节点，并补充 BW 内部时间节点及项目整体时间节点，保证后续 Gate 计划可追踪。</p>
-                <div class="task-meta">
-                  <span class="tag tag-blue">项目计划</span>
-                  <span class="tag tag-green">已完成</span>
-                  <span class="tag tag-gray">PM负责</span>
-                </div>
-              </div>
-              <div class="task-status">
-                <button class="complete-action" type="button">标记完成</button>
-                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
-              </div>
-            </article>
-
-            <article class="task-card" data-task>
-              <div class="task-index">2</div>
-              <div class="task-main">
-                <h4>配置 Gate1 至 Gate6 任务负责人</h4>
-                <p>点击“任务管理”，为 Gate1 至 Gate6 配置任务负责人及完成时间节点；未指定负责人时，任务表格保持醒目待办状态。</p>
-                <div class="task-meta">
-                  <span class="tag tag-blue">任务管理</span>
-                  <span class="tag tag-orange">待完成</span>
-                  <span class="tag tag-gray">跨部门协同</span>
-                </div>
-              </div>
-              <div class="task-status">
-                <button class="complete-action" type="button">标记完成</button>
-                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
-              </div>
-            </article>
-
-            <article class="task-card" data-task>
-              <div class="task-index">3</div>
-              <div class="task-main">
-                <h4>完成 PKO 阶段任务闭环</h4>
-                <p>完成前两项后，在 PKO 任务下将对应任务点击完成；系统同步更新阶段完成度，并以绿色对号箭头展示已完成结果。</p>
-                <div class="task-meta">
-                  <span class="tag tag-blue">PKO任务</span>
-                  <span class="tag tag-orange">待完成</span>
-                  <span class="tag tag-gray">阶段闭环</span>
-                </div>
-              </div>
-              <div class="task-status">
-                <button class="complete-action" type="button">标记完成</button>
-                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
-              </div>
-            </article>
-          </div>
-        </div>
-      </section>
-
       <section class="nav-panel">
         <nav class="tabs" aria-label="项目详情导航">
           <button class="tab active" type="button" data-tab-target="development" aria-selected="true">项目开发任务</button>
           <button class="tab" type="button" data-tab-target="bom" aria-selected="false">生产BOM</button>
           <button class="tab" type="button" data-tab-target="requirements" aria-selected="false">客户要求</button>
-          <button class="tab" type="button" data-tab-target="plan" aria-selected="false">项目计划</button>
           <button class="tab" type="button" data-tab-target="issues" aria-selected="false">问题清单</button>
           <button class="tab" type="button" data-tab-target="quality" aria-selected="false">质量问题（8D）</button>
-          <button class="tab" type="button" data-tab-target="team" aria-selected="false">团队成员</button>
           <button class="tab" type="button" data-tab-target="library" aria-selected="false">资料库</button>
           <button class="tab setting" type="button"><svg class="icon"><use href="#i-gear"></use></svg>设置页签顺序</button>
         </nav>
@@ -3557,18 +3487,8 @@
         <section class="stage-carousel" aria-label="项目阶段">
           <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
           <div class="stage-strip" data-stage-strip>
-            <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="销售发起开发项目并完成默认 CKO 任务，提交后项目进入 PKO 阶段。">
-              <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
-              <div class="stage-meta"><span>Sales</span><b>Zack</b></div>
-              <div class="stage-meta"><span>时间</span><b>2025-05-12 ~ 2025-10-12</b></div>
-            </button>
-            <button class="stage-card active" type="button" data-stage-id="PKO" data-stage-note="作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。">
-              <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
-              <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
+            <button class="stage-card active" type="button" data-stage-id="Gate1" data-stage-note="SQD 基于该零件开发计划推进供应商开发任务，并同步关键节点与风险状态。">
+              <div class="stage-title">Gate1 <span class="status-pill status-running">进行中</span></div>
               <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
               <div class="stage-meta"><span>时间</span><b>-</b></div>
             </button>
@@ -3597,18 +3517,13 @@
               <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
               <div class="stage-meta"><span>时间</span><b>-</b></div>
             </button>
-            <button class="stage-card" type="button" data-stage-id="HandOver" data-stage-note="PM 完成交接信息登记，沉淀项目资料、关键问题和最终交付包，完成项目开发交接闭环。">
-              <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
           </div>
           <button class="stage-nav" type="button" data-stage-scroll="next" aria-label="向右滑动阶段">›</button>
         </section>
 
       <section class="stage-note">
         <h3>阶段说明</h3>
-        <p>作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。</p>
+        <p>SQD 基于该零件开发计划推进供应商开发任务，并同步关键节点与风险状态。</p>
         <div class="stage-review-alert" id="stageReviewAlert" hidden>当前阶段审核未通过，可通过查看审核记录了解审核情况、拒绝成员和对应原因。</div>
       </section>
 
@@ -3638,21 +3553,19 @@
         <section class="bom-panel bom-page" data-bom-page="list">
           <div class="bom-top">
             <div>
-              <div class="section-kicker">Production BOM</div>
+              <div class="section-kicker">Part BOM</div>
               <div class="bom-title-row">
-                <h2 class="section-title">生产BOM列表</h2>
-                <span class="tag tag-blue">仅展示 L1 层级</span>
+                <h2 class="section-title">该零件BOM信息</h2>
+                <span class="tag tag-blue">零件层级</span>
               </div>
               <div class="bom-meta">
-                <span>当前阶段：PKO</span>
-                <span>AE：Li Ming</span>
-                <span>SCM：Chen Wei</span>
+                <span>当前阶段：Gate1</span>
+                <span>零件：PHASER INSERT</span>
+                <span>SQD：Zack</span>
               </div>
             </div>
             <div class="bom-actions">
               <button class="btn" type="button" data-bom-open-detail="bom-001"><svg class="icon"><use href="#i-eye"></use></svg>查看详情</button>
-              <button class="btn btn-primary" type="button" data-bom-create><svg class="icon"><use href="#i-plus"></use></svg>创建BOM（AE）</button>
-              <button class="btn" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM（SCM）</button>
             </div>
           </div>
 
@@ -3686,14 +3599,14 @@
           </div>
 
           <div class="bom-summary">
-            <div class="bom-summary-item"><span>当前BOM版本</span><b data-bom-current-version>PKO-V1.0</b></div>
+            <div class="bom-summary-item"><span>当前BOM版本</span><b data-bom-current-version>Gate1-V1.0</b></div>
             <div class="bom-summary-item"><span>状态</span><b data-bom-current-status>锁定</b></div>
-            <div class="bom-summary-item"><span>L1总成</span><b data-bom-l1-count>2</b></div>
-            <div class="bom-summary-item"><span>完整层级零件</span><b data-bom-all-count>11</b></div>
+            <div class="bom-summary-item"><span>当前零件</span><b data-bom-l1-count>1</b></div>
+            <div class="bom-summary-item"><span>BOM明细</span><b data-bom-all-count>4</b></div>
           </div>
 
           <div class="bom-table-wrap">
-            <table class="bom-table" aria-label="生产BOM列表">
+            <table class="bom-table" aria-label="该零件BOM信息">
               <colgroup>
                 <col style="width:70px"><col style="width:70px"><col style="width:230px"><col style="width:150px">
                 <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
@@ -3752,125 +3665,6 @@
                 </tr>
               </tbody>
             </table>
-          </div>
-        </section>
-      </div>
-
-      <div class="tab-panel" data-tab-panel="plan" hidden>
-        <section class="plan-page">
-          <div class="section-head">
-            <div>
-              <div class="section-kicker">Project Plan</div>
-              <h2 class="section-title">项目计划</h2>
-            </div>
-            <div class="plan-actions">
-              <button class="btn" type="button" id="resetPlan">恢复默认</button>
-              <button class="btn btn-primary" type="button" id="savePlan">保存计划</button>
-            </div>
-          </div>
-          <div id="planAlert" class="plan-alert">计划节点校验通过，BW 内部计划与 Gate 计划均未晚于客户要求节点。</div>
-
-          <div class="plan-layout">
-            <div class="plan-form-stack">
-              <article class="plan-block">
-                <h3>客户版时间节点</h3>
-                <p>PKO 阶段由 PM 录入客户要求的 Quote Due、Nomination、Protype、OTS、PPAP、SOP。</p>
-                <div class="plan-fields">
-                  <div class="plan-field"><label for="customerQuoteDue">Quote Due</label><input id="customerQuoteDue" type="date" value="2025-11-29" data-plan-field="customerQuoteDue"></div>
-                  <div class="plan-field"><label for="customerNomination">Nomination</label><input id="customerNomination" type="date" value="2026-01-20" data-plan-field="customerNomination"></div>
-                  <div class="plan-field"><label for="customerProtype">Protype</label><input id="customerProtype" type="date" value="2026-03-29" data-plan-field="customerProtype"></div>
-                  <div class="plan-field"><label for="customerOts">客户 OTS</label><input id="customerOts" type="date" value="2026-08-22" data-plan-field="customerOts"></div>
-                  <div class="plan-field"><label for="customerPpap">客户 PPAP</label><input id="customerPpap" type="date" value="2026-10-16" data-plan-field="customerPpap"></div>
-                  <div class="plan-field"><label for="customerSop">客户 SOP</label><input id="customerSop" type="date" value="2026-12-28" data-plan-field="customerSop"></div>
-                </div>
-              </article>
-
-              <article class="plan-block">
-                <h3>BW 内部版时间节点</h3>
-                <p>内部节点根据客户要求倒排，不能晚于客户对应节点。</p>
-                <div class="plan-fields">
-                  <div class="plan-field"><label for="bwPmKickoff">PM Kick off</label><input id="bwPmKickoff" type="date" value="2025-03-26" data-plan-field="bwPmKickoff" data-limit="customerQuoteDue"></div>
-                  <div class="plan-field"><label for="bwArApproval">AR Approval</label><input id="bwArApproval" type="date" value="2025-04-21" data-plan-field="bwArApproval" data-limit="customerNomination"></div>
-                  <div class="plan-field"><label for="bwToolingKickoff">Tooling kick off</label><input id="bwToolingKickoff" type="date" value="2025-04-25" data-plan-field="bwToolingKickoff" data-limit="customerProtype"></div>
-                  <div class="plan-field"><label for="bwProtype">Protype</label><input id="bwProtype" type="date" value="2026-03-27" data-plan-field="bwProtype" data-limit="customerProtype"></div>
-                  <div class="plan-field"><label for="bwOts">BW OTS</label><input id="bwOts" type="date" value="2026-08-01" data-plan-field="bwOts" data-limit="customerOts"></div>
-                  <div class="plan-field"><label for="bwPpap">BW PPAP</label><input id="bwPpap" type="date" value="2026-09-15" data-plan-field="bwPpap" data-limit="customerPpap"></div>
-                  <div class="plan-field"><label for="bwSop">BW SOP</label><input id="bwSop" type="date" value="2026-11-20" data-plan-field="bwSop" data-limit="customerSop"></div>
-                </div>
-                <div class="mapping-list" aria-label="BW节点与Gate映射">
-                  <div class="mapping-item"><span>PM Kick off</span><b>= PKO</b></div>
-                  <div class="mapping-item"><span>AR Approval</span><b>= Gate1</b></div>
-                  <div class="mapping-item"><span>Tooling kick off</span><b>= Gate2</b></div>
-                  <div class="mapping-item"><span>BW 内部 OTS</span><b>= Gate3</b></div>
-                  <div class="mapping-item"><span>BW 内部 PPAP</span><b>= Gate4</b></div>
-                  <div class="mapping-item"><span>BW 内部 SOP</span><b>= Gate5</b></div>
-                </div>
-              </article>
-
-              <article class="plan-block">
-                <h3>Gate 时间节点</h3>
-                <p>PM 基于内部计划创建 Gate 节点，关键 Gate 与 BW 内部节点保持一致。</p>
-                <div class="plan-fields">
-                  <div class="plan-field"><label for="gatePko">PKO</label><input id="gatePko" type="date" value="2025-03-26" data-plan-field="gatePko" data-limit="customerQuoteDue"></div>
-                  <div class="plan-field"><label for="gate1">Gate1</label><input id="gate1" type="date" value="2025-04-21" data-plan-field="gate1" data-limit="customerNomination"></div>
-                  <div class="plan-field"><label for="gate2">Gate2</label><input id="gate2" type="date" value="2025-04-25" data-plan-field="gate2" data-limit="customerProtype"></div>
-                  <div class="plan-field"><label for="gate3">Gate3 / OTS</label><input id="gate3" type="date" value="2026-08-01" data-plan-field="gate3" data-limit="customerOts"></div>
-                  <div class="plan-field"><label for="gate4">Gate4 / PPAP</label><input id="gate4" type="date" value="2026-09-15" data-plan-field="gate4" data-limit="customerPpap"></div>
-                  <div class="plan-field"><label for="gate5">Gate5 / SOP</label><input id="gate5" type="date" value="2026-11-20" data-plan-field="gate5" data-limit="customerSop"></div>
-                </div>
-              </article>
-            </div>
-
-            <div class="plan-visual-stack">
-              <section class="timeline-panel" aria-label="客户与BW项目时间轴">
-                <h3 class="timeline-title">客户 / BW 双时间轴</h3>
-                <div class="milestone-row">
-                  <div class="row-label customer">Timing - Customer<span>客户要求节点</span></div>
-                  <div class="timeline-track">
-                    <div class="timeline-line"></div>
-                    <div class="timeline-arrow"></div>
-                    <div class="milestones" style="--milestone-count: 6">
-                      <div class="milestone"><span>Quote Due</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerQuoteDue">2025/11/29</span></div>
-                      <div class="milestone"><span>Nomination</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerNomination">2026/01/20</span></div>
-                      <div class="milestone"><span>Protype</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerProtype">2026/03/29</span></div>
-                      <div class="milestone"><span>OTS</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerOts">2026/08/22</span></div>
-                      <div class="milestone"><span>PPAP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerPpap">2026/10/16</span></div>
-                      <div class="milestone"><span>SOP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerSop">2026/12/28</span></div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="milestone-row">
-                  <div class="row-label">Timing - BW<span>内部承诺节点</span></div>
-                  <div class="timeline-track">
-                    <div class="timeline-line"></div>
-                    <div class="timeline-arrow"></div>
-                    <div class="milestones" style="--milestone-count: 7">
-                      <div class="milestone"><span>PM Kick off</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwPmKickoff">2025/03/26</span></div>
-                      <div class="milestone"><span>AR Approval</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwArApproval">2025/04/21</span></div>
-                      <div class="milestone"><span>Tooling kick off</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwToolingKickoff">2025/04/25</span></div>
-                      <div class="milestone"><span>Protype</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwProtype">2026/03/27</span></div>
-                      <div class="milestone"><span>OTS / Gate3</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwOts">2026/08/01</span></div>
-                      <div class="milestone"><span>PPAP / Gate4</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwPpap">2026/09/15</span></div>
-                      <div class="milestone"><span>SOP / Gate5</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwSop">2026/11/20</span></div>
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section class="gate-panel" aria-label="Gate计划">
-                <h3 class="gate-title">Gate 计划基线</h3>
-                <div class="gate-grid">
-                  <div class="gate-cell"><div><span class="gate-badge kickoff">PKO</span></div><div class="gate-name">Program Kick Off<span data-date-label="gatePko">2025/03/26</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">1</span></div><div class="gate-name">AR Approval<span data-date-label="gate1">2025/04/21</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">2</span></div><div class="gate-name">Tooling Kick Off<span data-date-label="gate2">2025/04/25</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">3</span></div><div class="gate-name">OTS<span data-date-label="gate3">2026/08/01</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">4</span></div><div class="gate-name">PPAP<span data-date-label="gate4">2026/09/15</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">5</span></div><div class="gate-name">SOP<span data-date-label="gate5">2026/11/20</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">6</span></div><div class="gate-name">Hand Over<span>待 SOP 后确认</span></div></div>
-                </div>
-              </section>
-            </div>
           </div>
         </section>
       </div>
@@ -4809,21 +4603,6 @@
     </section>
   </div>
 
-  <div class="modal-backdrop" id="apqpResultModal" hidden>
-    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="apqpResultTitle">
-      <div class="modal-head">
-        <h3 id="apqpResultTitle">创建APQP</h3>
-        <button class="modal-close" type="button" data-close-apqp-result aria-label="关闭">×</button>
-      </div>
-      <div class="confirm-body">
-        <p id="apqpResultMessage">APQP 已创建。</p>
-      </div>
-      <div class="modal-foot">
-        <button class="btn btn-primary" type="button" data-close-apqp-result>知道了</button>
-      </div>
-    </section>
-  </div>
-
   <script>
     const taskCards = Array.from(document.querySelectorAll("[data-task]"));
     const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
@@ -4916,8 +4695,6 @@
     const auditRecordModal = document.getElementById("auditRecordModal");
     const auditRecordTip = document.getElementById("auditRecordTip");
     const auditRecordBody = document.getElementById("auditRecordBody");
-    const apqpResultModal = document.getElementById("apqpResultModal");
-    const apqpResultMessage = document.getElementById("apqpResultMessage");
     const currentStageLabel = document.querySelector("[data-current-stage-label]");
     const taskFillModal = document.getElementById("taskFillModal");
     const taskFillForm = document.getElementById("taskFillForm");
@@ -4930,7 +4707,7 @@
     const taskFillDate = document.getElementById("taskFillDate");
     const taskFillDescription = document.getElementById("taskFillDescription");
     const taskFillNote = document.getElementById("taskFillNote");
-    let activeStage = "PKO";
+    let activeStage = "Gate1";
     let activeFillTaskId = "";
     let pkoTasksManaged = false;
     let pendingSubmitStage = "";
@@ -4947,7 +4724,7 @@
         sourceMembers: ["sophia-qin"],
         targetTeam: "CQE",
         targetMembers: ["cqe-ivy"],
-        note: "质量开发问题、APQP 文件、供应商质量风险及未关闭事项交接。"
+        note: "质量开发问题、供应商质量风险及未关闭事项交接。"
       },
       {
         id: "ae-ppe",
@@ -4978,7 +4755,7 @@
       {
         member: "王敏（质量主管）",
         result: "拒绝",
-        reason: "总成 APQP 计划缺少关键质量节点，请补充 Gate2 前质量交付物。"
+        reason: "零件开发计划缺少关键质量节点，请补充 Gate2 前质量交付物。"
       },
       {
         member: "陈伟（供应链主管）",
@@ -5050,7 +4827,7 @@
           id: "pko-4",
           no: 1,
           kpac: "GPM_PD-01",
-          title: "Project Plan Key Milestones",
+          title: "Part Development Plan Key Milestones",
           description: "Input customer key dates, BW internal milestones and project timeline baseline",
           owner: "张工",
           department: "PMO",
@@ -5082,8 +4859,8 @@
           id: "gate1-2",
           no: 1,
           kpac: "GPM_PD-03",
-          title: "Create Assembly APQP Plan from BOM",
-          description: "PM creates assembly APQP plan based on SCM confirmed BOM and submits it for Gate1 task execution.",
+          title: "Confirm Part Development Plan from BOM",
+          description: "SQD confirms the part development plan based on the part BOM and submits it for Gate1 task execution.",
           owner: "Wu Zhuoren",
           department: "PMO",
           functionName: "Program",
@@ -5534,15 +5311,17 @@
         bwPmKickoff: "gatePko",
         bwArApproval: "gate1",
         bwToolingKickoff: "gate2",
-        bwOts: "gate3",
-        bwPpap: "gate4",
-        bwSop: "gate5",
+        bwProtype: "gate3",
+        bwOts: "gate4",
+        bwPpap: "gate5",
+        bwSop: "gate6",
         gatePko: "bwPmKickoff",
         gate1: "bwArApproval",
         gate2: "bwToolingKickoff",
-        gate3: "bwOts",
-        gate4: "bwPpap",
-        gate5: "bwSop"
+        gate3: "bwProtype",
+        gate4: "bwOts",
+        gate5: "bwPpap",
+        gate6: "bwSop"
       };
       const source = getPlanInput(sourceField);
       const target = getPlanInput(syncMap[sourceField]);
@@ -5559,12 +5338,12 @@
       const errors = [];
       const values = Object.fromEntries(planInputs.map((input) => [input.dataset.planField, input.value]));
       const limitNames = {
-        customerQuoteDue: "客户 Quote Due",
-        customerNomination: "客户 Nomination",
-        customerProtype: "客户 Protype",
-        customerOts: "客户 OTS",
-        customerPpap: "客户 PPAP",
-        customerSop: "客户 SOP"
+        customerQuoteDue: "Gate1 基线",
+        customerNomination: "Gate2 基线",
+        customerProtype: "Gate3 基线",
+        customerOts: "Gate4 / OTS 基线",
+        customerPpap: "Gate5 / PPAP 基线",
+        customerSop: "Gate6 / SOP 基线"
       };
       const fieldNames = {
         bwPmKickoff: "PM Kick off",
@@ -5577,9 +5356,10 @@
         gatePko: "PKO",
         gate1: "Gate1",
         gate2: "Gate2",
-        gate3: "Gate3 / OTS",
-        gate4: "Gate4 / PPAP",
-        gate5: "Gate5 / SOP"
+        gate3: "Gate3",
+        gate4: "Gate4 / OTS",
+        gate5: "Gate5 / PPAP",
+        gate6: "Gate6 / SOP"
       };
 
       planInputs.forEach((input) => {
@@ -5596,11 +5376,11 @@
       });
 
       [
-        ["customerQuoteDue", "customerNomination", "客户 Quote Due 不能晚于客户 Nomination"],
-        ["customerNomination", "customerProtype", "客户 Nomination 不能晚于客户 Protype"],
-        ["customerProtype", "customerOts", "客户 Protype 不能晚于客户 OTS"],
-        ["customerOts", "customerPpap", "客户 OTS 不能晚于客户 PPAP"],
-        ["customerPpap", "customerSop", "客户 PPAP 不能晚于客户 SOP"],
+        ["customerQuoteDue", "customerNomination", "Gate1 基线不能晚于 Gate2 基线"],
+        ["customerNomination", "customerProtype", "Gate2 基线不能晚于 Gate3 基线"],
+        ["customerProtype", "customerOts", "Gate3 基线不能晚于 Gate4 / OTS 基线"],
+        ["customerOts", "customerPpap", "Gate4 / OTS 基线不能晚于 Gate5 / PPAP 基线"],
+        ["customerPpap", "customerSop", "Gate5 / PPAP 基线不能晚于 Gate6 / SOP 基线"],
         ["bwPmKickoff", "bwArApproval", "PM Kick off 不能晚于 AR Approval"],
         ["bwArApproval", "bwToolingKickoff", "AR Approval 不能晚于 Tooling kick off"],
         ["bwToolingKickoff", "bwProtype", "Tooling kick off 不能晚于 BW Protype"],
@@ -5611,7 +5391,8 @@
         ["gate1", "gate2", "Gate1 不能晚于 Gate2"],
         ["gate2", "gate3", "Gate2 不能晚于 Gate3"],
         ["gate3", "gate4", "Gate3 不能晚于 Gate4"],
-        ["gate4", "gate5", "Gate4 不能晚于 Gate5"]
+        ["gate4", "gate5", "Gate4 不能晚于 Gate5"],
+        ["gate5", "gate6", "Gate5 不能晚于 Gate6"]
       ].forEach(([start, end, message]) => {
         const startInput = getPlanInput(start);
         const endInput = getPlanInput(end);
@@ -5628,12 +5409,15 @@
       planAlert.textContent = uniqueErrors.length
         ? uniqueErrors.join("；")
         : showSaved
-          ? "项目计划已保存，BW 内部节点和 Gate 节点均满足客户时间要求。"
-          : "计划节点校验通过，BW 内部计划与 Gate 计划均未晚于客户要求节点。";
+          ? "零件开发计划已保存，节点均未晚于项目开始 Gate 计划基线。"
+          : "计划节点校验通过，零件开发计划节点均未晚于项目开始 Gate 计划基线。";
       return uniqueErrors.length === 0;
     }
 
     function refreshProgress() {
+      if (!taskCards.length || !progressText || !progressPercent || !progressBar) {
+        return;
+      }
       const done = taskCards.filter((card) => card.classList.contains("is-done")).length;
       const total = taskCards.length;
       const percent = Math.round((done / total) * 100);
@@ -6669,19 +6453,23 @@
     ];
 
     const bomState = {
-      stage: "PKO",
-      versionMajor: 0,
+      stage: "Gate1",
+      versionMajor: 1,
       versionMinor: 0,
-      status: "empty",
+      status: "locked",
       mode: "detail",
       editingRowId: null,
       scopedRootId: null,
       historyViewing: false,
       undoStack: [],
       histories: [],
-      rows: []
+      rows: [
+        { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", remark: "当前开发零件" },
+        { id: "phaser-insert-2", no: 2, level: 2, name: "INSERT BODY", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070001", drawingRev: "R1", sampleSapNo: "SAP-P-9001-01", massSapNo: "SAP-S-9001-01", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "6.2", weightAssembly: "6.2", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", remark: "注塑主体" },
+        { id: "phaser-insert-3", no: 3, level: 2, name: "WEAR PAD", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070002", drawingRev: "A", sampleSapNo: "SAP-P-9001-02", massSapNo: "SAP-S-9001-02", rawNo: "RM-PA46", rawMaterial: "PA46", weightPiece: "1.8", weightAssembly: "1.8", sharedPart: "否", borrowedProject: "-", releaseStatus: "评审中", rawSupplier: "Ningbo Polymer", subSupplier: "B-Supplier", remark: "摩擦片" },
+        { id: "phaser-insert-4", no: 4, level: 3, name: "STEEL PIN", application: "VCT", qty: "2", customerNo: "-", bwNo: "5070003", drawingRev: "A", sampleSapNo: "SAP-P-9001-03", massSapNo: "SAP-S-9001-03", rawNo: "RM-SUS304", rawMaterial: "SUS304", weightPiece: "0.35", weightAssembly: "0.7", sharedPart: "是", borrowedProject: "EA888 E5", releaseStatus: "已释放", rawSupplier: "Ningbo Steel", subSupplier: "C-Supplier", remark: "定位销" }
+      ]
     };
-    let apqpSequence = 1;
 
     const bomProductCatalog = [
       { key: "phaser", name: "Phaser", root: "VVT PHASER ASSY", seed: 6318, material: "Aluminum" },
@@ -6857,12 +6645,12 @@
       const keyword = document.querySelector("[data-bom-search]")?.value.trim() || "";
       const stage = document.querySelector("[data-bom-stage-filter]")?.value || "";
       const status = document.querySelector("[data-bom-status-filter]")?.value || "";
-      const l1Rows = bomState.rows.filter((row) => row.level === 1)
+      const l1Rows = bomState.rows
         .filter((row) => rowMatches(row, keyword, "", ""))
         .filter(() => !stage || bomState.stage === stage)
         .filter(() => !status || bomState.status === status);
 
-      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="21" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的L1 BOM" : "暂无BOM数据，请点击“创建BOM（AE）”后选择产品生成模拟数据"}</td></tr>`;
+      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="21" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的BOM信息" : "暂无该零件BOM数据"}</td></tr>`;
       document.querySelector("[data-bom-current-version]").textContent = currentVersion();
       document.querySelector("[data-bom-current-status]").textContent = statusText(bomState.status);
       document.querySelector("[data-bom-l1-count]").textContent = bomState.rows.filter((row) => row.level === 1).length;
@@ -6891,17 +6679,11 @@
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
       const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
       const readonly = selectable && (bomState.mode === "detail" || bomState.historyViewing);
-      const canCreateApqp = row.sharedPart === "否" && bomState.mode !== "create";
-      const apqpAction = !canCreateApqp
-        ? ""
-        : row.apqpCreated
-          ? `<span class="tag tag-green">APQP已创建</span>`
-          : `<button class="blue-link" type="button" data-create-apqp="${row.id}">创建APQP</button>`;
       const operation = readonly
-        ? `<span class="bom-op"><span>只读</span>${apqpAction}</span>`
+        ? `<span class="bom-op"><span>只读</span></span>`
         : selectable
-        ? `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button><button class="blue-link" type="button" data-remove-row="${row.id}">删除</button>${apqpAction}</span>`
-        : `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${row.id}">查看</button><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button>${apqpAction}</span>`;
+        ? `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button><button class="blue-link" type="button" data-remove-row="${row.id}">删除</button></span>`
+        : `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${row.id}">查看</button></span>`;
       const cells = [
         row.no, level, partName, row.application, row.qty, row.customerNo, row.bwNo, row.drawingRev,
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
@@ -6980,22 +6762,6 @@
       bomState.scopedRootId = null;
       bomState.undoStack = [];
       bomModal.hidden = true;
-      renderBomList();
-    }
-
-    function closeApqpResultModal() {
-      apqpResultModal.hidden = true;
-    }
-
-    function createApqp(rowId) {
-      const row = bomState.rows.find((item) => item.id === rowId);
-      if (!row) return;
-      row.apqpCreated = true;
-      row.apqpNo = row.apqpNo || `APQP-${String(apqpSequence).padStart(3, "0")}`;
-      apqpSequence += 1;
-      apqpResultMessage.textContent = `已基于 ${row.name} 创建总成 APQP，编号：${row.apqpNo}。`;
-      apqpResultModal.hidden = false;
-      renderBomEditor();
       renderBomList();
     }
 
@@ -7107,10 +6873,10 @@
       renderBomList();
     }
 
-    document.querySelector("[data-bom-create]").addEventListener("click", () => openWorkspace("create"));
-    document.querySelector("[data-bom-scm-edit]").addEventListener("click", () => openWorkspace("scm"));
-    document.querySelector("[data-bom-open-detail]").addEventListener("click", () => openWorkspace("detail"));
-    document.querySelector("[data-bom-view-detail]").addEventListener("click", () => openWorkspace("detail"));
+    document.querySelector("[data-bom-create]")?.addEventListener("click", () => openWorkspace("create"));
+    document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", () => openWorkspace("scm"));
+    document.querySelector("[data-bom-open-detail]")?.addEventListener("click", () => openWorkspace("detail"));
+    document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
     document.querySelector("[data-bom-submit]").addEventListener("click", submitBom);
     document.querySelector("[data-bom-submit-foot]").addEventListener("click", submitBom);
@@ -7157,29 +6923,15 @@
     });
     document.querySelector("[data-undo-delete]").addEventListener("click", undoDelete);
     document.querySelector("[data-bom-restore]").addEventListener("click", restoreBom);
-    document.querySelectorAll("[data-close-apqp-result]").forEach((button) => button.addEventListener("click", closeApqpResultModal));
-    apqpResultModal.addEventListener("click", (event) => {
-      if (event.target === apqpResultModal) {
-        closeApqpResultModal();
-      }
-    });
     bomEditBody.addEventListener("click", (event) => {
       const editButton = event.target.closest("[data-edit-row]");
       const removeButton = event.target.closest("[data-remove-row]");
-      const apqpButton = event.target.closest("[data-create-apqp]");
-      if (apqpButton) createApqp(apqpButton.dataset.createApqp);
       if (editButton) openPartModal(editButton.dataset.editRow);
       if (removeButton) removeRows([removeButton.dataset.removeRow]);
     });
     bomListBody.addEventListener("click", (event) => {
-      if (event.target.closest("[data-create-apqp]")) {
-        createApqp(event.target.closest("[data-create-apqp]").dataset.createApqp);
-      }
       if (event.target.closest("[data-detail-row]")) {
         openWorkspace("detail", event.target.closest("[data-detail-row]").dataset.detailRow);
-      }
-      if (event.target.closest("[data-edit-row]")) {
-        openWorkspace("scm", event.target.closest("[data-edit-row]").dataset.editRow);
       }
     });
 

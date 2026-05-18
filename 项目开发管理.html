@@ -1,0 +1,1544 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>项目开发管理</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --muted: #f3f6fa;
+      --line: #dfe5ec;
+      --line-strong: #cfd7e3;
+      --text: #252a34;
+      --secondary: #657083;
+      --tertiary: #a5adba;
+      --primary: #1769ff;
+      --primary-hover: #0f5be6;
+      --primary-weak: #eaf2ff;
+      --success: #17a657;
+      --warning: #ffd400;
+      --danger: #ff6762;
+      --shadow: 0 18px 44px rgba(16, 24, 40, .16);
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1280px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 30px 28px 34px;
+      background: var(--surface);
+      border-top: 1px solid #e7ebf2;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 26px;
+      padding: 0 4px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.2;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    h1 span {
+      margin-left: 10px;
+      font-weight: 500;
+    }
+
+    .filter-config {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 0;
+      background: transparent;
+      color: #666f7e;
+      font-size: 14px;
+      padding: 8px 0;
+    }
+
+    .filter-config .gear {
+      width: 16px;
+      height: 16px;
+      display: inline-grid;
+      place-items: center;
+      color: #737373;
+      font-size: 15px;
+    }
+
+    .filter-panel {
+      min-height: 88px;
+      display: grid;
+      grid-template-columns: minmax(270px, 1fr) minmax(270px, 1fr) minmax(270px, 1fr) minmax(270px, 1fr) auto auto;
+      gap: 18px 32px;
+      align-items: center;
+      padding: 26px 22px;
+      background: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .filter-item {
+      display: grid;
+      grid-template-columns: 82px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-item label {
+      text-align: right;
+      color: #4d5868;
+      white-space: nowrap;
+    }
+
+    .field,
+    .select,
+    .textarea {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: var(--text);
+      padding: 0 12px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    .field::placeholder,
+    .textarea::placeholder {
+      color: #b5bac2;
+    }
+
+    .field:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
+    .select {
+      appearance: none;
+      padding-right: 34px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #b8c0cc 50%),
+        linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
+      background-position:
+        calc(100% - 20px) 15px,
+        calc(100% - 14px) 15px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      color: #6a7484;
+    }
+
+    .btn {
+      height: 36px;
+      min-width: 88px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: #3f4857;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: .16s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 6px 16px rgba(23, 105, 255, .12);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      color: #fff;
+    }
+
+    .btn-soft {
+      color: var(--primary);
+      border-color: #b8d3ff;
+      background: #eef5ff;
+    }
+
+    .btn-plain {
+      min-width: 72px;
+      color: #555f6f;
+      background: #fff;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .add-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+    }
+
+    .add-icon::before,
+    .add-icon::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    .add-icon::before {
+      width: 14px;
+      height: 2px;
+      top: 6px;
+      left: 0;
+    }
+
+    .add-icon::after {
+      width: 2px;
+      height: 14px;
+      top: 0;
+      left: 6px;
+    }
+
+    .table-shell {
+      border: 1px solid var(--line);
+      background: #fff;
+      overflow: auto;
+      position: relative;
+    }
+
+    table {
+      width: 1960px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      height: 52px;
+      border-bottom: 1px solid #e6ebf1;
+      padding: 0 12px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #2e333c;
+    }
+
+    th {
+      height: 54px;
+      background: #f1f4f8;
+      color: #2b3038;
+      font-weight: 700;
+    }
+
+    tr:hover td {
+      background: #fafcff;
+    }
+
+    .checkbox-cell {
+      width: 42px;
+      text-align: center;
+    }
+
+    .sticky-left,
+    .sticky-right {
+      position: sticky;
+      z-index: 3;
+      background: #fff;
+    }
+
+    th.sticky-left,
+    th.sticky-right {
+      z-index: 5;
+      background: #f1f4f8;
+    }
+
+    .sticky-check {
+      left: 0;
+    }
+
+    .sticky-code {
+      left: 42px;
+    }
+
+    .sticky-project {
+      left: 192px;
+    }
+
+    .sticky-stage {
+      left: 372px;
+      box-shadow: 12px 0 22px -12px rgba(16, 24, 40, .72);
+    }
+
+    .sticky-operation {
+      right: 0;
+      text-align: center;
+    }
+
+    .sticky-status {
+      right: 90px;
+      box-shadow: -12px 0 22px -12px rgba(16, 24, 40, .72);
+    }
+
+    tr:hover .sticky-left,
+    tr:hover .sticky-right {
+      background: #fafcff;
+    }
+
+    thead tr:hover .sticky-left,
+    thead tr:hover .sticky-right {
+      background: #f1f4f8;
+    }
+
+    .check {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      vertical-align: middle;
+      accent-color: var(--primary);
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 500;
+    }
+
+    .dot {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: 0 0 auto;
+    }
+
+    .dot-yellow {
+      background: var(--warning);
+    }
+
+    .dot-green {
+      background: var(--success);
+    }
+
+    .status-yellow {
+      color: #f0b900;
+    }
+
+    .status-green {
+      color: #087a2e;
+    }
+
+    .status-blue {
+      color: #1769ff;
+    }
+
+    .status-orange {
+      color: #d97008;
+    }
+
+    .status-red {
+      color: #d92d20;
+    }
+
+    .status-gray {
+      color: #475467;
+    }
+
+    .dot-blue {
+      background: #1769ff;
+    }
+
+    .dot-orange {
+      background: #f79009;
+    }
+
+    .dot-red {
+      background: #f04438;
+    }
+
+    .dot-gray {
+      background: #98a2b3;
+    }
+
+    .dot-purple {
+      background: #7a5af8;
+    }
+
+    .status-purple {
+      color: #6941c6;
+    }
+
+    .link {
+      border: 0;
+      background: transparent;
+      color: #0066ff;
+      padding: 0;
+    }
+
+    .empty-row td {
+      height: 53px;
+      color: transparent;
+      background: #fff;
+    }
+
+    .pagination {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 12px;
+      margin-top: 104px;
+      background: #fbfbfc;
+    }
+
+    .total {
+      color: #5f6673;
+      font-size: 15px;
+    }
+
+    .pager {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #737b88;
+    }
+
+    .page-num,
+    .page-arrow {
+      min-width: 36px;
+      height: 36px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: #303642;
+    }
+
+    .page-num.active {
+      color: #fff;
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .page-arrow {
+      border-color: transparent;
+      background: transparent;
+      color: #a2a9b4;
+      font-size: 22px;
+    }
+
+    .page-arrow:last-child {
+      color: #1f2329;
+    }
+
+    .ellipsis {
+      min-width: 28px;
+      text-align: center;
+      color: #a0a7b3;
+    }
+
+    .drawer-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(16, 24, 40, .28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 100;
+      width: min(1180px, calc(100vw - 72px));
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--bg);
+      box-shadow: var(--shadow);
+      transform: translateX(104%);
+      transition: transform .26s ease;
+    }
+
+    body.drawer-open {
+      overflow: hidden;
+    }
+
+    body.drawer-open .drawer-mask {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.drawer-open .drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-head {
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .logo {
+      color: #0b1a33;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .drawer-close {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #8b93a1;
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .drawer-body {
+      padding: 20px 22px 100px;
+      overflow: auto;
+    }
+
+    .form-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      margin-bottom: 20px;
+      overflow: visible;
+      position: relative;
+    }
+
+    .form-section-title {
+      margin: 0 20px;
+      padding: 22px 0 14px;
+      border-bottom: 1px solid #edf0f4;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .form-section-title span {
+      margin-left: 6px;
+      font-weight: 700;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      gap: 28px 24px;
+      padding: 26px 20px 28px;
+    }
+
+    .form-grid.two {
+      grid-template-columns: repeat(2, minmax(240px, 1fr)) 1fr 1fr;
+    }
+
+    .form-grid.three {
+      grid-template-columns: repeat(3, minmax(220px, 1fr)) 1fr;
+    }
+
+    .form-field {
+      min-width: 0;
+    }
+
+    .form-field.wide {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      display: block;
+      min-height: 24px;
+      margin-bottom: 8px;
+      color: #141820;
+      font-weight: 500;
+    }
+
+    .form-field label .en {
+      margin-left: 4px;
+      color: #3c4452;
+      font-weight: 500;
+    }
+
+    .required::after {
+      content: " *";
+      color: #ff4d4f;
+      font-weight: 700;
+    }
+
+    .drawer .field,
+    .drawer .select {
+      height: 36px;
+      border-radius: 4px;
+      border-color: #d9dee7;
+      color: #333945;
+    }
+
+    .multi-select {
+      position: relative;
+      z-index: 8;
+    }
+
+    .multi-trigger {
+      width: 100%;
+      min-height: 36px;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 4px 10px 4px 12px;
+      color: #333945;
+      text-align: left;
+    }
+
+    .multi-trigger::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-right: 1px solid #a5adba;
+      border-bottom: 1px solid #a5adba;
+      transform: rotate(45deg) translateY(-2px);
+      flex: 0 0 auto;
+    }
+
+    .multi-placeholder {
+      color: #b5bac2;
+    }
+
+    .multi-values {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .multi-tag {
+      max-width: 126px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 4px;
+      background: var(--primary-weak);
+      color: #175cd3;
+      padding: 0 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .multi-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      z-index: 80;
+      display: none;
+      max-height: 236px;
+      overflow: auto;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(16, 24, 40, .14);
+      padding: 8px;
+    }
+
+    .multi-select.open .multi-menu {
+      display: grid;
+      gap: 4px;
+    }
+
+    .multi-option {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      color: #2f3745;
+    }
+
+    .multi-option:hover {
+      background: #f5f8ff;
+    }
+
+    .multi-option input {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      accent-color: var(--primary);
+    }
+
+    .readonly-value {
+      min-height: 36px;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #f8fafc;
+      display: flex;
+      align-items: center;
+      padding: 4px 12px;
+      color: #333945;
+    }
+
+    .date-field {
+      position: relative;
+    }
+
+    .date-field .field {
+      padding-left: 40px;
+    }
+
+    .date-field::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 10px;
+      width: 14px;
+      height: 14px;
+      border: 1px solid #b8c0cc;
+      border-radius: 2px;
+    }
+
+    .date-field::after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 14px;
+      width: 10px;
+      height: 1px;
+      background: #b8c0cc;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      gap: 30px 36px;
+      padding: 26px 20px 30px;
+    }
+
+    .score-title {
+      margin-bottom: 16px;
+      color: #5c6678;
+      font-weight: 500;
+    }
+
+    .score-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #242a33;
+    }
+
+    .radio input {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      accent-color: var(--primary);
+    }
+
+    .color-block {
+      width: 12px;
+      height: 12px;
+      border-radius: 1px;
+      display: inline-block;
+    }
+
+    .red {
+      background: var(--danger);
+    }
+
+    .yellow {
+      background: #fff200;
+    }
+
+    .green {
+      background: #42d925;
+    }
+
+    .textarea {
+      height: 38px;
+      padding-top: 8px;
+      resize: vertical;
+      min-height: 38px;
+    }
+
+    .drawer-foot {
+      position: sticky;
+      bottom: 0;
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(10px);
+    }
+
+    .drawer-foot .btn {
+      min-width: 82px;
+      border-radius: 4px;
+    }
+
+    .drawer-foot .btn-primary {
+      min-width: 90px;
+    }
+
+    @media (max-width: 1400px) {
+      .filter-panel {
+        grid-template-columns: repeat(2, minmax(300px, 1fr)) auto auto;
+      }
+
+      .drawer {
+        width: min(1080px, calc(100vw - 48px));
+      }
+
+      .form-grid,
+      .score-grid {
+        grid-template-columns: repeat(3, minmax(190px, 1fr));
+      }
+
+      .form-grid.two,
+      .form-grid.three {
+        grid-template-columns: repeat(3, minmax(190px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-title">
+      <h1>项目开发管理 <span>Project Development Management</span></h1>
+      <button class="filter-config" type="button" aria-label="自定义筛选条件">
+        <span class="gear" aria-hidden="true">⚙</span>
+        自定义筛选条件
+      </button>
+    </header>
+
+    <section class="filter-panel" aria-label="项目筛选">
+      <div class="filter-item">
+        <label for="projectNo">项目编号</label>
+        <input class="field" id="projectNo" placeholder="请输入项目编号">
+      </div>
+      <div class="filter-item">
+        <label for="projectName">项目名称</label>
+        <input class="field" id="projectName" placeholder="请输入项目名称">
+      </div>
+      <div class="filter-item">
+        <label for="brand">客户品牌</label>
+        <input class="field" id="brand" placeholder="请输入客户品牌">
+      </div>
+      <div class="filter-item">
+        <label for="status">状态</label>
+        <select class="select" id="status">
+          <option>请选择状态</option>
+          <option>进行中</option>
+          <option>审批中</option>
+          <option>已拒绝</option>
+          <option>已通过</option>
+          <option>带条件通过</option>
+        </select>
+      </div>
+      <button class="btn btn-soft" type="button">查询</button>
+      <button class="btn btn-plain" type="button">重置</button>
+    </section>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="openDrawer" type="button">
+        <span class="add-icon" aria-hidden="true"></span>
+        新增项目
+      </button>
+    </div>
+
+    <section class="table-shell" aria-label="项目列表">
+      <table>
+        <thead>
+          <tr>
+            <th class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="全选"></th>
+            <th class="sticky-left sticky-code" style="width:150px;">项目编号</th>
+            <th class="sticky-left sticky-project" style="width:180px;">项目名称</th>
+            <th class="sticky-left sticky-stage" style="width:100px;">阶段</th>
+            <th style="width:130px;">销售责任单元</th>
+            <th style="width:140px;">客户</th>
+            <th style="width:130px;">产品类别</th>
+            <th style="width:130px;">产品族</th>
+            <th style="width:150px;">系统</th>
+            <th style="width:220px;">产品</th>
+            <th style="width:120px;">项目经理</th>
+            <th style="width:90px;">等级</th>
+            <th style="width:140px;">物流计划类型</th>
+            <th style="width:130px;">峰值订单量</th>
+            <th style="width:130px;">预计营收</th>
+            <th style="width:130px;">配套需求量</th>
+            <th style="width:120px;">定点季度</th>
+            <th style="width:130px;">定点日期</th>
+            <th style="width:120px;">SOP</th>
+            <th class="sticky-right sticky-status" style="width:110px;">状态</th>
+            <th class="sticky-right sticky-operation" style="width:90px;">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25001"></td>
+            <td class="sticky-left sticky-code">DMSNIN25001</td>
+            <td class="sticky-left sticky-project">EA888 E5 VCT</td>
+            <td class="sticky-left sticky-stage">CKO</td>
+            <td>NINGBO VT</td>
+            <td>Volkswagen</td>
+            <td>VT</td>
+            <td>VVT</td>
+            <td>VVT系统</td>
+            <td>Phaser, VFS</td>
+            <td>王浩</td>
+            <td>A</td>
+            <td>LRP+</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>2026 Q1</td>
+            <td>2024-01-13</td>
+            <td>2027-12</td>
+            <td class="sticky-right sticky-status">
+              <span class="status status-blue"><span class="dot dot-blue"></span>进行中</span>
+            </td>
+            <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
+          </tr>
+          <tr>
+            <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25002"></td>
+            <td class="sticky-left sticky-code">DMSNIN25002</td>
+            <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
+            <td class="sticky-left sticky-stage">PKO</td>
+            <td>NINGBO TD</td>
+            <td>Volkswagen</td>
+            <td>TD</td>
+            <td>Timing</td>
+            <td>TD</td>
+            <td>Chain, TSC, CC Guide</td>
+            <td>李敏</td>
+            <td>A</td>
+            <td>未预定</td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>2026 Q2</td>
+            <td>2024-01-13</td>
+            <td>2027-12</td>
+            <td class="sticky-right sticky-status">
+              <span class="status status-orange"><span class="dot dot-orange"></span>审批中</span>
+            </td>
+            <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+          <tr class="empty-row">
+            <td class="checkbox-cell sticky-left sticky-check">.</td>
+            <td class="sticky-left sticky-code">.</td>
+            <td class="sticky-left sticky-project">.</td>
+            <td class="sticky-left sticky-stage">.</td>
+            <td colspan="15">.</td>
+            <td class="sticky-right sticky-status">.</td>
+            <td class="sticky-right sticky-operation">.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <footer class="pagination">
+      <div class="total">共 658 项数据</div>
+      <nav class="pager" aria-label="分页">
+        <button class="page-arrow" type="button" aria-label="上一页">‹</button>
+        <button class="page-num" type="button">1</button>
+        <span class="ellipsis">...</span>
+        <button class="page-num" type="button">50</button>
+        <button class="page-num" type="button">51</button>
+        <button class="page-num active" type="button">52</button>
+        <button class="page-num" type="button">53</button>
+        <button class="page-num" type="button">54</button>
+        <span class="ellipsis">...</span>
+        <button class="page-num" type="button">90</button>
+        <button class="page-arrow" type="button" aria-label="下一页">›</button>
+      </nav>
+    </footer>
+  </main>
+
+  <div class="drawer-mask" id="drawerMask"></div>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <header class="drawer-head">
+      <div class="logo">BORGWARNER</div>
+      <button class="drawer-close" id="closeDrawer" type="button" aria-label="关闭">›</button>
+    </header>
+
+    <div class="drawer-body">
+      <section class="form-card">
+        <h2 class="form-section-title" id="drawerTitle">基本信息 <span>Basic Information</span></h2>
+        <div class="form-grid">
+          <div class="form-field">
+            <label class="required" for="sellingRu">销售责任单元<span class="en">Selling RU</span></label>
+            <input class="field" id="sellingRu" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label class="required" for="customerBrand">客户<span class="en">Customer Brand</span></label>
+            <select class="select" id="customerBrand">
+              <option>请选择</option>
+              <option>Volkswagen</option>
+              <option>BMW</option>
+              <option>Mercedes-Benz</option>
+              <option>Geely</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="required" for="program">项目<span class="en">Program</span></label>
+            <input class="field" id="program" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label class="required" for="productClass">产品类别<span class="en">Product Class</span></label>
+            <input class="field" id="productClass" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label class="required" for="productFamily">产品族<span class="en">Product Family</span></label>
+            <input class="field" id="productFamily" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label class="required" for="productMulti">产品<span class="en">Product</span></label>
+            <div class="multi-select" id="productMulti">
+              <button class="multi-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
+                <span class="multi-values"><span class="multi-placeholder">请选择产品</span></span>
+              </button>
+              <div class="multi-menu" role="listbox" aria-label="产品多选">
+                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="Phaser">Phaser</label>
+                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="VFS">VFS</label>
+                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="CB">CB</label>
+                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="OCV">OCV</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="Chain">Chain</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="TSC">TSC</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="Timing Tensioner">Timing Tensioner</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="OP tensioner">OP tensioner</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="Sprocket">Sprocket</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="CC Guide">CC Guide</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="Arm Guide">Arm Guide</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="PP(Chain内部子零件)">PP(Chain内部子零件)</label>
+                <label class="multi-option" data-system="TD"><input type="checkbox" value="Motor Chain">Motor Chain</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="systemValue">系统</label>
+            <div class="readonly-value" id="systemValue">-</div>
+          </div>
+          <div class="form-field">
+            <label class="required" for="projectManager">项目经理<span class="en">Project Manager</span></label>
+            <select class="select" id="projectManager">
+              <option>请选择项目经理</option>
+              <option>王浩</option>
+              <option>李敏</option>
+              <option>陈杰</option>
+              <option>赵琳</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="form-section-title">销售 &amp; 前瞻规划 <span>Business and Market Data</span></h2>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="peakVolume">峰值订单量 <span class="en">Peak Volume</span></label>
+            <input class="field" id="peakVolume" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label for="price">定价 <span class="en">Price（RMB：元）</span></label>
+            <input class="field" id="price" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label for="revenue">预计营收 <span class="en">Revenue（RMB：元）</span></label>
+            <input class="field" id="revenue" placeholder="请输入">
+          </div>
+          <div class="form-field">
+            <label for="applicationVolume">配套需求量 <span class="en">Application Volume</span></label>
+            <input class="field" id="applicationVolume" placeholder="请输入">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="form-section-title">采购与排程 <span>Procurement and Schedule</span></h2>
+        <div class="form-grid two">
+          <div class="form-field">
+            <label for="sourcingQuarter">定点季度 <span class="en">Sourcing Quarter</span></label>
+            <select class="select" id="sourcingQuarter">
+              <option>请选择</option>
+              <option>2026 Q1</option>
+              <option>2026 Q2</option>
+              <option>2026 Q3</option>
+              <option>2026 Q4</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="sourcingDate">定点日期 <span class="en">Sourcing Date</span></label>
+            <div class="date-field">
+              <input class="field" id="sourcingDate" placeholder="请选择日期">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="form-section-title">评价与分级 <span>Evaluation and Classification</span></h2>
+        <div class="form-grid three">
+          <div class="form-field">
+            <label for="sop">SOP</label>
+            <div class="date-field">
+              <input class="field" id="sop" placeholder="请选择日期">
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="rank">等级 <span class="en">Rank</span></label>
+            <select class="select" id="rank">
+              <option>请选择</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="lrpType">物流计划类型 <span class="en">LRP Type</span></label>
+            <select class="select" id="lrpType">
+              <option>请选择</option>
+              <option>Booked</option>
+              <option>未预定</option>
+              <option>LRP+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="score-grid">
+          <div class="score-item">
+            <div class="score-title">开发跟进评级 <span class="en">Pursuit Rating</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="pursuit"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="pursuit"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="pursuit"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">财务数据 <span class="en">Financials</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="financials"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="financials"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="financials"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">制造 <span class="en">MFG</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="mfg"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="mfg"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="mfg"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">价格及成本 <span class="en">Price &amp; Costs</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="cost"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="cost"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="cost"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">产品 <span class="en">Product</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="productScore"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="productScore"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="productScore"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">品质 <span class="en">Quality</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="quality"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="quality"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="quality"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">关联关系 <span class="en">Relationships</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="relationship"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="relationship"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="relationship"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">供应商 <span class="en">Suppliers</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="supplier"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="supplier"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="supplier"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+          <div class="score-item">
+            <div class="score-title">时间节点 <span class="en">Timing</span></div>
+            <div class="score-options">
+              <label class="radio"><input type="radio" name="timing"><span class="color-block red"></span>R</label>
+              <label class="radio"><input type="radio" name="timing"><span class="color-block yellow"></span>Y</label>
+              <label class="radio"><input type="radio" name="timing"><span class="color-block green"></span>G</label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="form-section-title">备注信息 <span>Remarks</span></h2>
+        <div class="form-grid">
+          <div class="form-field wide">
+            <label for="remarks">备注</label>
+            <textarea class="textarea" id="remarks" placeholder="请输入"></textarea>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="drawer-foot">
+      <button class="btn btn-plain" id="cancelDrawer" type="button">取消</button>
+      <button class="btn btn-plain" id="saveDraft" type="button">保存草稿</button>
+      <button class="btn btn-primary" id="confirmProject" type="button">确定</button>
+    </footer>
+  </aside>
+
+  <script>
+    const openDrawer = document.querySelector("#openDrawer");
+    const closeDrawer = document.querySelector("#closeDrawer");
+    const cancelDrawer = document.querySelector("#cancelDrawer");
+    const drawerMask = document.querySelector("#drawerMask");
+    const saveDraft = document.querySelector("#saveDraft");
+    const confirmProject = document.querySelector("#confirmProject");
+    const tableShell = document.querySelector(".table-shell");
+    const tableBody = document.querySelector(".table-shell tbody");
+    const systemValue = document.querySelector("#systemValue");
+    const productMulti = document.querySelector("#productMulti");
+    const productTrigger = productMulti.querySelector(".multi-trigger");
+    const productValues = productMulti.querySelector(".multi-values");
+    const productOptions = Array.from(productMulti.querySelectorAll(".multi-option"));
+    let projectSequence = 25003;
+
+    function setDrawer(open) {
+      document.body.classList.toggle("drawer-open", open);
+    }
+
+    function selectedValues(options) {
+      return options
+        .map((option) => option.querySelector("input"))
+        .filter((input) => input.checked)
+        .map((input) => input.value);
+    }
+
+    function renderMultiValues(container, values, placeholder) {
+      container.innerHTML = "";
+
+      if (!values.length) {
+        container.innerHTML = `<span class="multi-placeholder">${placeholder}</span>`;
+        return;
+      }
+
+      values.forEach((value) => {
+        const tag = document.createElement("span");
+        tag.className = "multi-tag";
+        tag.textContent = value;
+        container.appendChild(tag);
+      });
+    }
+
+    function renderProducts() {
+      const checked = selectedValues(productOptions);
+      renderMultiValues(productValues, checked, "请选择产品");
+      const systems = [...new Set(productOptions
+        .filter((option) => option.querySelector("input").checked)
+        .map((option) => option.dataset.system)
+        .filter(Boolean))];
+      systemValue.textContent = systems.length ? systems.join("、") : "-";
+    }
+
+    function toggleMulti(selectEl, triggerEl) {
+      const nextOpen = !selectEl.classList.contains("open");
+      document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
+        openSelect.classList.remove("open");
+        openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
+      });
+      selectEl.classList.toggle("open", nextOpen);
+      triggerEl.setAttribute("aria-expanded", String(nextOpen));
+    }
+
+    function fieldValue(selector, fallback = "-") {
+      const element = document.querySelector(selector);
+      const value = element ? element.value.trim() : "";
+      return value || fallback;
+    }
+
+    function selectValue(selector, fallback = "-") {
+      const element = document.querySelector(selector);
+      if (!element || element.selectedIndex <= 0) {
+        return fallback;
+      }
+      return element.value || element.options[element.selectedIndex].text || fallback;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function statusMarkup(status) {
+      const map = {
+        "草稿": ["status-gray", "dot-gray"],
+        "进行中": ["status-blue", "dot-blue"],
+        "审批中": ["status-orange", "dot-orange"],
+        "已拒绝": ["status-red", "dot-red"],
+        "已通过": ["status-green", "dot-green"],
+        "带条件通过": ["status-purple", "dot-purple"]
+      };
+      const [statusClass, dotClass] = map[status] || map["进行中"];
+      return `<span class="status ${statusClass}"><span class="dot ${dotClass}"></span>${status}</span>`;
+    }
+
+    function collectProject(status) {
+      const products = selectedValues(productOptions);
+      const systems = [...new Set(productOptions
+        .filter((option) => option.querySelector("input").checked)
+        .map((option) => option.dataset.system)
+        .filter(Boolean))];
+      return {
+        code: `DMSNIN${projectSequence++}`,
+        name: fieldValue("#program", "未命名项目"),
+        stage: status === "草稿" ? "草稿" : "CKO",
+        sellingRu: fieldValue("#sellingRu"),
+        customer: selectValue("#customerBrand"),
+        productClass: fieldValue("#productClass"),
+        productFamily: fieldValue("#productFamily"),
+        system: systems.length ? systems.join("、") : "-",
+        products: products.length ? products.join(", ") : "-",
+        pm: selectValue("#projectManager"),
+        rank: selectValue("#rank"),
+        lrpType: selectValue("#lrpType"),
+        peakVolume: fieldValue("#peakVolume"),
+        revenue: fieldValue("#revenue"),
+        applicationVolume: fieldValue("#applicationVolume"),
+        sourcingQuarter: selectValue("#sourcingQuarter"),
+        sourcingDate: fieldValue("#sourcingDate"),
+        sop: fieldValue("#sop"),
+        status
+      };
+    }
+
+    function createProjectRow(project) {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 ${escapeHtml(project.code)}"></td>
+        <td class="sticky-left sticky-code">${escapeHtml(project.code)}</td>
+        <td class="sticky-left sticky-project">${escapeHtml(project.name)}</td>
+        <td class="sticky-left sticky-stage">${escapeHtml(project.stage)}</td>
+        <td>${escapeHtml(project.sellingRu)}</td>
+        <td>${escapeHtml(project.customer)}</td>
+        <td>${escapeHtml(project.productClass)}</td>
+        <td>${escapeHtml(project.productFamily)}</td>
+        <td>${escapeHtml(project.system)}</td>
+        <td title="${escapeHtml(project.products)}">${escapeHtml(project.products)}</td>
+        <td>${escapeHtml(project.pm)}</td>
+        <td>${escapeHtml(project.rank)}</td>
+        <td>${escapeHtml(project.lrpType)}</td>
+        <td>${escapeHtml(project.peakVolume)}</td>
+        <td>${escapeHtml(project.revenue)}</td>
+        <td>${escapeHtml(project.applicationVolume)}</td>
+        <td>${escapeHtml(project.sourcingQuarter)}</td>
+        <td>${escapeHtml(project.sourcingDate)}</td>
+        <td>${escapeHtml(project.sop)}</td>
+        <td class="sticky-right sticky-status">${statusMarkup(project.status)}</td>
+        <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
+      `;
+      return row;
+    }
+
+    function resetProjectForm() {
+      document.querySelectorAll(".drawer input.field, .drawer textarea").forEach((element) => {
+        element.value = "";
+      });
+      document.querySelectorAll(".drawer select").forEach((element) => {
+        element.selectedIndex = 0;
+      });
+      document.querySelectorAll(".drawer input[type='radio'], .drawer input[type='checkbox']").forEach((element) => {
+        element.checked = false;
+      });
+      renderProducts();
+    }
+
+    function submitProject(status) {
+      const project = collectProject(status);
+      const firstDataRow = tableBody.querySelector("tr:not(.empty-row)");
+      tableBody.insertBefore(createProjectRow(project), firstDataRow || tableBody.firstChild);
+      tableShell.scrollLeft = 0;
+      resetProjectForm();
+      setDrawer(false);
+    }
+
+    openDrawer.addEventListener("click", () => setDrawer(true));
+    closeDrawer.addEventListener("click", () => setDrawer(false));
+    cancelDrawer.addEventListener("click", () => setDrawer(false));
+    drawerMask.addEventListener("click", () => setDrawer(false));
+    saveDraft.addEventListener("click", () => submitProject("草稿"));
+    confirmProject.addEventListener("click", () => submitProject("进行中"));
+    productTrigger.addEventListener("click", () => toggleMulti(productMulti, productTrigger));
+    productOptions.forEach((option) => {
+      option.querySelector("input").addEventListener("change", renderProducts);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".multi-select")) {
+        document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
+          openSelect.classList.remove("open");
+          openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
+        });
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setDrawer(false);
+        document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
+          openSelect.classList.remove("open");
+          openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
+        });
+      }
+    });
+
+    renderProducts();
+  </script>
+</body>
+</html>
