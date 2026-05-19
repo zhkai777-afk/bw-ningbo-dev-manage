@@ -195,6 +195,19 @@
       box-shadow: 0 4px 12px rgba(249, 115, 22, .20);
     }
 
+    .btn-outline-danger {
+      background: #fff;
+      border-color: #f04438;
+      color: #d92d20;
+    }
+
+    .btn-outline-danger:hover {
+      background: #fff5f5;
+      border-color: #d92d20;
+      color: #b42318;
+      box-shadow: 0 4px 12px rgba(240, 68, 56, .14);
+    }
+
     .btn-ghost {
       background: #fff;
       border-color: transparent;
@@ -506,41 +519,36 @@
       margin-bottom: 14px;
     }
 
+    .todo-panel .section-head {
+      align-items: center;
+    }
+
+    .todo-toggle {
+      min-width: 74px;
+      justify-content: center;
+    }
+
+    .todo-toggle .icon {
+      transition: transform .18s ease;
+    }
+
+    .todo-panel.is-collapsed {
+      padding-bottom: 18px;
+    }
+
+    .todo-panel.is-collapsed .section-head {
+      margin-bottom: 0;
+    }
+
+    .todo-panel.is-collapsed .todo-toggle .icon {
+      transform: rotate(180deg);
+    }
+
     .section-kicker {
       color: var(--primary);
       font-weight: 900;
       font-size: 13px;
       margin-bottom: 4px;
-    }
-
-    .progress-summary {
-      min-width: 220px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .progress-copy {
-      display: flex;
-      justify-content: space-between;
-      color: #667085;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .progress-bar {
-      height: 8px;
-      background: #edf2f8;
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .progress-bar span {
-      display: block;
-      height: 100%;
-      width: 33.333%;
-      background: linear-gradient(90deg, #17a667, #50c878);
-      border-radius: inherit;
-      transition: width .2s ease;
     }
 
     .task-list {
@@ -567,11 +575,6 @@
       box-shadow: 0 8px 18px rgba(23, 105, 255, .08);
     }
 
-    .task-card.is-done {
-      background: linear-gradient(0deg, rgba(232, 247, 239, .55), rgba(232, 247, 239, .55)), #fff;
-      border-color: #bfe8d2;
-    }
-
     .task-index {
       width: 28px;
       height: 28px;
@@ -581,11 +584,6 @@
       display: grid;
       place-items: center;
       font-weight: 900;
-    }
-
-    .task-card.is-done .task-index {
-      background: var(--success);
-      color: #fff;
     }
 
     .task-main h4 {
@@ -637,61 +635,6 @@
     .tag-gray {
       background: var(--neutral-tag);
       color: #667085;
-    }
-
-    .task-status {
-      grid-column: 2;
-      justify-content: flex-end;
-      gap: 10px;
-      min-width: 126px;
-      padding-top: 2px;
-    }
-
-    .complete-action {
-      border: 0;
-      background: transparent;
-      color: var(--primary);
-      font-weight: 900;
-      cursor: pointer;
-      padding: 4px 0;
-    }
-
-    .check-arrow {
-      display: none;
-      align-items: center;
-      gap: 6px;
-      color: var(--success);
-      font-weight: 900;
-    }
-
-    .check-icon {
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: var(--success);
-      color: #fff;
-      display: grid;
-      place-items: center;
-      font-size: 14px;
-      line-height: 1;
-      box-shadow: 0 8px 16px rgba(23, 166, 103, .18);
-    }
-
-    .check-icon::after {
-      content: "";
-      width: 11px;
-      height: 6px;
-      border-left: 2px solid #fff;
-      border-bottom: 2px solid #fff;
-      transform: rotate(-45deg) translate(1px, -1px);
-    }
-
-    .task-card.is-done .complete-action {
-      display: none;
-    }
-
-    .task-card.is-done .check-arrow {
-      display: inline-flex;
     }
 
     .toolbar {
@@ -2411,6 +2354,119 @@
       vertical-align: middle;
     }
 
+    .development-page,
+    .plan-page,
+    .requirement-panel,
+    .issue-page,
+    .quality-page,
+    .team-page,
+    .library-page {
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .development-page .bom-top,
+    .plan-page .bom-top,
+    .requirement-panel .bom-top,
+    .issue-head.bom-top,
+    .quality-head.bom-top,
+    .team-head.bom-top,
+    .library-head.bom-top {
+      min-height: 0;
+      margin-bottom: 16px;
+      padding-bottom: 0;
+      border-bottom: 0;
+      align-items: flex-start;
+    }
+
+    .issue-filter.bom-filter,
+    .quality-search.bom-filter,
+    .team-search.bom-filter,
+    .library-search.bom-filter {
+      width: 100%;
+      max-width: none;
+      min-height: 0;
+      margin: 0 0 14px;
+      padding: 12px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      background: #f3f6fb;
+      border: 1px solid var(--line);
+    }
+
+    .issue-filter.bom-filter label,
+    .quality-search.bom-filter label,
+    .team-search.bom-filter label,
+    .library-search.bom-filter label {
+      display: grid;
+      grid-template-columns: none;
+      gap: 5px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: normal;
+    }
+
+    .quality-search.bom-filter,
+    .team-search.bom-filter,
+    .library-search.bom-filter {
+      position: static;
+    }
+
+    .quality-search.bom-filter .icon,
+    .team-search.bom-filter .icon,
+    .library-search.bom-filter .icon {
+      display: none;
+    }
+
+    .issue-status-tabs,
+    .library-source-tabs {
+      margin: 0 0 14px;
+    }
+
+    .requirement-table-wrap,
+    .issue-table-wrap,
+    .quality-table-wrap,
+    .team-table-wrap,
+    .library-table-wrap {
+      margin-top: 0;
+    }
+
+    .requirement-table th,
+    .requirement-table td,
+    .issue-table th,
+    .issue-table td,
+    .quality-table th,
+    .quality-table td,
+    .team-table th,
+    .team-table td,
+    .library-table th,
+    .library-table td {
+      height: 50px;
+      padding: 0 18px;
+      color: #252a34;
+      font-weight: 650;
+    }
+
+    .requirement-table th,
+    .issue-table th,
+    .quality-table th,
+    .team-table th,
+    .library-table th {
+      background: #f5f7fa;
+      color: #344054;
+      font-weight: 900;
+    }
+
+    .quality-footer,
+    .team-footer,
+    .library-footer {
+      min-height: 64px;
+      padding: 14px 0 0;
+    }
+
     .member-modal {
       width: min(1168px, calc(100vw - 28px));
       max-height: calc(100vh - 18px);
@@ -3419,6 +3475,7 @@
     <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="M5 12h14"></path></symbol>
     <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="11" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></symbol>
     <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v5"></path><path d="M14 11v5"></path></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"></path></symbol>
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></symbol>
     <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path><circle cx="12" cy="12" r="3"></circle></symbol>
     <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12"></path><path d="m7 10 5 5 5-5"></path><path d="M5 21h14"></path></symbol>
@@ -3446,6 +3503,7 @@
           </div>
           <aside class="project-side">
             <div class="project-actions">
+              <button class="btn btn-outline-danger" type="button"><svg class="icon"><use href="#i-trash"></use></svg>删除项目</button>
               <button class="btn" type="button"><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
               <button class="btn btn-danger" type="button"><svg class="icon"><use href="#i-stop"></use></svg>终止项目</button>
             </div>
@@ -3478,61 +3536,45 @@
               <div class="section-kicker">PM 提醒</div>
               <h2 class="section-title">当前任务提醒</h2>
             </div>
-            <div class="progress-summary">
-              <div class="progress-copy"><span id="progressText">已完成 1/3</span><span id="progressPercent">33%</span></div>
-              <div class="progress-bar"><span id="progressBar"></span></div>
-            </div>
+            <button class="btn todo-toggle" type="button" id="toggleTodoPanel" aria-expanded="true" aria-controls="todoTaskList">
+              <svg class="icon"><use href="#i-chevron"></use></svg><span data-todo-toggle-text>收起</span>
+            </button>
           </div>
 
-          <div class="task-list">
-            <article class="task-card is-done" data-task>
+          <div class="task-list" id="todoTaskList">
+            <article class="task-card">
               <div class="task-index">1</div>
               <div class="task-main">
                 <h4>录入项目计划关键时间节点</h4>
                 <p>通过“项目计划”录入客户要求的时间节点，并补充 BW 内部时间节点及项目整体时间节点，保证后续 Gate 计划可追踪。</p>
                 <div class="task-meta">
                   <span class="tag tag-blue">项目计划</span>
-                  <span class="tag tag-green">已完成</span>
                   <span class="tag tag-gray">PM负责</span>
                 </div>
               </div>
-              <div class="task-status">
-                <button class="complete-action" type="button">标记完成</button>
-                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
-              </div>
             </article>
 
-            <article class="task-card" data-task>
+            <article class="task-card">
               <div class="task-index">2</div>
               <div class="task-main">
                 <h4>配置 Gate1 至 Gate6 任务负责人</h4>
                 <p>点击“任务管理”，为 Gate1 至 Gate6 配置任务负责人及完成时间节点；未指定负责人时，任务表格保持醒目待办状态。</p>
                 <div class="task-meta">
                   <span class="tag tag-blue">任务管理</span>
-                  <span class="tag tag-orange">待完成</span>
                   <span class="tag tag-gray">跨部门协同</span>
                 </div>
               </div>
-              <div class="task-status">
-                <button class="complete-action" type="button">标记完成</button>
-                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
-              </div>
             </article>
 
-            <article class="task-card" data-task>
+            <article class="task-card">
               <div class="task-index">3</div>
               <div class="task-main">
                 <h4>完成 PKO 阶段任务闭环</h4>
-                <p>完成前两项后，在 PKO 任务下将对应任务点击完成；系统同步更新阶段完成度，并以绿色对号箭头展示已完成结果。</p>
+                <p>完成前两项后，在 PKO 任务下完成对应节点；系统将同步推进阶段任务闭环。</p>
                 <div class="task-meta">
                   <span class="tag tag-blue">PKO任务</span>
-                  <span class="tag tag-orange">待完成</span>
                   <span class="tag tag-gray">阶段闭环</span>
                 </div>
-              </div>
-              <div class="task-status">
-                <button class="complete-action" type="button">标记完成</button>
-                <span class="check-arrow"><span class="check-icon"></span>已完成</span>
               </div>
             </article>
           </div>
@@ -3554,57 +3596,72 @@
       </section>
 
       <div class="tab-panel active" data-tab-panel="development">
-        <section class="stage-carousel" aria-label="项目阶段">
-          <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
-          <div class="stage-strip" data-stage-strip>
-            <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="销售发起开发项目并完成默认 CKO 任务，提交后项目进入 PKO 阶段。">
-              <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
-              <div class="stage-meta"><span>Sales</span><b>Zack</b></div>
-              <div class="stage-meta"><span>时间</span><b>2025-05-12 ~ 2025-10-12</b></div>
-            </button>
-            <button class="stage-card active" type="button" data-stage-id="PKO" data-stage-note="作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。">
-              <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
-              <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate2" data-stage-note="PM 分配 Gate2 阶段任务，各职能部门按计划推进并反馈完成情况，待评审通过后进入下一 Gate。">
-              <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate3" data-stage-note="Gate3 聚焦阶段任务闭环和跨职能问题清理，确保开发活动满足进入后续样件或节点验证的条件。">
-              <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate4" data-stage-note="Gate4 对应 BW 内部 OTS 节点，团队确认样件、质量、供应和工程任务达到 OTS 准入要求。">
-              <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate5" data-stage-note="Gate5 对应 BW 内部 PPAP 节点，围绕 PPAP 准备、供应商质量和量产验证进行门径审批。">
-              <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="Gate6" data-stage-note="Gate6 对应 BW 内部 SOP 节点，PM 组织完成 SOP 前最终评审，确认所有 Gate 任务闭环。">
-              <div class="stage-title">Gate6 <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
-            <button class="stage-card" type="button" data-stage-id="HandOver" data-stage-note="PM 完成交接信息登记，沉淀项目资料、关键问题和最终交付包，完成项目开发交接闭环。">
-              <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
-              <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-              <div class="stage-meta"><span>时间</span><b>-</b></div>
-            </button>
+        <section class="bom-panel development-page">
+          <div class="bom-top">
+            <div>
+              <div class="section-kicker">Development Task</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目开发任务</h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-ghost" type="button" id="auditRecordButton">审核记录</button>
+              <button class="btn btn-primary" type="button" id="manageStageTask">任务管理</button>
+              <button class="btn btn-primary" type="button" id="submitStageTask">提交</button>
+            </div>
           </div>
-          <button class="stage-nav" type="button" data-stage-scroll="next" aria-label="向右滑动阶段">›</button>
-        </section>
+
+          <section class="stage-carousel" aria-label="项目阶段">
+            <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
+            <div class="stage-strip" data-stage-strip>
+              <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="销售发起开发项目并完成默认 CKO 任务，提交后项目进入 PKO 阶段。">
+                <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
+                <div class="stage-meta"><span>Sales</span><b>Zack</b></div>
+                <div class="stage-meta"><span>时间</span><b>2025-05-12 ~ 2025-10-12</b></div>
+              </button>
+              <button class="stage-card active" type="button" data-stage-id="PKO" data-stage-note="作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。">
+                <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
+                <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="Gate2" data-stage-note="PM 分配 Gate2 阶段任务，各职能部门按计划推进并反馈完成情况，待评审通过后进入下一 Gate。">
+                <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="Gate3" data-stage-note="Gate3 聚焦阶段任务闭环和跨职能问题清理，确保开发活动满足进入后续样件或节点验证的条件。">
+                <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="Gate4" data-stage-note="Gate4 对应 BW 内部 OTS 节点，团队确认样件、质量、供应和工程任务达到 OTS 准入要求。">
+                <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="Gate5" data-stage-note="Gate5 对应 BW 内部 PPAP 节点，围绕 PPAP 准备、供应商质量和量产验证进行门径审批。">
+                <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="Gate6" data-stage-note="Gate6 对应 BW 内部 SOP 节点，PM 组织完成 SOP 前最终评审，确认所有 Gate 任务闭环。">
+                <div class="stage-title">Gate6 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="HandOver" data-stage-note="PM 完成交接信息登记，沉淀项目资料、关键问题和最终交付包，完成项目开发交接闭环。">
+                <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
+                <div class="stage-meta"><span>时间</span><b>-</b></div>
+              </button>
+            </div>
+            <button class="stage-nav" type="button" data-stage-scroll="next" aria-label="向右滑动阶段">›</button>
+          </section>
 
       <section class="stage-note">
         <h3>阶段说明</h3>
@@ -3620,9 +3677,6 @@
           <button class="filter" type="button">已完成 (1)</button>
         </div>
         <div class="project-actions">
-          <button class="btn btn-ghost" type="button" id="auditRecordButton">审核记录</button>
-          <button class="btn btn-primary" type="button" id="manageStageTask">任务管理</button>
-          <button class="btn btn-primary" type="button" id="submitStageTask">提交</button>
           <select class="review-status-select" id="gateReviewStatus" hidden aria-label="模拟审核状态">
             <option value="reviewing">审核中</option>
             <option value="conditional">带条件通过</option>
@@ -3632,6 +3686,7 @@
       </div>
 
       <div id="stageTaskTables"></div>
+        </section>
       </div>
 
       <div class="tab-panel" data-tab-panel="bom" hidden>
@@ -3710,12 +3765,19 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="requirements" hidden>
-        <section class="requirement-panel">
-          <div class="section-head">
-            <h2 class="requirement-title"><span class="plan-mark">PLAN</span>客户要求</h2>
-            <button class="btn btn-primary" type="button" id="openRequirementModal">✥ 添加客户需求</button>
+        <section class="bom-panel requirement-panel">
+          <div class="bom-top">
+            <div>
+              <div class="section-kicker">Customer Requirement</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">客户要求</h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-primary" type="button" id="openRequirementModal"><svg class="icon"><use href="#i-plus"></use></svg>添加客户需求</button>
+            </div>
           </div>
-          <div class="requirement-table-wrap">
+          <div class="bom-table-wrap requirement-table-wrap">
             <table class="requirement-table" aria-label="客户要求列表">
               <colgroup>
                 <col style="width:58%">
@@ -3757,13 +3819,15 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="plan" hidden>
-        <section class="plan-page">
-          <div class="section-head">
+        <section class="bom-panel plan-page">
+          <div class="bom-top">
             <div>
               <div class="section-kicker">Project Plan</div>
-              <h2 class="section-title">项目计划</h2>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目计划</h2>
+              </div>
             </div>
-            <div class="plan-actions">
+            <div class="bom-actions plan-actions">
               <button class="btn" type="button" id="resetPlan">恢复默认</button>
               <button class="btn btn-primary" type="button" id="savePlan">保存计划</button>
             </div>
@@ -3876,10 +3940,15 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="issues" hidden>
-        <section class="issue-page">
-          <header class="issue-head">
-            <h2 class="issue-title"><span class="plan-mark">PLAN</span>问题清单</h2>
-            <div class="issue-actions">
+        <section class="bom-panel issue-page">
+          <header class="bom-top issue-head">
+            <div>
+              <div class="section-kicker">Issue List</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">问题清单</h2>
+              </div>
+            </div>
+            <div class="bom-actions issue-actions">
               <button class="btn" type="button">批量导入</button>
               <button class="btn" type="button"><svg class="icon"><use href="#i-download"></use></svg>导出</button>
               <button class="btn btn-primary" type="button" id="openIssueModal"><svg class="icon"><use href="#i-plus"></use></svg>添加问题</button>
@@ -3892,12 +3961,12 @@
             <button type="button" data-issue-status="done">已解决</button>
           </div>
 
-          <form class="issue-filter" id="issueFilter">
+          <form class="bom-filter issue-filter" id="issueFilter">
             <label>问题标题
-              <input class="issue-input" id="issueSearchTitle" type="search" placeholder="输入问题描述">
+              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题描述">
             </label>
             <label>问题类型
-              <select class="issue-select" id="issueTypeFilter">
+              <select class="select-field issue-select" id="issueTypeFilter">
                 <option value="">请选择问题类型</option>
                 <option>尺寸精度</option>
                 <option>精度</option>
@@ -3905,7 +3974,7 @@
               </select>
             </label>
             <label>严重程度
-              <select class="issue-select" id="issueSeverityFilter">
+              <select class="select-field issue-select" id="issueSeverityFilter">
                 <option value="">请选择严重程度</option>
                 <option>高</option>
                 <option>中</option>
@@ -3918,7 +3987,7 @@
             </div>
           </form>
 
-          <div class="issue-table-wrap">
+          <div class="bom-table-wrap issue-table-wrap">
             <table class="issue-table" aria-label="问题清单列表">
               <colgroup>
                 <col style="width:28%">
@@ -3985,17 +4054,25 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="quality" hidden>
-        <section class="quality-page">
-          <header class="quality-head">
-            <h2 class="quality-title">质量问题管控--8D（3）</h2>
+        <section class="bom-panel quality-page">
+          <header class="bom-top quality-head">
+            <div>
+              <div class="section-kicker">Quality 8D</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">质量问题管控--8D（3）</h2>
+              </div>
+            </div>
           </header>
 
-          <form class="quality-search" id="qualitySearchForm" role="search">
-            <input id="qualitySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="质量问题关键字查询">
-            <svg class="icon"><use href="#i-search"></use></svg>
+          <form class="bom-filter quality-search" id="qualitySearchForm" role="search">
+            <label>关键信息
+              <input class="field" id="qualitySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="质量问题关键字查询">
+            </label>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn" type="reset">重置</button>
           </form>
 
-          <div class="quality-table-wrap">
+          <div class="bom-table-wrap quality-table-wrap">
             <table class="quality-table" aria-label="质量问题8D列表">
               <colgroup>
                 <col style="width: 170px">
@@ -4114,18 +4191,28 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="team" hidden>
-        <section class="team-page">
-          <header class="team-head">
-            <h2 class="team-title">项目团队成员 <span class="team-count" id="teamMemberCount">(3)</span></h2>
-            <button class="btn btn-primary" type="button" id="openMemberModal"><svg class="icon"><use href="#i-plus"></use></svg>添加成员</button>
+        <section class="bom-panel team-page">
+          <header class="bom-top team-head">
+            <div>
+              <div class="section-kicker">Project Team</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目团队成员 <span class="team-count" id="teamMemberCount">(3)</span></h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-primary" type="button" id="openMemberModal"><svg class="icon"><use href="#i-plus"></use></svg>添加成员</button>
+            </div>
           </header>
 
-          <form class="team-search" id="teamSearchForm" role="search">
-            <input id="teamSearchInput" type="search" placeholder="可输入成员姓名关键字进行查询" aria-label="团队成员姓名查询">
-            <svg class="icon"><use href="#i-search"></use></svg>
+          <form class="bom-filter team-search" id="teamSearchForm" role="search">
+            <label>关键信息
+              <input class="field" id="teamSearchInput" type="search" placeholder="可输入成员姓名关键字进行查询" aria-label="团队成员姓名查询">
+            </label>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn" type="reset">重置</button>
           </form>
 
-          <div class="team-table-wrap">
+          <div class="bom-table-wrap team-table-wrap">
             <table class="team-table" aria-label="项目团队成员列表">
               <colgroup>
                 <col style="width:16%">
@@ -4173,15 +4260,25 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="library" hidden>
-        <section class="library-page">
-          <header class="library-head">
-            <h2 class="library-title">项目资料库</h2>
-            <button class="btn btn-primary" type="button" id="libraryUploadButton"><svg class="icon"><use href="#i-upload"></use></svg>上传附件</button>
+        <section class="bom-panel library-page">
+          <header class="bom-top library-head">
+            <div>
+              <div class="section-kicker">Document Library</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目资料库</h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-primary" type="button" id="libraryUploadButton"><svg class="icon"><use href="#i-upload"></use></svg>上传附件</button>
+            </div>
           </header>
 
-          <form class="library-search" id="librarySearchForm" role="search">
-            <input id="librarySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="资料库关键字查询">
-            <svg class="icon"><use href="#i-search"></use></svg>
+          <form class="bom-filter library-search" id="librarySearchForm" role="search">
+            <label>关键信息
+              <input class="field" id="librarySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="资料库关键字查询">
+            </label>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn" type="reset">重置</button>
           </form>
 
           <div class="library-source-tabs" aria-label="资料来源筛选">
@@ -4190,7 +4287,7 @@
             <button type="button" data-library-source="manual">手动上传资料</button>
           </div>
 
-          <div class="library-table-wrap">
+          <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
                 <col style="width: 27%">
@@ -4353,10 +4450,6 @@
               <span data-bom-work-role>当前角色：AE</span>
             </div>
           </div>
-          <div class="bom-actions">
-            <button class="btn" type="button" data-bom-view-detail><svg class="icon"><use href="#i-eye"></use></svg>详情</button>
-            <button class="btn btn-primary" type="button" data-bom-submit>确认提交</button>
-          </div>
         </div>
 
         <section class="form-section" data-bom-create-options>
@@ -4426,13 +4519,6 @@
         </div>
 
         <div class="bom-tools">
-          <div class="bom-actions">
-            <button class="btn" type="button" data-open-part-modal><svg class="icon"><use href="#i-plus"></use></svg>添加BOM项</button>
-            <button class="btn" type="button" data-copy-selected><svg class="icon"><use href="#i-copy"></use></svg>复制BOM项</button>
-            <button class="btn" type="button" data-delete-selected><svg class="icon"><use href="#i-trash"></use></svg>删除BOM项</button>
-            <button class="btn" type="button" data-undo-delete>撤销删除</button>
-            <button class="btn" type="button" data-bom-restore>整体重置</button>
-          </div>
           <div class="bom-version-line">
             <span data-bom-display-mode>显示：完整层级</span>
             <span data-bom-row-count>0项</span>
@@ -4456,7 +4542,6 @@
       </div>
       <footer class="bom-modal-foot">
         <button class="btn" type="button" data-close-bom-modal>关闭</button>
-        <button class="btn btn-primary" type="button" data-bom-submit-foot>确认提交</button>
       </footer>
     </section>
   </div>
@@ -4825,16 +4910,12 @@
   </div>
 
   <script>
-    const taskCards = Array.from(document.querySelectorAll("[data-task]"));
     const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
     const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
     const stageStrip = document.querySelector("[data-stage-strip]");
     const stageCards = Array.from(document.querySelectorAll(".stage-card"));
     const stageScrollButtons = Array.from(document.querySelectorAll("[data-stage-scroll]"));
     const stageNote = document.querySelector(".stage-note p");
-    const progressText = document.getElementById("progressText");
-    const progressPercent = document.getElementById("progressPercent");
-    const progressBar = document.getElementById("progressBar");
     const requirementModal = document.getElementById("requirementModal");
     const openRequirementModal = document.getElementById("openRequirementModal");
     const requirementForm = document.getElementById("requirementForm");
@@ -4903,6 +4984,10 @@
     const savePlanButton = document.getElementById("savePlan");
     const resetPlanButton = document.getElementById("resetPlan");
     const defaultPlan = Object.fromEntries(planInputs.map((input) => [input.dataset.planField, input.value]));
+    const toggleTodoPanel = document.getElementById("toggleTodoPanel");
+    const todoTaskList = document.getElementById("todoTaskList");
+    const todoPanel = toggleTodoPanel?.closest(".todo-panel");
+    const todoToggleText = toggleTodoPanel?.querySelector("[data-todo-toggle-text]");
     const stageTaskTables = document.getElementById("stageTaskTables");
     const manageStageTask = document.getElementById("manageStageTask");
     const submitStageTask = document.getElementById("submitStageTask");
@@ -5633,29 +5718,6 @@
       return uniqueErrors.length === 0;
     }
 
-    function refreshProgress() {
-      const done = taskCards.filter((card) => card.classList.contains("is-done")).length;
-      const total = taskCards.length;
-      const percent = Math.round((done / total) * 100);
-      progressText.textContent = `已完成 ${done}/${total}`;
-      progressPercent.textContent = `${percent}%`;
-      progressBar.style.width = `${percent}%`;
-    }
-
-    taskCards.forEach((card) => {
-      const button = card.querySelector(".complete-action");
-      button.addEventListener("click", () => {
-        card.classList.add("is-done");
-        const pendingTag = Array.from(card.querySelectorAll(".tag")).find((tag) => tag.textContent.trim() === "待完成");
-        if (pendingTag) {
-          pendingTag.textContent = "已完成";
-          pendingTag.classList.remove("tag-orange");
-          pendingTag.classList.add("tag-green");
-        }
-        refreshProgress();
-      });
-    });
-
     tabs.forEach((tab) => {
       tab.addEventListener("click", () => {
         const target = tab.dataset.tabTarget;
@@ -5763,6 +5825,17 @@
 
     if (auditRecordButton) {
       auditRecordButton.addEventListener("click", openAuditRecordModal);
+    }
+
+    if (toggleTodoPanel && todoTaskList && todoPanel) {
+      toggleTodoPanel.addEventListener("click", () => {
+        const isExpanded = toggleTodoPanel.getAttribute("aria-expanded") === "true";
+        const nextExpanded = !isExpanded;
+        toggleTodoPanel.setAttribute("aria-expanded", String(nextExpanded));
+        if (todoToggleText) todoToggleText.textContent = nextExpanded ? "收起" : "展开";
+        todoTaskList.hidden = !nextExpanded;
+        todoPanel.classList.toggle("is-collapsed", !nextExpanded);
+      });
     }
 
     if (auditRecordModal) {
@@ -6947,15 +7020,18 @@
       document.querySelector("[data-bom-work-kicker]").textContent = historyItem ? "历史版本" : isCreate ? "AE 创建" : isScm ? "SCM 编辑" : "BOM详情";
       document.querySelector("[data-bom-work-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : isCreate ? "创建BOM" : isScm ? "编辑BOM" : "BOM详情";
       document.querySelector("[data-bom-work-role]").textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate ? "AE" : isScm ? "SCM" : "PM / 查看"}`;
-      document.querySelector("[data-bom-submit]").hidden = isDetail || Boolean(historyItem);
-      document.querySelector("[data-bom-submit-foot]").hidden = isDetail || Boolean(historyItem);
+      const headerSubmitButton = document.querySelector("[data-bom-submit]");
+      const footerSubmitButton = document.querySelector("[data-bom-submit-foot]");
+      const detailButton = document.querySelector("[data-bom-view-detail]");
+      if (headerSubmitButton) headerSubmitButton.hidden = isDetail || Boolean(historyItem);
+      if (footerSubmitButton) footerSubmitButton.hidden = isDetail || Boolean(historyItem);
       document.querySelector("[data-bom-create-options]").hidden = !isCreate || Boolean(historyItem);
-      document.querySelector("[data-bom-view-detail]").hidden = isDetail;
-      document.querySelector("[data-open-part-modal]").disabled = isDetail || Boolean(historyItem);
-      document.querySelector("[data-copy-selected]").disabled = isDetail || Boolean(historyItem);
-      document.querySelector("[data-delete-selected]").disabled = isDetail || Boolean(historyItem);
-      document.querySelector("[data-undo-delete]").disabled = isDetail || Boolean(historyItem) || !bomState.undoStack.length;
-      document.querySelector("[data-bom-restore]").disabled = isDetail || Boolean(historyItem) || !bomState.undoStack.length;
+      if (detailButton) detailButton.hidden = isDetail;
+      document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
+      document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
+      document.querySelector("[data-delete-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
       bomModal.hidden = false;
       renderBomEditor();
     }
@@ -7078,8 +7154,8 @@
       bomState.rows = bomState.rows.filter((row) => !removeIds.has(row.id));
       if (bomState.scopedRootId && removeIds.has(bomState.scopedRootId)) bomState.scopedRootId = null;
       renumberRows();
-      document.querySelector("[data-undo-delete]").disabled = false;
-      document.querySelector("[data-bom-restore]").disabled = false;
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", false);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", false);
       renderBomEditor();
       renderBomList();
     }
@@ -7089,8 +7165,8 @@
       if (!previous) return;
       bomState.rows = cloneRows(previous);
       renumberRows();
-      document.querySelector("[data-undo-delete]").disabled = !bomState.undoStack.length;
-      document.querySelector("[data-bom-restore]").disabled = !bomState.undoStack.length;
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", !bomState.undoStack.length);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", !bomState.undoStack.length);
       renderBomEditor();
       renderBomList();
     }
@@ -7101,8 +7177,8 @@
       bomState.undoStack = [];
       bomState.scopedRootId = null;
       renumberRows();
-      document.querySelector("[data-undo-delete]").disabled = true;
-      document.querySelector("[data-bom-restore]").disabled = true;
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", true);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", true);
       renderBomEditor();
       renderBomList();
     }
@@ -7110,10 +7186,10 @@
     document.querySelector("[data-bom-create]").addEventListener("click", () => openWorkspace("create"));
     document.querySelector("[data-bom-scm-edit]").addEventListener("click", () => openWorkspace("scm"));
     document.querySelector("[data-bom-open-detail]").addEventListener("click", () => openWorkspace("detail"));
-    document.querySelector("[data-bom-view-detail]").addEventListener("click", () => openWorkspace("detail"));
+    document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
-    document.querySelector("[data-bom-submit]").addEventListener("click", submitBom);
-    document.querySelector("[data-bom-submit-foot]").addEventListener("click", submitBom);
+    document.querySelector("[data-bom-submit]")?.addEventListener("click", submitBom);
+    document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
     document.querySelectorAll("[data-bom-product-picker] input").forEach((input) => input.addEventListener("change", () => {
@@ -7140,10 +7216,10 @@
       document.querySelector("[data-row-customer]").value = "";
       renderBomEditor();
     });
-    document.querySelector("[data-open-part-modal]").addEventListener("click", () => openPartModal());
+    document.querySelector("[data-open-part-modal]")?.addEventListener("click", () => openPartModal());
     document.querySelectorAll("[data-close-part-modal]").forEach((button) => button.addEventListener("click", closePartModal));
     document.querySelector("[data-add-part-confirm]").addEventListener("click", savePart);
-    document.querySelector("[data-copy-selected]").addEventListener("click", () => {
+    document.querySelector("[data-copy-selected]")?.addEventListener("click", () => {
       const checked = Array.from(document.querySelectorAll("[data-row-check]:checked")).map((input) => input.dataset.rowCheck);
       const copies = bomState.rows.filter((row) => checked.includes(row.id)).map((row) => ({ ...row, id: `p${Date.now()}-${row.id}`, no: bomState.rows.length + 1, name: `${row.name} COPY` }));
       bomState.rows.push(...copies);
@@ -7151,12 +7227,12 @@
       renderBomEditor();
       renderBomList();
     });
-    document.querySelector("[data-delete-selected]").addEventListener("click", () => {
+    document.querySelector("[data-delete-selected]")?.addEventListener("click", () => {
       const checked = Array.from(document.querySelectorAll("[data-row-check]:checked")).map((input) => input.dataset.rowCheck);
       removeRows(checked);
     });
-    document.querySelector("[data-undo-delete]").addEventListener("click", undoDelete);
-    document.querySelector("[data-bom-restore]").addEventListener("click", restoreBom);
+    document.querySelector("[data-undo-delete]")?.addEventListener("click", undoDelete);
+    document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     document.querySelectorAll("[data-close-apqp-result]").forEach((button) => button.addEventListener("click", closeApqpResultModal));
     apqpResultModal.addEventListener("click", (event) => {
       if (event.target === apqpResultModal) {

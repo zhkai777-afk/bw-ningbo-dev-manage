@@ -2411,6 +2411,115 @@
       vertical-align: middle;
     }
 
+    .requirement-panel,
+    .issue-page,
+    .quality-page,
+    .team-page,
+    .library-page {
+      padding: 18px;
+      background: #fff;
+      border: 1px solid var(--line);
+    }
+
+    .requirement-panel .bom-top,
+    .issue-head.bom-top,
+    .quality-head.bom-top,
+    .team-head.bom-top,
+    .library-head.bom-top {
+      min-height: 0;
+      margin-bottom: 16px;
+      padding-bottom: 0;
+      border-bottom: 0;
+      align-items: flex-start;
+    }
+
+    .issue-filter.bom-filter,
+    .quality-search.bom-filter,
+    .team-search.bom-filter,
+    .library-search.bom-filter {
+      width: 100%;
+      max-width: none;
+      min-height: 0;
+      margin: 0 0 14px;
+      padding: 12px;
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      background: #f3f6fb;
+      border: 1px solid var(--line);
+    }
+
+    .issue-filter.bom-filter label,
+    .quality-search.bom-filter label,
+    .team-search.bom-filter label,
+    .library-search.bom-filter label {
+      display: grid;
+      grid-template-columns: none;
+      gap: 5px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: normal;
+    }
+
+    .quality-search.bom-filter,
+    .team-search.bom-filter,
+    .library-search.bom-filter {
+      position: static;
+    }
+
+    .quality-search.bom-filter .icon,
+    .team-search.bom-filter .icon,
+    .library-search.bom-filter .icon {
+      display: none;
+    }
+
+    .issue-status-tabs,
+    .library-source-tabs {
+      margin: 0 0 14px;
+    }
+
+    .requirement-table-wrap,
+    .issue-table-wrap,
+    .quality-table-wrap,
+    .team-table-wrap,
+    .library-table-wrap {
+      margin-top: 0;
+    }
+
+    .requirement-table th,
+    .requirement-table td,
+    .issue-table th,
+    .issue-table td,
+    .quality-table th,
+    .quality-table td,
+    .team-table th,
+    .team-table td,
+    .library-table th,
+    .library-table td {
+      height: 50px;
+      padding: 0 18px;
+      color: #252a34;
+      font-weight: 650;
+    }
+
+    .requirement-table th,
+    .issue-table th,
+    .quality-table th,
+    .team-table th,
+    .library-table th {
+      background: #f5f7fa;
+      color: #344054;
+      font-weight: 900;
+    }
+
+    .quality-footer,
+    .team-footer,
+    .library-footer {
+      min-height: 64px;
+      padding: 14px 0 0;
+    }
+
     .member-modal {
       width: min(1168px, calc(100vw - 28px));
       max-height: calc(100vh - 18px);
@@ -3623,12 +3732,19 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="requirements" hidden>
-        <section class="requirement-panel">
-          <div class="section-head">
-            <h2 class="requirement-title"><span class="plan-mark">PLAN</span>客户要求</h2>
-            <button class="btn btn-primary" type="button" id="openRequirementModal">✥ 添加客户需求</button>
+        <section class="bom-panel requirement-panel">
+          <div class="bom-top">
+            <div>
+              <div class="section-kicker">Customer Requirement</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">客户要求</h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-primary" type="button" id="openRequirementModal"><svg class="icon"><use href="#i-plus"></use></svg>添加客户需求</button>
+            </div>
           </div>
-          <div class="requirement-table-wrap">
+          <div class="bom-table-wrap requirement-table-wrap">
             <table class="requirement-table" aria-label="客户要求列表">
               <colgroup>
                 <col style="width:58%">
@@ -3670,10 +3786,15 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="issues" hidden>
-        <section class="issue-page">
-          <header class="issue-head">
-            <h2 class="issue-title"><span class="plan-mark">PLAN</span>问题清单</h2>
-            <div class="issue-actions">
+        <section class="bom-panel issue-page">
+          <header class="bom-top issue-head">
+            <div>
+              <div class="section-kicker">Issue List</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">问题清单</h2>
+              </div>
+            </div>
+            <div class="bom-actions issue-actions">
               <button class="btn" type="button">批量导入</button>
               <button class="btn" type="button"><svg class="icon"><use href="#i-download"></use></svg>导出</button>
               <button class="btn btn-primary" type="button" id="openIssueModal"><svg class="icon"><use href="#i-plus"></use></svg>添加问题</button>
@@ -3686,12 +3807,12 @@
             <button type="button" data-issue-status="done">已解决</button>
           </div>
 
-          <form class="issue-filter" id="issueFilter">
+          <form class="bom-filter issue-filter" id="issueFilter">
             <label>问题标题
-              <input class="issue-input" id="issueSearchTitle" type="search" placeholder="输入问题描述">
+              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题描述">
             </label>
             <label>问题类型
-              <select class="issue-select" id="issueTypeFilter">
+              <select class="select-field issue-select" id="issueTypeFilter">
                 <option value="">请选择问题类型</option>
                 <option>尺寸精度</option>
                 <option>精度</option>
@@ -3699,7 +3820,7 @@
               </select>
             </label>
             <label>严重程度
-              <select class="issue-select" id="issueSeverityFilter">
+              <select class="select-field issue-select" id="issueSeverityFilter">
                 <option value="">请选择严重程度</option>
                 <option>高</option>
                 <option>中</option>
@@ -3712,7 +3833,7 @@
             </div>
           </form>
 
-          <div class="issue-table-wrap">
+          <div class="bom-table-wrap issue-table-wrap">
             <table class="issue-table" aria-label="问题清单列表">
               <colgroup>
                 <col style="width:28%">
@@ -3779,17 +3900,25 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="quality" hidden>
-        <section class="quality-page">
-          <header class="quality-head">
-            <h2 class="quality-title">质量问题管控--8D（3）</h2>
+        <section class="bom-panel quality-page">
+          <header class="bom-top quality-head">
+            <div>
+              <div class="section-kicker">Quality 8D</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">质量问题管控--8D（3）</h2>
+              </div>
+            </div>
           </header>
 
-          <form class="quality-search" id="qualitySearchForm" role="search">
-            <input id="qualitySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="质量问题关键字查询">
-            <svg class="icon"><use href="#i-search"></use></svg>
+          <form class="bom-filter quality-search" id="qualitySearchForm" role="search">
+            <label>关键信息
+              <input class="field" id="qualitySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="质量问题关键字查询">
+            </label>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn" type="reset">重置</button>
           </form>
 
-          <div class="quality-table-wrap">
+          <div class="bom-table-wrap quality-table-wrap">
             <table class="quality-table" aria-label="质量问题8D列表">
               <colgroup>
                 <col style="width: 170px">
@@ -3908,18 +4037,28 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="team" hidden>
-        <section class="team-page">
-          <header class="team-head">
-            <h2 class="team-title">项目团队成员 <span class="team-count" id="teamMemberCount">(3)</span></h2>
-            <button class="btn btn-primary" type="button" id="openMemberModal"><svg class="icon"><use href="#i-plus"></use></svg>添加成员</button>
+        <section class="bom-panel team-page">
+          <header class="bom-top team-head">
+            <div>
+              <div class="section-kicker">Project Team</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目团队成员 <span class="team-count" id="teamMemberCount">(3)</span></h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-primary" type="button" id="openMemberModal"><svg class="icon"><use href="#i-plus"></use></svg>添加成员</button>
+            </div>
           </header>
 
-          <form class="team-search" id="teamSearchForm" role="search">
-            <input id="teamSearchInput" type="search" placeholder="可输入成员姓名关键字进行查询" aria-label="团队成员姓名查询">
-            <svg class="icon"><use href="#i-search"></use></svg>
+          <form class="bom-filter team-search" id="teamSearchForm" role="search">
+            <label>关键信息
+              <input class="field" id="teamSearchInput" type="search" placeholder="可输入成员姓名关键字进行查询" aria-label="团队成员姓名查询">
+            </label>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn" type="reset">重置</button>
           </form>
 
-          <div class="team-table-wrap">
+          <div class="bom-table-wrap team-table-wrap">
             <table class="team-table" aria-label="项目团队成员列表">
               <colgroup>
                 <col style="width:16%">
@@ -3967,15 +4106,25 @@
       </div>
 
       <div class="tab-panel" data-tab-panel="library" hidden>
-        <section class="library-page">
-          <header class="library-head">
-            <h2 class="library-title">项目资料库</h2>
-            <button class="btn btn-primary" type="button" id="libraryUploadButton"><svg class="icon"><use href="#i-upload"></use></svg>上传附件</button>
+        <section class="bom-panel library-page">
+          <header class="bom-top library-head">
+            <div>
+              <div class="section-kicker">Document Library</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目资料库</h2>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <button class="btn btn-primary" type="button" id="libraryUploadButton"><svg class="icon"><use href="#i-upload"></use></svg>上传附件</button>
+            </div>
           </header>
 
-          <form class="library-search" id="librarySearchForm" role="search">
-            <input id="librarySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="资料库关键字查询">
-            <svg class="icon"><use href="#i-search"></use></svg>
+          <form class="bom-filter library-search" id="librarySearchForm" role="search">
+            <label>关键信息
+              <input class="field" id="librarySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="资料库关键字查询">
+            </label>
+            <button class="btn btn-primary" type="submit">查询</button>
+            <button class="btn" type="reset">重置</button>
           </form>
 
           <div class="library-source-tabs" aria-label="资料来源筛选">
@@ -3984,7 +4133,7 @@
             <button type="button" data-library-source="manual">手动上传资料</button>
           </div>
 
-          <div class="library-table-wrap">
+          <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
                 <col style="width: 27%">
@@ -4147,10 +4296,6 @@
               <span data-bom-work-role>当前角色：AE</span>
             </div>
           </div>
-          <div class="bom-actions">
-            <button class="btn" type="button" data-bom-view-detail><svg class="icon"><use href="#i-eye"></use></svg>详情</button>
-            <button class="btn btn-primary" type="button" data-bom-submit>确认提交</button>
-          </div>
         </div>
 
         <section class="form-section" data-bom-create-options>
@@ -4220,13 +4365,6 @@
         </div>
 
         <div class="bom-tools">
-          <div class="bom-actions">
-            <button class="btn" type="button" data-open-part-modal><svg class="icon"><use href="#i-plus"></use></svg>添加BOM项</button>
-            <button class="btn" type="button" data-copy-selected><svg class="icon"><use href="#i-copy"></use></svg>复制BOM项</button>
-            <button class="btn" type="button" data-delete-selected><svg class="icon"><use href="#i-trash"></use></svg>删除BOM项</button>
-            <button class="btn" type="button" data-undo-delete>撤销删除</button>
-            <button class="btn" type="button" data-bom-restore>整体重置</button>
-          </div>
           <div class="bom-version-line">
             <span data-bom-display-mode>显示：完整层级</span>
             <span data-bom-row-count>0项</span>
@@ -4250,7 +4388,6 @@
       </div>
       <footer class="bom-modal-foot">
         <button class="btn" type="button" data-close-bom-modal>关闭</button>
-        <button class="btn btn-primary" type="button" data-bom-submit-foot>确认提交</button>
       </footer>
     </section>
   </div>
@@ -6729,15 +6866,18 @@
       document.querySelector("[data-bom-work-kicker]").textContent = historyItem ? "历史版本" : isCreate ? "AE 创建" : isScm ? "SCM 编辑" : "BOM详情";
       document.querySelector("[data-bom-work-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : isCreate ? "创建BOM" : isScm ? "编辑BOM" : "BOM详情";
       document.querySelector("[data-bom-work-role]").textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate ? "AE" : isScm ? "SCM" : "PM / 查看"}`;
-      document.querySelector("[data-bom-submit]").hidden = isDetail || Boolean(historyItem);
-      document.querySelector("[data-bom-submit-foot]").hidden = isDetail || Boolean(historyItem);
+      const headerSubmitButton = document.querySelector("[data-bom-submit]");
+      const footerSubmitButton = document.querySelector("[data-bom-submit-foot]");
+      const detailButton = document.querySelector("[data-bom-view-detail]");
+      if (headerSubmitButton) headerSubmitButton.hidden = isDetail || Boolean(historyItem);
+      if (footerSubmitButton) footerSubmitButton.hidden = isDetail || Boolean(historyItem);
       document.querySelector("[data-bom-create-options]").hidden = !isCreate || Boolean(historyItem);
-      document.querySelector("[data-bom-view-detail]").hidden = isDetail;
-      document.querySelector("[data-open-part-modal]").disabled = isDetail || Boolean(historyItem);
-      document.querySelector("[data-copy-selected]").disabled = isDetail || Boolean(historyItem);
-      document.querySelector("[data-delete-selected]").disabled = isDetail || Boolean(historyItem);
-      document.querySelector("[data-undo-delete]").disabled = isDetail || Boolean(historyItem) || !bomState.undoStack.length;
-      document.querySelector("[data-bom-restore]").disabled = isDetail || Boolean(historyItem) || !bomState.undoStack.length;
+      if (detailButton) detailButton.hidden = isDetail;
+      document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
+      document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
+      document.querySelector("[data-delete-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
       bomModal.hidden = false;
       renderBomEditor();
     }
@@ -6844,8 +6984,8 @@
       bomState.rows = bomState.rows.filter((row) => !removeIds.has(row.id));
       if (bomState.scopedRootId && removeIds.has(bomState.scopedRootId)) bomState.scopedRootId = null;
       renumberRows();
-      document.querySelector("[data-undo-delete]").disabled = false;
-      document.querySelector("[data-bom-restore]").disabled = false;
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", false);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", false);
       renderBomEditor();
       renderBomList();
     }
@@ -6855,8 +6995,8 @@
       if (!previous) return;
       bomState.rows = cloneRows(previous);
       renumberRows();
-      document.querySelector("[data-undo-delete]").disabled = !bomState.undoStack.length;
-      document.querySelector("[data-bom-restore]").disabled = !bomState.undoStack.length;
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", !bomState.undoStack.length);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", !bomState.undoStack.length);
       renderBomEditor();
       renderBomList();
     }
@@ -6867,8 +7007,8 @@
       bomState.undoStack = [];
       bomState.scopedRootId = null;
       renumberRows();
-      document.querySelector("[data-undo-delete]").disabled = true;
-      document.querySelector("[data-bom-restore]").disabled = true;
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", true);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", true);
       renderBomEditor();
       renderBomList();
     }
@@ -6878,8 +7018,8 @@
     document.querySelector("[data-bom-open-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
-    document.querySelector("[data-bom-submit]").addEventListener("click", submitBom);
-    document.querySelector("[data-bom-submit-foot]").addEventListener("click", submitBom);
+    document.querySelector("[data-bom-submit]")?.addEventListener("click", submitBom);
+    document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
     document.querySelectorAll("[data-bom-product-picker] input").forEach((input) => input.addEventListener("change", () => {
@@ -6906,10 +7046,10 @@
       document.querySelector("[data-row-customer]").value = "";
       renderBomEditor();
     });
-    document.querySelector("[data-open-part-modal]").addEventListener("click", () => openPartModal());
+    document.querySelector("[data-open-part-modal]")?.addEventListener("click", () => openPartModal());
     document.querySelectorAll("[data-close-part-modal]").forEach((button) => button.addEventListener("click", closePartModal));
     document.querySelector("[data-add-part-confirm]").addEventListener("click", savePart);
-    document.querySelector("[data-copy-selected]").addEventListener("click", () => {
+    document.querySelector("[data-copy-selected]")?.addEventListener("click", () => {
       const checked = Array.from(document.querySelectorAll("[data-row-check]:checked")).map((input) => input.dataset.rowCheck);
       const copies = bomState.rows.filter((row) => checked.includes(row.id)).map((row) => ({ ...row, id: `p${Date.now()}-${row.id}`, no: bomState.rows.length + 1, name: `${row.name} COPY` }));
       bomState.rows.push(...copies);
@@ -6917,12 +7057,12 @@
       renderBomEditor();
       renderBomList();
     });
-    document.querySelector("[data-delete-selected]").addEventListener("click", () => {
+    document.querySelector("[data-delete-selected]")?.addEventListener("click", () => {
       const checked = Array.from(document.querySelectorAll("[data-row-check]:checked")).map((input) => input.dataset.rowCheck);
       removeRows(checked);
     });
-    document.querySelector("[data-undo-delete]").addEventListener("click", undoDelete);
-    document.querySelector("[data-bom-restore]").addEventListener("click", restoreBom);
+    document.querySelector("[data-undo-delete]")?.addEventListener("click", undoDelete);
+    document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     bomEditBody.addEventListener("click", (event) => {
       const editButton = event.target.closest("[data-edit-row]");
       const removeButton = event.target.closest("[data-remove-row]");
