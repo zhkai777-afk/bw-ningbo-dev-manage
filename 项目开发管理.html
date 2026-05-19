@@ -309,11 +309,6 @@
       left: 192px;
     }
 
-    .sticky-stage {
-      left: 372px;
-      box-shadow: 12px 0 22px -12px rgba(16, 24, 40, .72);
-    }
-
     .sticky-operation {
       right: 0;
       text-align: center;
@@ -321,6 +316,10 @@
 
     .sticky-status {
       right: 90px;
+    }
+
+    .sticky-stage {
+      right: 200px;
       box-shadow: -12px 0 22px -12px rgba(16, 24, 40, .72);
     }
 
@@ -345,13 +344,13 @@
     .status {
       display: inline-flex;
       align-items: center;
-      gap: 9px;
+      gap: 7px;
       font-weight: 500;
     }
 
     .dot {
-      width: 17px;
-      height: 17px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       display: inline-block;
       flex: 0 0 auto;
@@ -411,6 +410,49 @@
 
     .status-purple {
       color: #6941c6;
+    }
+
+    .stage-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 58px;
+      height: 26px;
+      padding: 0 13px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      background: #fff;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .stage-gate1,
+    .stage-cko,
+    .stage-pko {
+      color: #f6a800;
+    }
+
+    .stage-gate2 {
+      color: #ff4d4f;
+    }
+
+    .stage-gate3 {
+      color: #9b51d0;
+    }
+
+    .stage-gate4 {
+      color: #1684d8;
+    }
+
+    .stage-gate5 {
+      color: #25c36a;
+    }
+
+    .stage-gate6,
+    .stage-draft {
+      color: #8aa0a8;
     }
 
     .link {
@@ -922,7 +964,6 @@
             <th class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="全选"></th>
             <th class="sticky-left sticky-code" style="width:150px;">项目编号</th>
             <th class="sticky-left sticky-project" style="width:180px;">项目名称</th>
-            <th class="sticky-left sticky-stage" style="width:100px;">阶段</th>
             <th style="width:130px;">销售责任单元</th>
             <th style="width:140px;">客户</th>
             <th style="width:130px;">产品类别</th>
@@ -938,6 +979,7 @@
             <th style="width:120px;">定点季度</th>
             <th style="width:130px;">定点日期</th>
             <th style="width:120px;">SOP</th>
+            <th class="sticky-right sticky-stage" style="width:100px;">阶段</th>
             <th class="sticky-right sticky-status" style="width:110px;">状态</th>
             <th class="sticky-right sticky-operation" style="width:90px;">操作</th>
           </tr>
@@ -947,7 +989,6 @@
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25001"></td>
             <td class="sticky-left sticky-code">DMSNIN25001</td>
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
-            <td class="sticky-left sticky-stage">CKO</td>
             <td>NINGBO VT</td>
             <td>Volkswagen</td>
             <td>VT</td>
@@ -963,6 +1004,7 @@
             <td>2026 Q1</td>
             <td>2024-01-13</td>
             <td>2027-12</td>
+            <td class="sticky-right sticky-stage"><span class="stage-pill stage-gate1">Gate1</span></td>
             <td class="sticky-right sticky-status">
               <span class="status status-blue"><span class="dot dot-blue"></span>进行中</span>
             </td>
@@ -972,7 +1014,6 @@
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25002"></td>
             <td class="sticky-left sticky-code">DMSNIN25002</td>
             <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
-            <td class="sticky-left sticky-stage">PKO</td>
             <td>NINGBO TD</td>
             <td>Volkswagen</td>
             <td>TD</td>
@@ -988,6 +1029,7 @@
             <td>2026 Q2</td>
             <td>2024-01-13</td>
             <td>2027-12</td>
+            <td class="sticky-right sticky-stage"><span class="stage-pill stage-gate2">Gate2</span></td>
             <td class="sticky-right sticky-status">
               <span class="status status-orange"><span class="dot dot-orange"></span>审批中</span>
             </td>
@@ -997,8 +1039,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1006,8 +1048,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1015,8 +1057,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1024,8 +1066,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1033,8 +1075,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1042,8 +1084,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1051,8 +1093,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1060,8 +1102,8 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td class="sticky-left sticky-stage">.</td>
             <td colspan="15">.</td>
+            <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1429,6 +1471,23 @@
       return `<span class="status ${statusClass}"><span class="dot ${dotClass}"></span>${status}</span>`;
     }
 
+    function stageMarkup(stage) {
+      const normalized = String(stage).trim();
+      const classMap = {
+        "草稿": "stage-draft",
+        "CKO": "stage-cko",
+        "PKO": "stage-pko",
+        "Gate1": "stage-gate1",
+        "Gate2": "stage-gate2",
+        "Gate3": "stage-gate3",
+        "Gate4": "stage-gate4",
+        "Gate5": "stage-gate5",
+        "Gate6": "stage-gate6"
+      };
+      const stageClass = classMap[normalized] || "stage-gate1";
+      return `<span class="stage-pill ${stageClass}">${escapeHtml(normalized)}</span>`;
+    }
+
     function collectProject(status) {
       const products = selectedValues(productOptions);
       const systems = [...new Set(productOptions
@@ -1464,7 +1523,6 @@
         <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 ${escapeHtml(project.code)}"></td>
         <td class="sticky-left sticky-code">${escapeHtml(project.code)}</td>
         <td class="sticky-left sticky-project">${escapeHtml(project.name)}</td>
-        <td class="sticky-left sticky-stage">${escapeHtml(project.stage)}</td>
         <td>${escapeHtml(project.sellingRu)}</td>
         <td>${escapeHtml(project.customer)}</td>
         <td>${escapeHtml(project.productClass)}</td>
@@ -1480,6 +1538,7 @@
         <td>${escapeHtml(project.sourcingQuarter)}</td>
         <td>${escapeHtml(project.sourcingDate)}</td>
         <td>${escapeHtml(project.sop)}</td>
+        <td class="sticky-right sticky-stage">${stageMarkup(project.stage)}</td>
         <td class="sticky-right sticky-status">${statusMarkup(project.status)}</td>
         <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
       `;
