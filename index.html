@@ -558,6 +558,10 @@
       margin-top: 12px;
     }
 
+    .task-list[hidden] {
+      display: none;
+    }
+
     .task-card {
       border: 1px solid var(--line);
       border-radius: var(--radius);
@@ -5834,6 +5838,7 @@
         toggleTodoPanel.setAttribute("aria-expanded", String(nextExpanded));
         if (todoToggleText) todoToggleText.textContent = nextExpanded ? "收起" : "展开";
         todoTaskList.hidden = !nextExpanded;
+        todoTaskList.style.display = nextExpanded ? "" : "none";
         todoPanel.classList.toggle("is-collapsed", !nextExpanded);
       });
     }

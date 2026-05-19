@@ -803,15 +803,31 @@
       color: #333945;
     }
 
-    .date-field {
+    .date-picker {
       position: relative;
     }
 
-    .date-field .field {
-      padding-left: 40px;
+    .date-trigger {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: #6a7484;
+      padding: 0 12px 0 40px;
+      text-align: left;
+      outline: none;
+      transition: .16s ease;
+      position: relative;
     }
 
-    .date-field::before {
+    .date-trigger:focus,
+    .date-picker.open .date-trigger {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
+    .date-trigger::before {
       content: "";
       position: absolute;
       left: 13px;
@@ -822,7 +838,7 @@
       border-radius: 2px;
     }
 
-    .date-field::after {
+    .date-trigger::after {
       content: "";
       position: absolute;
       left: 15px;
@@ -830,6 +846,62 @@
       width: 10px;
       height: 1px;
       background: #b8c0cc;
+    }
+
+    .date-trigger.has-value {
+      color: var(--text);
+    }
+
+    .date-menu {
+      display: none;
+      position: absolute;
+      z-index: 30;
+      top: calc(100% + 6px);
+      left: 0;
+      width: 100%;
+      min-width: 300px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 14px 30px rgba(16, 24, 40, .14);
+      padding: 12px;
+    }
+
+    .date-picker.open .date-menu {
+      display: block;
+    }
+
+    .date-controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+
+    .date-controls .select {
+      padding-left: 10px;
+    }
+
+    .date-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .date-action {
+      height: 30px;
+      min-width: 56px;
+      border: 1px solid var(--line-strong);
+      border-radius: 3px;
+      background: #fff;
+      color: #4d5868;
+      padding: 0 12px;
+    }
+
+    .date-action.primary {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
     }
 
     .score-grid {
@@ -1269,8 +1341,19 @@
           </div>
           <div class="form-field">
             <label for="sourcingDate">定点日期 <span class="en">Sourcing Date</span></label>
-            <div class="date-field">
-              <input class="field" id="sourcingDate" placeholder="请选择日期">
+            <div class="date-picker">
+              <button class="date-trigger" id="sourcingDate" type="button" data-placeholder="请选择日期" data-value="" aria-haspopup="dialog" aria-expanded="false">请选择日期</button>
+              <div class="date-menu" role="dialog" aria-label="选择定点日期">
+                <div class="date-controls">
+                  <select class="select date-year" aria-label="年份"></select>
+                  <select class="select date-month" aria-label="月份"></select>
+                  <select class="select date-day" aria-label="日期"></select>
+                </div>
+                <div class="date-actions">
+                  <button class="date-action date-clear" type="button">清空</button>
+                  <button class="date-action primary date-apply" type="button">确定</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1281,8 +1364,19 @@
         <div class="form-grid three">
           <div class="form-field">
             <label for="sop">SOP</label>
-            <div class="date-field">
-              <input class="field" id="sop" placeholder="请选择日期">
+            <div class="date-picker">
+              <button class="date-trigger" id="sop" type="button" data-placeholder="请选择日期" data-value="" aria-haspopup="dialog" aria-expanded="false">请选择日期</button>
+              <div class="date-menu" role="dialog" aria-label="选择 SOP 日期">
+                <div class="date-controls">
+                  <select class="select date-year" aria-label="年份"></select>
+                  <select class="select date-month" aria-label="月份"></select>
+                  <select class="select date-day" aria-label="日期"></select>
+                </div>
+                <div class="date-actions">
+                  <button class="date-action date-clear" type="button">清空</button>
+                  <button class="date-action primary date-apply" type="button">确定</button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-field">
@@ -1462,8 +1556,121 @@
       triggerEl.setAttribute("aria-expanded", String(nextOpen));
     }
 
+    function closeDatePickers() {
+      document.querySelectorAll(".date-picker.open").forEach((picker) => {
+        picker.classList.remove("open");
+        picker.querySelector(".date-trigger").setAttribute("aria-expanded", "false");
+      });
+    }
+
+    function dateParts(value) {
+      const today = new Date();
+      const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value || "");
+      return match
+        ? { year: Number(match[1]), month: Number(match[2]), day: Number(match[3]) }
+        : { year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate() };
+    }
+
+    function padDatePart(value) {
+      return String(value).padStart(2, "0");
+    }
+
+    function daysInMonth(year, month) {
+      return new Date(year, month, 0).getDate();
+    }
+
+    function setDateValue(picker, value) {
+      const trigger = picker.querySelector(".date-trigger");
+      trigger.dataset.value = value;
+      trigger.textContent = value || trigger.dataset.placeholder;
+      trigger.classList.toggle("has-value", Boolean(value));
+    }
+
+    function renderDateDays(picker, preferredDay) {
+      const year = Number(picker.querySelector(".date-year").value);
+      const month = Number(picker.querySelector(".date-month").value);
+      const daySelect = picker.querySelector(".date-day");
+      const maxDay = daysInMonth(year, month);
+      const selectedDay = Math.min(preferredDay || Number(daySelect.value) || 1, maxDay);
+      daySelect.innerHTML = "";
+
+      for (let day = 1; day <= maxDay; day += 1) {
+        const option = document.createElement("option");
+        option.value = String(day);
+        option.textContent = `${day}日`;
+        option.selected = day === selectedDay;
+        daySelect.appendChild(option);
+      }
+    }
+
+    function syncDateControls(picker) {
+      const trigger = picker.querySelector(".date-trigger");
+      const parts = dateParts(trigger.dataset.value);
+      picker.querySelector(".date-year").value = String(parts.year);
+      picker.querySelector(".date-month").value = String(parts.month);
+      renderDateDays(picker, parts.day);
+    }
+
+    function initDatePickers() {
+      const currentYear = new Date().getFullYear();
+      document.querySelectorAll(".date-picker").forEach((picker) => {
+        const trigger = picker.querySelector(".date-trigger");
+        const yearSelect = picker.querySelector(".date-year");
+        const monthSelect = picker.querySelector(".date-month");
+        const daySelect = picker.querySelector(".date-day");
+
+        for (let year = currentYear - 1; year <= currentYear + 8; year += 1) {
+          const option = document.createElement("option");
+          option.value = String(year);
+          option.textContent = `${year}年`;
+          yearSelect.appendChild(option);
+        }
+
+        for (let month = 1; month <= 12; month += 1) {
+          const option = document.createElement("option");
+          option.value = String(month);
+          option.textContent = `${month}月`;
+          monthSelect.appendChild(option);
+        }
+
+        syncDateControls(picker);
+
+        trigger.addEventListener("click", () => {
+          const shouldOpen = !picker.classList.contains("open");
+          closeDatePickers();
+          picker.classList.toggle("open", shouldOpen);
+          trigger.setAttribute("aria-expanded", String(shouldOpen));
+          if (shouldOpen) {
+            syncDateControls(picker);
+          }
+        });
+
+        yearSelect.addEventListener("change", () => renderDateDays(picker));
+        monthSelect.addEventListener("change", () => renderDateDays(picker));
+        daySelect.addEventListener("change", () => renderDateDays(picker));
+
+        picker.querySelector(".date-clear").addEventListener("click", () => {
+          setDateValue(picker, "");
+          closeDatePickers();
+        });
+
+        picker.querySelector(".date-apply").addEventListener("click", () => {
+          const value = [
+            yearSelect.value,
+            padDatePart(monthSelect.value),
+            padDatePart(daySelect.value)
+          ].join("-");
+          setDateValue(picker, value);
+          closeDatePickers();
+        });
+      });
+    }
+
     function fieldValue(selector, fallback = "-") {
       const element = document.querySelector(selector);
+      if (element && Object.prototype.hasOwnProperty.call(element.dataset, "value")) {
+        return element.dataset.value || fallback;
+      }
       const value = element ? element.value.trim() : "";
       return value || fallback;
     }
@@ -1582,6 +1789,10 @@
       document.querySelectorAll(".drawer input[type='radio'], .drawer input[type='checkbox']").forEach((element) => {
         element.checked = false;
       });
+      document.querySelectorAll(".drawer .date-picker").forEach((picker) => {
+        setDateValue(picker, "");
+        syncDateControls(picker);
+      });
       renderProducts();
     }
 
@@ -1612,6 +1823,9 @@
           openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
         });
       }
+      if (!event.target.closest(".date-picker")) {
+        closeDatePickers();
+      }
     });
 
     document.addEventListener("keydown", (event) => {
@@ -1621,9 +1835,11 @@
           openSelect.classList.remove("open");
           openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
         });
+        closeDatePickers();
       }
     });
 
+    initDatePickers();
     renderProducts();
   </script>
 </body>
