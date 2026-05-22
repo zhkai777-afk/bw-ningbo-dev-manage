@@ -985,6 +985,350 @@
       min-width: 90px;
     }
 
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 130;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, .42);
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal {
+      width: min(520px, calc(100vw - 48px));
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 22px 54px rgba(15, 23, 42, .24);
+    }
+
+    .modal-head {
+      min-height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h3 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      background: transparent;
+      color: #8b93a1;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 24px 24px 28px;
+      overflow: auto;
+    }
+
+    .create-success-copy {
+      margin: 0;
+      color: #344054;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .modal-foot {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 0 22px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .modal-foot .btn {
+      min-width: 92px;
+      justify-content: center;
+    }
+
+    .task-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+      color: #344054;
+      font-weight: 700;
+    }
+
+    .task-summary strong {
+      color: #1f2937;
+      font-size: 16px;
+    }
+
+    .task-drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 125;
+      display: flex;
+      justify-content: flex-end;
+      background: rgba(15, 23, 42, .38);
+    }
+
+    .task-drawer-backdrop[hidden] {
+      display: none;
+    }
+
+    .task-drawer {
+      width: min(1280px, calc(100vw - 40px));
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: #fff;
+      box-shadow: -20px 0 46px rgba(15, 23, 42, .22);
+    }
+
+    .task-drawer-body {
+      padding: 24px 24px 32px;
+      overflow: auto;
+      background: #f8fafc;
+    }
+
+    .task-drawer-foot {
+      min-height: 66px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 0 22px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .tag-blue {
+      background: var(--primary-weak);
+      color: var(--primary);
+    }
+
+    .tag-orange {
+      background: #fff4e5;
+      color: #b54708;
+    }
+
+    .tag-gray {
+      background: #f2f4f7;
+      color: #667085;
+    }
+
+    .cko-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .cko-task-table {
+      min-width: 1180px;
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .cko-task-table th,
+    .cko-task-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+      text-align: left;
+      vertical-align: top;
+      color: #344054;
+      line-height: 1.5;
+    }
+
+    .cko-task-table th {
+      height: 44px;
+      background: #f8fafc;
+      color: #1f2937;
+      font-weight: 800;
+    }
+
+    .cko-task-table tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .cko-task-table .fixed-op {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      border-left: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .cko-task-table th.fixed-op {
+      z-index: 3;
+      background: #f8fafc;
+    }
+
+    .cko-task-table .center {
+      text-align: center;
+    }
+
+    .complete-button,
+    .upload-button {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      padding: 0;
+      font-weight: 800;
+    }
+
+    .complete-button:disabled {
+      color: #98a2b3;
+      cursor: default;
+    }
+
+    .task-fill-modal {
+      width: min(960px, calc(100vw - 48px));
+      max-height: calc(100vh - 48px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 22px 54px rgba(15, 23, 42, .24);
+    }
+
+    .task-fill-body {
+      padding: 22px 28px 28px;
+      overflow-y: auto;
+    }
+
+    .task-fill-id {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: #344054;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .task-fill-title {
+      margin: 0 0 26px;
+      color: #2b2f36;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 500;
+    }
+
+    .task-fill-grid {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) 112px minmax(0, 1fr);
+      gap: 24px 22px;
+      align-items: start;
+      margin-bottom: 30px;
+    }
+
+    .task-fill-label {
+      color: #2f3540;
+      text-align: right;
+      line-height: 1.55;
+    }
+
+    .task-fill-value {
+      color: #252a34;
+      line-height: 1.55;
+    }
+
+    .task-fill-desc {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 22px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid var(--line-strong);
+      margin-bottom: 18px;
+    }
+
+    .task-fill-desc-lines {
+      display: grid;
+      gap: 8px;
+      color: #2f3540;
+      line-height: 1.55;
+    }
+
+    .task-upload-title,
+    .task-fill-note-title {
+      margin: 0 0 14px;
+      color: #252a34;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .task-upload-zone {
+      height: 150px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      color: #8b95a5;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .task-upload-zone button {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      font: inherit;
+      font-weight: 900;
+      padding: 0;
+    }
+
+    .task-upload-tip {
+      color: #8b95a5;
+      margin-bottom: 28px;
+    }
+
+    .task-fill-note {
+      width: 100%;
+      min-height: 108px;
+      resize: vertical;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      padding: 14px;
+      color: #252a34;
+      font: inherit;
+      outline: none;
+    }
+
+    .task-fill-note:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
     @media (max-width: 1400px) {
       .filter-panel {
         grid-template-columns: repeat(2, minmax(300px, 1fr)) auto auto;
@@ -1065,8 +1409,6 @@
             <th class="sticky-left sticky-project" style="width:180px;">项目名称</th>
             <th style="width:130px;">销售责任单元</th>
             <th style="width:140px;">客户</th>
-            <th style="width:130px;">产品类别</th>
-            <th style="width:130px;">产品族</th>
             <th style="width:150px;">系统</th>
             <th style="width:220px;">产品</th>
             <th style="width:120px;">项目经理</th>
@@ -1090,8 +1432,6 @@
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
             <td>NINGBO VT</td>
             <td>Volkswagen</td>
-            <td>VT</td>
-            <td>VVT</td>
             <td>VVT系统</td>
             <td>Phaser, VFS</td>
             <td>王浩</td>
@@ -1116,8 +1456,6 @@
             <td>NINGBO TD</td>
             <td>Volkswagen</td>
             <td>TD</td>
-            <td>Timing</td>
-            <td>TD</td>
             <td>Chain, TSC, CC Guide</td>
             <td>李敏</td>
             <td>A</td>
@@ -1138,7 +1476,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1147,7 +1485,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1156,7 +1494,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1165,7 +1503,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1174,7 +1512,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1183,7 +1521,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1192,7 +1530,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1201,7 +1539,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="15">.</td>
+            <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
@@ -1255,14 +1593,6 @@
           <div class="form-field">
             <label class="required" for="program">项目<span class="en">Program</span></label>
             <input class="field" id="program" placeholder="请输入">
-          </div>
-          <div class="form-field">
-            <label class="required" for="productClass">产品类别<span class="en">Product Class</span></label>
-            <input class="field" id="productClass" placeholder="请输入">
-          </div>
-          <div class="form-field">
-            <label class="required" for="productFamily">产品族<span class="en">Product Family</span></label>
-            <input class="field" id="productFamily" placeholder="请输入">
           </div>
           <div class="form-field">
             <label class="required" for="productMulti">产品<span class="en">Product</span></label>
@@ -1493,6 +1823,120 @@
     </footer>
   </aside>
 
+  <div class="modal-backdrop" id="createSuccessModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="createSuccessTitle">
+      <div class="modal-head">
+        <h3 id="createSuccessTitle">项目已创建</h3>
+        <button class="modal-close" type="button" data-close-create-success aria-label="关闭">×</button>
+      </div>
+      <div class="modal-body">
+        <p class="create-success-copy">
+          项目已经创建，是否需要填写 CKO 阶段任务？现在不填写，也可以在项目详情中查看并填写。
+        </p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-plain" type="button" id="fillCkoLater">稍后填写</button>
+        <button class="btn btn-primary" type="button" id="fillCkoNow">现在填写</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="task-drawer-backdrop" id="ckoTaskDrawer" hidden>
+    <section class="task-drawer" role="dialog" aria-modal="true" aria-labelledby="ckoTaskTitle">
+      <div class="modal-head">
+        <h3 id="ckoTaskTitle">CKO 阶段任务</h3>
+        <button class="modal-close" type="button" data-close-cko-task aria-label="关闭">×</button>
+      </div>
+      <div class="task-drawer-body">
+        <div class="task-summary">
+          <strong>项目开发任务</strong>
+          <span>参考 K-PAC 字段维护 CKO 默认任务，后续可在项目详情中继续更新。</span>
+        </div>
+        <div class="cko-table-wrap">
+          <table class="cko-task-table" aria-label="CKO阶段任务列表">
+            <colgroup>
+              <col style="width:56px">
+              <col style="width:92px">
+              <col style="width:230px">
+              <col style="width:360px">
+              <col style="width:92px">
+              <col style="width:100px">
+              <col style="width:104px">
+              <col style="width:150px">
+              <col style="width:160px">
+              <col style="width:96px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="center">编号</th>
+                <th>K-PAC ID</th>
+                <th>K-PAC Title</th>
+                <th>Description</th>
+                <th>负责人</th>
+                <th>负责部门</th>
+                <th>任务类型</th>
+                <th>起止时间</th>
+                <th>Document or Evidence</th>
+                <th class="fixed-op">操作</th>
+              </tr>
+            </thead>
+            <tbody id="ckoTaskBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="task-drawer-foot">
+        <button class="btn btn-plain" type="button" data-close-cko-task>关闭</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="taskFillModal" hidden>
+    <section class="task-fill-modal" role="dialog" aria-modal="true" aria-labelledby="taskFillTitle">
+      <div class="modal-head">
+        <h3>任务填报</h3>
+        <button class="modal-close" type="button" data-close-task-fill aria-label="关闭">×</button>
+      </div>
+      <form id="taskFillForm">
+        <div class="task-fill-body">
+          <div class="task-fill-id">
+            <span>K-PAC ID：<span id="taskFillKpac">GPM_GR-12</span></span>
+            <span class="tag tag-orange" id="taskFillType">关键任务</span>
+          </div>
+          <h2 class="task-fill-title" id="taskFillTitle">Customer Requirements (Volumes, Key dates, others)</h2>
+          <div class="task-fill-grid">
+            <div class="task-fill-label">Status Icons:</div>
+            <div class="task-fill-value">V2</div>
+            <div class="task-fill-label">Function:</div>
+            <div class="task-fill-value" id="taskFillFunction">Customer</div>
+            <div class="task-fill-label">Document or<br>Evidence:</div>
+            <div class="task-fill-value">Document or Evidence</div>
+            <div class="task-fill-label">Responsible:</div>
+            <div class="task-fill-value" id="taskFillResponsible">Sales</div>
+            <div class="task-fill-label">负责部门:</div>
+            <div class="task-fill-value" id="taskFillDepartment">Sales</div>
+            <div class="task-fill-label">起止时间:</div>
+            <div class="task-fill-value" id="taskFillDate">项目创建日 ~ CKO提交日</div>
+          </div>
+          <div class="task-fill-desc">
+            <div class="task-fill-label">Description:</div>
+            <div class="task-fill-desc-lines" id="taskFillDescription"></div>
+          </div>
+          <h4 class="task-upload-title"><span class="required"></span>Document or Evidence</h4>
+          <div class="task-upload-zone">
+            <div><button type="button">点击上传</button> / 拖拽到此区域</div>
+          </div>
+          <div class="task-upload-tip">支持扩展名：.doc .docx .pdf .xlsx .jpg...</div>
+          <h4 class="task-fill-note-title">说明</h4>
+          <textarea class="task-fill-note" id="taskFillNote" placeholder="请输入"></textarea>
+        </div>
+        <div class="modal-foot">
+          <button class="btn btn-plain" type="button" data-close-task-fill>取消</button>
+          <button class="btn btn-primary" type="submit">确定</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
   <script>
     const openDrawer = document.querySelector("#openDrawer");
     const closeDrawer = document.querySelector("#closeDrawer");
@@ -1500,6 +1944,22 @@
     const drawerMask = document.querySelector("#drawerMask");
     const saveDraft = document.querySelector("#saveDraft");
     const confirmProject = document.querySelector("#confirmProject");
+    const createSuccessModal = document.querySelector("#createSuccessModal");
+    const fillCkoNow = document.querySelector("#fillCkoNow");
+    const fillCkoLater = document.querySelector("#fillCkoLater");
+    const ckoTaskDrawer = document.querySelector("#ckoTaskDrawer");
+    const ckoTaskBody = document.querySelector("#ckoTaskBody");
+    const taskFillModal = document.querySelector("#taskFillModal");
+    const taskFillForm = document.querySelector("#taskFillForm");
+    const taskFillKpac = document.querySelector("#taskFillKpac");
+    const taskFillType = document.querySelector("#taskFillType");
+    const taskFillTitle = document.querySelector("#taskFillTitle");
+    const taskFillFunction = document.querySelector("#taskFillFunction");
+    const taskFillResponsible = document.querySelector("#taskFillResponsible");
+    const taskFillDepartment = document.querySelector("#taskFillDepartment");
+    const taskFillDate = document.querySelector("#taskFillDate");
+    const taskFillDescription = document.querySelector("#taskFillDescription");
+    const taskFillNote = document.querySelector("#taskFillNote");
     const tableShell = document.querySelector(".table-shell");
     const tableBody = document.querySelector(".table-shell tbody");
     const systemValue = document.querySelector("#systemValue");
@@ -1508,9 +1968,59 @@
     const productValues = productMulti.querySelector(".multi-values");
     const productOptions = Array.from(productMulti.querySelectorAll(".multi-option"));
     let projectSequence = 25003;
+    let latestCreatedProject = null;
+    let activeFillTaskId = "";
+    const ckoTasks = [
+      {
+        id: "cko-1",
+        no: 1,
+        kpac: "GPM_GR-12",
+        title: "Customer Requirements (Volumes, Key dates, others)",
+        description: "Gate 0 / CKO: Verify customer requirements and share them with internal team.",
+        owner: "Sales",
+        department: "Sales",
+        functionName: "Customer",
+        type: "关键任务",
+        typeClass: "tag-orange",
+        dateRange: "项目创建日 ~ CKO提交日",
+        status: "todo"
+      },
+      {
+        id: "cko-2",
+        no: 2,
+        kpac: "GPM_GR-14",
+        title: "RFQ / Gate0 / Quotation",
+        description: "Kick off internal RFQ and prepare quotation package before PKO.",
+        owner: "Sales",
+        department: "Sales",
+        functionName: "Customer",
+        type: "普通任务",
+        typeClass: "tag-gray",
+        dateRange: "项目创建日 ~ CKO提交日",
+        status: "todo"
+      },
+      {
+        id: "cko-3",
+        no: 3,
+        kpac: "GPM_PD-00",
+        title: "Create Development Project",
+        description: "Create new development project and complete CKO baseline information.",
+        owner: "Sales",
+        department: "Sales",
+        functionName: "Program",
+        type: "阶段任务",
+        typeClass: "tag-blue",
+        dateRange: "项目创建日 ~ CKO提交日",
+        status: "todo"
+      }
+    ];
 
     function setDrawer(open) {
       document.body.classList.toggle("drawer-open", open);
+    }
+
+    function setModal(modal, open) {
+      modal.hidden = !open;
     }
 
     function selectedValues(options) {
@@ -1734,8 +2244,6 @@
         stage: status === "草稿" ? "草稿" : "CKO",
         sellingRu: fieldValue("#sellingRu"),
         customer: selectValue("#customerBrand"),
-        productClass: fieldValue("#productClass"),
-        productFamily: fieldValue("#productFamily"),
         system: systems.length ? systems.join("、") : "-",
         products: products.length ? products.join(", ") : "-",
         pm: selectValue("#projectManager"),
@@ -1759,8 +2267,6 @@
         <td class="sticky-left sticky-project">${escapeHtml(project.name)}</td>
         <td>${escapeHtml(project.sellingRu)}</td>
         <td>${escapeHtml(project.customer)}</td>
-        <td>${escapeHtml(project.productClass)}</td>
-        <td>${escapeHtml(project.productFamily)}</td>
         <td>${escapeHtml(project.system)}</td>
         <td title="${escapeHtml(project.products)}">${escapeHtml(project.products)}</td>
         <td>${escapeHtml(project.pm)}</td>
@@ -1777,6 +2283,55 @@
         <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
       `;
       return row;
+    }
+
+    function renderCkoTasks() {
+      ckoTaskBody.innerHTML = ckoTasks.map((task) => `
+        <tr>
+          <td class="center">${task.no}</td>
+          <td>${escapeHtml(task.kpac)}</td>
+          <td>${escapeHtml(task.title)}</td>
+          <td>${escapeHtml(task.description)}</td>
+          <td>${escapeHtml(task.owner)}</td>
+          <td>${escapeHtml(task.department)}</td>
+          <td><span class="tag ${task.typeClass}">${escapeHtml(task.type)}</span></td>
+          <td>${escapeHtml(task.dateRange)}</td>
+          <td><button class="upload-button" type="button">点击上传</button></td>
+          <td class="fixed-op">
+            <button class="complete-button" type="button" data-complete-cko="${escapeHtml(task.id)}">${task.status === "done" ? "已完成" : "完成"}</button>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function findCkoTask(taskId) {
+      return ckoTasks.find((task) => task.id === taskId);
+    }
+
+    function openTaskFillModal(taskId) {
+      const task = findCkoTask(taskId);
+      if (!task) {
+        return;
+      }
+      activeFillTaskId = taskId;
+      taskFillForm.reset();
+      taskFillKpac.textContent = task.kpac;
+      taskFillType.textContent = task.type;
+      taskFillType.className = `tag ${task.typeClass}`;
+      taskFillTitle.textContent = task.title;
+      taskFillFunction.textContent = task.functionName;
+      taskFillResponsible.textContent = task.owner;
+      taskFillDepartment.textContent = task.department;
+      taskFillDate.textContent = task.dateRange;
+      taskFillDescription.innerHTML = task.description.split("\n").map((line) => `<div>${escapeHtml(line)}</div>`).join("");
+      taskFillNote.value = "";
+      setModal(taskFillModal, true);
+      taskFillModal.querySelector(".task-fill-body").scrollTop = 0;
+    }
+
+    function closeTaskFillModal() {
+      setModal(taskFillModal, false);
+      activeFillTaskId = "";
     }
 
     function resetProjectForm() {
@@ -1803,6 +2358,10 @@
       tableShell.scrollLeft = 0;
       resetProjectForm();
       setDrawer(false);
+      if (status !== "草稿") {
+        latestCreatedProject = project;
+        setModal(createSuccessModal, true);
+      }
     }
 
     openDrawer.addEventListener("click", () => setDrawer(true));
@@ -1811,6 +2370,41 @@
     drawerMask.addEventListener("click", () => setDrawer(false));
     saveDraft.addEventListener("click", () => submitProject("草稿"));
     confirmProject.addEventListener("click", () => submitProject("进行中"));
+    fillCkoLater.addEventListener("click", () => setModal(createSuccessModal, false));
+    fillCkoNow.addEventListener("click", () => {
+      setModal(createSuccessModal, false);
+      renderCkoTasks();
+      setModal(ckoTaskDrawer, true);
+    });
+    document.querySelectorAll("[data-close-create-success]").forEach((button) => {
+      button.addEventListener("click", () => setModal(createSuccessModal, false));
+    });
+    document.querySelectorAll("[data-close-cko-task]").forEach((button) => {
+      button.addEventListener("click", () => setModal(ckoTaskDrawer, false));
+    });
+    ckoTaskBody.addEventListener("click", (event) => {
+      const completeButton = event.target.closest("[data-complete-cko]");
+      if (completeButton) {
+        openTaskFillModal(completeButton.dataset.completeCko);
+      }
+    });
+    document.querySelectorAll("[data-close-task-fill]").forEach((button) => {
+      button.addEventListener("click", closeTaskFillModal);
+    });
+    taskFillModal.addEventListener("click", (event) => {
+      if (event.target === taskFillModal) {
+        closeTaskFillModal();
+      }
+    });
+    taskFillForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const task = findCkoTask(activeFillTaskId);
+      if (task) {
+        task.status = "done";
+        renderCkoTasks();
+      }
+      closeTaskFillModal();
+    });
     productTrigger.addEventListener("click", () => toggleMulti(productMulti, productTrigger));
     productOptions.forEach((option) => {
       option.querySelector("input").addEventListener("change", renderProducts);
@@ -1830,6 +2424,9 @@
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
+        setModal(createSuccessModal, false);
+        setModal(taskFillModal, false);
+        setModal(ckoTaskDrawer, false);
         setDrawer(false);
         document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
           openSelect.classList.remove("open");

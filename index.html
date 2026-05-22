@@ -823,6 +823,19 @@
       text-align: center;
     }
 
+    .stage-task-table .fixed-op {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      box-shadow: -8px 0 16px rgba(16, 24, 40, .06);
+    }
+
+    .stage-task-table th.fixed-op {
+      z-index: 3;
+      background: #f5f7fa;
+    }
+
     .status-dot {
       display: inline-flex;
       align-items: center;
@@ -956,6 +969,13 @@
       color: #8b95a5;
       font-weight: 700;
       margin-bottom: 8px;
+      transition: border-color .2s ease, background .2s ease;
+      cursor: pointer;
+    }
+
+    .task-upload-zone.is-dragging {
+      border-color: var(--primary);
+      background: rgba(23, 105, 255, .06);
     }
 
     .task-upload-zone button {
@@ -971,6 +991,43 @@
     .task-upload-tip {
       color: #8b95a5;
       margin-bottom: 36px;
+    }
+
+    .task-upload-file {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      color: #344054;
+      padding: 10px 12px;
+      margin: 0 0 22px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .task-upload-file.is-visible {
+      display: flex;
+    }
+
+    .task-upload-file button {
+      border: 0;
+      background: transparent;
+      color: #98a2b3;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .task-fill-modal.is-view-mode .task-upload-zone,
+    .task-fill-modal.is-view-mode .task-upload-tip {
+      display: none;
+    }
+
+    .task-fill-modal.is-view-mode .task-fill-note {
+      background: #f8fafc;
+      color: #475467;
     }
 
     .task-fill-note {
@@ -1301,7 +1358,8 @@
     }
 
     .bom-page[hidden],
-    .bom-modal[hidden] {
+    .bom-modal[hidden],
+    .bom-detail-modal[hidden] {
       display: none;
     }
 
@@ -1584,6 +1642,16 @@
       position: fixed;
       inset: 0;
       z-index: 60;
+      display: grid;
+      place-items: center;
+      background: rgba(15, 23, 42, .36);
+      padding: 20px;
+    }
+
+    .bom-detail-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 62;
       display: grid;
       place-items: center;
       background: rgba(15, 23, 42, .36);
@@ -2965,6 +3033,10 @@
 
     .modal-backdrop[hidden] {
       display: none;
+    }
+
+    #apqpResultModal {
+      z-index: 80;
     }
 
     .requirement-modal {
@@ -4546,6 +4618,50 @@
       </div>
       <footer class="bom-modal-foot">
         <button class="btn" type="button" data-close-bom-modal>关闭</button>
+        <button class="btn btn-primary" type="button" data-bom-submit-foot>确定并提交</button>
+      </footer>
+    </section>
+  </div>
+
+  <div class="bom-detail-modal" data-bom-detail-modal hidden>
+    <section class="bom-modal-sheet modal-wide" role="dialog" aria-modal="true" aria-labelledby="bomDetailTitle">
+      <header class="bom-modal-head">
+        <h2 class="bom-modal-title" id="bomDetailTitle" data-bom-detail-title>BOM详情</h2>
+        <button class="close-btn" type="button" data-close-bom-detail aria-label="关闭">
+          <svg class="icon"><use href="#i-stop"></use></svg>
+        </button>
+      </header>
+      <div class="bom-modal-body">
+        <div class="bom-top">
+          <div>
+            <div class="section-kicker" data-bom-detail-kicker>PM 查看</div>
+            <div class="bom-title-row">
+              <span class="status-pill status-locked" data-bom-detail-status>锁定</span>
+              <span class="tag tag-blue" data-bom-detail-scope>完整层级</span>
+            </div>
+            <div class="bom-version-line">
+              <span>版本：<b data-bom-detail-version>PKO-V1.0</b></span>
+              <span data-bom-detail-meta>当前为只读详情，不影响编辑BOM数据。</span>
+            </div>
+          </div>
+        </div>
+        <div class="bom-table-wrap">
+          <table class="bom-table" aria-label="BOM详情明细">
+            <colgroup>
+              <col style="width:70px"><col style="width:70px"><col style="width:250px"><col style="width:150px">
+              <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
+              <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px">
+              <col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px">
+              <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:160px">
+              <col style="width:140px">
+            </colgroup>
+            <thead data-bom-detail-head></thead>
+            <tbody data-bom-detail-body></tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="bom-modal-foot">
+        <button class="btn" type="button" data-close-bom-detail>关闭</button>
       </footer>
     </section>
   </div>
@@ -4806,7 +4922,7 @@
   <div class="modal-backdrop" id="taskFillModal" hidden>
     <section class="task-fill-modal" role="dialog" aria-modal="true" aria-labelledby="taskFillTitle">
       <div class="modal-head">
-        <h3>任务填报</h3>
+        <h3 id="taskFillModalTitle">任务填报</h3>
         <button class="modal-close" type="button" data-close-task-fill aria-label="关闭">×</button>
       </div>
       <form id="taskFillForm">
@@ -4835,16 +4951,21 @@
             <div class="task-fill-desc-lines" id="taskFillDescription"></div>
           </div>
           <h4 class="task-upload-title"><span class="required">*</span>设计验证计划文档上传</h4>
-          <div class="task-upload-zone">
-            <div><button type="button">点击上传</button> / 拖拽到此区域</div>
+          <div class="task-upload-zone" id="taskUploadZone">
+            <input id="taskUploadInput" type="file" hidden accept=".doc,.docx,.pdf,.xls,.xlsx,.csv">
+            <div><button type="button" id="taskUploadButton">点击上传</button> / 拖拽到此区域</div>
           </div>
           <div class="task-upload-tip">支持扩展名：.doc .docx .pdf .excel...</div>
+          <div class="task-upload-file" id="taskUploadFile">
+            <span id="taskUploadFileName"></span>
+            <button type="button" id="taskUploadRemove" aria-label="移除上传文件">×</button>
+          </div>
           <h4 class="task-fill-note-title">说明</h4>
           <textarea class="task-fill-note" id="taskFillNote" placeholder="请输入"></textarea>
         </div>
         <div class="modal-foot">
-          <button class="btn" type="button" data-close-task-fill>取消</button>
-          <button class="btn btn-primary" type="submit">确定</button>
+          <button class="btn" type="button" data-close-task-fill id="taskFillCancelButton">取消</button>
+          <button class="btn btn-primary" type="submit" id="taskFillSubmitButton">确定</button>
         </div>
       </form>
     </section>
@@ -5019,6 +5140,16 @@
     const taskFillDate = document.getElementById("taskFillDate");
     const taskFillDescription = document.getElementById("taskFillDescription");
     const taskFillNote = document.getElementById("taskFillNote");
+    const taskFillDialog = taskFillModal?.querySelector(".task-fill-modal");
+    const taskFillModalTitle = document.getElementById("taskFillModalTitle");
+    const taskFillCancelButton = document.getElementById("taskFillCancelButton");
+    const taskFillSubmitButton = document.getElementById("taskFillSubmitButton");
+    const taskUploadZone = document.getElementById("taskUploadZone");
+    const taskUploadInput = document.getElementById("taskUploadInput");
+    const taskUploadButton = document.getElementById("taskUploadButton");
+    const taskUploadFile = document.getElementById("taskUploadFile");
+    const taskUploadFileName = document.getElementById("taskUploadFileName");
+    const taskUploadRemove = document.getElementById("taskUploadRemove");
     let activeStage = "PKO";
     let activeFillTaskId = "";
     let pkoTasksManaged = false;
@@ -5271,7 +5402,7 @@
               <h2 class="section-title">${escapeHtml(group)}(${groupRows.length})</h2>
             </div>
             <div class="table-wrap">
-              <table aria-label="${escapeHtml(group)}任务列表">
+              <table class="stage-task-table" aria-label="${escapeHtml(group)}任务列表">
                 <colgroup>
                   <col style="width:64px">
                   <col style="width:110px">
@@ -5282,7 +5413,7 @@
                   <col style="width:128px">
                   <col style="width:180px">
                   <col style="width:150px">
-                  <col style="width:150px">
+                  <col style="width:130px">
                 </colgroup>
                 <thead>
                   <tr>
@@ -5295,7 +5426,7 @@
                     <th>任务类型</th>
                     <th>起止时间</th>
                     <th>状态</th>
-                    <th>操作</th>
+                    <th class="fixed-op">操作</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -5310,7 +5441,7 @@
                       <td><span class="tag ${task.typeClass}">${escapeHtml(task.type)}</span></td>
                       <td>${escapeHtml(stage === "PKO" && !pkoTasksManaged ? "-" : task.dateRange)}</td>
                       <td>${statusHtml(task.status)}</td>
-                      <td>${operationHtml(task)}</td>
+                      <td class="fixed-op">${operationHtml(task)}</td>
                     </tr>
                   `).join("")}
                 </tbody>
@@ -5468,13 +5599,56 @@
       return Object.values(stageTasks).flat().find((task) => task.id === taskId);
     }
 
-    function openTaskFillModal(taskId) {
+    function formatFileSize(size) {
+      if (size >= 1024 * 1024) {
+        return `${(size / 1024 / 1024).toFixed(1)} MB`;
+      }
+      if (size >= 1024) {
+        return `${Math.round(size / 1024)} KB`;
+      }
+      return `${size} B`;
+    }
+
+    function showTaskUploadFile(file) {
+      if (!file || !taskUploadFile || !taskUploadFileName) {
+        return;
+      }
+      const sizeText = file.size ? ` · ${formatFileSize(file.size)}` : "";
+      taskUploadFileName.textContent = `${file.name}${sizeText}`;
+      taskUploadFile.classList.add("is-visible");
+    }
+
+    function clearTaskUploadFile() {
+      if (taskUploadInput) {
+        taskUploadInput.value = "";
+      }
+      if (taskUploadFileName) {
+        taskUploadFileName.textContent = "";
+      }
+      if (taskUploadFile) {
+        taskUploadFile.classList.remove("is-visible");
+      }
+    }
+
+    function openTaskFillModal(taskId, mode = "fill") {
       const task = findStageTask(taskId);
       if (!task || !taskFillModal) {
         return;
       }
+      const isViewMode = mode === "view";
       activeFillTaskId = taskId;
       taskFillForm.reset();
+      clearTaskUploadFile();
+      taskFillDialog?.classList.toggle("is-view-mode", isViewMode);
+      if (taskFillModalTitle) {
+        taskFillModalTitle.textContent = isViewMode ? "任务详情" : "任务填报";
+      }
+      if (taskFillCancelButton) {
+        taskFillCancelButton.textContent = isViewMode ? "关闭" : "取消";
+      }
+      if (taskFillSubmitButton) {
+        taskFillSubmitButton.hidden = isViewMode;
+      }
       taskFillKpac.textContent = task.kpac;
       taskFillType.textContent = task.type;
       taskFillType.className = `tag ${task.typeClass}`;
@@ -5484,6 +5658,11 @@
       taskFillDepartment.textContent = task.department;
       taskFillDate.textContent = task.dateRange;
       taskFillDescription.innerHTML = task.description.split("\n").map((line) => `<div>${escapeHtml(line)}</div>`).join("");
+      taskFillNote.value = isViewMode ? (task.note || "") : "";
+      taskFillNote.readOnly = isViewMode;
+      if (isViewMode) {
+        showTaskUploadFile(task.uploadFile || { name: "设计验证计划文档.pdf", size: 0 });
+      }
       taskFillModal.hidden = false;
       taskFillModal.querySelector(".task-fill-body").scrollTop = 0;
     }
@@ -5491,6 +5670,8 @@
     function closeTaskFillModal() {
       taskFillModal.hidden = true;
       activeFillTaskId = "";
+      taskFillDialog?.classList.remove("is-view-mode");
+      taskFillNote.readOnly = false;
     }
 
     function setActiveStage(stage) {
@@ -5868,6 +6049,7 @@
         const deleteHandoverRowButton = event.target.closest("[data-delete-handover-row]");
         const handoverMemberButton = event.target.closest("[data-select-handover-members]");
         const completeButton = event.target.closest("[data-complete-stage-task]");
+        const viewButton = event.target.closest("[data-view-task]");
         const approveButton = event.target.closest("[data-approve-task]");
         const rejectButton = event.target.closest("[data-reject-task]");
         const rejectReasonButton = event.target.closest("[data-view-reject]");
@@ -5901,6 +6083,11 @@
 
         if (completeButton) {
           openTaskFillModal(completeButton.dataset.completeStageTask);
+          return;
+        }
+
+        if (viewButton) {
+          openTaskFillModal(viewButton.dataset.viewTask, "view");
           return;
         }
 
@@ -5986,11 +6173,61 @@
         event.preventDefault();
         const task = findStageTask(activeFillTaskId);
         if (task) {
-          task.status = "approval";
+          if (taskUploadInput?.files?.[0]) {
+            const { name, size } = taskUploadInput.files[0];
+            task.uploadFile = { name, size };
+          } else if (!task.uploadFile) {
+            task.uploadFile = { name: "设计验证计划文档.pdf", size: 0 };
+          }
+          task.note = taskFillNote.value.trim();
+          const taskStage = Object.entries(stageTasks).find(([, rows]) => rows.some((row) => row.id === task.id))?.[0];
+          task.status = taskStage === "PKO" ? "done" : "approval";
           renderStageTasks(activeStage);
         }
         closeTaskFillModal();
       });
+    }
+
+    if (taskUploadZone && taskUploadInput) {
+      taskUploadZone.addEventListener("click", () => {
+        taskUploadInput.click();
+      });
+
+      if (taskUploadButton) {
+        taskUploadButton.addEventListener("click", (event) => {
+          event.stopPropagation();
+          taskUploadInput.click();
+        });
+      }
+
+      taskUploadInput.addEventListener("change", () => {
+        showTaskUploadFile(taskUploadInput.files?.[0]);
+      });
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        taskUploadZone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          taskUploadZone.classList.add("is-dragging");
+        });
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        taskUploadZone.addEventListener(eventName, (event) => {
+          event.preventDefault();
+          taskUploadZone.classList.remove("is-dragging");
+        });
+      });
+
+      taskUploadZone.addEventListener("drop", (event) => {
+        const file = event.dataTransfer?.files?.[0];
+        if (file) {
+          showTaskUploadFile(file);
+        }
+      });
+    }
+
+    if (taskUploadRemove) {
+      taskUploadRemove.addEventListener("click", clearTaskUploadFile);
     }
 
     planInputs.forEach((input) => {
@@ -6805,6 +7042,8 @@
     const bomListBody = document.querySelector("[data-bom-list-body]");
     const bomEditBody = document.querySelector("[data-bom-edit-body]");
     const bomModal = document.querySelector("[data-bom-modal]");
+    const bomDetailModal = document.querySelector("[data-bom-detail-modal]");
+    const bomDetailBody = document.querySelector("[data-bom-detail-body]");
     const partModal = document.querySelector("[data-part-modal]");
     const rowCount = document.querySelector("[data-bom-row-count]");
 
@@ -6920,6 +7159,7 @@
       const headCells = bomHeaders.map(([cn, en], index) => `<th class="${index === bomHeaders.length - 1 ? "fixed-op" : ""}">${cn}<span>${en}</span></th>`).join("");
       document.querySelector("[data-bom-head]").innerHTML = `<tr>${headCells}</tr>`;
       document.querySelector("[data-bom-edit-head]").innerHTML = `<tr><th class="center">选</th>${headCells}</tr>`;
+      document.querySelector("[data-bom-detail-head]").innerHTML = `<tr>${headCells}</tr>`;
     }
 
     function rowMatches(row, keyword, application, customerNo, partNoKeyword = "") {
@@ -6940,7 +7180,7 @@
         .filter(() => !stage || bomState.stage === stage)
         .filter(() => !status || bomState.status === status);
 
-      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="21" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的L1 BOM" : "暂无BOM数据，请点击“创建BOM（AE）”后选择产品生成模拟数据"}</td></tr>`;
+      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, { context: "list" })).join("") || `<tr><td colspan="21" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的L1 BOM" : "暂无BOM数据，请点击“创建BOM（AE）”后选择产品生成模拟数据"}</td></tr>`;
       document.querySelector("[data-bom-current-version]").textContent = currentVersion();
       document.querySelector("[data-bom-current-status]").textContent = statusText(bomState.status);
       document.querySelector("[data-bom-l1-count]").textContent = bomState.rows.filter((row) => row.level === 1).length;
@@ -6955,7 +7195,7 @@
       const partNoKeyword = document.querySelector("[data-row-part-no]")?.value.trim() || "";
       const rows = rowsForCurrentScope().filter((row) => rowMatches(row, keyword, application, customerNo, partNoKeyword));
 
-      bomEditBody.innerHTML = rows.map((row) => bomRowHtml(row, true)).join("") || `<tr><td colspan="22" class="center">未找到匹配的BOM项</td></tr>`;
+      bomEditBody.innerHTML = rows.map((row) => bomRowHtml(row, { context: "workspace", selectable: true })).join("") || `<tr><td colspan="22" class="center">未找到匹配的BOM项</td></tr>`;
       rowCount.textContent = `${rows.length}项`;
       document.querySelector("[data-bom-display-mode]").textContent = bomState.scopedRootId ? "显示：当前L1及其子集" : "显示：完整层级";
       document.querySelector("[data-bom-scope-label]").textContent = bomState.scopedRootId ? "L1子集编辑" : "完整层级";
@@ -6965,20 +7205,47 @@
       statusEl.className = `status-pill ${statusClass(bomState.status)}`;
     }
 
-    function bomRowHtml(row, selectable) {
+    function renderBomDetail(rowId = null, version = "") {
+      if (!bomDetailModal || !bomDetailBody) return;
+      const historyItem = version ? bomState.histories.find((item) => item.version === version) : null;
+      const sourceRows = historyItem ? historyItem.rows : bomState.rows;
+      const scopedRows = rowId
+        ? descendantsOf(rowId, sourceRows)
+        : sourceRows;
+      document.querySelector("[data-bom-detail-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : "BOM详情";
+      document.querySelector("[data-bom-detail-kicker]").textContent = historyItem ? "历史版本" : "PM 查看";
+      document.querySelector("[data-bom-detail-status]").textContent = statusText(historyItem?.status || bomState.status);
+      document.querySelector("[data-bom-detail-status]").className = `status-pill ${statusClass(historyItem?.status || bomState.status)}`;
+      document.querySelector("[data-bom-detail-scope]").textContent = rowId ? "L1子集" : "完整层级";
+      document.querySelector("[data-bom-detail-version]").textContent = historyItem?.version || currentVersion();
+      document.querySelector("[data-bom-detail-meta]").textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : "当前为只读详情，不影响编辑BOM数据。";
+      bomDetailBody.innerHTML = scopedRows.map((row) => bomRowHtml(row, { context: "detail", allowApqp: !historyItem && bomState.status === "locked" })).join("") || `<tr><td colspan="21" class="center">暂无BOM数据</td></tr>`;
+    }
+
+    function openBomDetail(rowId = null, version = "") {
+      renderBomDetail(rowId, version);
+      bomDetailModal.hidden = false;
+    }
+
+    function closeBomDetail() {
+      bomDetailModal.hidden = true;
+    }
+
+    function bomRowHtml(row, options = {}) {
+      const { context = "list", selectable = false, allowApqp = false } = options;
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
       const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
-      const readonly = selectable && (bomState.mode === "detail" || bomState.historyViewing);
-      const canCreateApqp = row.sharedPart === "否" && bomState.mode !== "create";
+      const readonly = context === "detail";
+      const canCreateApqp = (context === "list" ? bomState.status === "locked" : allowApqp) && row.sharedPart === "否";
       const apqpAction = !canCreateApqp
         ? ""
         : row.apqpCreated
           ? `<span class="tag tag-green">APQP已创建</span>`
           : `<button class="blue-link" type="button" data-create-apqp="${row.id}">创建APQP</button>`;
       const operation = readonly
-        ? `<span class="bom-op"><span>只读</span>${apqpAction}</span>`
-        : selectable
-        ? `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button><button class="blue-link" type="button" data-remove-row="${row.id}">删除</button>${apqpAction}</span>`
+        ? `<span class="bom-op">${apqpAction || "<span>只读</span>"}</span>`
+        : context === "workspace"
+        ? `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button><button class="blue-link" type="button" data-remove-row="${row.id}">删除</button></span>`
         : `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${row.id}">查看</button><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button>${apqpAction}</span>`;
       const cells = [
         row.no, level, partName, row.application, row.qty, row.customerNo, row.bwNo, row.drawingRev,
@@ -7190,9 +7457,10 @@
 
     document.querySelector("[data-bom-create]").addEventListener("click", () => openWorkspace("create"));
     document.querySelector("[data-bom-scm-edit]").addEventListener("click", () => openWorkspace("scm"));
-    document.querySelector("[data-bom-open-detail]").addEventListener("click", () => openWorkspace("detail"));
-    document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
+    document.querySelector("[data-bom-open-detail]").addEventListener("click", () => openBomDetail());
+    document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openBomDetail());
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
+    document.querySelectorAll("[data-close-bom-detail]").forEach((button) => button.addEventListener("click", closeBomDetail));
     document.querySelector("[data-bom-submit]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
@@ -7212,7 +7480,7 @@
     });
     document.querySelector("[data-bom-open-history]").addEventListener("click", () => {
       const version = document.querySelector("[data-bom-history-select]").value;
-      if (version) openWorkspace("detail", null, version);
+      if (version) openBomDetail(null, version);
     });
     document.querySelector("[data-row-reset]").addEventListener("click", () => {
       document.querySelector("[data-row-part-no]").value = "";
@@ -7252,12 +7520,19 @@
       if (editButton) openPartModal(editButton.dataset.editRow);
       if (removeButton) removeRows([removeButton.dataset.removeRow]);
     });
+    bomDetailBody.addEventListener("click", (event) => {
+      const apqpButton = event.target.closest("[data-create-apqp]");
+      if (apqpButton) {
+        createApqp(apqpButton.dataset.createApqp);
+        renderBomDetail();
+      }
+    });
     bomListBody.addEventListener("click", (event) => {
       if (event.target.closest("[data-create-apqp]")) {
         createApqp(event.target.closest("[data-create-apqp]").dataset.createApqp);
       }
       if (event.target.closest("[data-detail-row]")) {
-        openWorkspace("detail", event.target.closest("[data-detail-row]").dataset.detailRow);
+        openBomDetail(event.target.closest("[data-detail-row]").dataset.detailRow);
       }
       if (event.target.closest("[data-edit-row]")) {
         openWorkspace("scm", event.target.closest("[data-edit-row]").dataset.editRow);
