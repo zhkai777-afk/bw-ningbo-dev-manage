@@ -188,7 +188,7 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) minmax(260px, 1fr);
+      grid-template-columns: minmax(390px, 460px);
       gap: 20px 42px;
       margin-bottom: 24px;
     }
@@ -199,7 +199,7 @@
 
     .field-row {
       display: grid;
-      grid-template-columns: 110px minmax(0, 1fr);
+      grid-template-columns: 150px minmax(0, 1fr);
       gap: 14px;
       align-items: center;
     }
@@ -208,6 +208,7 @@
       text-align: right;
       color: #344054;
       font-weight: 850;
+      white-space: nowrap;
     }
 
     .required::before {
@@ -229,6 +230,124 @@
       color: #344054;
       padding: 0 11px;
       font-weight: 650;
+    }
+
+    .task-select {
+      appearance: none;
+      max-width: 100%;
+      padding-right: 30px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #667085 50%),
+        linear-gradient(135deg, #667085 50%, transparent 50%);
+      background-position:
+        calc(100% - 16px) 50%,
+        calc(100% - 11px) 50%;
+      background-size:
+        5px 5px,
+        5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .department-trigger {
+      width: 100%;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border: 1px solid var(--line-strong);
+      border-radius: 5px;
+      background: #fbfdff;
+      color: #1f2937;
+      padding: 0 10px;
+      font-weight: 800;
+      text-align: left;
+      transition: .16s ease;
+    }
+
+    .type-trigger {
+      gap: 9px;
+    }
+
+    .department-trigger:hover,
+    .department-trigger.active,
+    .type-trigger:hover,
+    .type-trigger.active {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(23, 105, 255, .12);
+    }
+
+    .department-trigger-text {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .type-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #667085;
+      flex: 0 0 auto;
+    }
+
+    .type-dot.critical {
+      background: var(--danger);
+    }
+
+    .department-trigger::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-right: 1.8px solid #667085;
+      border-bottom: 1.8px solid #667085;
+      transform: rotate(45deg) translateY(-2px);
+      flex: 0 0 auto;
+    }
+
+    .floating-select-menu {
+      position: fixed;
+      z-index: 90;
+      width: 230px;
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 6px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: #fff;
+      box-shadow: 0 14px 36px rgba(16, 24, 40, .16);
+    }
+
+    .floating-select-menu[hidden] {
+      display: none;
+    }
+
+    .floating-select-option {
+      width: 100%;
+      min-height: 34px;
+      border: 0;
+      border-radius: 4px;
+      background: transparent;
+      color: #344054;
+      padding: 7px 9px;
+      text-align: left;
+      font-weight: 750;
+      white-space: normal;
+    }
+
+    .floating-select-option:hover,
+    .floating-select-option.active {
+      color: var(--primary);
+      background: var(--primary-weak);
+    }
+
+    .floating-select-option-content {
+      display: flex;
+      align-items: center;
+      gap: 9px;
     }
 
     textarea.field {
@@ -320,7 +439,7 @@
 
     table {
       width: 100%;
-      min-width: 1550px;
+      min-width: 1490px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -364,16 +483,6 @@
     .desc-cell {
       white-space: normal;
       line-height: 1.35;
-    }
-
-    .type-select {
-      padding-left: 25px;
-      background-image: radial-gradient(circle at 13px 50%, #667085 0 3px, transparent 4px);
-      background-repeat: no-repeat;
-    }
-
-    .type-select.critical {
-      background-image: radial-gradient(circle at 13px 50%, #f04438 0 3px, transparent 4px);
     }
 
     .link-button {
@@ -642,6 +751,7 @@
 
     <footer class="bottom-bar">
       <button class="btn" type="button" id="backButton">返回</button>
+      <button class="btn" type="button" id="resetAllButton">重置全部</button>
       <button class="btn btn-primary" type="button" id="submitButton">提交</button>
     </footer>
   </div>
@@ -680,12 +790,14 @@
   </div>
 
   <div class="toast" id="toast" hidden></div>
+  <div class="floating-select-menu" id="departmentMenu" hidden></div>
 
+  <script src="data/gate_tasks_split.ui.js"></script>
   <script>
-    const people = ["Danny Fang", "Wu Zhuoren", "Zhang Gong", "Li Na", "Wang Wei", "Chen Jie", "Sun Qiang"];
     const stageNames = ["CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6"];
+    const stageEndBaseDate = "2026-05-30";
     const categories = ["All", "Customer", "Plan and Define", "Process Design and Development", "Product Design and Development", "Production and Logistic", "Quality Plan", "Supply Chain Definition"];
-    const taskLibrary = [
+    const fallbackTaskLibrary = [
       {
         id: "GPM_GR-12",
         title: "Customer Requirements (Volumes, Key dates, others)",
@@ -798,24 +910,82 @@
       }
     ];
 
-    const stageConfigs = stageNames.map((name, index) => ({
-      name,
-      leader: index === 0 ? "Danny Fang" : index === 1 ? "Wu Zhuoren" : "",
-      start: index === 0 ? "2026-05-18" : "",
-      end: index === 0 ? "2026-05-30" : "",
-      comments: "",
-      collapsed: index !== 0,
-      tasks: index === 0
-        ? taskLibrary.slice(0, 6).map((task, taskIndex) => ({
-          uid: `${name}-${task.id}-${taskIndex}`,
-          ...task,
-          owner: "Danny Fang",
-          start: "",
-          end: task.critical ? "2026-05-30" : "",
-          source: "library"
-        }))
-        : []
-    }));
+    function addDays(dateValue, days) {
+      const date = new Date(`${dateValue}T00:00:00`);
+      date.setDate(date.getDate() + days);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    let taskLibrary = fallbackTaskLibrary;
+    let defaultStageConfigs = [];
+    let stageConfigs = [];
+
+    function clone(value) {
+      return JSON.parse(JSON.stringify(value));
+    }
+
+    function mapSourceTask(item, index = 0) {
+      return {
+        uid: item.taskId || `${item.uiStage || "task"}-${item.kpacId || item.id || index}-${index}`,
+        id: item.kpacId || item.id || "",
+        title: item.title || "",
+        description: item.taskDescription || item.description || "",
+        category: item.function || item.category || "Plan and Define",
+        ownerRole: item.responsible || item.ownerRole || "",
+        version: item.version || "",
+        deliverable: item.documentOrEvidence || item.deliverable || "",
+        critical: item.requiredType ? item.requiredType === "required" : Boolean(item.critical),
+        start: "",
+        end: "",
+        source: "library",
+        sourceStage: item.originalStage || item.stage || "",
+        remarks: item.remarks || ""
+      };
+    }
+
+    function buildStageConfigs(tasks = taskLibrary) {
+      return stageNames.map((name, index) => {
+        const stageEnd = addDays(stageEndBaseDate, index * 15);
+        return {
+          name,
+          end: stageEnd,
+          collapsed: index !== 0,
+          tasks: tasks
+            .filter((task) => (task.uiStage || task.stage) === name)
+            .map((task, taskIndex) => {
+              const mapped = mapSourceTask(task, taskIndex);
+              return {
+                ...mapped,
+                uid: `${name}-${mapped.uid}`,
+                end: mapped.critical ? stageEnd : ""
+              };
+            })
+        };
+      });
+    }
+
+    function buildFallbackStageConfigs() {
+      return stageNames.map((name, index) => {
+        const stageEnd = addDays(stageEndBaseDate, index * 15);
+        return {
+          name,
+          end: stageEnd,
+          collapsed: index !== 0,
+          tasks: index === 0
+            ? fallbackTaskLibrary.slice(0, 6).map((task, taskIndex) => ({
+              uid: `${name}-${task.id}-${taskIndex}`,
+              ...task,
+              start: "",
+              end: task.critical ? stageEnd : "",
+              source: "library"
+            }))
+            : []
+        };
+      });
+    }
 
     const stageList = document.getElementById("stageList");
     const stageTabs = document.getElementById("stageTabs");
@@ -825,9 +995,11 @@
     const categoryTabs = document.getElementById("categoryTabs");
     const libraryList = document.getElementById("libraryList");
     const toast = document.getElementById("toast");
+    const departmentMenu = document.getElementById("departmentMenu");
     let currentStageName = "CKO";
     let libraryStageName = "CKO";
     let currentCategory = "All";
+    let activeFloatingButton = null;
     let toastTimer;
 
     function escapeHtml(value) {
@@ -854,14 +1026,39 @@
       return stageConfigs.find((stage) => stage.name === name);
     }
 
-    function personOptions(value) {
-      return [`<option value="">Please Select</option>`, ...people.map((person) => `<option ${person === value ? "selected" : ""}>${person}</option>`)].join("");
+    function setActiveStage(name = stageConfigs[0]?.name || "") {
+      currentStageName = stageConfigs.some((stage) => stage.name === name) ? name : (stageConfigs[0]?.name || "");
+      if (!stageConfigs.some((stage) => stage.name === libraryStageName)) {
+        libraryStageName = currentStageName;
+      }
     }
 
-    function typeOptions(isCritical) {
+    function getDepartmentOptions(value = "") {
+      const departments = [...new Set([
+        ...taskLibrary.map((task) => mapSourceTask(task).ownerRole),
+        ...stageConfigs.flatMap((stage) => stage.tasks.map((task) => task.ownerRole)),
+        "PM"
+      ].filter(Boolean))].sort((a, b) => a.localeCompare(b));
+      if (value && !departments.includes(value)) departments.unshift(value);
+      return departments;
+    }
+
+    function renderDepartmentButton(task) {
+      const value = task.ownerRole || "";
       return `
-        <option value="critical" ${isCritical ? "selected" : ""}>Critical Mission</option>
-        <option value="regular" ${!isCritical ? "selected" : ""}>Regular Mission</option>
+        <button class="department-trigger" type="button" title="${escapeHtml(value)}" data-department-trigger>
+          <span class="department-trigger-text">${escapeHtml(value || "请选择")}</span>
+        </button>
+      `;
+    }
+
+    function renderTypeButton(task) {
+      const label = task.critical ? "Critical Mission" : "Regular Mission";
+      return `
+        <button class="department-trigger type-trigger" type="button" title="${label}" data-type-trigger>
+          <span class="type-dot ${task.critical ? "critical" : ""}"></span>
+          <span class="department-trigger-text">${label}</span>
+        </button>
       `;
     }
 
@@ -872,7 +1069,22 @@
     }
 
     function renderStages() {
+      setActiveStage(currentStageName);
       renderTabs();
+      if (!stageConfigs.length) {
+        stageList.innerHTML = `
+          <section class="stage-card">
+            <header class="stage-head">
+              <div class="stage-title">
+                <span>暂无阶段</span>
+                <span class="stage-summary"><span>可通过重置全部恢复默认阶段</span></span>
+              </div>
+            </header>
+          </section>
+        `;
+        return;
+      }
+
       stageList.innerHTML = stageConfigs.map((stage, index) => {
         const criticalCount = stage.tasks.filter((task) => task.critical).length;
         const groupedTasks = categories.filter((category) => category !== "All").map((category) => {
@@ -894,8 +1106,8 @@
                   ? `<input class="task-input" type="text" value="${escapeHtml(task.description || "")}" data-task-field="description">`
                   : escapeHtml(task.description || "-")}
                 </td>
-                <td><select class="task-select" data-task-field="owner">${personOptions(task.owner)}</select></td>
-                <td><select class="task-select type-select ${task.critical ? "critical" : ""}" data-task-field="critical">${typeOptions(task.critical)}</select></td>
+                <td>${renderDepartmentButton(task)}</td>
+                <td>${renderTypeButton(task)}</td>
                 <td><input class="task-input" type="date" value="${task.start}" data-task-field="start"></td>
                 <td><input class="task-input" type="date" value="${task.end}" data-task-field="end"></td>
                 <td>${task.source === "manual" ? "手动新增" : "子任务库"}</td>
@@ -917,26 +1129,16 @@
                 </span>
               </div>
               <div class="stage-actions">
+                <button class="btn" type="button" data-reset-stage="${stage.name}">重置阶段</button>
+                <button class="btn btn-danger" type="button" data-delete-stage="${stage.name}">删除阶段</button>
                 <button class="stage-toggle" type="button" data-toggle="${stage.name}">${stage.collapsed ? "展开" : "收起"}</button>
               </div>
             </header>
             <div class="stage-body">
               <div class="form-grid">
                 <div class="field-row">
-                  <label class="required">Phase Leader</label>
-                  <select class="field" data-stage-field="leader" data-stage-name="${stage.name}">${personOptions(stage.leader)}</select>
-                </div>
-                <div class="field-row">
-                  <label class="required">Start Time</label>
-                  <input class="field" type="date" value="${stage.start}" data-stage-field="start" data-stage-name="${stage.name}">
-                </div>
-                <div class="field-row">
-                  <label class="required">End Time</label>
+                  <label class="required">阶段计划结束日期</label>
                   <input class="field" type="date" value="${stage.end}" data-stage-field="end" data-stage-name="${stage.name}">
-                </div>
-                <div class="field-row wide">
-                  <label>Comments</label>
-                  <textarea class="field" placeholder="Please Input" data-stage-field="comments" data-stage-name="${stage.name}">${escapeHtml(stage.comments)}</textarea>
                 </div>
               </div>
 
@@ -957,7 +1159,7 @@
                     <col style="width:130px">
                     <col style="width:360px">
                     <col style="width:350px">
-                    <col style="width:155px">
+                    <col style="width:130px">
                     <col style="width:180px">
                     <col style="width:150px">
                     <col style="width:150px">
@@ -971,7 +1173,7 @@
                       <th>K-PAC ID</th>
                       <th>K-PAC Title</th>
                       <th>Description</th>
-                      <th>负责人</th>
+                      <th>负责部门</th>
                       <th>Task Type</th>
                       <th>Start Time</th>
                       <th>End Time</th>
@@ -1005,8 +1207,94 @@
         control.classList.toggle("critical", task.critical);
       } else {
         task[control.dataset.taskField] = control.value;
+        if (control.dataset.taskField === "ownerRole") control.title = control.value;
       }
       control.classList.remove("is-invalid");
+    }
+
+    function closeFloatingMenu() {
+      departmentMenu.hidden = true;
+      activeFloatingButton?.classList.remove("active");
+      activeFloatingButton = null;
+    }
+
+    function openDepartmentMenu(button) {
+      const row = button.closest("[data-row]");
+      const stage = getStage(row.dataset.stage);
+      const task = stage.tasks.find((item) => item.uid === row.dataset.row);
+      activeFloatingButton?.classList.remove("active");
+      activeFloatingButton = button;
+      button.classList.add("active");
+
+      departmentMenu.innerHTML = getDepartmentOptions(task.ownerRole).map((department) => `
+        <button
+          class="floating-select-option ${department === task.ownerRole ? "active" : ""}"
+          type="button"
+          data-department-option="${escapeHtml(department)}"
+        >${escapeHtml(department)}</button>
+      `).join("");
+
+      positionFloatingMenu(button);
+    }
+
+    function openTypeMenu(button) {
+      const row = button.closest("[data-row]");
+      const stage = getStage(row.dataset.stage);
+      const task = stage.tasks.find((item) => item.uid === row.dataset.row);
+      activeFloatingButton?.classList.remove("active");
+      activeFloatingButton = button;
+      button.classList.add("active");
+
+      const options = [
+        { value: "critical", label: "Critical Mission", critical: true },
+        { value: "regular", label: "Regular Mission", critical: false }
+      ];
+      departmentMenu.innerHTML = options.map((option) => `
+        <button
+          class="floating-select-option ${option.critical === task.critical ? "active" : ""}"
+          type="button"
+          data-type-option="${option.value}"
+        >
+          <span class="floating-select-option-content">
+            <span class="type-dot ${option.critical ? "critical" : ""}"></span>
+            <span>${option.label}</span>
+          </span>
+        </button>
+      `).join("");
+
+      positionFloatingMenu(button);
+    }
+
+    function positionFloatingMenu(button) {
+      const rect = button.getBoundingClientRect();
+      const menuWidth = Math.max(180, rect.width);
+      departmentMenu.style.width = `${menuWidth}px`;
+      departmentMenu.style.left = `${Math.min(rect.left, window.innerWidth - menuWidth - 12)}px`;
+      departmentMenu.style.top = `${Math.min(rect.bottom + 6, window.innerHeight - 292)}px`;
+      departmentMenu.hidden = false;
+    }
+
+    function selectDepartment(value) {
+      if (!activeFloatingButton) return;
+      const row = activeFloatingButton.closest("[data-row]");
+      const stage = getStage(row.dataset.stage);
+      const task = stage.tasks.find((item) => item.uid === row.dataset.row);
+      task.ownerRole = value;
+      activeFloatingButton.title = value;
+      activeFloatingButton.querySelector(".department-trigger-text").textContent = value;
+      closeFloatingMenu();
+    }
+
+    function selectTaskType(value) {
+      if (!activeFloatingButton) return;
+      const row = activeFloatingButton.closest("[data-row]");
+      const stage = getStage(row.dataset.stage);
+      const task = stage.tasks.find((item) => item.uid === row.dataset.row);
+      task.critical = value === "critical";
+      activeFloatingButton.title = task.critical ? "Critical Mission" : "Regular Mission";
+      activeFloatingButton.querySelector(".department-trigger-text").textContent = activeFloatingButton.title;
+      activeFloatingButton.querySelector(".type-dot").classList.toggle("critical", task.critical);
+      closeFloatingMenu();
     }
 
     function addManualTask(stageName) {
@@ -1030,7 +1318,43 @@
       stage.collapsed = false;
       currentStageName = stageName;
       renderStages();
-      showToast("已新增手动任务，请指定是否为关键任务及负责人。");
+      showToast("已新增手动任务，请补充任务信息。");
+    }
+
+    function resetStage(stageName) {
+      const index = stageConfigs.findIndex((stage) => stage.name === stageName);
+      const source = defaultStageConfigs.find((stage) => stage.name === stageName);
+      if (!source) {
+        showToast("未找到该阶段的默认配置，请使用重置全部恢复。", true);
+        return;
+      }
+      const nextStage = clone(source);
+      nextStage.collapsed = false;
+      if (index >= 0) {
+        stageConfigs.splice(index, 1, nextStage);
+      } else {
+        const defaultIndex = defaultStageConfigs.findIndex((stage) => stage.name === stageName);
+        const insertAt = stageConfigs.findIndex((stage) => defaultStageConfigs.findIndex((item) => item.name === stage.name) > defaultIndex);
+        stageConfigs.splice(insertAt === -1 ? stageConfigs.length : insertAt, 0, nextStage);
+      }
+      setActiveStage(stageName);
+      renderStages();
+      showToast(`${stageName} 已恢复为默认任务。`);
+    }
+
+    function deleteStage(stageName) {
+      if (!confirm(`确定删除 ${stageName} 阶段及其全部任务吗？可通过“重置全部”恢复。`)) return;
+      stageConfigs = stageConfigs.filter((stage) => stage.name !== stageName);
+      setActiveStage(stageConfigs[0]?.name);
+      renderStages();
+      showToast(`${stageName} 阶段已删除。`);
+    }
+
+    function resetAllStages() {
+      stageConfigs = clone(defaultStageConfigs);
+      setActiveStage("CKO");
+      renderStages();
+      showToast("已恢复全部默认阶段和任务。");
     }
 
     function deleteTask(stageName, uid) {
@@ -1064,13 +1388,17 @@
       const responsible = libraryResponsible.value;
       const existing = new Set((getStage(libraryStageName)?.tasks || []).map((task) => task.id));
       const items = taskLibrary.filter((task) => {
-        const matchCategory = currentCategory === "All" || task.category === currentCategory;
-        const matchKeyword = !keyword || task.title.toLowerCase().includes(keyword) || task.id.toLowerCase().includes(keyword);
-        const matchResponsible = !responsible || task.ownerRole === responsible;
-        return matchCategory && matchKeyword && matchResponsible;
+        const mapped = mapSourceTask(task);
+        const matchStage = (task.uiStage || task.stage || libraryStageName) === libraryStageName;
+        const matchCategory = currentCategory === "All" || mapped.category === currentCategory;
+        const matchKeyword = !keyword || mapped.title.toLowerCase().includes(keyword) || mapped.id.toLowerCase().includes(keyword);
+        const matchResponsible = !responsible || mapped.ownerRole === responsible;
+        return matchStage && matchCategory && matchKeyword && matchResponsible;
       });
 
-      libraryList.innerHTML = items.length ? items.map((task) => `
+      libraryList.innerHTML = items.length ? items.map((sourceTask) => {
+        const task = mapSourceTask(sourceTask);
+        return `
         <article class="library-card">
           <input type="checkbox" value="${task.id}" ${existing.has(task.id) ? "checked" : ""} data-library-check>
           <div>
@@ -1086,7 +1414,8 @@
             </div>
           </div>
         </article>
-      `).join("") : `<div class="library-card"><div></div><div><h3>没有匹配任务</h3><p>调整筛选条件后再试。</p></div></div>`;
+        `;
+      }).join("") : `<div class="library-card"><div></div><div><h3>没有匹配任务</h3><p>调整筛选条件后再试。</p></div></div>`;
     }
 
     function openLibrary(stageName) {
@@ -1109,13 +1438,17 @@
       let added = 0;
       selectedIds.forEach((id) => {
         if (existing.has(id)) return;
-        const source = taskLibrary.find((task) => task.id === id);
+        const source = taskLibrary.find((task) => {
+          const mapped = mapSourceTask(task);
+          return mapped.id === id && (task.uiStage || task.stage || libraryStageName) === libraryStageName;
+        });
+        if (!source) return;
+        const mapped = mapSourceTask(source);
         stage.tasks.push({
-          uid: `${libraryStageName}-${id}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-          ...source,
-          owner: people[0],
+          ...mapped,
+          uid: `${libraryStageName}-${mapped.uid}-${Date.now()}-${Math.random().toString(16).slice(2)}`,
           start: "",
-          end: source.critical ? stage.end : "",
+          end: mapped.critical ? stage.end : "",
           source: "library"
         });
         added += 1;
@@ -1134,20 +1467,15 @@
 
       stageConfigs.forEach((stage) => {
         const card = document.querySelector(`[data-stage-card="${stage.name}"]`);
-        if (!stage.leader || !stage.start || !stage.end) {
+        if (!stage.end) {
           valid = false;
-          messages.push(`${stage.name} 的阶段负责人、开始时间和完成时间必填`);
+          messages.push(`${stage.name} 的阶段计划结束日期必填`);
           stage.collapsed = false;
           card?.classList.remove("collapsed");
           card?.querySelectorAll("[data-stage-field]").forEach((field) => {
-            if (field.dataset.stageField !== "comments" && !field.value) field.classList.add("is-invalid");
+            if (!field.value) field.classList.add("is-invalid");
           });
         }
-        if (stage.start && stage.end && stage.start > stage.end) {
-          valid = false;
-          messages.push(`${stage.name} 阶段开始时间不能晚于完成时间`);
-        }
-
         stage.tasks.forEach((task) => {
           const row = document.querySelector(`[data-row="${task.uid}"]`);
           if (task.critical && !task.end) {
@@ -1178,6 +1506,10 @@
       const addButton = event.target.closest("[data-add-manual]");
       const deleteButton = event.target.closest("[data-delete]");
       const bulkButton = event.target.closest("[data-bulk-delete]");
+      const resetStageButton = event.target.closest("[data-reset-stage]");
+      const deleteStageButton = event.target.closest("[data-delete-stage]");
+      const departmentTrigger = event.target.closest("[data-department-trigger]");
+      const typeTrigger = event.target.closest("[data-type-trigger]");
 
       if (toggle) {
         const stage = getStage(toggle.dataset.toggle);
@@ -1188,11 +1520,30 @@
       if (openButton) openLibrary(openButton.dataset.openLibrary);
       if (addButton) addManualTask(addButton.dataset.addManual);
       if (bulkButton) bulkDelete(bulkButton.dataset.bulkDelete);
+      if (resetStageButton) resetStage(resetStageButton.dataset.resetStage);
+      if (deleteStageButton) deleteStage(deleteStageButton.dataset.deleteStage);
+      if (departmentTrigger) openDepartmentMenu(departmentTrigger);
+      if (typeTrigger) openTypeMenu(typeTrigger);
       if (deleteButton) {
         const row = deleteButton.closest("[data-row]");
         deleteTask(row.dataset.stage, row.dataset.row);
       }
     });
+
+    departmentMenu.addEventListener("click", (event) => {
+      const departmentOption = event.target.closest("[data-department-option]");
+      const typeOption = event.target.closest("[data-type-option]");
+      if (departmentOption) selectDepartment(departmentOption.dataset.departmentOption);
+      if (typeOption) selectTaskType(typeOption.dataset.typeOption);
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest("[data-department-trigger]") || event.target.closest("[data-type-trigger]") || event.target.closest("#departmentMenu")) return;
+      closeFloatingMenu();
+    });
+
+    window.addEventListener("scroll", closeFloatingMenu, true);
+    window.addEventListener("resize", closeFloatingMenu);
 
     stageList.addEventListener("input", (event) => {
       if (event.target.matches("[data-stage-field]")) updateStageField(event.target);
@@ -1243,11 +1594,38 @@
       if (validateConfig()) showToast("提交成功，阶段时间与任务配置已通过校验。");
     });
 
+    document.getElementById("resetAllButton").addEventListener("click", resetAllStages);
+
     document.getElementById("backButton").addEventListener("click", () => {
       showToast("已返回上一页。静态原型中保留当前配置。");
     });
 
-    renderStages();
+    async function loadTaskData() {
+      try {
+        let records = Array.isArray(window.GATE_TASKS_SPLIT_UI) ? window.GATE_TASKS_SPLIT_UI : null;
+        if (!records) {
+          const response = await fetch("data/gate_tasks_split.ui.json");
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          records = await response.json();
+        }
+        taskLibrary = records;
+        defaultStageConfigs = buildStageConfigs(records);
+        stageConfigs = clone(defaultStageConfigs);
+        setActiveStage("CKO");
+        renderStages();
+        showToast(`已加载 ${records.length} 条真实任务数据。`);
+      } catch (error) {
+        console.warn("Failed to load task data, using fallback records.", error);
+        taskLibrary = fallbackTaskLibrary;
+        defaultStageConfigs = buildFallbackStageConfigs();
+        stageConfigs = clone(defaultStageConfigs);
+        setActiveStage("CKO");
+        renderStages();
+        showToast("未能加载 data/gate_tasks_split.ui.json，已使用内置示例数据。", true);
+      }
+    }
+
+    loadTaskData();
   </script>
 </body>
 </html>

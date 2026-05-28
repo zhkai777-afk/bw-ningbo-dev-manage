@@ -1,0 +1,10 @@
+﻿stage,total,required,optional
+Gate 0,23,23,0
+CKO,26,26,0
+PKO,44,43,1
+Gate 1,39,37,2
+Gate 2,50,46,4
+Gate 3,39,36,3
+Gate 4,62,59,3
+Gate 5,43,40,3
+Gate 6,19,16,3

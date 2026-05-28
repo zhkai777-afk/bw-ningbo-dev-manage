@@ -1,0 +1,4 @@
+﻿sourceRow,kpacId,title,function,stage,taskDescription,documentOrEvidence,responsible,remarks
+61,GPM_GR-21,"ESO K (product NUD, CPS, DR, DMEA, DVP&R)",Product Design and Development,Gate 0,"For all gates, create a hashtag link to the corresponding ESO Assessment",MP-E-GEN002,Product Eng,
+62,GPM_GR-22,ESO 1 - Release of R1 DWG (Proto),Product Design and Development,PKO,"For all gates, create a hashtag link to the corresponding ESO Assessment",MP-E-GEN002,Product Eng,
+63,GPM_GR-24,ESO 2 - Release of R2 DWG (Production Intent),Product Design and Development,PKO,"For all gates, create a hashtag link to the corresponding ESO Assessment",MP-E-GEN002,Product Eng,
