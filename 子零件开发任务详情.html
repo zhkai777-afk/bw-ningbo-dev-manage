@@ -195,6 +195,30 @@
       box-shadow: 0 4px 12px rgba(249, 115, 22, .20);
     }
 
+    .btn-warning {
+      background: var(--warning-weak);
+      border-color: #fedf89;
+      color: #b54708;
+    }
+
+    .btn-warning:hover {
+      color: #92400e;
+      border-color: var(--warning);
+      box-shadow: 0 4px 12px rgba(247, 144, 9, .16);
+    }
+
+    .btn-soft-danger {
+      background: var(--danger-weak);
+      border-color: #fecdca;
+      color: #b42318;
+    }
+
+    .btn-soft-danger:hover {
+      color: #912018;
+      border-color: var(--danger);
+      box-shadow: 0 4px 12px rgba(240, 68, 56, .14);
+    }
+
     .btn-ghost {
       background: #fff;
       border-color: transparent;
@@ -243,6 +267,16 @@
     .status-pending {
       color: #8b95a5;
       background: #e9edf4;
+    }
+
+    .status-paused {
+      color: #b54708;
+      background: var(--warning-weak);
+    }
+
+    .status-ended {
+      color: #b42318;
+      background: var(--danger-weak);
     }
 
     .status-failed {
@@ -1113,6 +1147,29 @@
       gap: 10px;
     }
 
+    .project-code-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary);
+      font-weight: 900;
+      text-decoration: none;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .project-code-link::after {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-top: 2px solid currentColor;
+      border-right: 2px solid currentColor;
+      transform: rotate(45deg);
+      flex: 0 0 auto;
+    }
+
 
     .subtask-drawer-backdrop {
       position: fixed;
@@ -1213,6 +1270,18 @@
       color: #667085;
       font-size: 11px;
       font-weight: 800;
+    }
+
+    .subtask-readonly-note {
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--primary-weak);
+      border-radius: var(--radius-sm);
+      background: #f7fbff;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.6;
     }
 
     .task-fill-modal {
@@ -1703,6 +1772,14 @@
       color: #344054;
       font-size: 12px;
       font-weight: 900;
+    }
+
+    .bom-filter-actions {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      margin-left: auto;
+      flex-wrap: wrap;
     }
 
     .field,
@@ -2724,6 +2801,7 @@
       align-items: flex-start;
     }
 
+    .part-bom-filter.bom-filter,
     .issue-filter.bom-filter,
     .quality-search.bom-filter,
     .team-search.bom-filter,
@@ -2740,6 +2818,7 @@
       border: 1px solid var(--line);
     }
 
+    .part-bom-filter.bom-filter label,
     .issue-filter.bom-filter label,
     .quality-search.bom-filter label,
     .team-search.bom-filter label,
@@ -2751,6 +2830,10 @@
       font-size: 12px;
       font-weight: 900;
       white-space: normal;
+    }
+
+    .part-bom-filter .field {
+      width: 280px;
     }
 
     .quality-search.bom-filter,
@@ -3841,13 +3924,16 @@
               <div class="info-item"><b>系统：</b>VVT系统</div>
               <div class="info-item"><b>LRP Type：</b>LRPV1</div>
               <div class="info-item"><b>PM：</b>Wu Zhuoren</div>
+              <div class="info-item"><b>关联开发项目编号：</b><button class="project-code-link" type="button" data-open-project="SCA220HCM2506281">SCA220HCM2506281</button></div>
               <div class="info-item more-link">更多项目信息</div>
             </div>
           </div>
           <aside class="project-side">
             <div class="project-actions">
-              <button class="btn" type="button"><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
-              <button class="btn btn-danger" type="button"><svg class="icon"><use href="#i-stop"></use></svg>终止项目</button>
+              <button class="btn" type="button" data-task-action="edit"><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
+              <button class="btn btn-warning" type="button" data-task-action="pause"><svg class="icon"><use href="#i-stop"></use></svg>暂停</button>
+              <button class="btn btn-soft-danger" type="button" data-task-action="delete"><svg class="icon"><use href="#i-trash"></use></svg>删除</button>
+              <button class="btn btn-danger" type="button" data-task-action="terminate"><svg class="icon"><use href="#i-stop"></use></svg>终止任务</button>
             </div>
             <div class="stat-grid" aria-label="项目关键状态">
               <div>
@@ -3990,19 +4076,18 @@
               </div>
             </div>
             <div class="bom-actions">
+              <button class="btn" type="button" data-view-part-apqp><svg class="icon"><use href="#i-eye"></use></svg>子零件APQP信息</button>
               <button class="btn" type="button" data-bom-open-detail="bom-001"><svg class="icon"><use href="#i-eye"></use></svg>查看详情</button>
             </div>
           </div>
 
-          <div class="bom-filter">
+          <div class="bom-filter part-bom-filter">
             <label>关键信息
               <input class="field" type="search" placeholder="零件名 / 客户号 / BW号 / SAP号" data-bom-search>
             </label>
             <label>阶段版本
-              <select class="select-field" data-bom-stage-filter>
-                <option value="">全部</option>
-                <option value="PKO">PKO</option>
-                <option value="Gate1">Gate1</option>
+              <select class="select-field" data-bom-history-select>
+                <option value="">全部阶段版本</option>
               </select>
             </label>
             <label>状态
@@ -4013,14 +4098,11 @@
                 <option value="review">待SCM确认</option>
               </select>
             </label>
-            <label>历史版本
-              <select class="select-field" data-bom-history-select>
-                <option value="">暂无历史版本</option>
-              </select>
-            </label>
-            <button class="btn btn-primary" type="button" data-bom-query>查询</button>
-            <button class="btn" type="button" data-bom-reset>重置</button>
-            <button class="btn" type="button" data-bom-open-history><svg class="icon"><use href="#i-eye"></use></svg>查看历史版本</button>
+            <div class="bom-filter-actions">
+              <button class="btn btn-primary" type="button" data-bom-query>查询</button>
+              <button class="btn" type="button" data-bom-reset>重置</button>
+              <button class="btn" type="button" data-bom-open-history><svg class="icon"><use href="#i-eye"></use></svg>查看历史版本</button>
+            </div>
           </div>
 
           <div class="bom-summary">
@@ -9569,6 +9651,113 @@
       hideStageTaskTooltip();
     }
 
+    function setPartTaskStatus(text, className) {
+      const statusPill = document.querySelector("[data-project-status-pill]");
+      if (!statusPill) return;
+      statusPill.textContent = text;
+      statusPill.className = `status-pill ${className}`;
+    }
+
+    function handlePartTaskAction(action, button) {
+      if (action === "edit") {
+        window.alert("模拟进入零件开发任务信息编辑。");
+        return;
+      }
+      if (action === "pause") {
+        const isPaused = button.dataset.paused === "true";
+        button.dataset.paused = isPaused ? "false" : "true";
+        button.innerHTML = isPaused
+          ? `<svg class="icon"><use href="#i-stop"></use></svg>暂停`
+          : `<svg class="icon"><use href="#i-stop"></use></svg>恢复`;
+        setPartTaskStatus(isPaused ? "进行中" : "已暂停", isPaused ? "status-running" : "status-paused");
+        window.alert(isPaused ? "模拟恢复零件开发任务。" : "模拟暂停零件开发任务。");
+        return;
+      }
+      if (action === "delete") {
+        if (window.confirm("模拟删除该零件开发任务？删除后任务将不再进入后续开发流程。")) {
+          setPartTaskStatus("已删除", "status-ended");
+        }
+        return;
+      }
+      if (action === "terminate") {
+        if (window.confirm("模拟终止该零件开发任务？终止后将停止后续Gate推进。")) {
+          setPartTaskStatus("已终止", "status-ended");
+        }
+      }
+    }
+
+    function partApqpRowsForCurrentPart() {
+      const sourceParts = bomState.rows.filter((row) => row.level > 1);
+      return sourceParts.map((part, index) => ({
+        no: index + 1,
+        apqpNo: `APQP-SUB-${String(index + 1).padStart(3, "0")}`,
+        projectNo: "SCA220HCM2506281",
+        parentApqp: "APQP-L1-001 / PHASER INSERT",
+        partNo: part.bwNo || "-",
+        partName: part.name,
+        level: part.level,
+        owner: part.apqpOwner || "Zack",
+        supplier: part.subSupplier || part.rawSupplier || "-",
+        currentGate: activeStage,
+        apqpStatus: part.childTaskDone ? "已完成" : index === 0 ? "进行中" : "待启动",
+        ots: index === 0 ? "2026-08-15" : "2026-08-30",
+        ppap: index === 0 ? "2026-10-20" : "2026-11-05",
+        sop: "2027-12",
+        source: "L1负责人创建"
+      }));
+    }
+
+    function openPartApqpTaskDrawer() {
+      const backdrop = document.querySelector("[data-subtask-drawer-backdrop]");
+      const drawer = document.querySelector("[data-subtask-drawer]");
+      const body = document.querySelector("[data-subtask-drawer-body]");
+      if (!backdrop || !drawer || !body) return;
+      document.querySelector("[data-subtask-drawer-title]").textContent = "该零件下的子零件APQP信息";
+      document.querySelector("[data-subtask-drawer-desc]").textContent = "PHASER INSERT · 子零件开发任务对象关键信息";
+      const rows = partApqpRowsForCurrentPart();
+      body.innerHTML = `
+        <div class="subtask-readonly-note">子零件APQP由 L1 层级负责人创建并指定负责人；当前子零件页面仅支持查看子零件开发任务信息，不能创建APQP。</div>
+        <table class="subtask-table" aria-label="该零件下的子零件APQP信息">
+          <thead>
+            <tr>
+              <th>编号</th>
+              <th>APQP编号</th>
+              <th>关联开发项目</th>
+              <th>所属L1 APQP</th>
+              <th>零件号 / 层级</th>
+              <th>负责人</th>
+              <th>供应商</th>
+              <th>当前Gate</th>
+              <th>APQP状态</th>
+              <th>OTS / PPAP / SOP</th>
+              <th>来源</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map((row) => `
+              <tr>
+                <td>${row.no}</td>
+                <td>${escapeHtml(row.apqpNo)}</td>
+                <td><button class="blue-link" type="button" data-open-project="${escapeHtml(row.projectNo)}">${escapeHtml(row.projectNo)}</button></td>
+                <td>${escapeHtml(row.parentApqp)}</td>
+                <td><span class="subtask-part-cell"><b>${escapeHtml(row.partNo)}</b><span>L${row.level} · ${escapeHtml(row.partName)}</span></span></td>
+                <td>${escapeHtml(row.owner)}</td>
+                <td>${escapeHtml(row.supplier)}</td>
+                <td>${escapeHtml(row.currentGate)}</td>
+                <td><span class="status-pill ${row.apqpStatus === "已完成" ? "status-locked" : row.apqpStatus === "进行中" ? "status-running" : "status-pending"}">${escapeHtml(row.apqpStatus)}</span></td>
+                <td>${escapeHtml(row.ots)} / ${escapeHtml(row.ppap)} / ${escapeHtml(row.sop)}</td>
+                <td>${escapeHtml(row.source)}</td>
+                <td><button class="blue-link" type="button">查看</button></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+      backdrop.hidden = false;
+      drawer.hidden = false;
+    }
+
     function openTaskFillModal(taskId) {
       const task = findStageTask(taskId);
       if (!task || !taskFillModal) {
@@ -10042,6 +10231,11 @@
       }
     });
     document.querySelector("[data-subtask-drawer-body]")?.addEventListener("click", (event) => {
+      const projectButton = event.target.closest("[data-open-project]");
+      if (projectButton) {
+        window.alert(`模拟跳转到开发项目：${projectButton.dataset.openProject}`);
+        return;
+      }
       const completeButton = event.target.closest("[data-complete-child-task]");
       if (!completeButton) return;
       const part = bomState.rows.find((row) => row.id === completeButton.dataset.completeChildTask);
@@ -10931,9 +11125,20 @@
     function renderBomHistoryOptions() {
       const select = document.querySelector("[data-bom-history-select]");
       if (!select) return;
-      select.innerHTML = bomState.histories.length
-        ? bomState.histories.map((item) => `<option value="${item.version}">${item.version} · ${item.submittedAt}</option>`).join("")
-        : `<option value="">暂无历史版本</option>`;
+      const selectedValue = select.value;
+      const current = currentVersion();
+      const historyOptions = bomState.histories
+        .filter((item) => item.version !== current)
+        .map((item) => `<option value="${item.version}">${item.version} · ${item.submittedAt}</option>`)
+        .join("");
+      select.innerHTML = `
+        <option value="">全部阶段版本</option>
+        ${current !== "-" ? `<option value="${current}">当前版本 · ${current}</option>` : ""}
+        ${historyOptions}
+      `;
+      if (Array.from(select.options).some((option) => option.value === selectedValue)) {
+        select.value = selectedValue;
+      }
       document.querySelector("[data-bom-open-history]").disabled = !bomState.histories.length;
     }
 
@@ -10999,11 +11204,11 @@
 
     function renderBomList() {
       const keyword = document.querySelector("[data-bom-search]")?.value.trim() || "";
-      const stage = document.querySelector("[data-bom-stage-filter]")?.value || "";
+      const version = document.querySelector("[data-bom-history-select]")?.value || "";
       const status = document.querySelector("[data-bom-status-filter]")?.value || "";
       const l1Rows = bomState.rows
         .filter((row) => rowMatches(row, keyword, "", ""))
-        .filter(() => !stage || bomState.stage === stage)
+        .filter(() => !version || currentVersion() === version)
         .filter(() => !status || bomState.status === status);
 
       bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="21" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的BOM信息" : "暂无该零件BOM数据"}</td></tr>`;
@@ -11236,6 +11441,13 @@
     document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", () => openWorkspace("scm"));
     document.querySelector("[data-bom-open-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
+    document.querySelectorAll("[data-task-action]").forEach((button) => {
+      button.addEventListener("click", () => handlePartTaskAction(button.dataset.taskAction, button));
+    });
+    document.querySelector("[data-view-part-apqp]")?.addEventListener("click", openPartApqpTaskDrawer);
+    document.querySelector("[data-open-project]")?.addEventListener("click", (event) => {
+      window.alert(`模拟跳转到开发项目：${event.currentTarget.dataset.openProject}`);
+    });
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
     document.querySelector("[data-bom-submit]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
@@ -11250,13 +11462,17 @@
     }));
     document.querySelector("[data-bom-reset]").addEventListener("click", () => {
       document.querySelector("[data-bom-search]").value = "";
-      document.querySelector("[data-bom-stage-filter]").value = "";
+      document.querySelector("[data-bom-history-select]").value = "";
       document.querySelector("[data-bom-status-filter]").value = "";
       renderBomList();
     });
     document.querySelector("[data-bom-open-history]").addEventListener("click", () => {
       const version = document.querySelector("[data-bom-history-select]").value;
-      if (version) openWorkspace("detail", null, version);
+      if (version && version !== currentVersion()) {
+        openWorkspace("detail", null, version);
+      } else {
+        openWorkspace("detail");
+      }
     });
     document.querySelector("[data-row-reset]").addEventListener("click", () => {
       document.querySelector("[data-row-part-no]").value = "";

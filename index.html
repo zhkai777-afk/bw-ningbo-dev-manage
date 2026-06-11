@@ -35,6 +35,10 @@
       box-sizing: border-box;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     body {
       margin: 0;
       background: var(--bg);
@@ -84,7 +88,7 @@
 
     .project-top {
       display: grid;
-      grid-template-columns: minmax(640px, 1fr) 450px;
+      grid-template-columns: minmax(640px, 1fr) 540px;
       gap: 24px;
       align-items: start;
     }
@@ -145,8 +149,11 @@
     }
 
     .project-actions {
+      display: flex;
+      align-items: center;
       justify-content: flex-end;
-      gap: 12px;
+      gap: 7px;
+      flex-wrap: nowrap;
     }
 
     .btn {
@@ -215,7 +222,10 @@
     }
 
     .stat-grid {
-      justify-content: space-between;
+      display: grid;
+      grid-template-columns: repeat(4, max-content);
+      justify-content: end;
+      align-items: start;
       text-align: center;
       gap: 24px;
     }
@@ -258,6 +268,23 @@
       background: #e9edf4;
     }
 
+    .status-cancel {
+      color: var(--danger);
+      background: var(--danger-weak);
+    }
+
+    .project-status-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .project-status-actions[hidden] {
+      display: none;
+    }
+
     .status-failed {
       color: var(--danger);
       background: var(--danger-weak);
@@ -266,6 +293,39 @@
     .status-conditional {
       color: #b54708;
       background: var(--warning-weak);
+    }
+
+    .gate4-ppap-form {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .gate4-ppap-form[hidden] {
+      display: none;
+    }
+
+    .gate4-ppap-form label {
+      display: grid;
+      gap: 6px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .gate4-ppap-form .span-2 {
+      grid-column: 1 / -1;
+    }
+
+    .gate4-ppap-error {
+      grid-column: 1 / -1;
+      color: var(--danger);
+      font-weight: 900;
+    }
+
+    .gate4-ppap-error[hidden] {
+      display: none;
     }
 
     .nav-panel {
@@ -3770,10 +3830,6 @@
       display: none;
     }
 
-    #apqpResultModal {
-      z-index: 80;
-    }
-
     .apqp-batch-tools {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4071,6 +4127,11 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+    }
+
+    .apqp-list-modal {
+      width: min(980px, calc(100vw - 28px));
+      max-height: calc(100vh - 24px);
     }
 
     .confirm-body {
@@ -4427,7 +4488,7 @@
             <div class="project-actions">
               <button class="btn btn-outline-danger" type="button"><svg class="icon"><use href="#i-trash"></use></svg>删除项目</button>
               <button class="btn" type="button"><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
-              <button class="btn btn-danger" type="button"><svg class="icon"><use href="#i-stop"></use></svg>终止项目</button>
+              <span class="project-status-actions" data-project-status-actions></span>
             </div>
             <div class="stat-grid" aria-label="项目关键状态">
               <div>
@@ -4641,8 +4702,11 @@
             </div>
             <div class="bom-actions">
               <button class="btn" type="button" data-bom-open-detail="bom-001"><svg class="icon"><use href="#i-eye"></use></svg>查看详情</button>
+              <button class="btn" type="button" data-bom-export-template><svg class="icon"><use href="#i-download"></use></svg>导出BOM</button>
+              <button class="btn" type="button" data-bom-apqp-tasks hidden><svg class="icon"><use href="#i-eye"></use></svg>APQP任务</button>
+              <button class="btn btn-primary" type="button" data-bom-create-apqp><svg class="icon"><use href="#i-check"></use></svg>一键创建APQP</button>
               <button class="btn btn-primary" type="button" data-bom-create><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM（AE）</button>
-              <button class="btn" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-check"></use></svg>确认BOM（SCM）</button>
+              <button class="btn btn-primary" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-check"></use></svg>确认BOM（SCM）</button>
             </div>
           </div>
 
@@ -4650,11 +4714,9 @@
             <label>关键信息
               <input class="field" type="search" placeholder="零件名 / 客户号 / BW号 / SAP号" data-bom-search>
             </label>
-            <label>阶段版本
-              <select class="select-field" data-bom-stage-filter>
-                <option value="">全部</option>
-                <option value="PKO">PKO</option>
-                <option value="Gate1">Gate1</option>
+            <label>BOM版本
+              <select class="select-field" data-bom-version-select>
+                <option value="latest">最新版本</option>
               </select>
             </label>
             <label>状态
@@ -4663,11 +4725,6 @@
                 <option value="locked">锁定</option>
                 <option value="draft">草稿</option>
                 <option value="review">待SCM确认</option>
-              </select>
-            </label>
-            <label>历史版本
-              <select class="select-field" data-bom-history-select>
-                <option value="">暂无历史版本</option>
               </select>
             </label>
             <div class="bom-filter-actions">
@@ -5509,7 +5566,7 @@
                       <input class="field" data-inline-part-field="bwNo" placeholder="BW号">
                     </label>
                     <label>图纸版本
-                      <input class="field" data-inline-part-field="drawingRev" value="R1">
+                      <input class="field" data-inline-part-field="drawingRev" value="A" placeholder="如 A / B / C">
                     </label>
                     <label class="span-2">样件 SAP 零件号
                       <input class="field" data-inline-part-field="sampleSapNo" placeholder="输入样件 SAP 号">
@@ -5572,38 +5629,6 @@
             </div>
           </div>
         </div>
-        <section class="apqp-batch-tools" data-apqp-batch-tools>
-          <div class="apqp-batch-card">
-            <b>L1 总成 APQP</b>
-            <span>由 PM 批量创建 L1 总成 APQP，负责人默认 AQE。</span>
-            <div class="apqp-owner-row">
-              <label>负责人
-                <select class="select-field" data-apqp-owner="l1"></select>
-              </label>
-              <button class="btn btn-primary" type="button" data-batch-apqp="l1">创建L1 APQP</button>
-            </div>
-          </div>
-          <div class="apqp-batch-card">
-            <b>L2及以下子零件 APQP</b>
-            <span>由 AQE 创建子零件 APQP，可按零件分别指定 SQD 负责人。</span>
-            <div class="apqp-owner-row">
-              <label>负责人
-                <select class="select-field" data-apqp-owner="child"></select>
-              </label>
-              <button class="btn btn-primary" type="button" data-toggle-apqp-assignment>分配并创建</button>
-            </div>
-          </div>
-          <div class="apqp-assignment-panel" data-apqp-assignment-panel hidden>
-            <div class="apqp-assignment-head">
-              <span>子零件 APQP 负责人分配</span>
-              <div class="apqp-assignment-actions">
-                <button class="btn" type="button" data-apply-default-sqd>应用默认负责人</button>
-                <button class="btn btn-primary" type="button" data-confirm-child-apqp>确认创建子零件APQP</button>
-              </div>
-            </div>
-            <div data-apqp-assignment-body></div>
-          </div>
-        </section>
         <div class="bom-table-wrap">
           <table class="bom-table" aria-label="BOM详情明细">
             <colgroup>
@@ -5678,7 +5703,7 @@
               <input class="field" data-part-field="bwNo" value="5069999">
             </label>
             <label>图纸版本
-              <input class="field" data-part-field="drawingRev" value="R1">
+              <input class="field" data-part-field="drawingRev" value="A" placeholder="如 A / B / C">
             </label>
             <label>样件 SAP 零件号
               <input class="field" data-part-field="sampleSapNo" value="SAP-P-9001">
@@ -5707,11 +5732,11 @@
             <label>借用项目
               <input class="field" data-part-field="borrowedProject" placeholder="可选">
             </label>
-            <label>图纸释放状态
+            <label>图纸状态
               <select class="select-field" data-part-field="releaseStatus">
-                <option>未释放</option>
-                <option>已释放</option>
-                <option>评审中</option>
+                <option>R1</option>
+                <option>R2</option>
+                <option>R3</option>
               </select>
             </label>
             <label>原材料供应商名称
@@ -5953,10 +5978,55 @@
       </div>
       <div class="confirm-body">
         <p id="submitConfirmMessage">确认提交 PKO 阶段任务吗？提交后项目将进入 Gate1 阶段，任务列表将切换为 Gate1 任务。</p>
+        <div class="gate4-ppap-form" id="gate4PpapForm" hidden>
+          <label>审批类型
+            <select class="review-status-select" id="gate4ApprovalType">
+              <option value="standard">标准审批</option>
+              <option value="temporary">临时批准</option>
+              <option value="full">全批</option>
+            </select>
+          </label>
+          <label>临批有效期
+            <select class="review-status-select" id="gate4TempDuration">
+              <option value="1">1 个月</option>
+              <option value="2">2 个月</option>
+              <option value="3">3 个月（不超过 3 个月）</option>
+            </select>
+          </label>
+          <label>到期日期
+            <input class="field" id="gate4ExpireDate" type="date">
+          </label>
+          <label class="span-2">临批原因 *
+            <textarea class="field" id="gate4TempReason" rows="2" placeholder="临批原因必填"></textarea>
+          </label>
+          <label class="span-2">临批风险说明
+            <textarea class="field" id="gate4RiskNote" rows="2" placeholder="说明临批风险和控制措施"></textarea>
+          </label>
+          <label class="span-2">客户批准依据
+            <textarea class="field" id="gate4CustomerBasis" rows="2" placeholder="填写客户邮件、批准单或会议纪要等依据"></textarea>
+          </label>
+          <div class="gate4-ppap-error" id="gate4PpapError" hidden></div>
+        </div>
       </div>
       <div class="modal-foot">
         <button class="btn" type="button" data-close-submit-confirm>取消</button>
         <button class="btn btn-primary" type="button" id="confirmSubmitStageTask">确认提交</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="projectStatusConfirmModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="projectStatusConfirmTitle">
+      <div class="modal-head">
+        <h3 id="projectStatusConfirmTitle">项目状态确认</h3>
+        <button class="modal-close" type="button" data-close-project-status-confirm aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p id="projectStatusConfirmMessage">确认调整项目状态吗？</p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-project-status-confirm>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmProjectStatus">确认</button>
       </div>
     </section>
   </div>
@@ -5993,17 +6063,63 @@
     </section>
   </div>
 
-  <div class="modal-backdrop" id="apqpResultModal" hidden>
-    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="apqpResultTitle">
+  <div class="modal-backdrop" id="bomApqpCreateModal" hidden>
+    <section class="confirm-modal apqp-list-modal" role="dialog" aria-modal="true" aria-labelledby="bomApqpCreateTitle">
       <div class="modal-head">
-        <h3 id="apqpResultTitle">创建APQP</h3>
-        <button class="modal-close" type="button" data-close-apqp-result aria-label="关闭">×</button>
+        <h3 id="bomApqpCreateTitle">一键创建APQP</h3>
+        <button class="modal-close" type="button" data-close-bom-apqp-create aria-label="关闭">×</button>
       </div>
-      <div class="confirm-body">
-        <p id="apqpResultMessage">APQP 已创建。</p>
+      <div class="audit-record-body">
+        <p class="audit-record-tip" data-bom-apqp-create-tip>以下为当前BOM中符合创建条件的零件。</p>
+        <div class="table-wrap">
+          <table class="stage-task-table" aria-label="待创建APQP零件清单">
+            <thead>
+              <tr>
+                <th>层级</th>
+                <th>零件 / 材料名称</th>
+                <th>产品应用</th>
+                <th>BW 零件号</th>
+                <th>默认负责人</th>
+                <th>任务类型</th>
+              </tr>
+            </thead>
+            <tbody data-bom-apqp-create-body></tbody>
+          </table>
+        </div>
       </div>
       <div class="modal-foot">
-        <button class="btn btn-primary" type="button" data-close-apqp-result>知道了</button>
+        <button class="btn" type="button" data-close-bom-apqp-create>取消</button>
+        <button class="btn btn-primary" type="button" data-confirm-bom-apqp-create>确认创建</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="bomApqpTasksModal" hidden>
+    <section class="confirm-modal apqp-list-modal" role="dialog" aria-modal="true" aria-labelledby="bomApqpTasksTitle">
+      <div class="modal-head">
+        <h3 id="bomApqpTasksTitle">BOM APQP任务</h3>
+        <button class="modal-close" type="button" data-close-bom-apqp-tasks aria-label="关闭">×</button>
+      </div>
+      <div class="audit-record-body">
+        <p class="audit-record-tip" data-bom-apqp-task-tip>展示由当前BOM生成的全部APQP任务。</p>
+        <div class="table-wrap">
+          <table class="stage-task-table" aria-label="BOM APQP任务列表">
+            <thead>
+              <tr>
+                <th>APQP编号</th>
+                <th>层级</th>
+                <th>零件 / 材料名称</th>
+                <th>负责人</th>
+                <th>阶段</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody data-bom-apqp-task-body></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-primary" type="button" data-close-bom-apqp-tasks>关闭</button>
       </div>
     </section>
   </div>
@@ -11451,11 +11567,23 @@
     const confirmSubmitStageTask = document.getElementById("confirmSubmitStageTask");
     const submitConfirmTitle = document.getElementById("submitConfirmTitle");
     const submitConfirmMessage = document.getElementById("submitConfirmMessage");
+    const projectStatusConfirmModal = document.getElementById("projectStatusConfirmModal");
+    const projectStatusConfirmTitle = document.getElementById("projectStatusConfirmTitle");
+    const projectStatusConfirmMessage = document.getElementById("projectStatusConfirmMessage");
+    const confirmProjectStatus = document.getElementById("confirmProjectStatus");
+    const gate4PpapForm = document.getElementById("gate4PpapForm");
+    const gate4ApprovalType = document.getElementById("gate4ApprovalType");
+    const gate4TempDuration = document.getElementById("gate4TempDuration");
+    const gate4ExpireDate = document.getElementById("gate4ExpireDate");
+    const gate4TempReason = document.getElementById("gate4TempReason");
+    const gate4RiskNote = document.getElementById("gate4RiskNote");
+    const gate4CustomerBasis = document.getElementById("gate4CustomerBasis");
+    const gate4PpapError = document.getElementById("gate4PpapError");
     const auditRecordModal = document.getElementById("auditRecordModal");
     const auditRecordTip = document.getElementById("auditRecordTip");
     const auditRecordBody = document.getElementById("auditRecordBody");
-    const apqpResultModal = document.getElementById("apqpResultModal");
-    const apqpResultMessage = document.getElementById("apqpResultMessage");
+    const bomApqpCreateModal = document.getElementById("bomApqpCreateModal");
+    const bomApqpTasksModal = document.getElementById("bomApqpTasksModal");
     const currentStageLabel = document.querySelector("[data-current-stage-label]");
     const taskFillModal = document.getElementById("taskFillModal");
     const taskFillForm = document.getElementById("taskFillForm");
@@ -11485,9 +11613,13 @@
     let activeStage = "PKO";
     let activeStageStatusFilter = "all";
     let activeFillTaskId = "";
+    let projectStatus = "inProgress";
+    let pendingProjectStatus = "";
     let pkoTasksManaged = false;
     let pendingSubmitStage = "";
     let gate1ReviewState = "running";
+    let gate4ReviewState = "running";
+    let gate4ApprovalPayload = null;
     let handoverSubmitted = false;
     let memberModalMode = "team";
     let handoverSelectionId = "";
@@ -11737,7 +11869,7 @@
         button.classList.toggle("active", button.dataset.stageStatusFilter === activeStageStatusFilter);
       });
       if (submitStageTask) {
-        submitStageTask.hidden = !(stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running"));
+        submitStageTask.hidden = !(stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running") || (stage === "Gate4" && gate4ReviewState !== "fullApproved"));
       }
       if (manageStageTask) {
         manageStageTask.hidden = stage !== "PKO";
@@ -11746,21 +11878,43 @@
         auditRecordButton.hidden = false;
       }
       if (gateReviewStatus) {
-        const showReviewStatus = stage === "Gate1" && gate1ReviewState !== "running";
+        const showReviewStatus = (stage === "Gate1" && gate1ReviewState !== "running") || (stage === "Gate4" && gate4ReviewState !== "running");
         gateReviewStatus.hidden = !showReviewStatus;
-        gateReviewStatus.value = gate1ReviewState === "rejected"
-          ? "rejected"
-          : gate1ReviewState === "conditional"
-            ? "conditional"
-            : "reviewing";
+        if (stage === "Gate4") {
+          gateReviewStatus.innerHTML = `
+            <option value="reviewing">审批中</option>
+            <option value="rejected">审批不通过</option>
+            <option value="tempApproved">临批通过</option>
+            <option value="fullApproved">全批通过</option>
+          `;
+          gateReviewStatus.value = ["tempApproved", "fullApproved", "rejected"].includes(gate4ReviewState) ? gate4ReviewState : "reviewing";
+        } else {
+          gateReviewStatus.innerHTML = `
+            <option value="reviewing">审核中</option>
+            <option value="rejected">拒绝</option>
+            <option value="conditional">带条件通过</option>
+          `;
+          gateReviewStatus.value = gate1ReviewState === "rejected"
+            ? "rejected"
+            : gate1ReviewState === "conditional"
+              ? "conditional"
+              : "reviewing";
+        }
       }
       if (stageReviewAlert) {
-        const showAlert = stage === "Gate1" && (gate1ReviewState === "rejected" || gate1ReviewState === "conditional");
+        const showAlert = (stage === "Gate1" && (gate1ReviewState === "rejected" || gate1ReviewState === "conditional")) ||
+          (stage === "Gate4" && (gate4ReviewState === "tempApproved" || gate4ReviewState === "rejected"));
         stageReviewAlert.hidden = !showAlert;
-        stageReviewAlert.classList.toggle("is-conditional", gate1ReviewState === "conditional");
-        stageReviewAlert.textContent = gate1ReviewState === "conditional"
-          ? "当前阶段带条件通过，可通过审核记录查看具体内容。"
-          : "当前阶段审核未通过，可通过查看审核记录了解审核情况、拒绝成员和对应原因。";
+        stageReviewAlert.classList.toggle("is-conditional", gate1ReviewState === "conditional" || gate4ReviewState === "tempApproved");
+        if (stage === "Gate4") {
+          stageReviewAlert.textContent = gate4ReviewState === "tempApproved"
+            ? `Gate4 已临批/零批，有效期至 ${gate4ApprovalPayload?.expireDate || "-"}；项目仍停留 Gate4，需发起全批后才能进入 Gate5。`
+            : "Gate4 临批或全批审批未通过，项目状态仍为进行中，可通过审核记录查看原因并再次发起审批。";
+        } else {
+          stageReviewAlert.textContent = gate1ReviewState === "conditional"
+            ? "当前阶段带条件通过，可通过审核记录查看具体内容。"
+            : "当前阶段审核未通过，可通过查看审核记录了解审核情况、拒绝成员和对应原因。";
+        }
       }
     }
 
@@ -12102,6 +12256,92 @@
       pill.textContent = text;
     }
 
+    const projectStatusConfig = {
+      inProgress: {
+        value: "in progress",
+        label: "正在进行中",
+        className: "status-running",
+        actions: [
+          ["pending", "暂停"],
+          ["completed", "完成"],
+          ["cancel", "终止项目"]
+        ]
+      },
+      pending: {
+        value: "pending",
+        label: "暂停",
+        className: "status-pending",
+        actions: [
+          ["inProgress", "恢复进行"],
+          ["cancel", "终止项目"]
+        ]
+      },
+      approval: {
+        value: "approval",
+        label: "审批中",
+        className: "status-review",
+        actions: [
+          ["completed", "审批通过"],
+          ["inProgress", "退回进行"],
+          ["cancel", "终止项目"]
+        ]
+      },
+      completed: {
+        value: "completed",
+        label: "完成",
+        className: "status-done",
+        actions: []
+      },
+      cancel: {
+        value: "cancel",
+        label: "终止项目",
+        className: "status-cancel",
+        actions: []
+      }
+    };
+
+    function renderProjectStatus() {
+      const config = projectStatusConfig[projectStatus] || projectStatusConfig.inProgress;
+      const pill = document.querySelector("[data-project-status-pill]");
+      if (pill) {
+        pill.className = `status-pill ${config.className}`;
+        pill.textContent = `${config.value} / ${config.label}`;
+      }
+      const actions = document.querySelector("[data-project-status-actions]");
+      if (actions) {
+        actions.hidden = !config.actions.length;
+        actions.innerHTML = config.actions.map(([status, label]) => `
+          <button class="btn ${status === "cancel" ? "btn-danger" : ""}" type="button" data-project-status-action="${status}">${escapeHtml(label)}</button>
+        `).join("");
+      }
+    }
+
+    function setProjectStatus(nextStatus) {
+      if (!projectStatusConfig[nextStatus] || nextStatus === projectStatus) {
+        return;
+      }
+      projectStatus = nextStatus;
+      renderProjectStatus();
+    }
+
+    function openProjectStatusConfirm(nextStatus) {
+      const config = projectStatusConfig[nextStatus];
+      if (!config || !projectStatusConfirmModal) return;
+      pendingProjectStatus = nextStatus;
+      projectStatusConfirmTitle.textContent = `${config.label}确认`;
+      projectStatusConfirmMessage.textContent = nextStatus === "pending"
+        ? "确认暂停当前项目吗？暂停后项目状态将显示为 pending / 暂停。"
+        : nextStatus === "completed"
+          ? "确认将当前项目标记为完成吗？完成后状态动作将关闭。"
+          : "确认终止当前项目吗？终止后状态动作将关闭。";
+      projectStatusConfirmModal.hidden = false;
+    }
+
+    function closeProjectStatusConfirm() {
+      if (projectStatusConfirmModal) projectStatusConfirmModal.hidden = true;
+      pendingProjectStatus = "";
+    }
+
     function submitPkoStage() {
       stageTasks.PKO.forEach((task) => {
         if (task.status === "todo") {
@@ -12116,17 +12356,62 @@
     function submitGate1Stage() {
       gate1ReviewState = "reviewing";
       updateStagePill("Gate1", "审核中", "status-review");
+      setProjectStatus("approval");
       renderStageTasks(activeStage);
+    }
+
+    function monthDiff(startDate, endDate) {
+      return (endDate.getFullYear() - startDate.getFullYear()) * 12 + endDate.getMonth() - startDate.getMonth() + (endDate.getDate() > startDate.getDate() ? 1 : 0);
+    }
+
+    function validateGate4PpapForm() {
+      if (!gate4PpapForm || gate4PpapForm.hidden) return true;
+      const approvalType = gate4ApprovalType.value;
+      const reason = gate4TempReason.value.trim();
+      const expireDateValue = gate4ExpireDate.value;
+      const errors = [];
+      if (approvalType === "temporary") {
+        if (!reason) errors.push("临批原因必填。");
+        if (!expireDateValue) {
+          errors.push("请选择到期日期。");
+        } else {
+          const now = new Date();
+          const expireDate = new Date(`${expireDateValue}T00:00:00`);
+          if (expireDate <= now) errors.push("到期日期必须晚于今天。");
+          if (monthDiff(now, expireDate) > 3) errors.push("临批有效期不能超过 3 个月。");
+        }
+      }
+      gate4PpapError.hidden = errors.length === 0;
+      gate4PpapError.textContent = errors.join(" ");
+      return errors.length === 0;
+    }
+
+    function submitGate4Stage() {
+      if (!validateGate4PpapForm()) return false;
+      const approvalType = gate4ApprovalType.value;
+      gate4ApprovalPayload = {
+        type: approvalType,
+        duration: gate4TempDuration.value,
+        reason: gate4TempReason.value.trim(),
+        risk: gate4RiskNote.value.trim(),
+        basis: gate4CustomerBasis.value.trim(),
+        expireDate: gate4ExpireDate.value
+      };
+      gate4ReviewState = approvalType === "temporary"
+        ? "tempReview"
+        : approvalType === "full"
+          ? "fullReview"
+          : "standardReview";
+      updateStagePill("Gate4", approvalType === "temporary" ? "临批审批中" : approvalType === "full" ? "全批审批中" : "审核中", "status-review");
+      setProjectStatus("approval");
+      renderStageTasks("Gate4");
+      return true;
     }
 
     function submitHandoverStage() {
       handoverSubmitted = true;
       updateStagePill("HandOver", "已完成", "status-done");
-      const projectStatusPill = document.querySelector("[data-project-status-pill]");
-      if (projectStatusPill) {
-        projectStatusPill.className = "status-pill status-done";
-        projectStatusPill.textContent = "已完成";
-      }
+      setProjectStatus("completed");
       renderHandoverPanel();
     }
 
@@ -12135,12 +12420,19 @@
       if (pendingSubmitStage === "Gate1") {
         submitConfirmTitle.textContent = "Gate1 提交确认";
         submitConfirmMessage.textContent = "确认提交 Gate1 阶段任务吗？提交后将由项目审核组成员进行审核，通过后进入下一个环节。";
+      } else if (pendingSubmitStage === "Gate4") {
+        submitConfirmTitle.textContent = "Gate4 PPAP 审批";
+        submitConfirmMessage.textContent = "Gate4 可发起标准审批、PPAP 临时批准或全批审批。临批通过后仍停留 Gate4；只有全批通过后才能进入 Gate5。";
       } else if (pendingSubmitStage === "HandOver") {
         submitConfirmTitle.textContent = "HandOver 提交确认";
         submitConfirmMessage.textContent = "确认提交 HandOver 阶段交接信息吗？提交后项目交接闭环，HandOver 阶段状态将更新为已完成。";
       } else {
         submitConfirmTitle.textContent = "提交确认";
         submitConfirmMessage.textContent = "确认提交 PKO 阶段任务吗？提交后项目将进入 Gate1 阶段，任务列表将切换为 Gate1 任务。";
+      }
+      if (gate4PpapForm) {
+        gate4PpapForm.hidden = pendingSubmitStage !== "Gate4";
+        gate4PpapError.hidden = true;
       }
       submitConfirmModal.hidden = false;
     }
@@ -12151,6 +12443,20 @@
     }
 
     function renderAuditRecords() {
+      if (activeStage === "Gate4") {
+        const hasRecord = gate4ReviewState !== "running";
+        auditRecordTip.textContent = hasRecord
+          ? "Gate4 PPAP 审批记录如下；临批仅为有条件放行，不代表阶段通过。"
+          : "Gate4 暂无 PPAP 审批记录。";
+        auditRecordBody.innerHTML = hasRecord ? `
+          <tr>
+            <td>${escapeHtml(gate4ApprovalPayload?.type === "temporary" ? "AQE / 关键部门" : "审批小组")}</td>
+            <td><span class="status-dot ${gate4ReviewState === "rejected" ? "reject-dot" : gate4ReviewState === "fullApproved" ? "done-dot" : "approval-dot"}">${escapeHtml(gate4ReviewState === "tempApproved" ? "临批通过" : gate4ReviewState === "fullApproved" ? "全批通过" : gate4ReviewState === "rejected" ? "审批不通过" : "审批中")}</span></td>
+            <td>${escapeHtml(gate4ApprovalPayload?.type === "temporary" ? `临批原因：${gate4ApprovalPayload?.reason || "-"}；到期日期：${gate4ApprovalPayload?.expireDate || "-"}` : gate4ApprovalPayload?.type === "full" ? "全批审批发起，审批通过后进入 Gate5。" : "标准审批发起。")}</td>
+          </tr>
+        ` : `<tr><td colspan="3" class="center">暂无审核记录</td></tr>`;
+        return;
+      }
       const isRejected = activeStage === "Gate1" && gate1ReviewState === "rejected";
       const isConditional = activeStage === "Gate1" && gate1ReviewState === "conditional";
       auditRecordTip.textContent = isRejected
@@ -12342,6 +12648,35 @@
       });
     });
 
+    document.querySelector("[data-project-status-actions]")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-project-status-action]");
+      if (button) {
+        const nextStatus = button.dataset.projectStatusAction;
+        if (["pending", "completed", "cancel"].includes(nextStatus)) {
+          openProjectStatusConfirm(nextStatus);
+        } else {
+          setProjectStatus(nextStatus);
+        }
+      }
+    });
+
+    if (projectStatusConfirmModal) {
+      document.querySelectorAll("[data-close-project-status-confirm]").forEach((button) => {
+        button.addEventListener("click", closeProjectStatusConfirm);
+      });
+      projectStatusConfirmModal.addEventListener("click", (event) => {
+        if (event.target === projectStatusConfirmModal) {
+          closeProjectStatusConfirm();
+        }
+      });
+    }
+
+    confirmProjectStatus?.addEventListener("click", () => {
+      const status = pendingProjectStatus;
+      closeProjectStatusConfirm();
+      setProjectStatus(status);
+    });
+
     stageScrollButtons.forEach((button) => {
       button.addEventListener("click", () => {
         if (!stageStrip) {
@@ -12378,11 +12713,16 @@
     if (confirmSubmitStageTask) {
       confirmSubmitStageTask.addEventListener("click", () => {
         const stageToSubmit = pendingSubmitStage;
+        if (stageToSubmit === "Gate4" && !submitGate4Stage()) {
+          return;
+        }
         closeSubmitConfirmModal();
         if (stageToSubmit === "Gate1") {
           submitGate1Stage();
         } else if (stageToSubmit === "HandOver") {
           submitHandoverStage();
+        } else if (stageToSubmit === "Gate4") {
+          return;
         } else {
           submitPkoStage();
         }
@@ -12391,6 +12731,29 @@
 
     if (gateReviewStatus) {
       gateReviewStatus.addEventListener("change", () => {
+        if (activeStage === "Gate4") {
+          if (gateReviewStatus.value === "rejected") {
+            gate4ReviewState = "rejected";
+            updateStagePill("Gate4", "未通过", "status-failed");
+            setProjectStatus("inProgress");
+          } else if (gateReviewStatus.value === "tempApproved") {
+            gate4ReviewState = "tempApproved";
+            updateStagePill("Gate4", "临批/零批", "status-conditional");
+            setProjectStatus("inProgress");
+          } else if (gateReviewStatus.value === "fullApproved") {
+            gate4ReviewState = "fullApproved";
+            updateStagePill("Gate4", "已完成", "status-done");
+            updateStagePill("Gate5", "进行中", "status-running");
+            setProjectStatus("inProgress");
+            setActiveStage("Gate5");
+            return;
+          } else {
+            gate4ReviewState = gate4ApprovalPayload?.type === "temporary" ? "tempReview" : gate4ApprovalPayload?.type === "full" ? "fullReview" : "standardReview";
+            updateStagePill("Gate4", gate4ApprovalPayload?.type === "temporary" ? "临批审批中" : gate4ApprovalPayload?.type === "full" ? "全批审批中" : "审核中", "status-review");
+          }
+          renderStageTasks(activeStage);
+          return;
+        }
         if (gateReviewStatus.value === "rejected") {
           gate1ReviewState = "rejected";
           updateStagePill("Gate1", "未通过", "status-failed");
@@ -12435,8 +12798,7 @@
 
     if (manageStageTask) {
       manageStageTask.addEventListener("click", () => {
-        pkoTasksManaged = true;
-        renderStageTasks(activeStage);
+        window.location.href = "子任务库管理.html";
       });
     }
 
@@ -13477,7 +13839,7 @@
       ["重量", "Weight Assembly(g)"],
       ["共用零件", "Common"],
       ["借用项目", "Borrowed Project"],
-      ["图纸释放状态", "Release"],
+      ["图纸状态", "DRW Status"],
       ["原材料供应商名称", "Raw Supplier"],
       ["分供方名称", "Sub Supplier"],
       ["备注", "Remark"],
@@ -13497,13 +13859,13 @@
       drawerParentId: null,
       scopedRootId: null,
       historyViewing: false,
+      selectedListVersion: "latest",
+      apqpTasks: [],
       undoStack: [],
       histories: [],
       searchMatches: [],
       rows: []
     };
-    let apqpSequence = 1;
-
     const bomProductCatalog = [
       { key: "phaser", name: "Phaser", root: "VVT PHASER ASSY", seed: 6318, material: "Aluminum" },
       { key: "vfs", name: "VFS", root: "VARIABLE FORCE SOLENOID ASSY", seed: 6426, material: "Copper" },
@@ -13529,11 +13891,11 @@
     function buildProductBomRows(product, productIndex) {
       const sapPrefix = `SP-20251010-${String(productIndex + 1).padStart(2, "0")}`;
       const rows = [
-        { level: 1, name: product.root, qty: "1", customerNo: `CUST-${product.key.toUpperCase()}-A01`, bwNo: partNo(product.seed, 0), sampleSapNo: `${sapPrefix}-L1-S`, massSapNo: `${sapPrefix}-L1-M`, rawNo: "-", rawMaterial: "-", weightPiece: "285.0", weightAssembly: "285.0", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "BW Ningbo", subSupplier: "BW Ningbo", remark: "产品L1总成" },
-        { level: 2, name: `${product.name.toUpperCase()} MODULE`, qty: "1", customerNo: "-", bwNo: partNo(product.seed, 11), sampleSapNo: `${sapPrefix}-L2-S`, massSapNo: `${sapPrefix}-L2-M`, rawNo: "-", rawMaterial: "-", weightPiece: "92.5", weightAssembly: "92.5", sharedPart: "否", borrowedProject: "-", releaseStatus: "评审中", rawSupplier: "Jiangsu Metal", subSupplier: "A-Supplier", remark: "二级模块" },
-        { level: 3, name: `${product.name.toUpperCase()} HOUSING`, qty: "1", customerNo: "-", bwNo: partNo(product.seed, 22), sampleSapNo: `${sapPrefix}-L3A-S`, massSapNo: `${sapPrefix}-L3A-M`, rawNo: `RM-${product.material.toUpperCase()}-${product.seed}`, rawMaterial: product.material, weightPiece: "38.6", weightAssembly: "38.6", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Precision", subSupplier: "B-Supplier", remark: "关键结构件" },
-        { level: 4, name: `${product.name.toUpperCase()} INSERT`, qty: "2", customerNo: "-", bwNo: partNo(product.seed, 33), sampleSapNo: `${sapPrefix}-L4-S`, massSapNo: `${sapPrefix}-L4-M`, rawNo: `RM-INSERT-${product.seed}`, rawMaterial: product.material, weightPiece: "8.7", weightAssembly: "17.4", sharedPart: "是", borrowedProject: "EA888 E5", releaseStatus: "已释放", rawSupplier: "Ningbo Steel", subSupplier: "C-Supplier", remark: "四级零件" },
-        { level: 3, name: `${product.name.toUpperCase()} FASTENER KIT`, qty: "1", customerNo: "-", bwNo: partNo(product.seed, 44), sampleSapNo: `${sapPrefix}-L3B-S`, massSapNo: `${sapPrefix}-L3B-M`, rawNo: `RM-FASTENER-${product.seed}`, rawMaterial: "Steel", weightPiece: "12.4", weightAssembly: "12.4", sharedPart: "是", borrowedProject: "VCT-2024-09", releaseStatus: "评审中", rawSupplier: "Ningbo Fastener", subSupplier: "D-Supplier", remark: "标准紧固件包" }
+        { level: 1, name: product.root, qty: "1", customerNo: `CUST-${product.key.toUpperCase()}-A01`, bwNo: partNo(product.seed, 0), drawingRev: "A", sampleSapNo: `${sapPrefix}-L1-S`, massSapNo: `${sapPrefix}-L1-M`, rawNo: "-", rawMaterial: "-", weightPiece: "285.0", weightAssembly: "285.0", sharedPart: "否", borrowedProject: "-", releaseStatus: "R3", rawSupplier: "BW Ningbo", subSupplier: "BW Ningbo", remark: "产品L1总成" },
+        { level: 2, name: `${product.name.toUpperCase()} MODULE`, qty: "1", customerNo: "-", bwNo: partNo(product.seed, 11), drawingRev: "A", sampleSapNo: `${sapPrefix}-L2-S`, massSapNo: `${sapPrefix}-L2-M`, rawNo: "-", rawMaterial: "-", weightPiece: "92.5", weightAssembly: "92.5", sharedPart: "否", borrowedProject: "-", releaseStatus: "R2", rawSupplier: "Jiangsu Metal", subSupplier: "A-Supplier", remark: "二级模块" },
+        { level: 3, name: `${product.name.toUpperCase()} HOUSING`, qty: "1", customerNo: "-", bwNo: partNo(product.seed, 22), drawingRev: "B", sampleSapNo: `${sapPrefix}-L3A-S`, massSapNo: `${sapPrefix}-L3A-M`, rawNo: `RM-${product.material.toUpperCase()}-${product.seed}`, rawMaterial: product.material, weightPiece: "38.6", weightAssembly: "38.6", sharedPart: "否", borrowedProject: "-", releaseStatus: "R3", rawSupplier: "Ningbo Precision", subSupplier: "B-Supplier", remark: "关键结构件" },
+        { level: 4, name: `${product.name.toUpperCase()} INSERT`, qty: "2", customerNo: "-", bwNo: partNo(product.seed, 33), drawingRev: "B", sampleSapNo: `${sapPrefix}-L4-S`, massSapNo: `${sapPrefix}-L4-M`, rawNo: `RM-INSERT-${product.seed}`, rawMaterial: product.material, weightPiece: "8.7", weightAssembly: "17.4", sharedPart: "是", borrowedProject: "EA888 E5", releaseStatus: "R3", rawSupplier: "Ningbo Steel", subSupplier: "C-Supplier", remark: "四级零件" },
+        { level: 3, name: `${product.name.toUpperCase()} FASTENER KIT`, qty: "1", customerNo: "-", bwNo: partNo(product.seed, 44), drawingRev: "C", sampleSapNo: `${sapPrefix}-L3B-S`, massSapNo: `${sapPrefix}-L3B-M`, rawNo: `RM-FASTENER-${product.seed}`, rawMaterial: "Steel", weightPiece: "12.4", weightAssembly: "12.4", sharedPart: "是", borrowedProject: "VCT-2024-09", releaseStatus: "R2", rawSupplier: "Ningbo Fastener", subSupplier: "D-Supplier", remark: "标准紧固件包" }
       ];
 
       return rows.map((row, rowIndex) => ({
@@ -13606,11 +13968,47 @@
       return rows.map((row) => ({ ...row }));
     }
 
+    function historyStage(version) {
+      return version?.split("-V")[0] || bomState.stage;
+    }
+
+    function selectedBomSnapshot() {
+      if (bomState.selectedListVersion === "latest") {
+        return {
+          version: currentVersion(),
+          stage: bomState.stage,
+          status: bomState.status,
+          workflowStatus: bomState.workflowStatus,
+          rows: bomState.rows,
+          isLatest: true
+        };
+      }
+      const historyItem = bomState.histories.find((item) => item.version === bomState.selectedListVersion);
+      if (!historyItem) {
+        bomState.selectedListVersion = "latest";
+        return selectedBomSnapshot();
+      }
+      return {
+        ...historyItem,
+        stage: historyItem.stage || historyStage(historyItem.version),
+        isLatest: false
+      };
+    }
+
+    function bomVersionLabel(snapshot) {
+      if (snapshot.isLatest) {
+        const version = snapshot.version === "-" ? "暂无BOM" : snapshot.version;
+        return `最新版本 · ${version}`;
+      }
+      return `${snapshot.stage || historyStage(snapshot.version)} · ${snapshot.version} · ${snapshot.submittedAt}`;
+    }
+
     function snapshotBomHistory() {
       const version = currentVersion();
       const existingIndex = bomState.histories.findIndex((item) => item.version === version);
       const snapshot = {
         version,
+        stage: bomState.stage,
         status: bomState.status,
         workflowStatus: bomState.workflowStatus,
         submittedAt: new Date().toLocaleString("zh-CN", { hour12: false }),
@@ -13621,14 +14019,35 @@
       } else {
         bomState.histories.unshift(snapshot);
       }
+      bomState.selectedListVersion = "latest";
     }
 
-    function renderBomHistoryOptions() {
-      const select = document.querySelector("[data-bom-history-select]");
+    function renderBomVersionOptions() {
+      const select = document.querySelector("[data-bom-version-select]");
       if (!select) return;
-      select.innerHTML = bomState.histories.length
-        ? bomState.histories.map((item) => `<option value="${item.version}">${item.version} · ${item.submittedAt}</option>`).join("")
-        : `<option value="">暂无历史版本</option>`;
+      const selectedValue = bomState.selectedListVersion;
+      const latestSnapshot = {
+        version: currentVersion(),
+        stage: bomState.stage,
+        status: bomState.status,
+        workflowStatus: bomState.workflowStatus,
+        rows: bomState.rows,
+        isLatest: true
+      };
+      select.innerHTML = [
+        `<option value="latest">${escapeHtml(bomVersionLabel(latestSnapshot))}</option>`,
+        ...bomState.histories.map((item) => `<option value="${escapeHtml(item.version)}">${escapeHtml(bomVersionLabel({
+          ...item,
+          stage: item.stage || historyStage(item.version),
+          isLatest: false
+        }))}</option>`)
+      ].join("");
+      if (Array.from(select.options).some((option) => option.value === selectedValue)) {
+        select.value = selectedValue;
+      } else {
+        bomState.selectedListVersion = "latest";
+        select.value = "latest";
+      }
       const historyButton = document.querySelector("[data-bom-open-history]");
       if (historyButton) {
         historyButton.disabled = !bomState.histories.length;
@@ -13644,6 +14063,7 @@
       bomState.versionMinor = version.minor;
       bomState.status = latest.status;
       bomState.workflowStatus = latest.workflowStatus || "confirmed";
+      bomState.stage = latest.stage || historyStage(latest.version);
       bomState.scopedRootId = null;
     }
 
@@ -13847,23 +14267,43 @@
         (!partNoKeyword || partNoCorpus.includes(partNoKeyword.toLowerCase()));
     }
 
+    function normalizeDrawingStatus(status) {
+      return {
+        "已释放": "R3",
+        "评审中": "R2",
+        "未释放": "R1"
+      }[status] || status || "R1";
+    }
+
     function renderBomList() {
       const keyword = document.querySelector("[data-bom-search]")?.value.trim() || "";
-      const stage = document.querySelector("[data-bom-stage-filter]")?.value || "";
       const status = document.querySelector("[data-bom-status-filter]")?.value || "";
-      const l1Rows = bomState.rows.filter((row) => row.level === 1)
+      const selectedSnapshot = selectedBomSnapshot();
+      const sourceRows = selectedSnapshot.rows || [];
+      const l1Rows = sourceRows.filter((row) => row.level === 1)
         .filter((row) => rowMatches(row, keyword, "", ""))
-        .filter(() => !stage || bomState.stage === stage)
-        .filter(() => !status || bomState.status === status);
+        .filter(() => !status || selectedSnapshot.status === status);
 
-      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, { context: "list" })).join("") || `<tr><td colspan="21" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的L1 BOM" : "暂无BOM数据，请点击“编辑BOM（AE）”后搜索零件生成模拟数据"}</td></tr>`;
-      document.querySelector("[data-bom-current-version]").textContent = currentVersion();
-      document.querySelector("[data-bom-current-status]").textContent = displayBomStatus();
-      document.querySelector("[data-bom-l1-count]").textContent = bomState.rows.filter((row) => row.level === 1).length;
-      document.querySelector("[data-bom-all-count]").textContent = bomState.rows.length;
+      const isLatest = selectedSnapshot.isLatest;
+      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, { context: isLatest ? "list" : "historyList" })).join("") || `<tr><td colspan="21" class="bom-empty-tip">${sourceRows.length ? "未找到匹配的L1 BOM" : "暂无BOM数据，请点击“编辑BOM（AE）”后搜索零件生成模拟数据"}</td></tr>`;
+      document.querySelector("[data-bom-current-version]").textContent = selectedSnapshot.version || "-";
+      document.querySelector("[data-bom-current-status]").textContent = isLatest ? displayBomStatus() : statusText(selectedSnapshot.status);
+      document.querySelector("[data-bom-l1-count]").textContent = sourceRows.filter((row) => row.level === 1).length;
+      document.querySelector("[data-bom-all-count]").textContent = sourceRows.length;
       const canScmConfirm = bomState.rows.length && bomState.status !== "locked" && ["pendingScm", "scmDraft"].includes(bomState.workflowStatus);
       document.querySelector("[data-bom-scm-edit]")?.toggleAttribute("disabled", !canScmConfirm);
-      renderBomHistoryOptions();
+      const hasApqpTasks = bomState.apqpTasks.length > 0;
+      const createApqpButton = document.querySelector("[data-bom-create-apqp]");
+      const apqpTasksButton = document.querySelector("[data-bom-apqp-tasks]");
+      if (createApqpButton) {
+        createApqpButton.hidden = hasApqpTasks;
+        createApqpButton.disabled = !isLatest || !bomState.rows.length;
+      }
+      if (apqpTasksButton) {
+        apqpTasksButton.hidden = !hasApqpTasks;
+      }
+      document.querySelector("[data-bom-export-template]")?.toggleAttribute("disabled", !sourceRows.length);
+      renderBomVersionOptions();
     }
 
     function renderBomEditor() {
@@ -13944,10 +14384,7 @@
       document.querySelector("[data-bom-detail-scope]").textContent = rowId ? "L1子集" : "完整层级";
       document.querySelector("[data-bom-detail-version]").textContent = historyItem?.version || currentVersion();
       document.querySelector("[data-bom-detail-meta]").textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : "当前为只读详情，不影响编辑BOM数据。";
-      document.querySelector("[data-apqp-batch-tools]").hidden = Boolean(historyItem) || bomState.status !== "locked";
-      renderApqpOwnerOptions();
-      renderChildApqpAssignment();
-      bomDetailBody.innerHTML = scopedRows.map((row) => bomRowHtml(row, { context: "detail", allowApqp: !historyItem && bomState.status === "locked" })).join("") || `<tr><td colspan="21" class="center">暂无BOM数据</td></tr>`;
+      bomDetailBody.innerHTML = scopedRows.map((row) => bomRowHtml(row, { context: "detail" })).join("") || `<tr><td colspan="21" class="center">暂无BOM数据</td></tr>`;
     }
 
     function openBomDetail(rowId = null, version = "") {
@@ -13960,25 +14397,19 @@
     }
 
     function bomRowHtml(row, options = {}) {
-      const { context = "list", selectable = false, allowApqp = false } = options;
+      const { context = "list", selectable = false } = options;
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
       const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
       const readonly = context === "detail";
-      const canCreateApqp = (context === "list" ? bomState.status === "locked" : allowApqp) && row.sharedPart === "否";
-      const apqpAction = !canCreateApqp
-        ? ""
-        : row.apqpCreated
-          ? `<span class="tag tag-green">APQP已创建${row.apqpOwner ? ` · ${escapeHtml(row.apqpOwner)}` : ""}</span>`
-          : `<button class="blue-link" type="button" data-create-apqp="${row.id}">创建APQP</button>`;
-      const operation = readonly
-        ? `<span class="bom-op">${apqpAction || "<span>只读</span>"}</span>`
+      const operation = readonly || context === "historyList"
+        ? `<span class="bom-op"><span>只读</span></span>`
         : context === "workspace"
         ? `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button>${bomState.mode === "scm" ? "" : `<button class="blue-link" type="button" data-remove-row="${row.id}">删除</button>`}</span>`
-        : `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${row.id}">查看</button><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button>${apqpAction}</span>`;
+        : `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${row.id}">查看</button><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button></span>`;
       const cells = [
         row.no, level, partName, row.application, row.qty, row.customerNo, row.bwNo, row.drawingRev,
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
-        row.sharedPart, row.borrowedProject, row.releaseStatus, row.rawSupplier, row.subSupplier, row.remark, operation
+        row.sharedPart, row.borrowedProject, normalizeDrawingStatus(row.releaseStatus), row.rawSupplier, row.subSupplier, row.remark, operation
       ];
       const body = cells.map((cell, index) => `<td class="${index === cells.length - 1 ? "fixed-op" : ""}">${cell}</td>`).join("");
       const checked = bomState.selectedRowIds.includes(row.id) ? "checked" : "";
@@ -14095,130 +14526,135 @@
       renderBomList();
     }
 
-    function closeApqpResultModal() {
-      apqpResultModal.hidden = true;
-    }
-
     function membersByRole(role) {
       return memberCatalog.flatMap((team) => team.members).filter((member) => member.role === role);
     }
 
-    function renderApqpOwnerOptions() {
-      const l1Select = document.querySelector('[data-apqp-owner="l1"]');
-      const childSelect = document.querySelector('[data-apqp-owner="child"]');
-      const aqeMembers = membersByRole("AQE");
-      const sqdMembers = membersByRole("SQD");
-      if (l1Select) {
-        l1Select.innerHTML = aqeMembers.map((member) => `<option>${escapeHtml(member.name)} / ${escapeHtml(member.role)}</option>`).join("") || `<option>AQE</option>`;
-      }
-      if (childSelect) {
-        childSelect.innerHTML = sqdMembers.map((member) => `<option>${escapeHtml(member.name)} / ${escapeHtml(member.role)}</option>`).join("") || `<option>SQD</option>`;
-      }
+    function defaultApqpOwner(row) {
+      const role = row.level === 1 ? "AQE" : "SQD";
+      const member = membersByRole(role)[0];
+      return member ? `${member.name} / ${member.role}` : role;
     }
 
-    function childApqpRows() {
-      return bomState.rows.filter((row) => row.level > 1 && row.sharedPart === "否");
+    function apqpTaskType(row) {
+      return row.level === 1 ? "L1总成APQP" : "子零件APQP";
     }
 
-    function renderChildApqpAssignment() {
-      const body = document.querySelector("[data-apqp-assignment-body]");
+    function eligibleApqpRows() {
+      return bomState.rows.filter((row) => row.sharedPart === "否" && !row.apqpCreated);
+    }
+
+    function renderApqpCreatePreview() {
+      const rows = eligibleApqpRows();
+      const body = document.querySelector("[data-bom-apqp-create-body]");
+      const tip = document.querySelector("[data-bom-apqp-create-tip]");
+      const confirmButton = document.querySelector("[data-confirm-bom-apqp-create]");
+      if (tip) {
+        tip.textContent = rows.length
+          ? `以下 ${rows.length} 个零件符合创建条件，确认后将生成对应 APQP 任务。`
+          : "当前BOM没有符合条件的零件，可能已全部创建或为共用零件。";
+      }
+      if (confirmButton) confirmButton.disabled = !rows.length;
       if (!body) return;
-      const sqdOptions = membersByRole("SQD").map((member) => `<option>${escapeHtml(member.name)} / ${escapeHtml(member.role)}</option>`).join("");
-      const rows = childApqpRows();
-      body.innerHTML = rows.length ? `
-        <table class="apqp-assignment-table" aria-label="子零件APQP负责人分配">
-          <thead>
-            <tr>
-              <th>级数</th>
-              <th>零件 / 材料名称</th>
-              <th>产品应用</th>
-              <th>负责人</th>
-              <th>状态</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${rows.map((row) => `
-              <tr>
-                <td>L${row.level}</td>
-                <td>${escapeHtml(row.name)}</td>
-                <td>${escapeHtml(row.application)}</td>
-                <td>
-                  <select class="select-field" data-child-apqp-owner="${escapeHtml(row.id)}" ${row.apqpCreated ? "disabled" : ""}>
-                    ${sqdOptions || `<option>待指定</option>`}
-                  </select>
-                </td>
-                <td>${row.apqpCreated ? `APQP已创建${row.apqpOwner ? ` · ${escapeHtml(row.apqpOwner)}` : ""}` : "待创建"}</td>
-              </tr>
-            `).join("")}
-          </tbody>
-        </table>
-      ` : `<div class="bom-empty-tip">暂无可创建 APQP 的 L2及以下子零件</div>`;
+      body.innerHTML = rows.length ? rows.map((row) => `
+        <tr>
+          <td>L${row.level}</td>
+          <td>${escapeHtml(row.name)}</td>
+          <td>${escapeHtml(row.application)}</td>
+          <td>${escapeHtml(row.bwNo)}</td>
+          <td>${escapeHtml(defaultApqpOwner(row))}</td>
+          <td>${escapeHtml(apqpTaskType(row))}</td>
+        </tr>
+      `).join("") : `<tr><td class="bom-empty-tip" colspan="6">暂无可创建APQP的零件</td></tr>`;
+    }
+
+    function openApqpCreateModal() {
+      renderApqpCreatePreview();
+      bomApqpCreateModal.hidden = false;
+    }
+
+    function closeApqpCreateModal() {
+      bomApqpCreateModal.hidden = true;
+    }
+
+    function confirmBomApqpCreate() {
+      const rows = eligibleApqpRows();
+      const createdAt = getCurrentTime();
       rows.forEach((row) => {
-        const select = Array.from(body.querySelectorAll("[data-child-apqp-owner]")).find((item) => item.dataset.childApqpOwner === row.id);
-        if (select && row.apqpOwner) select.value = row.apqpOwner;
-      });
-    }
-
-    function applyDefaultSqdToChildren() {
-      const defaultOwner = document.querySelector('[data-apqp-owner="child"]')?.value || "";
-      document.querySelectorAll("[data-child-apqp-owner]").forEach((select) => {
-        if (!select.disabled && defaultOwner) select.value = defaultOwner;
-      });
-    }
-
-    function createApqp(rowId, owner = "") {
-      const row = bomState.rows.find((item) => item.id === rowId);
-      if (!row) return;
-      row.apqpCreated = true;
-      row.apqpNo = row.apqpNo || `APQP-${String(apqpSequence).padStart(3, "0")}`;
-      row.apqpOwner = owner || (row.level === 1 ? document.querySelector('[data-apqp-owner="l1"]')?.value : document.querySelector('[data-apqp-owner="child"]')?.value) || (row.level === 1 ? "AQE" : "SQD");
-      apqpSequence += 1;
-      apqpResultMessage.textContent = `已基于 ${row.name} 创建 APQP，负责人：${row.apqpOwner}，编号：${row.apqpNo}。`;
-      apqpResultModal.hidden = false;
-      renderBomEditor();
-      renderBomList();
-    }
-
-    function batchCreateApqp(scope) {
-      const owner = document.querySelector(`[data-apqp-owner="${scope === "l1" ? "l1" : "child"}"]`)?.value || (scope === "l1" ? "AQE" : "SQD");
-      const rows = bomState.rows.filter((row) => scope === "l1" ? row.level === 1 : row.level > 1).filter((row) => row.sharedPart === "否" && !row.apqpCreated);
-      rows.forEach((row) => {
+        const taskNo = `APQP-${String(bomState.apqpTasks.length + 1).padStart(3, "0")}`;
+        const owner = defaultApqpOwner(row);
         row.apqpCreated = true;
-        row.apqpNo = row.apqpNo || `APQP-${String(apqpSequence).padStart(3, "0")}`;
+        row.apqpNo = taskNo;
         row.apqpOwner = owner;
-        apqpSequence += 1;
+        bomState.apqpTasks.push({
+          id: taskNo,
+          rowId: row.id,
+          level: row.level,
+          partName: row.name,
+          application: row.application,
+          bwNo: row.bwNo,
+          owner,
+          type: apqpTaskType(row),
+          stage: bomState.stage,
+          status: "待启动",
+          createdAt
+        });
       });
-      apqpResultMessage.textContent = rows.length
-        ? `已批量创建 ${rows.length} 个${scope === "l1" ? "L1总成" : "L2及以下子零件"} APQP，负责人：${owner}。`
-        : `当前没有可创建的${scope === "l1" ? "L1总成" : "L2及以下子零件"} APQP。`;
-      apqpResultModal.hidden = false;
-      renderBomDetail();
+      closeApqpCreateModal();
       renderBomList();
+      openApqpTasksModal();
     }
 
-    function confirmChildApqpAssignments() {
-      const selects = Array.from(document.querySelectorAll("[data-child-apqp-owner]"));
-      const created = [];
-      let unassigned = 0;
-      selects.forEach((select) => {
-        const row = bomState.rows.find((item) => item.id === select.dataset.childApqpOwner);
-        if (!row || row.apqpCreated) return;
-        const owner = select.value;
-        if (!owner || owner === "待指定") {
-          unassigned += 1;
-          return;
-        }
-        row.apqpCreated = true;
-        row.apqpNo = row.apqpNo || `APQP-${String(apqpSequence).padStart(3, "0")}`;
-        row.apqpOwner = owner;
-        apqpSequence += 1;
-        created.push(row);
-      });
-      apqpResultMessage.textContent = `已创建 ${created.length} 个子零件 APQP。${unassigned ? `仍有 ${unassigned} 项未指定负责人，未创建。` : ""}`;
-      apqpResultModal.hidden = false;
-      renderChildApqpAssignment();
-      renderBomDetail();
-      renderBomList();
+    function renderApqpTasks() {
+      const body = document.querySelector("[data-bom-apqp-task-body]");
+      const tip = document.querySelector("[data-bom-apqp-task-tip]");
+      const tasks = bomState.apqpTasks;
+      if (tip) {
+        tip.textContent = tasks.length ? `共 ${tasks.length} 个由当前BOM生成的 APQP 任务。` : "当前BOM尚未生成APQP任务。";
+      }
+      if (!body) return;
+      body.innerHTML = tasks.length ? tasks.map((task) => `
+        <tr>
+          <td>${escapeHtml(task.id)}</td>
+          <td>L${task.level}</td>
+          <td>${escapeHtml(task.partName)}</td>
+          <td>${escapeHtml(task.owner)}</td>
+          <td>${escapeHtml(task.stage)}</td>
+          <td><span class="status-dot">${escapeHtml(task.status)}</span></td>
+        </tr>
+      `).join("") : `<tr><td class="bom-empty-tip" colspan="6">暂无APQP任务</td></tr>`;
+    }
+
+    function openApqpTasksModal() {
+      renderApqpTasks();
+      bomApqpTasksModal.hidden = false;
+    }
+
+    function closeApqpTasksModal() {
+      bomApqpTasksModal.hidden = true;
+    }
+
+    function csvCell(value) {
+      return `"${String(value ?? "").replace(/"/g, '""')}"`;
+    }
+
+    function exportBomTemplate() {
+      const snapshot = selectedBomSnapshot();
+      const headers = bomHeaders.slice(0, -1).map(([cn, en]) => `${cn} ${en}`);
+      const rows = (snapshot.rows || []).map((row) => [
+        row.no, `L${row.level}`, row.name, row.application, row.qty, row.customerNo, row.bwNo, row.drawingRev,
+        row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
+        row.sharedPart, row.borrowedProject, normalizeDrawingStatus(row.releaseStatus), row.rawSupplier, row.subSupplier, row.remark
+      ]);
+      const csv = [headers, ...rows].map((line) => line.map(csvCell).join(",")).join("\n");
+      const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `BOM导出_${snapshot.version || "未创建"}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(link.href);
+      link.remove();
     }
 
     function fieldValue(name) {
@@ -14242,7 +14678,7 @@
         qty: inlineFieldValue("qty"),
         customerNo: inlineFieldValue("customerNo"),
         bwNo: inlineFieldValue("bwNo"),
-        drawingRev: inlineFieldValue("drawingRev"),
+        drawingRev: inlineFieldValue("drawingRev") || "A",
         sampleSapNo: inlineFieldValue("sampleSapNo"),
         massSapNo: inlineFieldValue("massSapNo"),
         rawNo: inlineFieldValue("rawNo"),
@@ -14251,7 +14687,7 @@
         weightAssembly: "-",
         sharedPart: "否",
         borrowedProject: "-",
-        releaseStatus: "未释放",
+        releaseStatus: "R1",
         rawSupplier: "-",
         subSupplier: "-",
         remark: inlineFieldValue("remark")
@@ -14265,7 +14701,7 @@
       setInlineFieldValue("qty", row?.qty || "1");
       setInlineFieldValue("customerNo", row?.customerNo === "-" ? "" : row?.customerNo || "");
       setInlineFieldValue("bwNo", row?.bwNo || "");
-      setInlineFieldValue("drawingRev", row?.drawingRev || "R1");
+      setInlineFieldValue("drawingRev", row?.drawingRev || "A");
       setInlineFieldValue("sampleSapNo", row?.sampleSapNo || "");
       setInlineFieldValue("massSapNo", row?.massSapNo || "");
       setInlineFieldValue("rawNo", row?.rawNo === "-" ? "" : row?.rawNo || "");
@@ -14379,7 +14815,7 @@
           customerNo: row.customerNo, bwNo: row.bwNo, drawingRev: row.drawingRev,
           sampleSapNo: row.sampleSapNo, massSapNo: row.massSapNo, rawNo: row.rawNo,
           rawMaterial: row.rawMaterial, weightPiece: row.weightPiece, weightAssembly: row.weightAssembly,
-          sharedPart: row.sharedPart, borrowedProject: row.borrowedProject, releaseStatus: row.releaseStatus,
+          sharedPart: row.sharedPart, borrowedProject: row.borrowedProject, releaseStatus: normalizeDrawingStatus(row.releaseStatus),
           rawSupplier: row.rawSupplier, subSupplier: row.subSupplier, remark: row.remark
         }).forEach(([key, value]) => {
           const field = document.querySelector(`[data-part-field="${key}"]`);
@@ -14414,7 +14850,7 @@
         weightAssembly: fieldValue("weightAssembly"),
         sharedPart: fieldValue("sharedPart"),
         borrowedProject: fieldValue("borrowedProject"),
-        releaseStatus: fieldValue("releaseStatus"),
+        releaseStatus: normalizeDrawingStatus(fieldValue("releaseStatus")),
         rawSupplier: fieldValue("rawSupplier"),
         subSupplier: fieldValue("subSupplier"),
         remark: fieldValue("remark")
@@ -14476,7 +14912,13 @@
 
     document.querySelector("[data-bom-create]").addEventListener("click", () => openWorkspace("create"));
     document.querySelector("[data-bom-scm-edit]").addEventListener("click", () => openWorkspace("scm"));
-    document.querySelector("[data-bom-open-detail]").addEventListener("click", () => openBomDetail());
+    document.querySelector("[data-bom-create-apqp]")?.addEventListener("click", openApqpCreateModal);
+    document.querySelector("[data-bom-apqp-tasks]")?.addEventListener("click", openApqpTasksModal);
+    document.querySelector("[data-bom-export-template]")?.addEventListener("click", exportBomTemplate);
+    document.querySelector("[data-bom-open-detail]").addEventListener("click", () => {
+      const selectedSnapshot = selectedBomSnapshot();
+      openBomDetail(null, selectedSnapshot.isLatest ? "" : selectedSnapshot.version);
+    });
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openBomDetail());
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
     document.querySelectorAll("[data-close-bom-detail]").forEach((button) => button.addEventListener("click", closeBomDetail));
@@ -14484,6 +14926,10 @@
     document.querySelector("[data-bom-save-draft]")?.addEventListener("click", saveBomDraft);
     document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
+    document.querySelector("[data-bom-version-select]")?.addEventListener("change", (event) => {
+      bomState.selectedListVersion = event.target.value || "latest";
+      renderBomList();
+    });
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
     document.querySelector("[data-bom-part-search-confirm]")?.addEventListener("click", searchBomPart);
     document.querySelectorAll("[data-bom-part-search-name], [data-bom-part-search-no]").forEach((input) => {
@@ -14506,13 +14952,13 @@
     });
     document.querySelector("[data-bom-reset]").addEventListener("click", () => {
       document.querySelector("[data-bom-search]").value = "";
-      document.querySelector("[data-bom-stage-filter]").value = "";
       document.querySelector("[data-bom-status-filter]").value = "";
+      bomState.selectedListVersion = "latest";
       renderBomList();
     });
     document.querySelector("[data-bom-open-history]")?.addEventListener("click", () => {
-      const version = document.querySelector("[data-bom-history-select]").value;
-      if (version) openBomDetail(null, version);
+      const version = document.querySelector("[data-bom-version-select]").value;
+      openBomDetail(null, version === "latest" ? "" : version);
     });
     document.querySelector("[data-row-reset]").addEventListener("click", () => {
       document.querySelector("[data-row-part-no]").value = "";
@@ -14568,30 +15014,18 @@
     });
     document.querySelector("[data-undo-delete]")?.addEventListener("click", undoDelete);
     document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
-    document.querySelectorAll("[data-close-apqp-result]").forEach((button) => button.addEventListener("click", closeApqpResultModal));
-    document.querySelector("[data-apqp-batch-tools]")?.addEventListener("click", (event) => {
-      const batchButton = event.target.closest("[data-batch-apqp]");
-      if (batchButton) batchCreateApqp(batchButton.dataset.batchApqp);
-      if (event.target.closest("[data-toggle-apqp-assignment]")) {
-        const panel = document.querySelector("[data-apqp-assignment-panel]");
-        if (panel) {
-          panel.hidden = !panel.hidden;
-          renderChildApqpAssignment();
-        }
-      }
-      if (event.target.closest("[data-apply-default-sqd]")) applyDefaultSqdToChildren();
-      if (event.target.closest("[data-confirm-child-apqp]")) confirmChildApqpAssignments();
+    document.querySelectorAll("[data-close-bom-apqp-create]").forEach((button) => button.addEventListener("click", closeApqpCreateModal));
+    document.querySelector("[data-confirm-bom-apqp-create]")?.addEventListener("click", confirmBomApqpCreate);
+    document.querySelectorAll("[data-close-bom-apqp-tasks]").forEach((button) => button.addEventListener("click", closeApqpTasksModal));
+    bomApqpCreateModal.addEventListener("click", (event) => {
+      if (event.target === bomApqpCreateModal) closeApqpCreateModal();
     });
-    apqpResultModal.addEventListener("click", (event) => {
-      if (event.target === apqpResultModal) {
-        closeApqpResultModal();
-      }
+    bomApqpTasksModal.addEventListener("click", (event) => {
+      if (event.target === bomApqpTasksModal) closeApqpTasksModal();
     });
     bomEditBody.addEventListener("click", (event) => {
       const editButton = event.target.closest("[data-edit-row]");
       const removeButton = event.target.closest("[data-remove-row]");
-      const apqpButton = event.target.closest("[data-create-apqp]");
-      if (apqpButton) createApqp(apqpButton.dataset.createApqp);
       if (editButton) {
         bomState.selectedRowIds = [editButton.dataset.editRow];
         renderBomEditor();
@@ -14625,17 +15059,7 @@
       bomState.selectedRowIds = checkAll.checked ? visibleIds : [];
       renderBomEditor();
     });
-    bomDetailBody.addEventListener("click", (event) => {
-      const apqpButton = event.target.closest("[data-create-apqp]");
-      if (apqpButton) {
-        createApqp(apqpButton.dataset.createApqp);
-        renderBomDetail();
-      }
-    });
     bomListBody.addEventListener("click", (event) => {
-      if (event.target.closest("[data-create-apqp]")) {
-        createApqp(event.target.closest("[data-create-apqp]").dataset.createApqp);
-      }
       if (event.target.closest("[data-detail-row]")) {
         openBomDetail(event.target.closest("[data-detail-row]").dataset.detailRow);
       }
@@ -14647,6 +15071,7 @@
     renderBomHeads();
     renderBomList();
     renderTeamTable();
+    renderProjectStatus();
     updateStageScrollState();
     renderStageTasks(activeStage);
     refreshProgress();
