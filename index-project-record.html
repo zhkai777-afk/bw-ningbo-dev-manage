@@ -443,6 +443,7 @@
     .submit-member-chip {
       display: inline-flex;
       align-items: center;
+      gap: 6px;
       height: 26px;
       padding: 0 10px;
       border-radius: 4px;
@@ -451,6 +452,19 @@
       color: var(--primary);
       font-size: 12px;
       font-weight: 900;
+    }
+
+    .submit-member-remove {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(30, 102, 255, .12);
+      color: var(--primary);
+      cursor: pointer;
+      font: inherit;
+      line-height: 16px;
     }
 
     .submit-member-chip.is-add {
@@ -607,6 +621,200 @@
 
     .tab-panel[hidden] {
       display: none;
+    }
+
+    .record-page {
+      display: grid;
+      gap: 16px;
+    }
+
+    .record-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .record-section {
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 18px;
+    }
+
+    .record-section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .record-section-head h3 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 16px;
+    }
+
+    .record-alert-list,
+    .record-timeline {
+      display: grid;
+      gap: 10px;
+    }
+
+    .record-alert {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #d9e8ff;
+      background: #f4f8ff;
+    }
+
+    .record-alert.is-risk {
+      border-color: #fed7aa;
+      background: #fff7ed;
+    }
+
+    .record-alert.is-update {
+      border-color: #d1fae5;
+      background: #f0fdf4;
+    }
+
+    .record-alert-type,
+    .record-event-type {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 4px;
+      background: #e8f1ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .record-alert-main h4,
+    .record-event-main h4 {
+      margin: 0 0 5px;
+      color: #1f2937;
+      font-size: 14px;
+    }
+
+    .record-alert-main p,
+    .record-event-main p {
+      margin: 0;
+      color: #667085;
+      line-height: 1.55;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .record-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .record-summary-item {
+      min-height: 70px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      display: grid;
+      align-content: center;
+      gap: 6px;
+    }
+
+    .record-summary-item span {
+      color: #8a94a6;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .record-summary-item strong {
+      color: #1f2937;
+      font-size: 16px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .record-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .record-filter-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .record-filter {
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #475467;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .record-filter.active {
+      color: #fff;
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .record-event {
+      display: grid;
+      grid-template-columns: 150px 92px minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .record-event:last-child {
+      border-bottom: 0;
+    }
+
+    .record-event-time {
+      color: #667085;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.5;
+    }
+
+    .record-event-meta {
+      margin-top: 6px;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .record-empty {
+      padding: 18px;
+      border: 1px dashed var(--line-strong);
+      color: #667085;
+      background: #f8fafc;
+      font-weight: 800;
+    }
+
+    @media (max-width: 900px) {
+      .record-hero {
+        grid-template-columns: 1fr;
+      }
+
+      .record-alert,
+      .record-event {
+        grid-template-columns: 1fr;
+      }
     }
 
     .placeholder-panel {
@@ -778,24 +986,9 @@
       font-size: 15px;
     }
 
-    .pm-workbench {
-      margin-top: 18px;
-    }
-
     .table-panel {
       background: #fff;
       border: 1px solid var(--line);
-    }
-
-    .todo-panel {
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
-      gap: 14px;
-      align-items: center;
-      padding: 10px 14px;
-      border: 1px solid #b9d3ff;
-      border-left: 4px solid var(--primary);
-      background: #f3f8ff;
     }
 
     .section-head {
@@ -804,69 +997,11 @@
       margin-bottom: 14px;
     }
 
-    .todo-panel .section-head {
-      gap: 10px;
-      align-items: center;
-      justify-content: flex-start;
-      margin-bottom: 0;
-    }
-
-    .todo-toggle {
-      min-width: 66px;
-      height: 30px;
-      padding: 0 10px;
-      justify-content: center;
-      background: transparent;
-      border-color: #bfd5f7;
-      color: #24518a;
-    }
-
-    .todo-toggle .icon {
-      transition: transform .18s ease;
-    }
-
-    .todo-panel.is-collapsed {
-      grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .todo-panel.is-collapsed .section-head {
-      margin-bottom: 0;
-    }
-
-    .todo-panel.is-collapsed .todo-toggle .icon {
-      transform: rotate(180deg);
-    }
-
     .section-kicker {
       color: var(--primary);
       font-weight: 900;
       font-size: 13px;
       margin-bottom: 4px;
-    }
-
-    .todo-icon {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: #e4efff;
-      color: var(--primary);
-      flex: 0 0 auto;
-    }
-
-    .todo-icon .icon {
-      width: 16px;
-      height: 16px;
-    }
-
-    .todo-panel .section-title {
-      font-size: 15px;
-    }
-
-    .todo-panel .section-kicker {
-      margin-bottom: 1px;
-      font-size: 12px;
     }
 
     .task-list {
@@ -4559,31 +4694,8 @@
         justify-content: flex-start;
       }
 
-      .todo-panel,
       .table-panel {
         padding: 14px;
-      }
-
-      .todo-panel {
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 10px;
-      }
-
-      .todo-panel .section-head {
-        flex-direction: row;
-        align-items: center;
-      }
-
-      .todo-panel .task-list {
-        grid-column: 1 / -1;
-        grid-template-columns: 1fr;
-      }
-
-      .todo-panel .task-card {
-        border-left: 0;
-        border-top: 1px solid #cfe0fb;
-        grid-template-columns: 24px minmax(0, 1fr);
-        padding: 8px 0 0;
       }
 
       .placeholder-grid {
@@ -4784,62 +4896,10 @@
         </div>
       </section>
 
-      <section class="pm-workbench">
-        <div class="todo-panel">
-          <div class="section-head">
-            <span class="todo-icon" aria-hidden="true"><svg class="icon"><use href="#i-bell"></use></svg></span>
-            <div>
-              <div class="section-kicker">PM 提醒</div>
-              <h2 class="section-title">当前任务提醒</h2>
-            </div>
-          </div>
-
-          <div class="task-list" id="todoTaskList">
-            <article class="task-card">
-              <div class="task-index">1</div>
-              <div class="task-main">
-                <h4>录入项目计划关键时间节点</h4>
-                <p>通过“项目计划”录入客户要求的时间节点，并补充 BW 内部时间节点及项目整体时间节点，保证后续 Gate 计划可追踪。</p>
-                <div class="task-meta">
-                  <span class="tag tag-blue">项目计划</span>
-                  <span class="tag tag-gray">PM负责</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="task-card">
-              <div class="task-index">2</div>
-              <div class="task-main">
-                <h4>配置 Gate1 至 Gate6 任务负责人</h4>
-                <p>点击“任务管理”，为 Gate1 至 Gate6 配置任务负责人及完成时间节点；未指定负责人时，任务表格保持醒目待办状态。</p>
-                <div class="task-meta">
-                  <span class="tag tag-blue">任务管理</span>
-                  <span class="tag tag-gray">跨部门协同</span>
-                </div>
-              </div>
-            </article>
-
-            <article class="task-card">
-              <div class="task-index">3</div>
-              <div class="task-main">
-                <h4>完成 PKO 阶段任务闭环</h4>
-                <p>完成前两项后，在 PKO 任务下完成对应节点；系统将同步推进阶段任务闭环。</p>
-                <div class="task-meta">
-                  <span class="tag tag-blue">PKO任务</span>
-                  <span class="tag tag-gray">阶段闭环</span>
-                </div>
-              </div>
-            </article>
-          </div>
-          <button class="btn todo-toggle" type="button" id="toggleTodoPanel" aria-expanded="true" aria-controls="todoTaskList">
-            <svg class="icon"><use href="#i-chevron"></use></svg><span data-todo-toggle-text>收起</span>
-          </button>
-        </div>
-      </section>
-
       <section class="nav-panel">
         <nav class="tabs" aria-label="项目详情导航">
-          <button class="tab active" type="button" data-tab-target="development" aria-selected="true">项目开发任务</button>
+          <button class="tab active" type="button" data-tab-target="records" aria-selected="true">项目记录</button>
+          <button class="tab" type="button" data-tab-target="development" aria-selected="false">项目开发任务</button>
           <button class="tab" type="button" data-tab-target="bom" aria-selected="false">生产BOM</button>
           <button class="tab" type="button" data-tab-target="requirements" aria-selected="false">客户要求</button>
           <button class="tab" type="button" data-tab-target="plan" aria-selected="false">项目计划</button>
@@ -4851,7 +4911,7 @@
         </nav>
       </section>
 
-      <div class="tab-panel active" data-tab-panel="development">
+      <div class="tab-panel" data-tab-panel="development" hidden>
         <section class="bom-panel development-page">
           <div class="bom-top">
             <div>
@@ -4879,47 +4939,47 @@
               <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="销售发起开发项目并完成默认 CKO 任务，提交后项目进入 PKO 阶段。">
                 <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
                 <div class="stage-meta"><span>Sales</span><b>Zack</b></div>
-                <div class="stage-meta"><span>时间</span><b>2025-05-12 ~ 2025-10-12</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card active" type="button" data-stage-id="PKO" data-stage-note="作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。">
                 <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
                 <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate1">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate2" data-stage-note="PM 分配 Gate2 阶段任务，各职能部门按计划推进并反馈完成情况，待评审通过后进入下一 Gate。">
                 <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate2">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate3" data-stage-note="Gate3 聚焦阶段任务闭环和跨职能问题清理，确保开发活动满足进入后续样件或节点验证的条件。">
                 <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate3">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate4" data-stage-note="Gate4 对应 BW 内部 OTS 节点，团队确认样件、质量、供应和工程任务达到 OTS 准入要求。">
                 <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate4">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate5" data-stage-note="Gate5 对应 BW 内部 PPAP 节点，围绕 PPAP 准备、供应商质量和量产验证进行门径审批。">
                 <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate6" data-stage-note="Gate6 对应 BW 内部 SOP 节点，PM 组织完成 SOP 前最终评审，确认所有 Gate 任务闭环。">
                 <div class="stage-title">Gate6 <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="HandOver" data-stage-note="PM 完成交接信息登记，沉淀项目资料、关键问题和最终交付包，完成项目开发交接闭环。">
                 <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
-                <div class="stage-meta"><span>时间</span><b>-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
             </div>
             <button class="stage-nav" type="button" data-stage-scroll="next" aria-label="向右滑动阶段">›</button>
@@ -5025,6 +5085,72 @@
               <tbody data-bom-list-body></tbody>
             </table>
           </div>
+        </section>
+      </div>
+
+      <div class="tab-panel active" data-tab-panel="records">
+        <section class="bom-panel record-page">
+          <div class="bom-top">
+            <div>
+              <div class="section-kicker">Project Records</div>
+              <div class="bom-title-row">
+                <h2 class="section-title">项目记录</h2>
+                <span class="tag tag-blue" data-record-event-count>0 条动态</span>
+              </div>
+              <div class="bom-meta">
+                <span>记录阶段推进、BOM、任务、成员、审批和状态变化</span>
+              </div>
+            </div>
+            <div class="bom-actions">
+              <select class="select-field" data-record-role-select aria-label="角色视角">
+                <option value="PM">PM</option>
+                <option value="AE">AE</option>
+                <option value="SCM">SCM</option>
+                <option value="AQE">AQE</option>
+                <option value="SQD">SQD</option>
+                <option value="reviewer">审核人员</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="record-hero">
+            <section class="record-section">
+              <div class="record-section-head">
+                <h3>当前提醒</h3>
+                <span class="tag tag-blue" data-record-alert-count>0 条</span>
+              </div>
+              <div class="record-alert-list" data-record-alerts></div>
+            </section>
+            <section class="record-section">
+              <div class="record-section-head">
+                <h3>项目状态摘要</h3>
+              </div>
+              <div class="record-summary-grid">
+                <div class="record-summary-item"><span>当前阶段</span><strong data-record-summary-stage>PKO</strong></div>
+                <div class="record-summary-item"><span>项目状态</span><strong data-record-summary-status>进行中</strong></div>
+                <div class="record-summary-item"><span>BOM状态</span><strong data-record-summary-bom>未创建</strong></div>
+                <div class="record-summary-item"><span>APQP状态</span><strong data-record-summary-apqp>未创建</strong></div>
+              </div>
+            </section>
+          </div>
+
+          <section class="record-section">
+            <div class="record-toolbar">
+              <div class="record-section-head" style="margin-bottom:0">
+                <h3>项目动态</h3>
+              </div>
+              <div class="record-filter-group" data-record-filter-group>
+                <button class="record-filter active" type="button" data-record-filter="all">全部</button>
+                <button class="record-filter" type="button" data-record-filter="stage">阶段</button>
+                <button class="record-filter" type="button" data-record-filter="bom">BOM</button>
+                <button class="record-filter" type="button" data-record-filter="task">任务</button>
+                <button class="record-filter" type="button" data-record-filter="approval">审批</button>
+                <button class="record-filter" type="button" data-record-filter="team">成员</button>
+                <button class="record-filter" type="button" data-record-filter="status">状态</button>
+              </div>
+            </div>
+            <div class="record-timeline" data-record-timeline></div>
+          </section>
         </section>
       </div>
 
@@ -6286,38 +6412,18 @@
             <label class="submit-form-label" for="submitReviewType">审核类型</label>
             <select class="review-status-select" id="submitReviewType">
               <option value="gate">阶段完成审核 (Gate Review)</option>
-              <option value="milestone">里程碑审核</option>
             </select>
           </div>
           <div class="submit-form-group">
-            <span class="submit-form-label">审核小组成员</span>
+            <span class="submit-form-label">审核人员</span>
+            <div class="submit-member-list" data-submit-reviewers></div>
             <div class="submit-member-list">
-              <span class="submit-member-chip">张三 · 技术</span>
-              <span class="submit-member-chip">李四 · 质量</span>
-              <span class="submit-member-chip">王五 · 工艺</span>
-              <span class="submit-member-chip">钱七 · 供应链</span>
-              <span class="submit-member-chip is-add">+ 添加成员</span>
+              <button class="submit-member-chip is-add" type="button" data-add-submit-reviewer>+ 添加成员</button>
             </div>
           </div>
           <div class="submit-form-group">
             <span class="submit-form-label">审核规则</span>
-            <div class="approval-matrix">
-              <div class="approval-member-row">
-                <strong>张三 · 技术</strong>
-                <span class="submit-status-tag">待审核</span>
-                <span>需独立提交红黄绿结论</span>
-              </div>
-              <div class="approval-member-row">
-                <strong>李四 · 质量</strong>
-                <span class="submit-status-tag">待审核</span>
-                <span>所有成员完成后汇总阶段结论</span>
-              </div>
-              <div class="approval-member-row">
-                <strong>王五 · 工艺</strong>
-                <span class="submit-status-tag">待审核</span>
-                <span>黄色结论必须录入条件和原因</span>
-              </div>
-            </div>
+            <div class="approval-matrix" data-submit-reviewer-rules></div>
           </div>
           <div class="submit-form-group">
             <span class="submit-form-label">阶段任务完成情况</span>
@@ -6331,29 +6437,28 @@
               </div>
             </div>
           </div>
-          <div class="submit-form-group" id="submitConfirmMessage">确认发起当前阶段审核，提交后将通知审核小组成员处理。</div>
+          <div class="submit-form-group" id="submitConfirmMessage">确认发起当前阶段审核，提交后将通知审核人员处理。</div>
           <div class="gate4-ppap-form" id="gate4PpapForm" hidden>
             <label>审批类型
               <select class="review-status-select" id="gate4ApprovalType">
                 <option value="standard">标准审批</option>
-                <option value="temporary">临时批准</option>
-                <option value="full">全批</option>
+                <option value="temporary">临时审批</option>
               </select>
             </label>
-            <label>临批有效期
+            <label data-gate4-temp-field>临批有效期
               <select class="review-status-select" id="gate4TempDuration">
                 <option value="1">1 个月</option>
                 <option value="2">2 个月</option>
                 <option value="3">3 个月（不超过 3 个月）</option>
               </select>
             </label>
-            <label>到期日期
+            <label data-gate4-temp-field>到期日期
               <input class="field" id="gate4ExpireDate" type="date">
             </label>
-            <label class="span-2">临批原因 *
+            <label class="span-2" data-gate4-temp-field>临批原因 *
               <textarea class="field" id="gate4TempReason" rows="2" placeholder="临批原因必填"></textarea>
             </label>
-            <label class="span-2">临批风险说明
+            <label class="span-2" data-gate4-temp-field>临批风险说明
               <textarea class="field" id="gate4RiskNote" rows="2" placeholder="说明临批风险和控制措施"></textarea>
             </label>
             <label class="span-2">客户批准依据
@@ -11869,6 +11974,16 @@
   <script>
     const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
     const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
+    const recordRoleSelect = document.querySelector("[data-record-role-select]");
+    const recordAlerts = document.querySelector("[data-record-alerts]");
+    const recordAlertCount = document.querySelector("[data-record-alert-count]");
+    const recordTimeline = document.querySelector("[data-record-timeline]");
+    const recordEventCount = document.querySelector("[data-record-event-count]");
+    const recordFilterGroup = document.querySelector("[data-record-filter-group]");
+    const recordSummaryStage = document.querySelector("[data-record-summary-stage]");
+    const recordSummaryStatus = document.querySelector("[data-record-summary-status]");
+    const recordSummaryBom = document.querySelector("[data-record-summary-bom]");
+    const recordSummaryApqp = document.querySelector("[data-record-summary-apqp]");
     const stageStrip = document.querySelector("[data-stage-strip]");
     const stageCards = Array.from(document.querySelectorAll(".stage-card"));
     const stageScrollButtons = Array.from(document.querySelectorAll("[data-stage-scroll]"));
@@ -11941,10 +12056,6 @@
     const savePlanButton = document.getElementById("savePlan");
     const resetPlanButton = document.getElementById("resetPlan");
     const defaultPlan = Object.fromEntries(planInputs.map((input) => [input.dataset.planField, input.value]));
-    const toggleTodoPanel = document.getElementById("toggleTodoPanel");
-    const todoTaskList = document.getElementById("todoTaskList");
-    const todoPanel = toggleTodoPanel?.closest(".todo-panel");
-    const todoToggleText = toggleTodoPanel?.querySelector("[data-todo-toggle-text]");
     const stageTaskTables = document.getElementById("stageTaskTables");
     const stageTaskKeywordInput = document.querySelector("[data-stage-task-keyword]");
     const stageDeptToggle = document.querySelector("[data-stage-dept-toggle]");
@@ -11971,6 +12082,9 @@
     const submitReviewType = document.getElementById("submitReviewType");
     const submitReviewProgressText = document.getElementById("submitReviewProgressText");
     const submitReviewProgressBar = document.getElementById("submitReviewProgressBar");
+    const submitReviewers = document.querySelector("[data-submit-reviewers]");
+    const submitReviewerRules = document.querySelector("[data-submit-reviewer-rules]");
+    const addSubmitReviewer = document.querySelector("[data-add-submit-reviewer]");
     const projectStatusConfirmModal = document.getElementById("projectStatusConfirmModal");
     const projectStatusConfirmTitle = document.getElementById("projectStatusConfirmTitle");
     const projectStatusConfirmMessage = document.getElementById("projectStatusConfirmMessage");
@@ -11995,6 +12109,7 @@
     const gate4RiskNote = document.getElementById("gate4RiskNote");
     const gate4CustomerBasis = document.getElementById("gate4CustomerBasis");
     const gate4PpapError = document.getElementById("gate4PpapError");
+    const gate4TempFields = Array.from(document.querySelectorAll("[data-gate4-temp-field]"));
     const auditRecordModal = document.getElementById("auditRecordModal");
     const auditRecordTip = document.getElementById("auditRecordTip");
     const auditRecordBody = document.getElementById("auditRecordBody");
@@ -12041,6 +12156,44 @@
     let handoverSelectionId = "";
     const standardGateStages = ["Gate2", "Gate3", "Gate5", "Gate6"];
     const projectStatusRecords = [];
+    let currentRecordRole = "PM";
+    let currentRecordFilter = "all";
+    let submitReviewerIds = ["general-manager"];
+    const projectEvents = [
+      {
+        id: "evt-cko",
+        time: "2025-05-12 09:00",
+        category: "stage",
+        type: "阶段",
+        title: "项目完成 CKO 并进入 PKO",
+        description: "销售完成 CKO 默认任务，项目正式进入 PKO 阶段。",
+        actor: "Zack",
+        role: "Sales",
+        scope: "CKO / PKO"
+      },
+      {
+        id: "evt-plan",
+        time: "2025-05-15 14:20",
+        category: "plan",
+        type: "计划",
+        title: "PM 设置项目计划关键节点",
+        description: "录入客户 OTS、PPAP、SOP 以及 BW 内部 Gate 节点计划。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "项目计划"
+      },
+      {
+        id: "evt-team",
+        time: "2025-05-16 10:10",
+        category: "team",
+        type: "成员",
+        title: "添加跨职能团队成员",
+        description: "添加 AE、SCM、AQE、SQD 至 Gate1-Gate6 项目团队。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "团队成员"
+      }
+    ];
 
     function latestProjectStatusRecord(status = projectStatus) {
       for (let index = projectStatusRecords.length - 1; index >= 0; index -= 1) {
@@ -12049,6 +12202,203 @@
         }
       }
       return null;
+    }
+
+    function addProjectEvent(event) {
+      projectEvents.unshift({
+        id: `evt-${Date.now()}-${projectEvents.length}`,
+        time: getCurrentTime().slice(0, 16),
+        actor: "系统",
+        role: "System",
+        scope: activeStage,
+        ...event
+      });
+      renderProjectRecords();
+    }
+
+    function projectRecordRoleMatch(alert) {
+      return !alert.roles || alert.roles.includes(currentRecordRole) || alert.roles.includes("ALL");
+    }
+
+    function buildProjectAlerts() {
+      const alerts = [];
+      const bomVersion = currentVersion();
+      const bomCreated = bomState.rows.length > 0;
+      const bomConfirmed = bomState.status === "locked" && bomState.workflowStatus === "confirmed";
+      const activeRows = allStageRows(activeStage);
+      const pendingTasks = activeRows.filter((task) => task.status === "todo" || task.status === "approval" || task.status === "rejected").length;
+
+      if (activeStage === "PKO") {
+        alerts.push(
+          {
+            kind: "计划",
+            level: "risk",
+            title: "设置项目计划时间节点",
+            description: "PM 需在项目计划中维护客户 OTS、PPAP、SOP，以及 BW 内部 OTS、PPAP、SOP 等关键节点。",
+            roles: ["PM"],
+            action: "去项目计划",
+            tab: "plan"
+          },
+          {
+            kind: "成员",
+            level: "risk",
+            title: "设置 Gate1 至 Gate6 团队成员",
+            description: "PM 需确认 Gate1 至 Gate6 的跨职能团队成员，为后续任务分配和审批流转建立负责人基础。",
+            roles: ["PM"],
+            action: "去团队成员",
+            tab: "team"
+          },
+          {
+            kind: "任务",
+            level: "risk",
+            title: "完成 PKO 阶段任务并提交",
+            description: `PM 需完成 PKO 阶段下的 ${pendingTasks} 项待办任务，提交后项目进入 Gate1 阶段。`,
+            roles: ["PM"],
+            action: "查看任务",
+            tab: "development"
+          }
+        );
+      }
+
+      if (activeStage === "Gate1" && !bomCreated) {
+        alerts.push({
+          kind: "待办",
+          level: "risk",
+          title: "Gate1 已进入，BOM 尚未创建",
+          description: "AE 需创建生产 BOM；PM 和 AQE 可看到当前 BOM 前置条件未闭环。",
+          roles: ["AE", "PM", "AQE"],
+          action: "去生产BOM",
+          tab: "bom"
+        });
+      }
+      if (bomCreated && !bomConfirmed) {
+        alerts.push({
+          kind: "待确认",
+          level: "risk",
+          title: `BOM ${bomVersion} 等待 SCM 确认`,
+          description: "SCM 确认前，PM 不能将 BOM 作为已闭环输入推进后续 APQP。",
+          roles: ["SCM", "PM"],
+          action: "查看BOM",
+          tab: "bom"
+        });
+      }
+      if (bomConfirmed && !bomState.apqpTasks.length) {
+        alerts.push({
+          kind: "待办",
+          level: "risk",
+          title: "BOM 已确认，APQP 尚未创建",
+          description: "PM/AQE 需基于 L1 层级创建 APQP，后续子零件任务才能分配。",
+          roles: ["PM", "AQE"],
+          action: "创建APQP",
+          tab: "bom"
+        });
+      }
+      if (bomState.apqpTasks.length) {
+        alerts.push({
+          kind: "更新",
+          level: "update",
+          title: `已生成 ${bomState.apqpTasks.length} 条 BOM APQP 任务`,
+          description: "AQE/SQD 可查看 APQP 任务和子零件开发任务分配。",
+          roles: ["PM", "AQE", "SQD"],
+          action: "查看APQP",
+          tab: "bom"
+        });
+      }
+      if (pendingTasks > 0 && activeStage !== "PKO") {
+        alerts.push({
+          kind: "任务",
+          level: "risk",
+          title: `${activeStage} 仍有 ${pendingTasks} 项任务待完成`,
+          description: "PM 需关注阶段任务闭环；任务负责人需完成对应 K-PAC 任务。",
+          roles: ["PM", "ALL"],
+          action: "查看任务",
+          tab: "development"
+        });
+      }
+      if (projectStatus === "pending" || projectStatus === "cancel") {
+        const record = latestProjectStatusRecord(projectStatus);
+        alerts.push({
+          kind: "状态",
+          level: "risk",
+          title: projectStatus === "pending" ? "项目当前处于暂停状态" : "项目当前已终止",
+          description: record ? record.reason : "可在顶部查看原因。",
+          roles: ["ALL"],
+          action: "查看原因",
+          tab: "development"
+        });
+      }
+      return alerts.filter(projectRecordRoleMatch);
+    }
+
+    function eventTypeLabel(category) {
+      return {
+        stage: "阶段",
+        bom: "BOM",
+        task: "任务",
+        approval: "审批",
+        team: "成员",
+        status: "状态",
+        plan: "计划",
+        apqp: "APQP"
+      }[category] || "记录";
+    }
+
+    function renderRecordAlerts() {
+      if (!recordAlerts) return;
+      const alerts = buildProjectAlerts();
+      if (recordAlertCount) recordAlertCount.textContent = `${alerts.length} 条`;
+      recordAlerts.innerHTML = alerts.length ? alerts.map((alert) => `
+        <article class="record-alert ${alert.level === "risk" ? "is-risk" : alert.level === "update" ? "is-update" : ""}">
+          <span class="record-alert-type">${escapeHtml(alert.kind)}</span>
+          <div class="record-alert-main">
+            <h4>${escapeHtml(alert.title)}</h4>
+            <p>${escapeHtml(alert.description)}</p>
+          </div>
+          ${alert.tab ? `<button class="btn" type="button" data-record-go-tab="${escapeHtml(alert.tab)}">${escapeHtml(alert.action || "查看")}</button>` : ""}
+        </article>
+      `).join("") : `<div class="record-empty">当前角色暂无需要特别关注的提醒。</div>`;
+    }
+
+    function renderRecordSummary() {
+      if (recordSummaryStage) recordSummaryStage.textContent = activeStage;
+      if (recordSummaryStatus) {
+        const config = projectStatusConfig[projectStatus] || projectStatusConfig.inProgress;
+        recordSummaryStatus.textContent = `${config.value} / ${config.label}`;
+      }
+      if (recordSummaryBom) {
+        recordSummaryBom.textContent = `${currentVersion()} · ${workflowText()}`;
+      }
+      if (recordSummaryApqp) {
+        recordSummaryApqp.textContent = bomState.apqpTasks.length ? `${bomState.apqpTasks.length} 条任务` : "未创建";
+      }
+    }
+
+    function renderRecordTimeline() {
+      if (!recordTimeline) return;
+      const filtered = currentRecordFilter === "all"
+        ? projectEvents
+        : projectEvents.filter((event) => event.category === currentRecordFilter);
+      if (recordEventCount) recordEventCount.textContent = `${projectEvents.length} 条动态`;
+      recordTimeline.innerHTML = filtered.length ? filtered.map((event) => `
+        <article class="record-event">
+          <div class="record-event-time">${escapeHtml(event.time || "-")}<br>${escapeHtml(event.actor || "-")} · ${escapeHtml(event.role || "-")}</div>
+          <span class="record-event-type">${escapeHtml(event.type || eventTypeLabel(event.category))}</span>
+          <div class="record-event-main">
+            <h4>${escapeHtml(event.title)}</h4>
+            <p>${escapeHtml(event.description)}</p>
+            <div class="record-event-meta">
+              <span class="tag tag-gray">${escapeHtml(event.scope || "-")}</span>
+              <span class="tag tag-blue">${escapeHtml(eventTypeLabel(event.category))}</span>
+            </div>
+          </div>
+        </article>
+      `).join("") : `<div class="record-empty">当前筛选下暂无项目动态。</div>`;
+    }
+
+    function renderProjectRecords() {
+      renderRecordSummary();
+      renderRecordAlerts();
+      renderRecordTimeline();
     }
     const handoverSourceTeamOptions = ["AQE", "AE", "AP / OP PM", "ME", "PM", "SCM", "SQD", "Sales"];
     const handoverTeamOptions = ["CQE", "PPE", "物流", "维护&生产", "AQE", "AE", "ME", "PM"];
@@ -12297,7 +12647,8 @@
       });
       if (submitStageTask) {
         const canSubmitStandardGate = standardGateStages.includes(stage) && stageHasStatus(stage, "status-running");
-        submitStageTask.hidden = !(stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running") || (stage === "Gate4" && gate4ReviewState !== "fullApproved") || canSubmitStandardGate);
+        const canSubmitGate4 = stage === "Gate4" && !stageHasStatus("Gate4", "status-done");
+        submitStageTask.hidden = !(stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running") || canSubmitGate4 || canSubmitStandardGate);
       }
       if (manageStageTask) {
         manageStageTask.hidden = stage !== "PKO";
@@ -12314,10 +12665,10 @@
           gateReviewStatus.innerHTML = `
             <option value="reviewing">审批中</option>
             <option value="rejected">审批不通过</option>
+            <option value="standardApproved">标准审批通过</option>
             <option value="tempApproved">临批通过</option>
-            <option value="fullApproved">全批通过</option>
           `;
-          gateReviewStatus.value = ["tempApproved", "fullApproved", "rejected"].includes(gate4ReviewState) ? gate4ReviewState : "reviewing";
+          gateReviewStatus.value = ["standardApproved", "tempApproved", "rejected"].includes(gate4ReviewState) ? gate4ReviewState : "reviewing";
         } else {
           gateReviewStatus.innerHTML = `
             <option value="reviewing">审核中</option>
@@ -12345,8 +12696,8 @@
         stageReviewAlert.classList.toggle("is-conditional", gate1ReviewState === "conditional" || gate4ReviewState === "tempApproved");
         if (stage === "Gate4") {
           stageReviewAlert.textContent = gate4ReviewState === "tempApproved"
-            ? `Gate4 已临批/零批，有效期至 ${gate4ApprovalPayload?.expireDate || "-"}；项目仍停留 Gate4，需发起全批后才能进入 Gate5。`
-            : "Gate4 临批或全批审批未通过，项目状态仍为进行中，可通过审核记录查看原因并再次发起审批。";
+            ? `Gate4 已临批，有效期至 ${gate4ApprovalPayload?.expireDate || "-"}；项目仍停留 Gate4。`
+            : "Gate4 审批未通过，项目状态仍为进行中，可通过审核记录查看原因并再次发起审批。";
         } else {
           stageReviewAlert.textContent = gate1ReviewState === "conditional"
             ? "当前阶段带条件通过，可通过审核记录查看具体内容。"
@@ -12765,6 +13116,7 @@
       }
       projectStatus = nextStatus;
       renderProjectStatus();
+      renderProjectRecords();
     }
 
     function needsProjectStatusForm(status) {
@@ -12867,6 +13219,15 @@
       });
       updateStagePill("PKO", "已完成", "status-done");
       updateStagePill("Gate1", "进行中", "status-running");
+      addProjectEvent({
+        category: "stage",
+        type: "阶段",
+        title: "PKO 阶段完成，项目进入 Gate1",
+        description: "PM 提交 PKO 阶段任务，Gate1 阶段任务已启动。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "PKO / Gate1"
+      });
       setActiveStage("Gate1");
     }
 
@@ -12874,12 +13235,30 @@
       gate1ReviewState = "reviewing";
       updateStagePill("Gate1", "审核中", "status-review");
       setProjectStatus("approval");
+      addProjectEvent({
+        category: "approval",
+        type: "审批",
+        title: "发起 Gate1 阶段审核",
+        description: "PM 发起 Gate1 阶段审核，等待审核人员给出结论。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "Gate1"
+      });
       renderStageTasks(activeStage);
     }
 
     function submitStandardGateStage(stage) {
       updateStagePill(stage, "审核中", "status-review");
       setProjectStatus("approval");
+      addProjectEvent({
+        category: "approval",
+        type: "审批",
+        title: `发起 ${stage} 阶段审核`,
+        description: `${stage} 阶段任务提交审核，等待审核结果。`,
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: stage
+      });
       renderStageTasks(stage);
     }
 
@@ -12888,6 +13267,15 @@
       updateStagePill("Gate1", "带条件通过", "status-conditional");
       updateStagePill("Gate2", "进行中", "status-running");
       setProjectStatus("inProgress");
+      addProjectEvent({
+        category: "approval",
+        type: "审批",
+        title: "Gate1 带条件通过，项目进入 Gate2",
+        description: "审核小组给出带条件通过结论，条件内容可在审核记录中查看。",
+        actor: "审核小组",
+        role: "Reviewer",
+        scope: "Gate1 / Gate2"
+      });
       setActiveStage("Gate2");
     }
 
@@ -12896,6 +13284,15 @@
       updateStagePill("Gate1", "已完成", "status-done");
       updateStagePill("Gate2", "进行中", "status-running");
       setProjectStatus("inProgress");
+      addProjectEvent({
+        category: "approval",
+        type: "审批",
+        title: "Gate1 审核通过，项目进入 Gate2",
+        description: "Gate1 审核通过，Gate2 阶段任务已启动。",
+        actor: "审核小组",
+        role: "Reviewer",
+        scope: "Gate1 / Gate2"
+      });
       setActiveStage("Gate2");
     }
 
@@ -12906,6 +13303,15 @@
         updateStagePill(nextStage, "进行中", "status-running");
       }
       setProjectStatus("inProgress");
+      addProjectEvent({
+        category: "approval",
+        type: "审批",
+        title: `${stage} ${mode === "conditional" ? "带条件通过" : "审核通过"}`,
+        description: nextStage ? `项目进入 ${nextStage} 阶段。` : "阶段审核完成。",
+        actor: "审核小组",
+        role: "Reviewer",
+        scope: nextStage ? `${stage} / ${nextStage}` : stage
+      });
       if (nextStage) {
         setActiveStage(nextStage);
       } else {
@@ -12915,6 +13321,20 @@
 
     function monthDiff(startDate, endDate) {
       return (endDate.getFullYear() - startDate.getFullYear()) * 12 + endDate.getMonth() - startDate.getMonth() + (endDate.getDate() > startDate.getDate() ? 1 : 0);
+    }
+
+    function updateGate4ApprovalTypeFields() {
+      const isTemporary = gate4ApprovalType?.value === "temporary";
+      gate4TempFields.forEach((field) => {
+        field.hidden = !isTemporary;
+      });
+      if (isTemporary) {
+        updateGate4ExpireDate();
+      }
+      if (gate4PpapError) {
+        gate4PpapError.hidden = true;
+        gate4PpapError.textContent = "";
+      }
     }
 
     function validateGate4PpapForm() {
@@ -12952,11 +13372,18 @@
       };
       gate4ReviewState = approvalType === "temporary"
         ? "tempReview"
-        : approvalType === "full"
-          ? "fullReview"
-          : "standardReview";
-      updateStagePill("Gate4", approvalType === "temporary" ? "临批审批中" : approvalType === "full" ? "全批审批中" : "审核中", "status-review");
+        : "standardReview";
+      updateStagePill("Gate4", approvalType === "temporary" ? "临批中" : "审核中", "status-review");
       setProjectStatus("approval");
+      addProjectEvent({
+        category: "approval",
+        type: "审批",
+        title: `发起 Gate4 ${approvalType === "temporary" ? "临时审批" : "标准审批"}`,
+        description: approvalType === "temporary" ? `临批到期日期：${gate4ApprovalPayload.expireDate || "-"}；原因：${gate4ApprovalPayload.reason || "-"}` : "Gate4 审批已发起，等待审核结论。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "Gate4"
+      });
       renderStageTasks("Gate4");
       return true;
     }
@@ -12965,6 +13392,15 @@
       handoverSubmitted = true;
       updateStagePill("HandOver", "已完成", "status-done");
       setProjectStatus("completed");
+      addProjectEvent({
+        category: "stage",
+        type: "阶段",
+        title: "HandOver 完成，项目闭环",
+        description: "PM 完成交接信息登记，项目状态更新为 completed / 完成。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "HandOver"
+      });
       renderHandoverPanel();
     }
 
@@ -12977,6 +13413,22 @@
     function formatDateOnly(date) {
       const pad = (value) => String(value).padStart(2, "0");
       return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function addMonths(date, months) {
+      const target = new Date(date);
+      const originalDay = target.getDate();
+      target.setDate(1);
+      target.setMonth(target.getMonth() + months);
+      const lastDayOfTargetMonth = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+      target.setDate(Math.min(originalDay, lastDayOfTargetMonth));
+      return target;
+    }
+
+    function updateGate4ExpireDate() {
+      if (!gate4ExpireDate || !gate4TempDuration) return;
+      const months = Number(gate4TempDuration.value || 1);
+      gate4ExpireDate.value = formatDateOnly(addMonths(new Date(), months));
     }
 
     function stageSubmitDueDate(stage) {
@@ -13006,6 +13458,32 @@
       }
     }
 
+    function renderSubmitReviewers() {
+      if (submitReviewerIds.length === 0) {
+        submitReviewerIds = ["general-manager"];
+      }
+      const reviewers = submitReviewerIds
+        .map((id) => memberMap.get(id))
+        .filter(Boolean);
+      if (submitReviewers) {
+        submitReviewers.innerHTML = reviewers.map((member) => `
+          <span class="submit-member-chip">
+            ${escapeHtml(member.name)}
+            <button class="submit-member-remove" type="button" data-remove-submit-reviewer="${escapeHtml(member.id)}" aria-label="移除${escapeHtml(member.name)}">×</button>
+          </span>
+        `).join("");
+      }
+      if (submitReviewerRules) {
+        submitReviewerRules.innerHTML = reviewers.map((member) => `
+          <div class="approval-member-row">
+            <strong>${escapeHtml(member.name)}</strong>
+            <span class="submit-status-tag">待审核</span>
+            <span>${reviewers.length > 1 ? "所有审核人员完成后汇总阶段结论" : "审核人员完成后汇总阶段结论"}</span>
+          </div>
+        `).join("");
+      }
+    }
+
     function updateSubmitConfirmMeta(stage) {
       const nextStage = nextStageName(stage);
       if (submitTaskName) submitTaskName.textContent = "发起阶段审核";
@@ -13015,10 +13493,9 @@
       if (submitDueDate) submitDueDate.textContent = stageSubmitDueDate(stage);
       if (submitTaskStatus) submitTaskStatus.textContent = "待处理";
       if (submitReviewType) {
-        submitReviewType.innerHTML = stage === "Gate4"
-          ? `<option value="gate4">Gate4 PPAP 审批</option><option value="gate">阶段完成审核 (Gate Review)</option>`
-          : `<option value="gate">阶段完成审核 (Gate Review)</option><option value="milestone">里程碑审核</option>`;
+        submitReviewType.innerHTML = `<option value="gate">阶段完成审核 (Gate Review)</option>`;
       }
+      renderSubmitReviewers();
       updateSubmitReviewProgress(stage);
     }
 
@@ -13034,9 +13511,9 @@
         updateSubmitConfirmMeta(pendingSubmitStage);
       }
       if (pendingSubmitStage === "Gate1") {
-        submitConfirmMessage.textContent = "确认提交 Gate1 阶段任务吗？提交后将由项目审核组成员进行审核，通过后进入下一个环节。";
+        submitConfirmMessage.textContent = "确认提交 Gate1 阶段任务吗？提交后将由审核人员进行审核，通过后进入下一个环节。";
       } else if (pendingSubmitStage === "Gate4") {
-        submitConfirmMessage.textContent = "Gate4 可发起标准审批、PPAP 临时批准或全批审批。临批通过后仍停留 Gate4；只有全批通过后才能进入 Gate5。";
+        submitConfirmMessage.textContent = "Gate4 可发起标准批准或临时批准。临时批准发起后项目阶段状态显示为临批中。";
       } else if (standardGateStages.includes(pendingSubmitStage)) {
         const nextStage = nextStageName(pendingSubmitStage);
         submitConfirmMessage.textContent = `确认发起 ${pendingSubmitStage} 阶段审核吗？审核通过后项目可进入 ${nextStage || "下一阶段"}。`;
@@ -13048,6 +13525,9 @@
       if (gate4PpapForm) {
         gate4PpapForm.hidden = pendingSubmitStage !== "Gate4";
         gate4PpapError.hidden = true;
+        if (pendingSubmitStage === "Gate4") {
+          updateGate4ApprovalTypeFields();
+        }
       }
       submitConfirmModal.hidden = false;
     }
@@ -13062,13 +13542,13 @@
       if (activeStage === "Gate4") {
         const hasRecord = gate4ReviewState !== "running";
         auditRecordTip.textContent = hasRecord
-          ? "Gate4 PPAP 审批记录如下；临批仅为有条件放行，不代表阶段通过。"
+          ? "Gate4 PPAP 审批记录如下；临批仅为有条件放行。"
           : "Gate4 暂无 PPAP 审批记录。";
         auditRecordBody.innerHTML = hasRecord ? `
           <tr>
-            <td>${escapeHtml(gate4ApprovalPayload?.type === "temporary" ? "AQE / 关键部门" : "审批小组")}</td>
-            <td><span class="status-dot ${gate4ReviewState === "rejected" ? "reject-dot" : gate4ReviewState === "fullApproved" ? "done-dot" : "approval-dot"}">${escapeHtml(gate4ReviewState === "tempApproved" ? "临批通过" : gate4ReviewState === "fullApproved" ? "全批通过" : gate4ReviewState === "rejected" ? "审批不通过" : "审批中")}</span></td>
-            <td>${escapeHtml(gate4ApprovalPayload?.type === "temporary" ? `临批原因：${gate4ApprovalPayload?.reason || "-"}；到期日期：${gate4ApprovalPayload?.expireDate || "-"}` : gate4ApprovalPayload?.type === "full" ? "全批审批发起，审批通过后进入 Gate5。" : "标准审批发起。")}</td>
+            <td>${escapeHtml(gate4ApprovalPayload?.type === "temporary" ? "AQE / 关键部门" : "审核人员")}</td>
+            <td><span class="status-dot ${gate4ReviewState === "rejected" ? "reject-dot" : "approval-dot"}">${escapeHtml(gate4ReviewState === "standardApproved" ? "标准审批通过" : gate4ReviewState === "tempApproved" ? "临批通过" : gate4ReviewState === "rejected" ? "审批不通过" : "审批中")}</span></td>
+            <td>${escapeHtml(gate4ApprovalPayload?.type === "temporary" ? `临批原因：${gate4ApprovalPayload?.reason || "-"}；到期日期：${gate4ApprovalPayload?.expireDate || "-"}` : "标准审批发起。")}</td>
           </tr>
         ` : `<tr><td colspan="3" class="center">暂无审核记录</td></tr>`;
         return;
@@ -13112,6 +13592,12 @@
     function updateDateLabels() {
       document.querySelectorAll("[data-date-label]").forEach((label) => {
         const input = getPlanInput(label.dataset.dateLabel);
+        if (input) {
+          label.textContent = formatDate(input.value);
+        }
+      });
+      document.querySelectorAll("[data-stage-deadline]").forEach((label) => {
+        const input = getPlanInput(label.dataset.stageDeadline);
         if (input) {
           label.textContent = formatDate(input.value);
         }
@@ -13235,7 +13721,38 @@
         tabPanels.forEach((panel) => {
           panel.hidden = panel.dataset.tabPanel !== target;
         });
+        if (target === "records") {
+          renderProjectRecords();
+        }
       });
+    });
+
+    function activateProjectTab(target) {
+      const tab = tabs.find((item) => item.dataset.tabTarget === target);
+      if (tab) {
+        tab.click();
+      }
+    }
+
+    recordRoleSelect?.addEventListener("change", () => {
+      currentRecordRole = recordRoleSelect.value || "PM";
+      renderProjectRecords();
+    });
+
+    recordFilterGroup?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-record-filter]");
+      if (!button) return;
+      currentRecordFilter = button.dataset.recordFilter || "all";
+      recordFilterGroup.querySelectorAll("[data-record-filter]").forEach((item) => {
+        item.classList.toggle("active", item === button);
+      });
+      renderRecordTimeline();
+    });
+
+    document.querySelector("[data-tab-panel='records']")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-record-go-tab]");
+      if (!button) return;
+      activateProjectTab(button.dataset.recordGoTab);
     });
 
     function updateStageScrollState() {
@@ -13321,6 +13838,15 @@
           attachment: projectStatusUploadInput?.files?.[0]?.name || "",
           createdAt: getCurrentTime()
         });
+        addProjectEvent({
+          category: "status",
+          type: "状态",
+          title: status === "pending" ? "项目暂停" : "项目终止",
+          description: `${reason}${projectStatusUploadInput?.files?.[0]?.name ? `；附件：${projectStatusUploadInput.files[0].name}` : ""}`,
+          actor: "Wu Zhuoren",
+          role: "PM",
+          scope: status === "pending" ? "pending" : "cancel"
+        });
       }
       closeProjectStatusConfirm();
       setProjectStatus(status);
@@ -13383,6 +13909,18 @@
       });
     }
 
+    addSubmitReviewer?.addEventListener("click", () => showMemberModal("review"));
+
+    submitReviewers?.addEventListener("click", (event) => {
+      const removeButton = event.target.closest("[data-remove-submit-reviewer]");
+      if (!removeButton) return;
+      submitReviewerIds = submitReviewerIds.filter((id) => id !== removeButton.dataset.removeSubmitReviewer);
+      renderSubmitReviewers();
+    });
+
+    gate4ApprovalType?.addEventListener("change", updateGate4ApprovalTypeFields);
+    gate4TempDuration?.addEventListener("change", updateGate4ExpireDate);
+
     if (submitConfirmModal) {
       document.querySelectorAll("[data-close-submit-confirm]").forEach((button) => {
         button.addEventListener("click", closeSubmitConfirmModal);
@@ -13423,20 +13961,17 @@
             gate4ReviewState = "rejected";
             updateStagePill("Gate4", "未通过", "status-failed");
             setProjectStatus("inProgress");
+          } else if (gateReviewStatus.value === "standardApproved") {
+            gate4ReviewState = "standardApproved";
+            advanceStandardGate("Gate4", "approved");
+            return;
           } else if (gateReviewStatus.value === "tempApproved") {
             gate4ReviewState = "tempApproved";
-            updateStagePill("Gate4", "临批/零批", "status-conditional");
+            updateStagePill("Gate4", "临批中", "status-conditional");
             setProjectStatus("inProgress");
-          } else if (gateReviewStatus.value === "fullApproved") {
-            gate4ReviewState = "fullApproved";
-            updateStagePill("Gate4", "已完成", "status-done");
-            updateStagePill("Gate5", "进行中", "status-running");
-            setProjectStatus("inProgress");
-            setActiveStage("Gate5");
-            return;
           } else {
-            gate4ReviewState = gate4ApprovalPayload?.type === "temporary" ? "tempReview" : gate4ApprovalPayload?.type === "full" ? "fullReview" : "standardReview";
-            updateStagePill("Gate4", gate4ApprovalPayload?.type === "temporary" ? "临批审批中" : gate4ApprovalPayload?.type === "full" ? "全批审批中" : "审核中", "status-review");
+            gate4ReviewState = gate4ApprovalPayload?.type === "temporary" ? "tempReview" : "standardReview";
+            updateStagePill("Gate4", gate4ApprovalPayload?.type === "temporary" ? "临批中" : "审核中", "status-review");
           }
           renderStageTasks(activeStage);
           return;
@@ -13479,18 +14014,6 @@
 
     if (auditRecordButton) {
       auditRecordButton.addEventListener("click", openAuditRecordModal);
-    }
-
-    if (toggleTodoPanel && todoTaskList && todoPanel) {
-      toggleTodoPanel.addEventListener("click", () => {
-        const isExpanded = toggleTodoPanel.getAttribute("aria-expanded") === "true";
-        const nextExpanded = !isExpanded;
-        toggleTodoPanel.setAttribute("aria-expanded", String(nextExpanded));
-        if (todoToggleText) todoToggleText.textContent = nextExpanded ? "收起" : "展开";
-        todoTaskList.hidden = !nextExpanded;
-        todoTaskList.style.display = nextExpanded ? "" : "none";
-        todoPanel.classList.toggle("is-collapsed", !nextExpanded);
-      });
     }
 
     if (auditRecordModal) {
@@ -13720,6 +14243,15 @@
           const taskStage = Object.entries(stageTasks).find(([, rows]) => rows.some((row) => row.id === task.id))?.[0];
           task.status = taskStage === "PKO" ? "done" : "approval";
           task.operator = currentOperatorName;
+          addProjectEvent({
+            category: "task",
+            type: "任务",
+            title: `${taskStage || activeStage} 任务${task.status === "done" ? "完成" : "提交待审核"}`,
+            description: `${task.kpac} · ${task.title}${task.uploadFile?.name ? `；附件：${task.uploadFile.name}` : ""}`,
+            actor: currentOperatorName,
+            role: task.owner || task.department || "任务负责人",
+            scope: taskStage || activeStage
+          });
           renderStageTasks(activeStage);
         }
         closeTaskFillModal();
@@ -13809,7 +14341,17 @@
 
     if (savePlanButton) {
       savePlanButton.addEventListener("click", () => {
-        validatePlan(true);
+        if (validatePlan(true)) {
+          addProjectEvent({
+            category: "plan",
+            type: "计划",
+            title: "PM 保存项目计划",
+            description: "项目关键节点计划已保存，BW 内部节点和 Gate 节点通过校验。",
+            actor: "Wu Zhuoren",
+            role: "PM",
+            scope: "项目计划"
+          });
+        }
       });
     }
 
@@ -14051,6 +14593,13 @@
 
     const memberCatalog = [
       {
+        id: "management",
+        name: "管理层",
+        members: [
+          { id: "general-manager", name: "总经理", initials: "GM", department: "管理层", role: "总经理", employeeNo: "GM-001", email: "gm@example.com", phone: "15611185210" }
+        ]
+      },
+      {
         id: "ae-chain-ae-vct",
         name: "AE-Chain&AE-VCT",
         members: [
@@ -14193,7 +14742,9 @@
       const totalAvailable = memberCatalog.reduce((sum, team) => sum + team.members.length, 0);
       availableMemberCount.textContent = String(totalAvailable);
       selectedMemberCount.textContent = String(draftSelectedMemberIds.size);
-      memberSelectionSummary.textContent = `已选 ${selectedTeamCount()} 个团队，${draftSelectedMemberIds.size} 名成员`;
+      memberSelectionSummary.textContent = memberModalMode === "review"
+        ? `已选 ${draftSelectedMemberIds.size} 名审核人员`
+        : `已选 ${selectedTeamCount()} 个团队，${draftSelectedMemberIds.size} 名成员`;
     }
 
     function renderAvailableGroups() {
@@ -14259,7 +14810,7 @@
                 <span class="member-name">${escapeHtml(member.name)}</span>
                 <span class="member-mail">${escapeHtml(member.role)} · ${escapeHtml(member.email)}</span>
               </span>
-              <span class="reviewer-toggle"><input type="checkbox" data-reviewer-toggle="${escapeHtml(member.id)}" ${draftReviewerIds.has(member.id) ? "checked" : ""}>审核小组</span>
+              ${memberModalMode === "review" ? `<span class="member-picked-note">审核人员</span>` : `<span class="reviewer-toggle"><input type="checkbox" data-reviewer-toggle="${escapeHtml(member.id)}" ${draftReviewerIds.has(member.id) ? "checked" : ""}>审核小组</span>`}
               <button class="member-remove" type="button" data-remove-selected-member="${escapeHtml(member.id)}" aria-label="移除${escapeHtml(member.name)}">×</button>
             </label>
           `).join("")}
@@ -14279,13 +14830,15 @@
       const handoverRow = handoverRows.find((row) => row.id === handoverId);
       draftSelectedMemberIds = mode === "handover"
         ? new Set(handoverRow?.targetMembers || [])
-        : currentTeamMemberIds();
-      draftReviewerIds = mode === "handover"
-        ? new Set()
-        : new Set(teamMembers.filter((member) => member.reviewer).map((member) => member.id));
+        : mode === "review"
+          ? new Set(submitReviewerIds)
+          : currentTeamMemberIds();
+      draftReviewerIds = mode === "team"
+        ? new Set(teamMembers.filter((member) => member.reviewer).map((member) => member.id))
+        : new Set();
       availableMemberSearch.value = "";
       selectedMemberSearch.value = "";
-      document.getElementById("memberModalTitle").textContent = mode === "handover" ? "选择交接团队及交接人" : "选择变更委员会团队及成员";
+      document.getElementById("memberModalTitle").textContent = mode === "handover" ? "选择交接团队及交接人" : mode === "review" ? "选择审核人员" : "选择变更委员会团队及成员";
       memberModal.hidden = false;
       renderMemberPicker();
       availableMemberSearch.focus();
@@ -14299,11 +14852,25 @@
     }
 
     function addMembers(ids) {
+      const addedNames = ids
+        .filter((id) => memberMap.has(id))
+        .map((id) => memberMap.get(id).name);
       ids.forEach((id) => {
         if (memberMap.has(id)) {
           draftSelectedMemberIds.add(id);
         }
       });
+      if (addedNames.length && memberModalMode === "team") {
+        addProjectEvent({
+          category: "team",
+          type: "成员",
+          title: "添加项目团队成员",
+          description: `添加 ${addedNames.join("、")} 至项目团队候选列表。`,
+          actor: "Wu Zhuoren",
+          role: "PM",
+          scope: "团队成员"
+        });
+      }
       renderMemberPicker();
     }
 
@@ -14401,6 +14968,15 @@
     clearSelectedMembers.addEventListener("click", () => removeMembers(Array.from(draftSelectedMemberIds)));
 
     confirmMembers.addEventListener("click", () => {
+      if (memberModalMode === "review") {
+        submitReviewerIds = Array.from(draftSelectedMemberIds);
+        if (submitReviewerIds.length === 0) {
+          submitReviewerIds = ["general-manager"];
+        }
+        hideMemberModal();
+        renderSubmitReviewers();
+        return;
+      }
       if (memberModalMode === "handover") {
         const row = handoverRows.find((item) => item.id === handoverSelectionId);
         if (row) {
@@ -15205,6 +15781,15 @@
         bomState.status = "locked";
         bomState.workflowStatus = "confirmed";
         snapshotBomHistory();
+        addProjectEvent({
+          category: "bom",
+          type: "BOM",
+          title: `SCM 确认 BOM ${currentVersion()}`,
+          description: `SCM 确认并锁定 BOM，共 ${bomState.rows.length} 条零件数据。`,
+          actor: "Chen Wei",
+          role: "SCM",
+          scope: currentVersion()
+        });
       } else {
         if (!window.confirm("确认提交至 SCM 进行 BOM 确认？")) return;
         if (bomState.versionMajor === 0 && bomState.versionMinor === 0) {
@@ -15212,6 +15797,15 @@
         }
         bomState.status = "draft";
         bomState.workflowStatus = "pendingScm";
+        addProjectEvent({
+          category: "bom",
+          type: "BOM",
+          title: `AE 提交 BOM ${currentVersion()} 至 SCM`,
+          description: `AE 完成 BOM 编辑并提交 SCM 确认，共 ${bomState.rows.length} 条零件数据。`,
+          actor: "Li Ming",
+          role: "AE",
+          scope: currentVersion()
+        });
       }
       bomState.scopedRootId = null;
       bomState.selectedRowIds = [];
@@ -15310,6 +15904,15 @@
         });
       });
       closeApqpCreateModal();
+      addProjectEvent({
+        category: "apqp",
+        type: "APQP",
+        title: "基于 BOM 一键创建 APQP",
+        description: `已创建 ${rows.length} 条 APQP 任务，覆盖 L1 及符合条件的子层级零件。`,
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: currentVersion()
+      });
       renderBomList();
       openApqpTasksModal();
     }
@@ -15783,6 +16386,7 @@
     renderProjectStatus();
     updateStageScrollState();
     renderStageTasks(activeStage);
+    renderProjectRecords();
     refreshProgress();
     validatePlan(false);
   </script>
