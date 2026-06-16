@@ -1673,6 +1673,275 @@
       color: #475467;
     }
 
+    .project-edit-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(16, 24, 40, .28);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+
+    .project-edit-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 100;
+      width: min(1180px, calc(100vw - 72px));
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--bg);
+      box-shadow: var(--shadow);
+      transform: translateX(104%);
+      transition: transform .26s ease;
+    }
+
+    body.part-drawer-open {
+      overflow: hidden;
+    }
+
+    body.part-drawer-open .project-edit-mask {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.part-drawer-open .project-edit-drawer {
+      transform: translateX(0);
+    }
+
+    .project-edit-head {
+      height: 86px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .project-edit-logo {
+      color: #0b1a33;
+      font-size: 30px;
+      line-height: 1;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+
+    .project-edit-close {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #8b93a1;
+      font-size: 32px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .project-edit-body {
+      padding: 20px 22px 100px;
+      overflow: auto;
+    }
+
+    .project-edit-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      margin-bottom: 20px;
+      overflow: visible;
+      position: relative;
+    }
+
+    .project-edit-title {
+      margin: 0 20px;
+      padding: 22px 0 14px;
+      border-bottom: 1px solid #edf0f4;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .project-edit-title span {
+      margin-left: 6px;
+      font-weight: 700;
+    }
+
+    .project-edit-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      gap: 28px 24px;
+      padding: 26px 20px 28px;
+    }
+
+    .project-edit-grid.two {
+      grid-template-columns: repeat(2, minmax(240px, 1fr)) 1fr 1fr;
+    }
+
+    .project-edit-grid.three {
+      grid-template-columns: repeat(3, minmax(220px, 1fr)) 1fr;
+    }
+
+    .project-edit-field {
+      min-width: 0;
+    }
+
+    .project-edit-field.wide {
+      grid-column: 1 / -1;
+    }
+
+    .project-edit-field label {
+      display: block;
+      min-height: 24px;
+      margin-bottom: 8px;
+      color: #141820;
+      font-weight: 500;
+    }
+
+    .project-edit-field label .en {
+      margin-left: 4px;
+      color: #3c4452;
+      font-weight: 500;
+    }
+
+    .project-edit-drawer .required::after {
+      content: " *";
+      color: #ff4d4f;
+      font-weight: 700;
+    }
+
+    .project-edit-drawer label.required {
+      color: #141820;
+      margin-right: 0;
+    }
+
+    .project-edit-drawer .field,
+    .project-edit-drawer .select,
+    .project-edit-drawer .textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #fff;
+      color: #333945;
+      font: inherit;
+    }
+
+    .project-edit-drawer .field,
+    .project-edit-drawer .select {
+      height: 36px;
+      padding: 0 10px;
+    }
+
+    .project-edit-drawer .textarea {
+      min-height: 104px;
+      padding: 10px;
+      resize: vertical;
+    }
+
+    .readonly-value {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #f7f9fc;
+      color: #596274;
+      font-weight: 700;
+    }
+
+    .product-check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding: 10px;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .product-check-grid label {
+      min-height: 24px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 0;
+      color: #333945;
+      font-weight: 700;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 18px 24px;
+      padding: 0 20px 28px;
+    }
+
+    .score-item {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: #fafbfc;
+    }
+
+    .score-title {
+      margin-bottom: 10px;
+      color: #141820;
+      font-weight: 800;
+    }
+
+    .score-title .en {
+      color: #667085;
+      font-weight: 700;
+    }
+
+    .score-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #344054;
+      font-weight: 800;
+    }
+
+    .color-block {
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    .color-block.red { background: #f04438; }
+    .color-block.yellow { background: #fdb022; }
+    .color-block.green { background: #17a667; }
+
+    .project-edit-foot {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 0 24px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .project-edit-foot .btn {
+      min-width: 94px;
+      justify-content: center;
+    }
+
+    #projectEditMessageModal {
+      z-index: 120;
+    }
+
     .subtask-drawer-backdrop {
       position: fixed;
       inset: 0;
@@ -4956,8 +5225,16 @@
       .bom-summary,
       .form-grid,
       .bom-product-picker,
+      .project-edit-grid,
+      .project-edit-grid.two,
+      .project-edit-grid.three,
+      .score-grid,
       .bom-product-options {
         grid-template-columns: 1fr;
+      }
+
+      .project-edit-drawer {
+        width: min(100vw, 720px);
       }
 
       .requirement-panel {
@@ -5097,7 +5374,7 @@
           <aside class="project-side">
             <div class="project-actions">
               <button class="btn btn-outline-danger" type="button"><svg class="icon"><use href="#i-trash"></use></svg>删除项目</button>
-              <button class="btn" type="button"><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
+              <button class="btn" type="button" data-project-edit><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
               <span class="project-status-actions" data-project-status-actions></span>
             </div>
             <div class="stat-grid" aria-label="项目关键状态">
@@ -6899,6 +7176,179 @@
       </div>
       <div class="modal-foot">
         <button class="btn btn-primary" type="button" data-close-audit-record>知道了</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="project-edit-mask" id="projectEditMask"></div>
+  <aside class="project-edit-drawer" id="projectEditDrawer" role="dialog" aria-modal="true" aria-labelledby="projectEditTitle">
+    <header class="project-edit-head">
+      <div class="project-edit-logo">BORGWARNER</div>
+      <button class="project-edit-close" id="closeProjectEditDrawer" type="button" aria-label="关闭">›</button>
+    </header>
+    <div class="project-edit-body">
+      <section class="project-edit-card">
+        <h2 class="project-edit-title" id="projectEditTitle">基本信息 <span>Basic Information</span></h2>
+        <div class="project-edit-grid">
+          <div class="project-edit-field">
+            <label class="required" for="editSellingRu">销售责任单元<span class="en">Selling RU</span></label>
+            <input class="field" id="editSellingRu" value="宁波" placeholder="请输入">
+          </div>
+          <div class="project-edit-field">
+            <label class="required" for="editCustomerBrand">客户<span class="en">Customer Brand</span></label>
+            <select class="select" id="editCustomerBrand">
+              <option>请选择</option>
+              <option selected>Volkswagen</option>
+              <option>BMW</option>
+              <option>Mercedes-Benz</option>
+              <option>Geely</option>
+            </select>
+          </div>
+          <div class="project-edit-field">
+            <label class="required" for="editProgram">项目<span class="en">Program</span></label>
+            <input class="field" id="editProgram" value="EA888 E5 VCT" placeholder="请输入">
+          </div>
+          <div class="project-edit-field">
+            <label class="required">产品<span class="en">Product</span></label>
+            <div class="product-check-grid" aria-label="产品多选">
+              <label><input type="checkbox" value="Phaser" data-edit-product data-system="VVT系统">Phaser</label>
+              <label><input type="checkbox" value="VFS" data-edit-product data-system="VVT系统">VFS</label>
+              <label><input type="checkbox" value="CB" data-edit-product data-system="VVT系统">CB</label>
+              <label><input type="checkbox" value="OCV" data-edit-product data-system="VVT系统">OCV</label>
+              <label><input type="checkbox" value="VCT" checked data-edit-product data-system="VVT系统">VCT</label>
+              <label><input type="checkbox" value="Chain" data-edit-product data-system="TD">Chain</label>
+              <label><input type="checkbox" value="TSC" data-edit-product data-system="TD">TSC</label>
+              <label><input type="checkbox" value="Timing Tensioner" data-edit-product data-system="TD">Timing Tensioner</label>
+              <label><input type="checkbox" value="OP tensioner" data-edit-product data-system="TD">OP tensioner</label>
+              <label><input type="checkbox" value="Sprocket" data-edit-product data-system="TD">Sprocket</label>
+              <label><input type="checkbox" value="CC Guide" data-edit-product data-system="TD">CC Guide</label>
+              <label><input type="checkbox" value="Arm Guide" data-edit-product data-system="TD">Arm Guide</label>
+              <label><input type="checkbox" value="PP(Chain内部子零件)" data-edit-product data-system="TD">PP(Chain内部子零件)</label>
+              <label><input type="checkbox" value="Motor Chain" data-edit-product data-system="TD">Motor Chain</label>
+            </div>
+          </div>
+          <div class="project-edit-field">
+            <label for="editSystemValue">系统</label>
+            <div class="readonly-value" id="editSystemValue">VVT系统</div>
+          </div>
+          <div class="project-edit-field">
+            <label class="required" for="editProjectManager">项目经理<span class="en">Project Manager</span></label>
+            <select class="select" id="editProjectManager">
+              <option>请选择项目经理</option>
+              <option>王浩</option>
+              <option>李敏</option>
+              <option>陈杰</option>
+              <option>赵琳</option>
+              <option selected>Wu Zhuoren</option>
+            </select>
+          </div>
+        </div>
+      </section>
+      <section class="project-edit-card">
+        <h2 class="project-edit-title">销售 &amp; 前瞻规划 <span>Business and Market Data</span></h2>
+        <div class="project-edit-grid">
+          <div class="project-edit-field">
+            <label for="editPeakVolume">峰值订单量 <span class="en">Peak Volume</span></label>
+            <input class="field" id="editPeakVolume" value="420,000" placeholder="请输入">
+          </div>
+          <div class="project-edit-field">
+            <label for="editPrice">定价 <span class="en">Price（RMB：元）</span></label>
+            <input class="field" id="editPrice" value="86.50" placeholder="请输入">
+          </div>
+          <div class="project-edit-field">
+            <label for="editRevenue">预计营收 <span class="en">Revenue（RMB：元）</span></label>
+            <input class="field" id="editRevenue" value="36,330,000" placeholder="请输入">
+          </div>
+          <div class="project-edit-field">
+            <label for="editApplicationVolume">配套需求量 <span class="en">Application Volume</span></label>
+            <input class="field" id="editApplicationVolume" value="380,000" placeholder="请输入">
+          </div>
+        </div>
+      </section>
+      <section class="project-edit-card">
+        <h2 class="project-edit-title">采购与排程 <span>Procurement and Schedule</span></h2>
+        <div class="project-edit-grid two">
+          <div class="project-edit-field">
+            <label for="editSourcingQuarter">定点季度 <span class="en">Sourcing Quarter</span></label>
+            <select class="select" id="editSourcingQuarter">
+              <option>请选择</option>
+              <option selected>2026 Q1</option>
+              <option>2026 Q2</option>
+              <option>2026 Q3</option>
+              <option>2026 Q4</option>
+            </select>
+          </div>
+          <div class="project-edit-field">
+            <label for="editSourcingDate">定点日期 <span class="en">Sourcing Date</span></label>
+            <input class="field" id="editSourcingDate" type="date" value="2026-02-20">
+          </div>
+        </div>
+      </section>
+      <section class="project-edit-card">
+        <h2 class="project-edit-title">评价与分级 <span>Evaluation and Classification</span></h2>
+        <div class="project-edit-grid three">
+          <div class="project-edit-field">
+            <label for="editSop">SOP</label>
+            <input class="field" id="editSop" type="date" value="2027-12-01">
+          </div>
+          <div class="project-edit-field">
+            <label for="editRank">等级 <span class="en">Rank</span></label>
+            <select class="select" id="editRank">
+              <option>请选择</option>
+              <option selected>A</option>
+              <option>B</option>
+              <option>C</option>
+            </select>
+          </div>
+          <div class="project-edit-field">
+            <label for="editLrpType">物流计划类型 <span class="en">LRP Type</span></label>
+            <select class="select" id="editLrpType">
+              <option>请选择</option>
+              <option>Booked</option>
+              <option>未预定</option>
+              <option selected>LRPV1</option>
+              <option>LRP+</option>
+            </select>
+          </div>
+        </div>
+        <div class="score-grid">
+          <div class="score-item"><div class="score-title">开发跟进评级 <span class="en">Pursuit Rating</span></div><div class="score-options"><label class="radio"><input type="radio" name="editPursuit"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editPursuit"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editPursuit" checked><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">财务数据 <span class="en">Financials</span></div><div class="score-options"><label class="radio"><input type="radio" name="editFinancials"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editFinancials" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editFinancials"><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">制造 <span class="en">MFG</span></div><div class="score-options"><label class="radio"><input type="radio" name="editMfg"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editMfg"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editMfg" checked><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">价格及成本 <span class="en">Price &amp; Costs</span></div><div class="score-options"><label class="radio"><input type="radio" name="editCost"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editCost" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editCost"><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">产品 <span class="en">Product</span></div><div class="score-options"><label class="radio"><input type="radio" name="editProductScore"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editProductScore"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editProductScore" checked><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">品质 <span class="en">Quality</span></div><div class="score-options"><label class="radio"><input type="radio" name="editQuality"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editQuality"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editQuality" checked><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">关联关系 <span class="en">Relationships</span></div><div class="score-options"><label class="radio"><input type="radio" name="editRelationship"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editRelationship" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editRelationship"><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">供应商 <span class="en">Suppliers</span></div><div class="score-options"><label class="radio"><input type="radio" name="editSupplier"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editSupplier"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editSupplier" checked><span class="color-block green"></span>G</label></div></div>
+          <div class="score-item"><div class="score-title">时间节点 <span class="en">Timing</span></div><div class="score-options"><label class="radio"><input type="radio" name="editTiming"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editTiming" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editTiming"><span class="color-block green"></span>G</label></div></div>
+        </div>
+      </section>
+      <section class="project-edit-card">
+        <h2 class="project-edit-title">备注信息 <span>Remarks</span></h2>
+        <div class="project-edit-grid">
+          <div class="project-edit-field wide">
+            <label for="editRemarks">备注</label>
+            <textarea class="textarea" id="editRemarks" placeholder="请输入">EA888 E5 VCT 开发项目，当前处于 PKO 阶段。</textarea>
+          </div>
+        </div>
+      </section>
+    </div>
+    <footer class="project-edit-foot">
+      <button class="btn" type="button" data-close-project-edit>取消</button>
+      <button class="btn" type="button" id="saveProjectEditDraft">保存草稿</button>
+      <button class="btn btn-primary" type="button" id="confirmProjectEdit">确定</button>
+    </footer>
+  </aside>
+
+  <div class="modal-backdrop" id="projectEditMessageModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="projectEditMessageTitle">
+      <div class="modal-head">
+        <h3 id="projectEditMessageTitle">提示</h3>
+        <button class="modal-close" type="button" data-close-project-edit-message aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body" id="projectEditMessageBody"></div>
+      <div class="modal-foot">
+        <button class="btn btn-primary" type="button" data-close-project-edit-message>知道了</button>
       </div>
     </section>
   </div>
@@ -12509,6 +12959,15 @@
     const projectStatusReasonModal = document.getElementById("projectStatusReasonModal");
     const projectStatusReasonTitle = document.getElementById("projectStatusReasonTitle");
     const projectStatusReasonBody = document.getElementById("projectStatusReasonBody");
+    const projectEditDrawer = document.getElementById("projectEditDrawer");
+    const projectEditMask = document.getElementById("projectEditMask");
+    const closeProjectEditDrawer = document.getElementById("closeProjectEditDrawer");
+    const editSystemValue = document.getElementById("editSystemValue");
+    const saveProjectEditDraft = document.getElementById("saveProjectEditDraft");
+    const confirmProjectEdit = document.getElementById("confirmProjectEdit");
+    const projectEditMessageModal = document.getElementById("projectEditMessageModal");
+    const projectEditMessageTitle = document.getElementById("projectEditMessageTitle");
+    const projectEditMessageBody = document.getElementById("projectEditMessageBody");
     const gate4PpapForm = document.getElementById("gate4PpapForm");
     const gate4ApprovalType = document.getElementById("gate4ApprovalType");
     const gate4TempDuration = document.getElementById("gate4TempDuration");
@@ -13619,6 +14078,32 @@
       resetProjectStatusForm();
     }
 
+    function setProjectEditDrawer(open) {
+      document.body.classList.toggle("part-drawer-open", open);
+      if (open) {
+        projectEditDrawer?.querySelector("input, select, textarea, button")?.focus();
+      }
+    }
+
+    function syncEditSystemValue() {
+      if (!editSystemValue) return;
+      const systems = new Set(Array.from(document.querySelectorAll("[data-edit-product]:checked")).map((input) => input.dataset.system));
+      editSystemValue.textContent = systems.size ? Array.from(systems).join(" / ") : "-";
+    }
+
+    function showProjectEditMessage(title, html) {
+      if (!projectEditMessageModal || !projectEditMessageTitle || !projectEditMessageBody) return;
+      projectEditMessageTitle.textContent = title;
+      projectEditMessageBody.innerHTML = html;
+      projectEditMessageModal.hidden = false;
+    }
+
+    function closeProjectEditMessage() {
+      if (projectEditMessageModal) {
+        projectEditMessageModal.hidden = true;
+      }
+    }
+
     function submitPkoStage() {
       stageTasks.PKO.forEach((task) => {
         if (task.status === "todo") {
@@ -14161,6 +14646,48 @@
       const button = event.target.closest("[data-record-go-tab]");
       if (!button) return;
       activateProjectTab(button.dataset.recordGoTab);
+    });
+
+    document.querySelector("[data-project-edit]")?.addEventListener("click", () => {
+      syncEditSystemValue();
+      setProjectEditDrawer(true);
+    });
+    closeProjectEditDrawer?.addEventListener("click", () => setProjectEditDrawer(false));
+    projectEditMask?.addEventListener("click", () => setProjectEditDrawer(false));
+    document.querySelectorAll("[data-close-project-edit]").forEach((button) => {
+      button.addEventListener("click", () => setProjectEditDrawer(false));
+    });
+    document.querySelectorAll("[data-edit-product]").forEach((input) => {
+      input.addEventListener("change", syncEditSystemValue);
+    });
+    document.querySelectorAll("[data-close-project-edit-message]").forEach((button) => {
+      button.addEventListener("click", closeProjectEditMessage);
+    });
+    projectEditMessageModal?.addEventListener("click", (event) => {
+      if (event.target === projectEditMessageModal) {
+        closeProjectEditMessage();
+      }
+    });
+    saveProjectEditDraft?.addEventListener("click", () => {
+      showProjectEditMessage("保存草稿", "<p>项目信息草稿已保存。</p>");
+    });
+    confirmProjectEdit?.addEventListener("click", () => {
+      setProjectEditDrawer(false);
+      addProjectEvent({
+        category: "status",
+        type: "状态",
+        title: "编辑项目信息",
+        description: "项目信息表单已保存，字段结构与子零件开发调整版保持一致。",
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "项目信息"
+      });
+      showProjectEditMessage("保存成功", "<p>项目信息已更新。</p>");
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && document.body.classList.contains("part-drawer-open")) {
+        setProjectEditDrawer(false);
+      }
     });
 
     function updateStageScrollState() {

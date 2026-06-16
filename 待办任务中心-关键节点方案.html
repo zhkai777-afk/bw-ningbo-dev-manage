@@ -1,0 +1,1344 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>博格华纳项目开发 - 待办任务中心方案版</title>
+  <style>
+    :root {
+      --page-max: 1670px;
+      --primary: #1769ff;
+      --primary-hover: #1059dc;
+      --primary-light: #eaf2ff;
+      --primary-border: #c7d7ff;
+      --success: #17a667;
+      --success-light: #e8f7ef;
+      --warning: #f79009;
+      --warning-light: #fff4df;
+      --danger: #f04438;
+      --danger-light: #ffeceb;
+      --text-primary: #252a34;
+      --text-secondary: #667085;
+      --text-tertiary: #98a2b3;
+      --border: #e7ebf2;
+      --border-strong: #d9e0ea;
+      --bg-base: #f5f7fb;
+      --bg-white: #ffffff;
+      --bg-tint: #f7f9fc;
+      --shadow: 0 10px 28px rgba(16, 24, 40, .08);
+      --radius: 8px;
+      --radius-sm: 4px;
+      --focus: 0 0 0 3px rgba(23, 105, 255, .20);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button, input, select, textarea { font: inherit; }
+
+    .page-container {
+      width: min(100%, var(--page-max));
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 22px 20px 36px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 280px;
+    }
+
+    .header-left::before {
+      content: "";
+      width: 4px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--primary);
+      flex: 0 0 4px;
+    }
+
+    .header-title {
+      font-size: 23px;
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .header-subtitle {
+      margin-top: 4px;
+      color: var(--text-tertiary);
+      font-size: 13px;
+    }
+
+    .role-switcher,
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 3px;
+      padding: 3px;
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 1px 2px rgba(16,24,40,.04);
+    }
+
+    .role-btn,
+    .filter-btn {
+      min-height: 34px;
+      padding: 7px 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: #566176;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: background .18s ease, color .18s ease, box-shadow .18s ease;
+    }
+
+    .role-btn:hover,
+    .filter-btn:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .role-btn.active,
+    .filter-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(23,105,255,.18);
+    }
+
+    .role-btn:focus-visible,
+    .filter-btn:focus-visible,
+    .btn:focus-visible,
+    .modal-close:focus-visible {
+      outline: none;
+      box-shadow: var(--focus);
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .stat-card,
+    .section,
+    .node-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    .stat-card {
+      position: relative;
+      overflow: hidden;
+      padding: 18px 20px;
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 4px;
+      background: var(--text-tertiary);
+    }
+
+    .stat-card:hover {
+      border-color: #c9d2de;
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+
+    .stat-card.primary::before { background: var(--primary); }
+    .stat-card.success::before { background: var(--success); }
+    .stat-card.warning::before { background: var(--warning); }
+    .stat-card.danger::before { background: var(--danger); }
+
+    .stat-label {
+      margin-bottom: 10px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .stat-value {
+      color: var(--text-primary);
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .stat-trend {
+      margin-top: 8px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+    }
+
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .node-card {
+      padding: 16px;
+    }
+
+    .node-kicker {
+      margin-bottom: 8px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+    }
+
+    .node-title {
+      margin: 0 0 8px;
+      font-size: 17px;
+      line-height: 1.25;
+    }
+
+    .node-desc {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .node-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .section {
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-white);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .section-title::before,
+    .modal-section-title::before {
+      content: "";
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      background: var(--primary);
+      flex: 0 0 4px;
+    }
+
+    .section-title .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .data-table th {
+      padding: 12px 14px;
+      background: var(--bg-tint);
+      border-bottom: 1px solid var(--border);
+      color: var(--text-secondary);
+      font-size: 13px;
+      font-weight: 800;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: #fbfcfe; }
+
+    .cell-main {
+      color: var(--text-primary);
+      font-weight: 800;
+    }
+
+    .cell-sub,
+    .cell-desc {
+      margin-top: 3px;
+      color: var(--text-secondary);
+      font-size: 13px;
+    }
+
+    .cell-desc {
+      max-width: 360px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 8px;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    .tag-blue { background: var(--primary-light); color: var(--primary); border-color: var(--primary-border); }
+    .tag-green { background: var(--success-light); color: var(--success); border-color: #cbe9d5; }
+    .tag-orange { background: var(--warning-light); color: var(--warning); border-color: #f5d7a7; }
+    .tag-red { background: var(--danger-light); color: var(--danger); border-color: #ffd2d0; }
+    .tag-gray { background: #eef2f6; color: var(--text-secondary); border-color: #e1e7ef; }
+
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-width: 176px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 34px;
+      padding: 7px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: #344054;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease, filter .18s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 4px 12px rgba(23,105,255,.12);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      border-color: var(--primary-hover);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(23,105,255,.18);
+    }
+
+    .btn-success {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    .btn-success:hover {
+      color: #fff;
+      filter: brightness(.97);
+      box-shadow: 0 4px 12px rgba(23,166,103,.18);
+    }
+
+    .btn-danger {
+      background: #f97316;
+      border-color: #f97316;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      border-color: #ea580c;
+      color: #fff;
+      filter: brightness(.98);
+      box-shadow: 0 4px 12px rgba(249,115,22,.20);
+    }
+
+    .btn-sm {
+      min-height: 30px;
+      padding: 5px 12px;
+    }
+
+    .btn:disabled {
+      cursor: not-allowed;
+      background: #f2f4f7;
+      border-color: var(--border);
+      color: var(--text-tertiary);
+      box-shadow: none;
+    }
+
+    .empty-state {
+      display: none;
+      padding: 48px 24px;
+      color: var(--text-tertiary);
+      text-align: center;
+    }
+
+    .empty-state.show { display: block; }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15,23,42,.48);
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal {
+      width: 860px;
+      max-width: 94vw;
+      max-height: 90vh;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.32);
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 24px 64px rgba(16,24,40,.24);
+      animation: modalSlide .2s ease-out;
+    }
+
+    @keyframes modalSlide {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-white);
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--text-tertiary);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-tint);
+      color: var(--text-primary);
+    }
+
+    .modal-body {
+      max-height: 62vh;
+      overflow-y: auto;
+      padding: 22px;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 14px 22px;
+      border-top: 1px solid var(--border);
+      background: var(--bg-tint);
+    }
+
+    .modal-section {
+      margin-bottom: 22px;
+    }
+
+    .modal-section:last-child { margin-bottom: 0; }
+
+    .modal-section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .info-card,
+    .check-card {
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-tint);
+    }
+
+    .info-card-label {
+      margin-bottom: 4px;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .info-card-value {
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .check-card {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .check-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .check-card.warn .check-dot { background: var(--warning); }
+    .check-card.risk .check-dot { background: var(--danger); }
+
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+      font-weight: 800;
+    }
+
+    .required { color: var(--danger); }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text-primary);
+      font-size: 14px;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: var(--focus);
+    }
+
+    .form-textarea {
+      min-height: 86px;
+      resize: vertical;
+    }
+
+    .review-option-group {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .review-option {
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+      transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+    }
+
+    .review-option:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(23,105,255,.08);
+    }
+
+    .review-option.green { border-color: rgba(23,166,103,.35); background: var(--success-light); }
+    .review-option.yellow { border-color: rgba(247,144,9,.35); background: var(--warning-light); }
+    .review-option.red { border-color: rgba(240,68,56,.35); background: var(--danger-light); }
+
+    .toast {
+      position: fixed;
+      z-index: 2000;
+      top: 24px;
+      left: 50%;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      background: #1d2939;
+      color: #fff;
+      box-shadow: 0 12px 28px rgba(16,24,40,.22);
+      opacity: 0;
+      transform: translateX(-50%) translateY(-100px);
+      transition: opacity .3s ease, transform .3s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 1200px) {
+      .summary-grid,
+      .node-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 768px) {
+      .page-container { padding: 16px; }
+      .header,
+      .section-header { align-items: flex-start; flex-direction: column; }
+      .role-switcher,
+      .toolbar { width: 100%; }
+      .role-btn,
+      .filter-btn { flex: 1 1 calc(50% - 4px); }
+      .summary-grid,
+      .node-grid,
+      .info-grid,
+      .review-option-group { grid-template-columns: 1fr; }
+      .section { overflow-x: auto; }
+      .data-table { min-width: 1180px; }
+      .check-card { grid-template-columns: auto 1fr; }
+      .check-card .btn { grid-column: 2; justify-self: start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-container">
+    <header class="header">
+      <div class="header-left">
+        <div>
+          <div class="header-title">待办任务中心 · 关键节点方案版</div>
+          <div class="header-subtitle">按项目关键节点、BOM/APQP 关系和 Gate 阻塞规则生成待办入口</div>
+        </div>
+      </div>
+      <nav class="role-switcher" aria-label="角色筛选">
+        <button class="role-btn active" type="button" data-role="pm">PM</button>
+        <button class="role-btn" type="button" data-role="ae">AE</button>
+        <button class="role-btn" type="button" data-role="scm">SCM</button>
+        <button class="role-btn" type="button" data-role="aqe">AQE</button>
+        <button class="role-btn" type="button" data-role="sqd">SQD</button>
+        <button class="role-btn" type="button" data-role="owner">任务负责人</button>
+        <button class="role-btn" type="button" data-role="reviewer">审核小组</button>
+      </nav>
+    </header>
+
+    <section class="summary-grid" aria-label="任务统计">
+      <div class="stat-card primary">
+        <div class="stat-label">待处理任务</div>
+        <div class="stat-value" id="pendingCount">0</div>
+        <div class="stat-trend">来自关键节点与 Gate 阶段</div>
+      </div>
+      <div class="stat-card warning">
+        <div class="stat-label">需进入详情</div>
+        <div class="stat-value" id="detailCount">0</div>
+        <div class="stat-trend">BOM / APQP / 子零件任务</div>
+      </div>
+      <div class="stat-card success">
+        <div class="stat-label">可快速处理</div>
+        <div class="stat-value" id="modalCount">0</div>
+        <div class="stat-trend">审批、确认、提交说明</div>
+      </div>
+      <div class="stat-card danger">
+        <div class="stat-label">阻塞 Gate</div>
+        <div class="stat-value" id="blockedCount">0</div>
+        <div class="stat-trend">需先清理后发起审核</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div class="section-title">
+          待办任务清单
+          <span class="badge" id="taskBadge">0</span>
+        </div>
+      </div>
+      <table class="data-table" aria-label="待办任务清单">
+        <thead>
+          <tr>
+            <th>任务名称</th>
+            <th>角色</th>
+            <th>项目 / 来源</th>
+            <th>阶段</th>
+            <th>触发原因</th>
+            <th>阻塞</th>
+            <th style="width:190px;">操作</th>
+          </tr>
+        </thead>
+        <tbody id="taskTable"></tbody>
+      </table>
+      <div class="empty-state" id="emptyState">当前筛选条件下暂无待办任务</div>
+    </section>
+  </div>
+
+  <div class="modal-overlay" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="taskModalTitle">处理任务</div>
+        <button class="modal-close" type="button" aria-label="关闭弹窗" onclick="closeModal()">×</button>
+      </div>
+      <div class="modal-body" id="taskModalBody"></div>
+      <div class="modal-footer" id="taskModalFooter"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const detailPages = {
+      project: "index-project-record-bom-supply-apqp.html",
+      task: "task-management.html",
+      part: "子零件开发任务详情.html",
+      handover: "index-project-record.html"
+    };
+
+    const tasks = [
+      {
+        id: "pko-node",
+        role: "pm",
+        roleLabel: "PM",
+        name: "维护 PKO 关键节点",
+        project: "Project-A · 涡轮增压器总成",
+        source: "PKO 会议信息",
+        stage: "PKO",
+        trigger: "项目已进入 PKO，请补充客户 OTS、PPAP、SOP 以及 BW 内部 OTS、PPAP、SOP 计划日期。",
+        mode: "detail",
+        blocked: false,
+        detail: detailPages.project,
+        note: "关键节点将用于生成 Gate4、Gate5、Gate6 的计划提醒。"
+      },
+      {
+        id: "pko-flow",
+        role: "pm",
+        roleLabel: "PM",
+        name: "确认流程分支",
+        project: "Project-A · 涡轮增压器总成",
+        source: "产品类型判断",
+        stage: "PKO",
+        trigger: "项目产品类型待确认，请选择标准流程 Gate1~Gate6 或简化流程 Gate1~Gate3。",
+        mode: "modal",
+        blocked: false,
+        modalType: "flow",
+        note: "确认后系统将按对应流程生成后续阶段任务。"
+      },
+      {
+        id: "stage-task-config",
+        role: "pm",
+        roleLabel: "PM",
+        name: "配置 Gate 阶段任务",
+        project: "Project-A · 涡轮增压器总成",
+        source: "流程分支已确认",
+        stage: "PKO",
+        trigger: "流程分支已确认，请配置各 Gate 阶段任务、负责人和计划完成时间。",
+        mode: "detail",
+        blocked: false,
+        detail: detailPages.task,
+        note: "任务分配完成后，相关成员会收到个人待办。"
+      },
+      {
+        id: "ae-bom",
+        role: "ae",
+        roleLabel: "AE",
+        name: "创建 / 提交 BOM 草稿",
+        project: "Project-A · 涡轮增压器总成",
+        source: "PKO 任务分配",
+        stage: "Gate1",
+        trigger: "已收到 BOM 创建任务，请根据设计图纸维护产品 BOM 并提交 SCM 确认。",
+        mode: "detail",
+        blocked: false,
+        detail: detailPages.project,
+        note: "BOM 提交前为草稿状态，不生成正式 APQP。"
+      },
+      {
+        id: "scm-bom-lock",
+        role: "scm",
+        roleLabel: "SCM",
+        name: "确认并锁定 BOM",
+        project: "Project-A · 涡轮增压器总成",
+        source: "AE 已提交 BOM",
+        stage: "Gate1",
+        trigger: "AE 已提交 BOM，请补充供应方案并确认锁定当前有效 BOM 版本。",
+        mode: "detail",
+        blocked: true,
+        detail: detailPages.project,
+        note: "BOM 未锁定前，项目不能生成正式 L1 APQP 和子零件 APQP。"
+      },
+      {
+        id: "pm-l1-apqp",
+        role: "pm",
+        roleLabel: "PM",
+        name: "基于 L1 BOM 创建总成 APQP",
+        project: "Project-A · 涡轮增压器总成",
+        source: "SCM 已锁定 BOM V1.0",
+        stage: "Gate1",
+        trigger: "BOM 已锁定，请基于 L1 总成创建项目 APQP，并确认负责人。",
+        mode: "detail",
+        blocked: true,
+        detail: detailPages.project,
+        note: "L1 APQP 默认负责人为 AQE。"
+      },
+      {
+        id: "aqe-part-apqp",
+        role: "aqe",
+        roleLabel: "AQE",
+        name: "拆解子零件 APQP",
+        project: "Project-A · 涡轮增压器总成",
+        source: "L1 总成 APQP 已创建",
+        stage: "Gate1",
+        trigger: "L1 总成 APQP 已创建，请按 BOM 拆解需要开发的子零件 APQP。",
+        mode: "detail",
+        blocked: true,
+        detail: detailPages.project,
+        note: "子零件 APQP 默认负责人为 SQD，可按零件和供应商方案分别生成。"
+      },
+      {
+        id: "sqd-supplier-node",
+        role: "sqd",
+        roleLabel: "SQD",
+        name: "同步供应商子零件节点",
+        project: "Project-A · 涡轮增压器总成",
+        source: "AQE 已分配子零件 APQP",
+        stage: "Gate2",
+        trigger: "已收到子零件 APQP 任务，请同步供应商开发节点和当前完成状态。",
+        mode: "detail",
+        blocked: true,
+        detail: detailPages.part,
+        note: "当前 Gate 下阻塞型子零件任务未完成时，项目不能提交 Gate 审核。"
+      },
+      {
+        id: "owner-submit",
+        role: "owner",
+        roleLabel: "任务负责人",
+        name: "提交 Gate 任务完成申请",
+        project: "Project-B · 电子水泵模块",
+        source: "Gate2 阶段任务",
+        stage: "Gate2",
+        trigger: "请提交 DFMEA 分析文档编制结果、完成说明和交付物。",
+        mode: "modal",
+        blocked: false,
+        modalType: "complete",
+        note: "提交后将进入 PM 或职能经理审核。"
+      },
+      {
+        id: "manager-approve",
+        role: "pm",
+        roleLabel: "PM",
+        name: "审核任务完成申请",
+        project: "Project-B · 电子水泵模块",
+        source: "任务负责人已提交",
+        stage: "Gate2",
+        trigger: "任务负责人已提交 DFMEA 交付物，请审核是否通过。",
+        mode: "modal",
+        blocked: false,
+        modalType: "approve",
+        note: "驳回后任务将回到负责人待处理。"
+      },
+      {
+        id: "gate-launch",
+        role: "pm",
+        roleLabel: "PM",
+        name: "发起 Gate 阶段审核",
+        project: "Project-A · 涡轮增压器总成",
+        source: "Gate1 阶段推进",
+        stage: "Gate1",
+        trigger: "Gate1 阶段任务已完成，请发起阶段审核并确认准入检查结果。",
+        mode: "modal",
+        blocked: true,
+        modalType: "gateLaunch",
+        note: "存在 BOM 变更或阻塞型子零件任务时，需先处理后才能发起审核。"
+      },
+      {
+        id: "gate-review",
+        role: "reviewer",
+        roleLabel: "审核小组",
+        name: "提交 Gate 审核结论",
+        project: "Project-A · 涡轮增压器总成",
+        source: "PM 已发起 Gate Review",
+        stage: "Gate1",
+        trigger: "PM 已发起 Gate1 阶段审核，请提交你的审核结论。",
+        mode: "modal",
+        blocked: false,
+        modalType: "gateReview",
+        note: "黄色结论需填写关闭条件、责任人和计划完成时间。"
+      },
+      {
+        id: "handover",
+        role: "pm",
+        roleLabel: "PM",
+        name: "登记 Hand Over 交接信息",
+        project: "Project-A · 涡轮增压器总成",
+        source: "Gate6 审核通过",
+        stage: "Hand Over",
+        trigger: "Gate6 审核已通过，请登记项目交接信息并完成 Hand Over。",
+        mode: "detail",
+        blocked: false,
+        detail: detailPages.handover,
+        note: "交接完成后项目进入结束节点。"
+      }
+    ];
+
+    let activeRole = "pm";
+    let activeFilter = "all";
+    let currentTask = null;
+
+    const roleButtons = document.querySelectorAll(".role-btn");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const table = document.getElementById("taskTable");
+    const emptyState = document.getElementById("emptyState");
+
+    roleButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        roleButtons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        activeRole = button.dataset.role;
+        renderTasks();
+      });
+    });
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        activeFilter = button.dataset.filter;
+        renderTasks();
+      });
+    });
+
+    function escapeHtml(value) {
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function modeText(mode) {
+      return mode === "modal" ? "弹窗处理" : "进入详情";
+    }
+
+    function modeTag(task) {
+      return task.mode === "modal"
+        ? '<span class="tag tag-green">弹窗处理</span>'
+        : '<span class="tag tag-blue">进入详情</span>';
+    }
+
+    function stageTag(stage) {
+      const cls = stage === "PKO" ? "tag-blue" : stage === "Gate1" ? "tag-green" : stage === "Hand Over" ? "tag-gray" : "tag-orange";
+      return `<span class="tag ${cls}">${escapeHtml(stage)}</span>`;
+    }
+
+    function filteredTasks() {
+      return tasks.filter((task) => {
+        const roleMatch = activeRole === "all" || task.role === activeRole;
+        const filterMatch =
+          activeFilter === "all" ||
+          (activeFilter === "modal" && task.mode === "modal") ||
+          (activeFilter === "detail" && task.mode === "detail") ||
+          (activeFilter === "blocked" && task.blocked);
+        return roleMatch && filterMatch;
+      });
+    }
+
+    function renderTasks() {
+      const rows = filteredTasks();
+      document.getElementById("taskBadge").textContent = rows.length;
+      emptyState.classList.toggle("show", rows.length === 0);
+      table.innerHTML = rows.map((task) => `
+        <tr>
+          <td>
+            <div class="cell-main">${escapeHtml(task.name)}</div>
+          </td>
+          <td><span class="tag tag-gray">${escapeHtml(task.roleLabel)}</span></td>
+          <td>
+            <div class="cell-main">${escapeHtml(task.project)}</div>
+            <div class="cell-sub">${escapeHtml(task.source)}</div>
+          </td>
+          <td>${stageTag(task.stage)}</td>
+          <td><div class="cell-desc">${escapeHtml(task.trigger)}</div></td>
+          <td>${task.blocked ? '<span class="tag tag-red">阻塞 Gate</span>' : '<span class="tag tag-green">不阻塞</span>'}</td>
+          <td>
+            <div class="btn-group">
+              ${task.mode === "modal"
+                ? `<button class="btn btn-primary btn-sm" type="button" onclick="openTaskModal('${task.id}')">处理</button>`
+                : `<a class="btn btn-primary btn-sm" href="${escapeHtml(task.detail)}">进入详情</a>`}
+            </div>
+          </td>
+        </tr>
+      `).join("");
+      updateStats();
+    }
+
+    function updateStats() {
+      const scoped = activeRole === "all" ? tasks : tasks.filter((task) => task.role === activeRole);
+      document.getElementById("pendingCount").textContent = scoped.length;
+      document.getElementById("detailCount").textContent = scoped.filter((task) => task.mode === "detail").length;
+      document.getElementById("modalCount").textContent = scoped.filter((task) => task.mode === "modal").length;
+      document.getElementById("blockedCount").textContent = scoped.filter((task) => task.blocked).length;
+    }
+
+    function openReasonModal(taskId) {
+      const task = tasks.find((item) => item.id === taskId);
+      currentTask = task;
+      document.getElementById("taskModalTitle").textContent = "任务说明";
+      document.getElementById("taskModalBody").innerHTML = baseInfo(task) + `
+        <div class="modal-section">
+          <div class="modal-section-title">业务说明</div>
+          <div class="check-list">
+            <div class="check-card">
+              <span class="check-dot"></span>
+              <div>
+                <div class="cell-main">${escapeHtml(task.trigger)}</div>
+                <div class="cell-sub">${escapeHtml(task.note || "")}</div>
+              </div>
+              ${task.mode === "detail" ? `<a class="btn btn-primary btn-sm" href="${escapeHtml(task.detail)}">进入详情</a>` : ""}
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById("taskModalFooter").innerHTML = `
+        <button class="btn" type="button" onclick="closeModal()">关闭</button>
+      `;
+      openModal();
+    }
+
+    function openTaskModal(taskId) {
+      const task = tasks.find((item) => item.id === taskId);
+      currentTask = task;
+      document.getElementById("taskModalTitle").textContent = task.name;
+      document.getElementById("taskModalBody").innerHTML = baseInfo(task) + modalContent(task);
+      document.getElementById("taskModalFooter").innerHTML = modalFooter(task);
+      openModal();
+      toggleConditionReason();
+    }
+
+    function baseInfo(task) {
+      return `
+        <div class="modal-section">
+          <div class="modal-section-title">任务基本信息</div>
+          <div class="info-grid">
+            <div class="info-card">
+              <div class="info-card-label">任务名称</div>
+              <div class="info-card-value">${escapeHtml(task.name)}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-label">所属项目</div>
+              <div class="info-card-value">${escapeHtml(task.project)}</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-label">当前阶段</div>
+              <div class="info-card-value">${escapeHtml(task.stage)}</div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function modalContent(task) {
+      if (task.modalType === "flow") {
+        return `
+          <div class="modal-section">
+            <div class="modal-section-title">确认流程分支</div>
+            <div class="form-group">
+              <label class="form-label" for="flowType">流程分支 <span class="required">*</span></label>
+              <select class="form-select" id="flowType">
+                <option>标准流程：Gate1 至 Gate6</option>
+                <option>简化流程：Gate1 至 Gate3</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="flowRemark">备注说明</label>
+              <textarea class="form-textarea" id="flowRemark" placeholder="请输入流程选择依据，例如产品类型、是否内部子零件、是否 Motor Chain 场景。"></textarea>
+            </div>
+          </div>
+        `;
+      }
+
+      if (task.modalType === "complete") {
+        return `
+          <div class="modal-section">
+            <div class="modal-section-title">提交完成申请</div>
+            <div class="form-group">
+              <label class="form-label" for="completeDesc">任务完成说明 <span class="required">*</span></label>
+              <textarea class="form-textarea" id="completeDesc" placeholder="请描述任务执行情况、完成结果和遗留风险。"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="deliverable">交付物</label>
+              <input class="form-input" id="deliverable" placeholder="示例：DFMEA分析报告_v1.2.pdf">
+            </div>
+          </div>
+        `;
+      }
+
+      if (task.modalType === "approve") {
+        return `
+          <div class="modal-section">
+            <div class="modal-section-title">审核任务完成</div>
+            <div class="check-list">
+              <div class="check-card">
+                <span class="check-dot"></span>
+                <div>
+                  <div class="cell-main">交付物已提交</div>
+                  <div class="cell-sub">DFMEA分析报告_v1.2.pdf、风险评估表.xlsx</div>
+                </div>
+              </div>
+              <div class="check-card warn">
+                <span class="check-dot"></span>
+                <div>
+                  <div class="cell-main">需确认是否影响当前 Gate 准入</div>
+                  <div class="cell-sub">如驳回，关联 Gate 完成率需回退。</div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group" style="margin-top:18px;">
+              <label class="form-label" for="approveComment">审批意见 <span class="required">*</span></label>
+              <textarea class="form-textarea" id="approveComment" placeholder="请输入通过或驳回原因。"></textarea>
+            </div>
+          </div>
+        `;
+      }
+
+      if (task.modalType === "gateLaunch") {
+        return `
+          <div class="modal-section">
+            <div class="modal-section-title">Gate 准入检查</div>
+            <div class="check-list">
+              <div class="check-card">
+                <span class="check-dot"></span>
+                <div>
+                  <div class="cell-main">项目自身 Gate1 任务已完成</div>
+                  <div class="cell-sub">8/8 已完成，可进入审核准备。</div>
+                </div>
+              </div>
+              <div class="check-card risk">
+                <span class="check-dot"></span>
+                <div>
+                  <div class="cell-main">BOM 尚未完全锁定或存在未处理变更</div>
+                  <div class="cell-sub">新增零件、供应商变更、二供策略变化需完成影响分析。</div>
+                </div>
+                <a class="btn btn-primary btn-sm" href="${detailPages.project}">处理 BOM</a>
+              </div>
+              <div class="check-card risk">
+                <span class="check-dot"></span>
+                <div>
+                  <div class="cell-main">阻塞型子零件 APQP 未完成</div>
+                  <div class="cell-sub">叶轮总成 · 二供同步开发任务仍为进行中。</div>
+                </div>
+                <a class="btn btn-primary btn-sm" href="${detailPages.part}">查看任务</a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-section">
+            <div class="modal-section-title">发起说明</div>
+            <textarea class="form-textarea" placeholder="当前存在阻塞项时，提交按钮保持为提示处理；阻塞清理后可发起阶段审核。"></textarea>
+          </div>
+        `;
+      }
+
+      if (task.modalType === "gateReview") {
+        return `
+          <div class="modal-section">
+            <div class="modal-section-title">阶段审核结论</div>
+            <div class="form-group">
+              <label class="form-label">审核选项 <span class="required">*</span></label>
+              <div class="review-option-group">
+                <label class="review-option green">
+                  <input type="radio" name="gateDecision" value="green" checked onchange="toggleConditionReason()">
+                  绿色 - 通过
+                  <div class="cell-sub">阶段可进入下一 Gate</div>
+                </label>
+                <label class="review-option yellow">
+                  <input type="radio" name="gateDecision" value="yellow" onchange="toggleConditionReason()">
+                  黄色 - 条件通过
+                  <div class="cell-sub">必须填写条件和责任人</div>
+                </label>
+                <label class="review-option red">
+                  <input type="radio" name="gateDecision" value="red" onchange="toggleConditionReason()">
+                  红色 - 不通过
+                  <div class="cell-sub">退回 PM 整改后重新发起</div>
+                </label>
+              </div>
+            </div>
+            <div class="form-group hidden" id="conditionReasonGroup">
+              <label class="form-label" for="conditionReason">条件通过原因 <span class="required">*</span></label>
+              <textarea class="form-textarea" id="conditionReason" placeholder="请填写未满足项、关闭条件、责任人和计划完成时间。"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="reviewComment">审核意见</label>
+              <textarea class="form-textarea" id="reviewComment" placeholder="请输入阶段审核意见。"></textarea>
+            </div>
+          </div>
+        `;
+      }
+
+      return "";
+    }
+
+    function modalFooter(task) {
+      if (task.modalType === "approve") {
+        return `
+          <button class="btn" type="button" onclick="closeModal()">取消</button>
+          <button class="btn btn-danger" type="button" onclick="submitAction('已驳回任务完成申请')">驳回</button>
+          <button class="btn btn-success" type="button" onclick="submitAction('已通过任务完成申请')">通过</button>
+        `;
+      }
+
+      if (task.modalType === "gateLaunch" && task.blocked) {
+        return `
+          <button class="btn" type="button" onclick="closeModal()">关闭</button>
+          <a class="btn btn-primary" href="${detailPages.project}">先处理阻塞项</a>
+        `;
+      }
+
+      if (task.modalType === "gateReview") {
+        return `
+          <button class="btn" type="button" onclick="closeModal()">取消</button>
+          <button class="btn btn-primary" type="button" onclick="submitGateReview()">提交审核结论</button>
+        `;
+      }
+
+      return `
+        <button class="btn" type="button" onclick="closeModal()">取消</button>
+        <button class="btn btn-primary" type="button" onclick="submitAction('任务处理成功')">确认提交</button>
+      `;
+    }
+
+    function toggleConditionReason() {
+      const selected = document.querySelector('input[name="gateDecision"]:checked');
+      const group = document.getElementById("conditionReasonGroup");
+      if (!selected || !group) return;
+      group.classList.toggle("hidden", selected.value !== "yellow");
+    }
+
+    function submitGateReview() {
+      const selected = document.querySelector('input[name="gateDecision"]:checked');
+      const decision = {
+        green: "绿色通过",
+        yellow: "黄色条件通过",
+        red: "红色不通过"
+      }[selected ? selected.value : "green"];
+      closeModal();
+      showToast(`阶段审核已提交 · ${decision}`);
+    }
+
+    function submitAction(message) {
+      closeModal();
+      showToast(`${message} · ${currentTask ? currentTask.name : ""}`);
+    }
+
+    function openModal() {
+      document.getElementById("taskModal").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("taskModal").classList.remove("active");
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.setTimeout(() => toast.classList.remove("show"), 2500);
+    }
+
+    document.querySelectorAll(".modal-overlay").forEach((overlay) => {
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) closeModal();
+      });
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeModal();
+    });
+
+    renderTasks();
+  </script>
+</body>
+</html>
