@@ -123,8 +123,8 @@
     .filter-panel {
       min-height: 88px;
       display: grid;
-      grid-template-columns: minmax(270px, 1fr) minmax(270px, 1fr) minmax(270px, 1fr) minmax(270px, 1fr) auto auto;
-      gap: 18px 32px;
+      grid-template-columns: repeat(5, minmax(190px, 1fr)) auto auto;
+      gap: 18px 20px;
       align-items: center;
       padding: 26px 22px;
       background: var(--muted);
@@ -273,7 +273,7 @@
     }
 
     table {
-      width: 1960px;
+      width: 2080px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -340,8 +340,12 @@
       right: 90px;
     }
 
-    .sticky-stage {
+    .sticky-health {
       right: 200px;
+    }
+
+    .sticky-stage {
+      right: 320px;
       box-shadow: -12px 0 22px -12px rgba(16, 24, 40, .72);
     }
 
@@ -432,6 +436,25 @@
 
     .status-purple {
       color: #6941c6;
+    }
+
+    .health-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 600;
+    }
+
+    .health-green {
+      color: #087a2e;
+    }
+
+    .health-yellow {
+      color: #b77900;
+    }
+
+    .health-red {
+      color: #d92d20;
     }
 
     .stage-pill {
@@ -1389,8 +1412,17 @@
           <option>带条件通过</option>
         </select>
       </div>
-      <button class="btn btn-soft" type="button">查询</button>
-      <button class="btn btn-plain" type="button">重置</button>
+      <div class="filter-item">
+        <label for="projectHealth">项目健康度</label>
+        <select class="select" id="projectHealth">
+          <option>请选择健康度</option>
+          <option>绿色</option>
+          <option>黄色</option>
+          <option>红色</option>
+        </select>
+      </div>
+      <button class="btn btn-soft" id="queryProjects" type="button">查询</button>
+      <button class="btn btn-plain" id="resetProjects" type="button">重置</button>
     </section>
 
     <div class="toolbar">
@@ -1421,12 +1453,13 @@
             <th style="width:130px;">定点日期</th>
             <th style="width:120px;">SOP</th>
             <th class="sticky-right sticky-stage" style="width:100px;">阶段</th>
+            <th class="sticky-right sticky-health" style="width:120px;">项目健康度</th>
             <th class="sticky-right sticky-status" style="width:110px;">状态</th>
             <th class="sticky-right sticky-operation" style="width:90px;">操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr data-code="DMSNIN25001" data-name="EA888 E5 VCT" data-brand="Volkswagen" data-status="进行中" data-health="绿色">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25001"></td>
             <td class="sticky-left sticky-code">DMSNIN25001</td>
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
@@ -1444,12 +1477,15 @@
             <td>2024-01-13</td>
             <td>2027-12</td>
             <td class="sticky-right sticky-stage"><span class="stage-pill stage-gate1">Gate1</span></td>
+            <td class="sticky-right sticky-health">
+              <span class="health-badge health-green"><span class="dot dot-green"></span>绿色</span>
+            </td>
             <td class="sticky-right sticky-status">
               <span class="status status-blue"><span class="dot dot-blue"></span>进行中</span>
             </td>
             <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
           </tr>
-          <tr>
+          <tr data-code="DMSNIN25002" data-name="EA211 Evo 1.5l CN7" data-brand="Volkswagen" data-status="审批中" data-health="黄色">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25002"></td>
             <td class="sticky-left sticky-code">DMSNIN25002</td>
             <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
@@ -1467,6 +1503,9 @@
             <td>2024-01-13</td>
             <td>2027-12</td>
             <td class="sticky-right sticky-stage"><span class="stage-pill stage-gate2">Gate2</span></td>
+            <td class="sticky-right sticky-health">
+              <span class="health-badge health-yellow"><span class="dot dot-yellow"></span>黄色</span>
+            </td>
             <td class="sticky-right sticky-status">
               <span class="status status-orange"><span class="dot dot-orange"></span>审批中</span>
             </td>
@@ -1478,6 +1517,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1487,6 +1527,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1496,6 +1537,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1505,6 +1547,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1514,6 +1557,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1523,6 +1567,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1532,6 +1577,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1541,6 +1587,7 @@
             <td class="sticky-left sticky-project">.</td>
             <td colspan="13">.</td>
             <td class="sticky-right sticky-stage">.</td>
+            <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
             <td class="sticky-right sticky-operation">.</td>
           </tr>
@@ -1962,6 +2009,8 @@
     const taskFillNote = document.querySelector("#taskFillNote");
     const tableShell = document.querySelector(".table-shell");
     const tableBody = document.querySelector(".table-shell tbody");
+    const queryProjects = document.querySelector("#queryProjects");
+    const resetProjects = document.querySelector("#resetProjects");
     const systemValue = document.querySelector("#systemValue");
     const productMulti = document.querySelector("#productMulti");
     const productTrigger = productMulti.querySelector(".multi-trigger");
@@ -2193,6 +2242,11 @@
       return element.value || element.options[element.selectedIndex].text || fallback;
     }
 
+    function selectedScoreValue(name) {
+      const checked = document.querySelector(`input[name="${name}"]:checked`);
+      return checked ? checked.closest("label").textContent.trim() : "";
+    }
+
     function escapeHtml(value) {
       return String(value)
         .replaceAll("&", "&amp;")
@@ -2213,6 +2267,38 @@
       };
       const [statusClass, dotClass] = map[status] || map["进行中"];
       return `<span class="status ${statusClass}"><span class="dot ${dotClass}"></span>${status}</span>`;
+    }
+
+    function healthMarkup(health) {
+      const map = {
+        "绿色": ["health-green", "dot-green"],
+        "黄色": ["health-yellow", "dot-yellow"],
+        "红色": ["health-red", "dot-red"]
+      };
+      const [healthClass, dotClass] = map[health] || map["黄色"];
+      return `<span class="health-badge ${healthClass}"><span class="dot ${dotClass}"></span>${escapeHtml(health || "黄色")}</span>`;
+    }
+
+    function resolveProjectHealth() {
+      const scores = [
+        "pursuit",
+        "financials",
+        "mfg",
+        "cost",
+        "productScore",
+        "quality",
+        "relationship",
+        "supplier",
+        "timing"
+      ].map(selectedScoreValue);
+
+      if (scores.includes("R")) {
+        return "红色";
+      }
+      if (scores.includes("Y") || scores.some((score) => !score)) {
+        return "黄色";
+      }
+      return "绿色";
     }
 
     function stageMarkup(stage) {
@@ -2255,12 +2341,18 @@
         sourcingQuarter: selectValue("#sourcingQuarter"),
         sourcingDate: fieldValue("#sourcingDate"),
         sop: fieldValue("#sop"),
+        health: resolveProjectHealth(),
         status
       };
     }
 
     function createProjectRow(project) {
       const row = document.createElement("tr");
+      row.dataset.code = project.code;
+      row.dataset.name = project.name;
+      row.dataset.brand = project.customer;
+      row.dataset.status = project.status;
+      row.dataset.health = project.health;
       row.innerHTML = `
         <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 ${escapeHtml(project.code)}"></td>
         <td class="sticky-left sticky-code">${escapeHtml(project.code)}</td>
@@ -2279,10 +2371,53 @@
         <td>${escapeHtml(project.sourcingDate)}</td>
         <td>${escapeHtml(project.sop)}</td>
         <td class="sticky-right sticky-stage">${stageMarkup(project.stage)}</td>
+        <td class="sticky-right sticky-health">${healthMarkup(project.health)}</td>
         <td class="sticky-right sticky-status">${statusMarkup(project.status)}</td>
         <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
       `;
       return row;
+    }
+
+    function normalizeFilterValue(selector) {
+      const element = document.querySelector(selector);
+      if (!element) {
+        return "";
+      }
+      if (element.tagName === "SELECT" && element.selectedIndex <= 0) {
+        return "";
+      }
+      return element.value.trim();
+    }
+
+    function filterProjectRows() {
+      const filters = {
+        code: normalizeFilterValue("#projectNo").toLowerCase(),
+        name: normalizeFilterValue("#projectName").toLowerCase(),
+        brand: normalizeFilterValue("#brand").toLowerCase(),
+        status: normalizeFilterValue("#status"),
+        health: normalizeFilterValue("#projectHealth")
+      };
+
+      tableBody.querySelectorAll("tr:not(.empty-row)").forEach((row) => {
+        const matches =
+          (!filters.code || row.dataset.code.toLowerCase().includes(filters.code)) &&
+          (!filters.name || row.dataset.name.toLowerCase().includes(filters.name)) &&
+          (!filters.brand || row.dataset.brand.toLowerCase().includes(filters.brand)) &&
+          (!filters.status || row.dataset.status === filters.status) &&
+          (!filters.health || row.dataset.health === filters.health);
+        row.hidden = !matches;
+      });
+    }
+
+    function resetProjectFilters() {
+      document.querySelectorAll("#projectNo, #projectName, #brand").forEach((element) => {
+        element.value = "";
+      });
+      document.querySelector("#status").selectedIndex = 0;
+      document.querySelector("#projectHealth").selectedIndex = 0;
+      tableBody.querySelectorAll("tr:not(.empty-row)").forEach((row) => {
+        row.hidden = false;
+      });
     }
 
     function renderCkoTasks() {
@@ -2370,6 +2505,8 @@
     drawerMask.addEventListener("click", () => setDrawer(false));
     saveDraft.addEventListener("click", () => submitProject("草稿"));
     confirmProject.addEventListener("click", () => submitProject("进行中"));
+    queryProjects.addEventListener("click", filterProjectRows);
+    resetProjects.addEventListener("click", resetProjectFilters);
     fillCkoLater.addEventListener("click", () => setModal(createSuccessModal, false));
     fillCkoNow.addEventListener("click", () => {
       setModal(createSuccessModal, false);

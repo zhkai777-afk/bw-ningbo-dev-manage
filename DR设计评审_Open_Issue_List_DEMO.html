@@ -1,0 +1,2917 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DR 设计评审 - 开放问题清单</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --line: #d9e1ec;
+      --line-strong: #b9c5d4;
+      --text: #1f2937;
+      --muted: #667085;
+      --primary: #1f5fbf;
+      --primary-soft: #eaf2ff;
+      --success: #1f7a4d;
+      --success-soft: #e9f8ef;
+      --warning: #b76e00;
+      --warning-soft: #fff4df;
+      --danger: #c93535;
+      --danger-soft: #fff1f1;
+      --readonly: #f1f5f9;
+      --shadow: 0 12px 30px rgba(15, 23, 42, .08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button, input, textarea, select { font: inherit; }
+
+    .app-shell {
+      height: 100vh;
+      padding-bottom: 74px;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 64px;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .title-stack {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn {
+      min-height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      padding: 0 14px;
+      background: #fff;
+      color: #344054;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f8fbff;
+    }
+
+    .btn.primary {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn.ghost {
+      border-color: transparent;
+      background: transparent;
+    }
+
+    .btn.danger {
+      border-color: #f0b6b6;
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .page {
+      width: min(100%, 1760px);
+      margin: 0 auto;
+      padding: 20px 24px 28px;
+      height: calc(100vh - 64px - 74px);
+      min-height: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      box-sizing: border-box;
+    }
+
+    .record-header {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .record-title {
+      display: grid;
+      gap: 8px;
+    }
+
+    .record-title h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .meta-line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tag {
+      min-height: 24px;
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 2px 9px;
+      font-size: 12px;
+      font-weight: 900;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .tag.blue { color: var(--primary); background: var(--primary-soft); border-color: #c9dcff; }
+    .tag.green { color: var(--success); background: var(--success-soft); border-color: #bce8ce; }
+    .tag.amber { color: var(--warning); background: var(--warning-soft); border-color: #ffd893; }
+    .tag.red { color: var(--danger); background: var(--danger-soft); border-color: #ffc6c6; }
+    .tag.gray { color: #475467; background: #f2f4f7; border-color: #e4e7ec; }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 118px);
+      gap: 10px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      padding: 10px 12px;
+      display: grid;
+      gap: 2px;
+      min-height: 66px;
+    }
+
+    .metric strong {
+      font-size: 20px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(360px, 38%) minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+    }
+
+    .panel-head {
+      min-height: 48px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-title {
+      display: grid;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .panel-title strong {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .panel-title span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .drawing-panel {
+      min-height: 0;
+      height: 100%;
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding-bottom: 12px;
+    }
+
+    .drawing-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
+    .drawing-version {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .page-toggle-btn {
+      min-width: 48px;
+      height: 34px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 10px;
+      transition: .16s ease;
+    }
+
+    .page-toggle-btn:hover,
+    .page-toggle-btn:focus-visible,
+    .icon-btn:hover,
+    .icon-btn:focus-visible {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #f8fbff;
+      outline: none;
+    }
+
+    .icon-btn {
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: #344054;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .icon-btn:disabled {
+      cursor: not-allowed;
+      color: #98a2b3;
+      background: #f2f4f7;
+      border-color: #d0d5dd;
+    }
+
+    .drawing-stage {
+      height: 560px;
+      padding: 18px;
+      overflow: auto;
+      background:
+        linear-gradient(#edf1f5 1px, transparent 1px),
+        linear-gradient(90deg, #edf1f5 1px, transparent 1px),
+        #f8fafc;
+      background-size: 24px 24px;
+      display: grid;
+      align-items: start;
+      justify-items: center;
+    }
+
+    .drawing-stage.is-draggable {
+      cursor: grab;
+    }
+
+    .drawing-stage.is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .drawing-stage.is-dragging .drawing-sheet {
+      pointer-events: none;
+    }
+
+    .drawing-sheet {
+      --drawing-zoom: 1;
+      width: min(calc(100% * var(--drawing-zoom)), calc(720px * var(--drawing-zoom)));
+      aspect-ratio: 1.32;
+      border: 1px solid #b8c4d2;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, .14);
+      overflow: hidden;
+      transition: width .18s ease;
+    }
+
+    .drawing-svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+    }
+
+    .drawing-page {
+      display: none;
+    }
+
+    .drawing-page.active {
+      display: block;
+    }
+
+    .dwg-frame { fill: none; stroke: #1f2937; stroke-width: 1.4; }
+    .dwg-thin { fill: none; stroke: #5c6675; stroke-width: 1; }
+    .dwg-main { fill: none; stroke: #111827; stroke-width: 1.8; }
+    .dwg-heavy { fill: none; stroke: #111827; stroke-width: 2.6; }
+    .dwg-hidden { fill: none; stroke: #8b97a8; stroke-width: 1; stroke-dasharray: 7 5; }
+    .dwg-center { fill: none; stroke: #4b83c4; stroke-width: 1; stroke-dasharray: 12 5 2 5; }
+    .dwg-dim { fill: none; stroke: #344054; stroke-width: 1; marker-start: url(#arrow); marker-end: url(#arrow); }
+    .dwg-leader { fill: none; stroke: #344054; stroke-width: 1; marker-end: url(#dot); }
+    .dwg-hatch { stroke: #97a3b5; stroke-width: .8; }
+    .dwg-text { fill: #1f2937; font: 11px Arial, sans-serif; }
+    .dwg-small { fill: #475467; font: 9px Arial, sans-serif; }
+    .dwg-title { fill: #111827; font: 700 13px Arial, sans-serif; }
+    .dwg-red { fill: #fff1f1; stroke: #c93535; stroke-width: 1.4; }
+    .dwg-yellow { fill: #fff4df; stroke: #b76e00; stroke-width: 1.4; }
+    .dwg-green { fill: #e9f8ef; stroke: #1f7a4d; stroke-width: 1.4; }
+
+    .side-summary {
+      border-top: 1px solid var(--line);
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .review-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px;
+      background: var(--surface-soft);
+      display: grid;
+      gap: 10px;
+    }
+
+    .review-card h3 {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .review-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: #475467;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .review-list li {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(118px, .46fr);
+      align-items: center;
+      gap: 12px;
+    }
+
+    .review-list li > span,
+    .review-list li > input {
+      min-width: 0;
+    }
+
+    .review-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .point-actions {
+      display: grid;
+      grid-template-columns: minmax(42px, 1fr) 30px 30px;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .point-actions strong,
+    .point-actions input {
+      min-width: 0;
+    }
+
+    .drawing-management {
+      border-top: 1px solid var(--line);
+      padding: 14px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .upload-zone {
+      border: 1px dashed #9fb6d8;
+      border-radius: 10px;
+      background: #f8fbff;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .upload-zone strong {
+      font-size: 13px;
+    }
+
+    .upload-zone span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .file-input {
+      min-height: 38px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      padding: 7px;
+    }
+
+    .file-list,
+    .version-list,
+    .reviewer-list,
+    .result-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .file-item,
+    .version-item,
+    .reviewer-item,
+    .result-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .item-main {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .item-main strong {
+      font-size: 13px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .item-main span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .mini-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .mini-btn {
+      min-height: 28px;
+      border: 1px solid var(--line-strong);
+      border-radius: 7px;
+      background: #fff;
+      color: #344054;
+      padding: 0 9px;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .mini-btn.primary {
+      border-color: #b9d0ff;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .mini-btn.icon-only {
+      width: 30px;
+      min-height: 30px;
+      padding: 0;
+      display: inline-grid;
+      place-items: center;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .mini-btn.icon-only svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2.2;
+    }
+
+    .upload-version-field {
+      display: grid;
+      gap: 6px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .upload-version-field input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      color: #1f2937;
+      padding: 8px 10px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    .upload-version-field input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 95, 191, .12);
+    }
+
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .person-meta,
+    .reason-box {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .reason-box {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+      color: #475467;
+    }
+
+    .form-panel {
+      display: block;
+      min-height: 0;
+      height: 100%;
+      overflow: auto;
+      overscroll-behavior: contain;
+      padding: 0 4px 12px 0;
+    }
+
+    .form-panel > .section + .section {
+      margin-top: 16px;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+    }
+
+    .section-body {
+      padding: 14px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .field input,
+    .field select,
+    .issue-input,
+    .issue-select,
+    .issue-textarea,
+    .comment-box {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      color: #1f2937;
+      padding: 8px 10px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    .field input,
+    .field select,
+    .issue-input,
+    .issue-select {
+      height: 38px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .comment-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 95, 191, .12);
+    }
+
+    .issue-input,
+    .issue-select,
+    .issue-textarea {
+      border-color: transparent;
+      border-radius: 4px;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .issue-input:hover,
+    .issue-select:hover,
+    .issue-textarea:hover {
+      background: rgba(255, 255, 255, .7);
+    }
+
+    .issue-input:focus,
+    .issue-select:focus,
+    .issue-textarea:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .field input[readonly] {
+      background: var(--readonly);
+      color: #475467;
+    }
+
+    .field-error {
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .filter-bar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 160px 160px auto;
+      gap: 10px;
+      align-items: end;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 560px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+    }
+
+    table {
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 1180px;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th, td {
+      border-bottom: 1px solid #e7edf5;
+      vertical-align: top;
+      padding: 0;
+    }
+
+    td + td,
+    th + th { border-left: 1px solid #eef2f7; }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      background: #eef3f9;
+      color: #1f2937;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.25;
+      padding: 12px 10px;
+    }
+
+    tbody tr:nth-child(even) td { background: #fafcff; }
+    tbody tr:hover td { background: #f7fbff; }
+    td:focus-within {
+      background: #f6f9ff !important;
+      box-shadow: inset 0 0 0 2px var(--primary);
+    }
+
+    .center { text-align: center; }
+
+    td.center {
+      padding: 12px 8px;
+      color: #667085;
+      font-size: 15px;
+    }
+
+    .issue-action-cell {
+      padding: 10px 8px;
+      text-align: center;
+    }
+
+    .issue-delete-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #f0b6b6;
+      border-radius: 7px;
+      background: var(--danger-soft);
+      color: var(--danger);
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .issue-delete-btn:hover,
+    .issue-delete-btn:focus-visible {
+      border-color: var(--danger);
+      background: #ffe7e7;
+      outline: none;
+    }
+
+    .issue-delete-btn svg {
+      width: 16px;
+      height: 16px;
+      stroke-width: 2;
+    }
+
+    .issue-textarea {
+      min-height: 116px;
+      resize: vertical;
+    }
+
+    .upload-cell {
+      display: grid;
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .upload-text {
+      min-height: 68px;
+      resize: vertical;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: #1f2937;
+      font-weight: 700;
+      padding: 7px 8px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    .upload-text:hover {
+      background: rgba(255, 255, 255, .7);
+    }
+
+    .upload-text:focus {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .upload-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .upload-btn,
+    .remove-image-btn {
+      height: 32px;
+      border: 1px dashed #cbd6e5;
+      border-radius: 8px;
+      background: #f5f8fc;
+      color: var(--primary);
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 14px;
+    }
+
+    .upload-btn::before {
+      content: "+";
+      margin-right: 6px;
+      font-weight: 900;
+    }
+
+    .remove-image-btn {
+      display: none;
+      border-style: solid;
+      border-color: #f0b6b6;
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .upload-cell.has-image .remove-image-btn {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .issue-file-input {
+      display: none;
+    }
+
+    .image-preview {
+      display: none;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .upload-cell.has-image .image-preview {
+      display: grid;
+      gap: 0;
+    }
+
+    .image-preview img {
+      width: 100%;
+      max-height: 120px;
+      object-fit: contain;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .image-preview span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 6px 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .add-issue-row {
+      padding: 14px;
+      background: #fff;
+    }
+
+    .add-issue-btn {
+      min-height: 38px;
+      border: 1px dashed var(--primary);
+      border-radius: 8px;
+      background: #fff;
+      color: #003b7a;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0 16px;
+    }
+
+    .add-issue-btn::before {
+      content: "+";
+      margin-right: 8px;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .cost-field {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .cost-field span {
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .status-select-g { color: var(--success); font-weight: 900; }
+    .status-select-y { color: var(--warning); font-weight: 900; }
+    .status-select-r { color: var(--danger); font-weight: 900; }
+    .status-select-n { color: #475467; font-weight: 900; }
+
+    .status-head {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-help-btn {
+      width: 20px;
+      height: 20px;
+      border: 1px solid #b9d0ff;
+      border-radius: 999px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      display: inline-grid;
+      place-items: center;
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .status-help-dialog {
+      width: min(460px, calc(100vw - 32px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+      padding: 0;
+    }
+
+    .status-help-dialog::backdrop {
+      background: rgba(15, 23, 42, .28);
+    }
+
+    .status-help-content {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+    }
+
+    .status-help-content h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .status-help-content dl {
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .status-help-content div {
+      display: grid;
+      gap: 2px;
+    }
+
+    .status-help-content dt {
+      font-weight: 900;
+    }
+
+    .status-help-content dd {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .status-help-actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .app-dialog {
+      width: min(440px, calc(100vw - 32px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+      padding: 0;
+      color: var(--text);
+    }
+
+    .app-dialog::backdrop {
+      background: rgba(15, 23, 42, .28);
+    }
+
+    .app-dialog-content {
+      display: grid;
+      gap: 12px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .app-dialog-content h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .app-dialog-content p {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 700;
+      line-height: 1.6;
+    }
+
+    .app-dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .drawing-viewer-dialog {
+      width: min(1280px, calc(100vw - 48px));
+      height: min(900px, calc(100vh - 48px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+      padding: 0;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .drawing-viewer-dialog::backdrop {
+      background: rgba(15, 23, 42, .42);
+    }
+
+    .drawing-viewer-content {
+      height: 100%;
+      background: #fff;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .drawing-viewer-head {
+      min-height: 56px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .drawing-viewer-title {
+      display: grid;
+      gap: 1px;
+      min-width: 0;
+    }
+
+    .drawing-viewer-title strong {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .drawing-viewer-title span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .drawing-viewer-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .drawing-viewer-stage {
+      min-height: 0;
+      padding: 18px;
+      overflow: auto;
+      overscroll-behavior: contain;
+      background:
+        linear-gradient(#edf1f5 1px, transparent 1px),
+        linear-gradient(90deg, #edf1f5 1px, transparent 1px),
+        #f8fafc;
+      background-size: 24px 24px;
+      display: grid;
+      align-items: start;
+      justify-items: center;
+    }
+
+    .drawing-viewer-stage.is-draggable {
+      cursor: grab;
+    }
+
+    .drawing-viewer-stage.is-dragging {
+      cursor: grabbing;
+      user-select: none;
+    }
+
+    .drawing-viewer-stage.is-dragging .drawing-viewer-sheet {
+      pointer-events: none;
+    }
+
+    .drawing-viewer-sheet {
+      --viewer-zoom: 1;
+      width: min(calc(100% * var(--viewer-zoom)), calc(920px * var(--viewer-zoom)));
+      aspect-ratio: 1.32;
+      border: 1px solid #b8c4d2;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 14px 32px rgba(15, 23, 42, .16);
+      overflow: hidden;
+      transition: width .18s ease;
+    }
+
+    .drawing-viewer-sheet .drawing-svg {
+      display: block;
+    }
+
+    .state-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 12px 14px 14px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+    }
+
+    .state-box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      background: var(--surface-soft);
+      display: grid;
+      gap: 2px;
+      min-height: 62px;
+    }
+
+    .state-box strong {
+      font-size: 13px;
+    }
+
+    .state-box span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .decision-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 330px;
+      gap: 14px;
+      padding: 14px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .radio-chip {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .radio-chip input { margin: 0; }
+    .radio-chip.red { color: var(--danger); background: var(--danger-soft); border-color: #ffc6c6; }
+    .radio-chip.yellow { color: var(--warning); background: var(--warning-soft); border-color: #ffd893; }
+    .radio-chip.green { color: var(--success); background: var(--success-soft); border-color: #bce8ce; }
+
+    .comment-box {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    .signature-stack {
+      display: grid;
+      gap: 10px;
+    }
+
+    .signature-item {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px;
+      background: var(--surface-soft);
+    }
+
+    .signature-item strong { font-size: 13px; }
+    .signature-item span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .reviewer-textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 25;
+      background: rgba(255, 255, 255, .96);
+      border-top: 1px solid var(--line);
+      backdrop-filter: blur(10px);
+    }
+
+    .bottom-inner {
+      width: min(100%, 1760px);
+      min-height: 64px;
+      margin: 0 auto;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .save-state {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--success);
+      font-weight: 900;
+    }
+
+    .bottom-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .bottom-actions.locked [data-delete-review],
+    .bottom-actions.locked [data-save-review] {
+      display: none;
+    }
+
+    .top-actions.locked [data-delete-review],
+    .top-actions.locked [data-save-review] {
+      display: none;
+    }
+
+    .btn:disabled {
+      border-color: #d0d5dd;
+      background: #eef2f6;
+      color: #98a2b3;
+      cursor: not-allowed;
+    }
+
+    .btn.success {
+      border-color: var(--success);
+      background: var(--success);
+      color: #fff;
+    }
+
+    @media (max-width: 1180px) and (min-width: 861px) {
+      .workspace {
+        grid-template-columns: minmax(300px, 34%) minmax(0, 1fr);
+      }
+
+      .summary-strip {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .field-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 860px) {
+      .topbar { height: auto; min-height: 64px; flex-wrap: wrap; padding: 12px 18px; }
+      .app-shell { height: auto; min-height: 100vh; overflow: visible; }
+      .page {
+        height: auto;
+        min-height: auto;
+        overflow: visible;
+        display: block;
+      }
+      .record-header { grid-template-columns: 1fr; }
+      .summary-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .workspace {
+        grid-template-columns: 1fr;
+        overflow: visible;
+      }
+      .drawing-panel,
+      .form-panel {
+        overflow: visible;
+        height: auto;
+        padding-right: 0;
+      }
+      .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .decision-grid { grid-template-columns: 1fr; }
+      .two-column { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .page { padding: 14px; }
+      h1 { white-space: normal; }
+      .summary-strip,
+      .field-grid,
+      .filter-bar,
+      .state-row { grid-template-columns: 1fr; }
+      .drawing-stage { height: 360px; }
+      .bottom-inner { align-items: stretch; flex-direction: column; }
+      .bottom-actions .btn { flex: 1; }
+    }
+
+    @page {
+      size: A4 landscape;
+      margin: 10mm;
+    }
+
+    @media print {
+      body {
+        background: #fff;
+        color: #111827;
+        font-size: 11px;
+      }
+
+      .app-shell {
+        padding-bottom: 0;
+        height: auto;
+        overflow: visible;
+      }
+
+      .topbar {
+        position: static;
+        height: auto;
+        padding: 0 0 8px;
+        border-bottom: 2px solid #111827;
+      }
+
+      .breadcrumb {
+        color: #475467;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .top-actions,
+      .filter-bar,
+      .state-row,
+      .bottom-bar,
+      .drawing-toolbar,
+      .upload-zone,
+      .upload-btn,
+      .field-error {
+        display: none !important;
+      }
+
+      .page {
+        width: 100%;
+        padding: 10px 0 0;
+        height: auto;
+        overflow: visible;
+        display: block;
+      }
+
+      .record-header,
+      .panel,
+      .section {
+        box-shadow: none;
+        border-color: #98a2b3;
+        break-inside: avoid;
+      }
+
+      .record-header {
+        margin-bottom: 10px;
+        padding: 10px;
+        grid-template-columns: 1fr auto;
+      }
+
+      .summary-strip {
+        grid-template-columns: repeat(4, 94px);
+      }
+
+      .metric {
+        min-height: 48px;
+        padding: 7px 8px;
+      }
+
+      .metric strong {
+        font-size: 16px;
+      }
+
+      .workspace {
+        grid-template-columns: 36% 64%;
+        gap: 10px;
+        overflow: visible;
+      }
+
+      .drawing-panel {
+        position: static;
+        overflow: visible;
+      }
+
+      .panel-head {
+        min-height: 36px;
+        padding: 8px 10px;
+      }
+
+      .drawing-stage {
+        height: auto;
+        padding: 8px;
+        background: #fff;
+      }
+
+      .drawing-sheet {
+        width: 100%;
+        box-shadow: none;
+      }
+
+      .side-summary {
+        padding: 8px;
+        gap: 8px;
+      }
+
+      .drawing-management {
+        padding: 8px;
+        gap: 8px;
+      }
+
+      .review-card {
+        padding: 8px;
+      }
+
+      .form-panel {
+        gap: 10px;
+        overflow: visible;
+        padding-right: 0;
+      }
+
+      .section-body,
+      .decision-grid {
+        padding: 10px;
+      }
+
+      .field-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .field input,
+      .field select,
+      .issue-input,
+      .issue-select,
+      .issue-textarea,
+      .upload-text,
+      .comment-box {
+        border-color: #98a2b3;
+        border-radius: 4px;
+        padding: 5px 6px;
+        background: #fff !important;
+        color: #111827;
+      }
+
+      .field input,
+      .field select,
+      .issue-input,
+      .issue-select {
+        height: 30px;
+      }
+
+      .table-wrap {
+        max-height: none;
+        overflow: visible;
+      }
+
+      table {
+        min-width: 0;
+        font-size: 10px;
+      }
+
+      th {
+        position: static;
+        background: #e5eaf0 !important;
+        color: #111827;
+      }
+
+      th,
+      td {
+        padding: 6px;
+        border-color: #98a2b3;
+      }
+
+      .issue-textarea {
+        min-height: 60px;
+        resize: none;
+      }
+
+      .upload-text {
+        min-height: 48px;
+        resize: none;
+      }
+
+      .decision-grid {
+        grid-template-columns: 1fr 280px;
+      }
+
+      .two-column {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .comment-box {
+        min-height: 64px;
+        resize: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="title-stack">
+        <div class="breadcrumb">项目开发管理 / 设计评审 / DR-2024-001</div>
+        <h1>DR 设计评审 - 开放问题清单</h1>
+      </div>
+      <div class="top-actions">
+        <button class="btn" type="button" onclick="window.print()">导出 PDF</button>
+        <button class="btn danger" type="button" data-delete-review>删除</button>
+        <button class="btn" type="button" data-save-review>保存</button>
+        <button class="btn primary" type="button" data-lock-review disabled>提交并锁定</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="record-header" aria-label="评审记录摘要">
+        <div class="record-title">
+          <h2>涡轮增压器壳体 / TH-2024-001</h2>
+          <div class="meta-line">
+            <span>项目：PRJ-2024-001</span>
+            <span>客户：OEM 客户 A</span>
+            <span>图纸版本：Rev.A</span>
+            <span>最后更新：20xx-12-25 14:30</span>
+          </div>
+        </div>
+        <div class="summary-strip" aria-label="问题统计">
+          <div class="metric"><strong data-open-count>3</strong><span>开放问题</span></div>
+          <div class="metric"><strong data-infeasible-count>1</strong><span>不可行</span></div>
+          <div class="metric"><strong data-unoptimized-count>2</strong><span>未优化</span></div>
+          <div class="metric"><strong data-cost-total>-0.10</strong><span>€/件预估影响</span></div>
+        </div>
+      </section>
+
+      <div class="workspace">
+        <aside class="panel drawing-panel">
+          <div class="panel-head">
+            <div class="panel-title">
+              <strong>图纸预览</strong>
+              <span data-drawing-page-title>Rev.A / 第 1 张，共 2 张 / TH-2024-001_RevA_Main.pdf</span>
+            </div>
+            <div class="drawing-toolbar" aria-label="图纸预览工具栏">
+              <div class="drawing-version">
+                <button class="icon-btn" type="button" title="上一张" aria-label="上一张图纸" data-drawing-prev>‹</button>
+                <button class="page-toggle-btn" type="button" title="点击切换图纸" aria-label="当前第 1 张，共 2 张，点击切换图纸" data-drawing-counter>1 / 2</button>
+                <button class="icon-btn" type="button" title="下一张" aria-label="下一张图纸" data-drawing-next>›</button>
+              </div>
+              <button class="icon-btn" type="button" title="放大" aria-label="放大图纸" data-drawing-zoom-in>＋</button>
+              <button class="icon-btn" type="button" title="缩小" aria-label="缩小图纸" data-drawing-zoom-out>－</button>
+              <button class="icon-btn" type="button" title="弹窗查看" aria-label="弹窗查看图纸" data-drawing-fullscreen>□</button>
+              <button class="btn" type="button" data-drawing-download>下载</button>
+            </div>
+          </div>
+          <div class="drawing-stage">
+            <div class="drawing-sheet">
+              <svg class="drawing-svg drawing-page active" viewBox="0 0 920 700" role="img" aria-label="涡轮增压器壳体工程图纸第 1 张" data-drawing-page="0">
+                <defs>
+                  <marker id="arrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,4 L8,0 L8,8 Z" fill="#344054"></path>
+                  </marker>
+                  <marker id="dot" markerWidth="6" markerHeight="6" refX="3" refY="3">
+                    <circle cx="3" cy="3" r="2.5" fill="#344054"></circle>
+                  </marker>
+                  <pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" class="dwg-hatch"></line>
+                  </pattern>
+                </defs>
+
+                <rect x="18" y="18" width="884" height="664" class="dwg-frame"></rect>
+                <rect x="34" y="34" width="852" height="632" class="dwg-thin"></rect>
+                <text x="46" y="58" class="dwg-title">涡轮增压器壳体 - 机加工工程图 / TURBOCHARGER HOUSING</text>
+                <text x="46" y="77" class="dwg-small">PART NO. TH-2024-001  |  REV. A  |  MATERIAL: GJS-SiMo  |  SCALE 1:2</text>
+
+                <g transform="translate(76 116)">
+                  <text x="0" y="-18" class="dwg-text">主视图</text>
+                  <path d="M120 50 C190 20 278 45 326 112 C382 190 348 298 262 334 C174 371 70 334 36 246 C0 154 36 82 120 50 Z" class="dwg-heavy"></path>
+                  <circle cx="190" cy="190" r="92" class="dwg-main"></circle>
+                  <circle cx="190" cy="190" r="42" class="dwg-main"></circle>
+                  <circle cx="190" cy="190" r="6" fill="#111827"></circle>
+                  <path d="M30 190 H350 M190 30 V354" class="dwg-center"></path>
+                  <path d="M94 86 L286 294 M286 86 L94 294" class="dwg-hidden"></path>
+
+                  <g>
+                    <circle cx="106" cy="105" r="15" class="dwg-main"></circle>
+                    <circle cx="274" cy="105" r="15" class="dwg-main"></circle>
+                    <circle cx="106" cy="275" r="15" class="dwg-main"></circle>
+                    <circle cx="274" cy="275" r="15" class="dwg-main"></circle>
+                    <path d="M106 82 V128 M83 105 H129 M274 82 V128 M251 105 H297 M106 252 V298 M83 275 H129 M274 252 V298 M251 275 H297" class="dwg-center"></path>
+                  </g>
+
+                  <path d="M54 318 H326" class="dwg-dim"></path>
+                  <path d="M54 302 V334 M326 302 V334" class="dwg-thin"></path>
+                  <text x="166" y="342" class="dwg-text">Ø186.0</text>
+
+                  <path d="M378 98 V282" class="dwg-dim"></path>
+                  <path d="M334 98 H392 M334 282 H392" class="dwg-thin"></path>
+                  <text x="390" y="195" class="dwg-text">4X Ø13.5</text>
+
+                  <path d="M312 150 L442 86" class="dwg-leader"></path>
+                  <rect x="444" y="66" width="76" height="34" rx="5" class="dwg-yellow"></rect>
+                  <text x="456" y="88" class="dwg-text">D13</text>
+
+                  <path d="M286 294 L448 334" class="dwg-leader"></path>
+                  <rect x="450" y="316" width="88" height="34" rx="5" class="dwg-green"></rect>
+                  <text x="460" y="338" class="dwg-text">A-A</text>
+                </g>
+
+                <g transform="translate(545 116)">
+                  <text x="0" y="-18" class="dwg-text">剖视图 A-A</text>
+                  <path d="M42 58 H254 L282 118 V276 H16 V118 Z" class="dwg-main"></path>
+                  <path d="M76 96 H226 L238 132 V238 H64 V132 Z" fill="url(#hatch)" stroke="#111827" stroke-width="1.6"></path>
+                  <path d="M112 128 H190 V240 H112 Z" fill="#fff" stroke="#111827" stroke-width="1.6"></path>
+                  <path d="M151 58 V276 M16 168 H282" class="dwg-center"></path>
+                  <path d="M58 303 H238" class="dwg-dim"></path>
+                  <path d="M58 276 V318 M238 276 V318" class="dwg-thin"></path>
+                  <text x="122" y="326" class="dwg-text">118.0 ±0.2</text>
+                  <path d="M304 118 V276" class="dwg-dim"></path>
+                  <path d="M282 118 H318 M282 276 H318" class="dwg-thin"></path>
+                  <text x="320" y="202" class="dwg-text">74.5</text>
+                  <path d="M192 128 L318 74" class="dwg-leader"></path>
+                  <text x="324" y="72" class="dwg-text">R0.5 → R0.8 建议</text>
+                </g>
+
+                <g transform="translate(104 504)">
+                  <text x="0" y="-14" class="dwg-text">局部详图 B - 夹具区域</text>
+                  <rect x="0" y="0" width="260" height="112" class="dwg-thin"></rect>
+                  <path d="M42 78 C78 26 148 18 210 66" class="dwg-main"></path>
+                  <path d="M76 86 L126 30 L196 84" class="dwg-hidden"></path>
+                  <circle cx="132" cy="58" r="24" class="dwg-main"></circle>
+                  <path d="M132 24 V92 M98 58 H166" class="dwg-center"></path>
+                  <path d="M178 42 L242 18" class="dwg-leader"></path>
+                  <rect x="244" y="4" width="76" height="30" rx="5" class="dwg-red"></rect>
+                  <text x="255" y="24" class="dwg-text">C4</text>
+                </g>
+
+                <g transform="translate(526 500)">
+                  <text x="0" y="-12" class="dwg-text">标题栏</text>
+                  <rect x="0" y="0" width="330" height="126" class="dwg-frame"></rect>
+                  <path d="M0 34 H330 M0 68 H330 M0 94 H330 M110 0 V126 M224 34 V126" class="dwg-thin"></path>
+                  <text x="10" y="23" class="dwg-small">项目</text>
+                  <text x="120" y="23" class="dwg-text">PRJ-2024-001</text>
+                  <text x="10" y="56" class="dwg-small">零件名称</text>
+                  <text x="120" y="56" class="dwg-text">涡轮增压器壳体</text>
+                  <text x="10" y="86" class="dwg-small">图号</text>
+                  <text x="120" y="86" class="dwg-text">TH-2024-001</text>
+                  <text x="234" y="86" class="dwg-small">版本</text>
+                  <text x="282" y="86" class="dwg-text">A</text>
+                  <text x="10" y="116" class="dwg-small">DR 标记</text>
+                  <text x="120" y="116" class="dwg-text">D13 / C4 / A-A</text>
+                </g>
+              </svg>
+              <svg class="drawing-svg drawing-page" viewBox="0 0 920 700" role="img" aria-label="涡轮增压器壳体工程图纸第 2 张" data-drawing-page="1">
+                <defs>
+                  <marker id="arrow2" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                    <path d="M0,4 L8,0 L8,8 Z" fill="#344054"></path>
+                  </marker>
+                  <marker id="dot2" markerWidth="6" markerHeight="6" refX="3" refY="3">
+                    <circle cx="3" cy="3" r="2.5" fill="#344054"></circle>
+                  </marker>
+                  <pattern id="hatch2" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="8" class="dwg-hatch"></line>
+                  </pattern>
+                </defs>
+
+                <rect x="18" y="18" width="884" height="664" class="dwg-frame"></rect>
+                <rect x="34" y="34" width="852" height="632" class="dwg-thin"></rect>
+                <text x="46" y="58" class="dwg-title">涡轮增压器壳体 - 局部细节与变更标记 / DETAIL SHEET</text>
+                <text x="46" y="77" class="dwg-small">PART NO. TH-2024-001  |  REV. A  |  SHEET 2 OF 2  |  DR OPEN ISSUE VIEW</text>
+
+                <g transform="translate(72 118)">
+                  <text x="0" y="-20" class="dwg-text">D13 孔位能力风险放大图</text>
+                  <rect x="0" y="0" width="342" height="246" class="dwg-thin"></rect>
+                  <circle cx="170" cy="120" r="82" class="dwg-main"></circle>
+                  <circle cx="170" cy="120" r="28" class="dwg-main"></circle>
+                  <path d="M58 120 H282 M170 12 V228" class="dwg-center"></path>
+                  <circle cx="96" cy="66" r="14" class="dwg-main"></circle>
+                  <circle cx="244" cy="66" r="14" class="dwg-main"></circle>
+                  <circle cx="96" cy="174" r="14" class="dwg-main"></circle>
+                  <circle cx="244" cy="174" r="14" class="dwg-main"></circle>
+                  <path d="M244 66 L318 28" class="dwg-leader" marker-end="url(#dot2)"></path>
+                  <rect x="320" y="8" width="78" height="34" rx="5" class="dwg-yellow"></rect>
+                  <text x="332" y="30" class="dwg-text">D13</text>
+                  <path d="M56 224 H284" class="dwg-dim" marker-start="url(#arrow2)" marker-end="url(#arrow2)"></path>
+                  <text x="138" y="239" class="dwg-text">建议公差调整至 0.3</text>
+                </g>
+
+                <g transform="translate(512 116)">
+                  <text x="0" y="-18" class="dwg-text">C4 夹具干涉区域</text>
+                  <rect x="0" y="0" width="320" height="246" class="dwg-thin"></rect>
+                  <path d="M42 168 C88 70 214 58 280 148" class="dwg-main"></path>
+                  <path d="M80 176 L152 76 L244 174" class="dwg-hidden"></path>
+                  <rect x="118" y="78" width="92" height="82" fill="url(#hatch2)" stroke="#111827" stroke-width="1.4"></rect>
+                  <circle cx="164" cy="118" r="30" class="dwg-main"></circle>
+                  <path d="M164 62 V178 M104 118 H224" class="dwg-center"></path>
+                  <path d="M210 92 L288 44" class="dwg-leader" marker-end="url(#dot2)"></path>
+                  <rect x="288" y="24" width="76" height="34" rx="5" class="dwg-red"></rect>
+                  <text x="300" y="46" class="dwg-text">C4</text>
+                </g>
+
+                <g transform="translate(72 420)">
+                  <text x="0" y="-18" class="dwg-text">A-A 圆角优化说明</text>
+                  <rect x="0" y="0" width="342" height="168" class="dwg-thin"></rect>
+                  <path d="M48 122 H278 L306 68" class="dwg-main"></path>
+                  <path d="M80 122 V58 H224 V122" fill="url(#hatch2)" stroke="#111827" stroke-width="1.4"></path>
+                  <path d="M120 76 H190 V122 H120 Z" fill="#fff" stroke="#111827" stroke-width="1.4"></path>
+                  <path d="M224 80 Q254 80 262 108" class="dwg-green"></path>
+                  <path d="M248 80 L314 42" class="dwg-leader" marker-end="url(#dot2)"></path>
+                  <text x="206" y="34" class="dwg-text">R0.5 → R0.8</text>
+                  <text x="22" y="150" class="dwg-small">PE 确认无功能影响，优先避免手工去毛刺。</text>
+                </g>
+
+                <g transform="translate(512 420)">
+                  <text x="0" y="-18" class="dwg-text">图纸变更记录</text>
+                  <rect x="0" y="0" width="320" height="168" class="dwg-frame"></rect>
+                  <path d="M0 38 H320 M0 76 H320 M0 114 H320 M80 0 V168 M206 0 V168" class="dwg-thin"></path>
+                  <text x="14" y="24" class="dwg-small">标记</text>
+                  <text x="92" y="24" class="dwg-small">问题</text>
+                  <text x="218" y="24" class="dwg-small">建议</text>
+                  <text x="14" y="62" class="dwg-text">D13</text>
+                  <text x="92" y="62" class="dwg-text">CPK 风险</text>
+                  <text x="218" y="62" class="dwg-text">调整公差</text>
+                  <text x="14" y="100" class="dwg-text">C4</text>
+                  <text x="92" y="100" class="dwg-text">夹具干涉</text>
+                  <text x="218" y="100" class="dwg-text">改拔模方向</text>
+                  <text x="14" y="138" class="dwg-text">A-A</text>
+                  <text x="92" y="138" class="dwg-text">去毛刺</text>
+                  <text x="218" y="138" class="dwg-text">圆角优化</text>
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div class="side-summary">
+            <div class="review-card">
+              <div class="review-card-head">
+                <h3>评审关注点</h3>
+                <button class="mini-btn primary" type="button" data-add-review-point>新增</button>
+              </div>
+              <ul class="review-list" data-review-list>
+                <li>
+                  <span>尺寸公差风险</span>
+                  <div class="point-actions">
+                    <strong data-point-code>D13</strong>
+                    <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                    </button>
+                    <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+                    </button>
+                  </div>
+                </li>
+                <li>
+                  <span>夹具干涉风险</span>
+                  <div class="point-actions">
+                    <strong data-point-code>C4</strong>
+                    <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                    </button>
+                    <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+                    </button>
+                  </div>
+                </li>
+                <li>
+                  <span>去毛刺优化</span>
+                  <div class="point-actions">
+                    <strong data-point-code>A-A</strong>
+                    <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+                    </button>
+                    <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="drawing-management">
+            <div class="upload-zone">
+              <strong>上传图纸</strong>
+              <span>可一次选择多张图纸，支持 PDF、PNG、JPG、TIFF。上传后可通过图纸预览区左右切换查看。</span>
+              <label class="upload-version-field">版本号
+                <input value="Rev.B" placeholder="例如 Rev.B">
+              </label>
+              <input class="file-input" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff">
+              <button class="btn primary" type="button">上传并生成版本</button>
+            </div>
+          </div>
+        </aside>
+
+        <section class="form-panel">
+          <section class="section" aria-label="项目信息">
+            <div class="panel-head">
+              <div class="panel-title">
+                <strong>项目信息</strong>
+                <span>基础信息用于生成评审记录和导出文件</span>
+              </div>
+              <span class="tag gray">部分字段只读</span>
+            </div>
+            <div class="section-body">
+              <div class="field-grid">
+                <label class="field">项目名称
+                  <input value="PRJ-2024-001" readonly>
+                </label>
+                <label class="field">客户名称
+                  <input value="OEM 客户 A">
+                </label>
+                <label class="field">图纸版本
+                  <select>
+                    <option selected>Rev.B</option>
+                    <option>Rev.A</option>
+                  </select>
+                </label>
+                <label class="field">评审日期
+                  <input type="date">
+                  <span class="field-error">请选择评审日期</span>
+                </label>
+                <label class="field">零件名称/描述
+                  <input value="涡轮增压器壳体">
+                </label>
+                <label class="field">零件编号
+                  <input value="TH-2024-001" readonly>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="section" aria-label="开放问题清单">
+            <div class="panel-head">
+              <div class="panel-title">
+                <strong>开放问题清单</strong>
+                <span>用于记录可制造性、成本和图纸优化意见</span>
+              </div>
+            </div>
+
+            <div class="filter-bar">
+              <label class="field">关键词
+                <input value="" placeholder="搜索问题描述、位置、备注">
+              </label>
+              <label class="field">问题类型
+                <select>
+                  <option>全部</option>
+                  <option>不可行</option>
+                  <option>未优化</option>
+                </select>
+              </label>
+              <label class="field">状态
+                <select>
+                  <option>全部</option>
+                  <option>G</option>
+                  <option>Y</option>
+                  <option>R</option>
+                  <option>N</option>
+                </select>
+              </label>
+              <button class="btn" type="button">重置筛选</button>
+            </div>
+
+            <div class="table-wrap">
+              <table aria-label="开放问题清单表格">
+                <colgroup>
+                  <col style="width:56px">
+                  <col style="width:230px">
+                  <col style="width:130px">
+                  <col style="width:180px">
+                  <col style="width:170px">
+                  <col style="width:190px">
+                  <col style="width:130px">
+                  <col style="width:190px">
+                  <col style="width:86px">
+                  <col style="width:70px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>序号</th>
+                    <th>问题描述</th>
+                    <th>问题类型</th>
+                    <th>图片/说明/细节</th>
+                    <th>新图纸上的问题位置</th>
+                    <th>AE 反馈</th>
+                    <th>成本影响</th>
+                    <th>备注</th>
+                    <th>
+                      <span class="status-head">状态
+                        <button class="status-help-btn" type="button" data-status-help aria-label="查看状态说明">?</button>
+                      </span>
+                    </th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody data-issue-tbody>
+                  <tr>
+                    <td class="center"><strong>1</strong></td>
+                    <td><textarea class="issue-textarea">D13 区域：由于公差过小，并受设备精度及累计定位误差影响，φ2 的 CPK 无法保证。</textarea></td>
+                    <td>
+                      <select class="issue-select">
+                        <option></option>
+                        <option>不可行</option>
+                        <option selected>未优化</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="upload-cell">
+                        <textarea class="upload-text" aria-label="图片说明或细节">图纸尺寸编号</textarea>
+                        <div class="image-preview" aria-live="polite">
+                          <img alt="问题附件预览">
+                          <span></span>
+                        </div>
+                        <div class="upload-actions">
+                          <button class="upload-btn" type="button">上传图片</button>
+                          <button class="remove-image-btn" type="button">移除图片</button>
+                        </div>
+                        <input class="issue-file-input" type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/tiff">
+                      </div>
+                    </td>
+                    <td><input class="issue-input" value="φ2 孔的 CAP 符号"></td>
+                    <td><textarea class="issue-textarea">20xx-12-01：可以，已将公差调整为 0.3，并保留 CAP。</textarea></td>
+                    <td><div class="cost-field"><span>€</span><input class="issue-input" value="-0.13 / part"></div></td>
+                    <td><textarea class="issue-textarea">20xx-12-25：如果公差调整为 0.3，CAP 符号可以保留。</textarea></td>
+                    <td>
+                      <select class="issue-select status-select-y" data-issue-status>
+                        <option>G</option>
+                        <option selected>Y</option>
+                        <option>R</option>
+                        <option>N</option>
+                      </select>
+                    </td>
+                    <td class="issue-action-cell">
+                      <button class="issue-delete-btn" type="button" title="删除问题行" aria-label="删除问题行" data-delete-issue-row>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="center"><strong>2</strong></td>
+                    <td><textarea class="issue-textarea">安装凸台拔模角可能在夹具夹紧过程中造成加工通道干涉。</textarea></td>
+                    <td>
+                      <select class="issue-select">
+                        <option></option>
+                        <option selected>不可行</option>
+                        <option>未优化</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="upload-cell">
+                        <textarea class="upload-text" aria-label="图片说明或细节">细节 B / C4 区域</textarea>
+                        <div class="image-preview" aria-live="polite">
+                          <img alt="问题附件预览">
+                          <span></span>
+                        </div>
+                        <div class="upload-actions">
+                          <button class="upload-btn" type="button">上传图片</button>
+                          <button class="remove-image-btn" type="button">移除图片</button>
+                        </div>
+                        <input class="issue-file-input" type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/tiff">
+                      </div>
+                    </td>
+                    <td><input class="issue-input" value="C4 区域凸台位置"></td>
+                    <td><textarea class="issue-textarea">AE 评估夹具间隙，并提出更新后的拔模方向。</textarea></td>
+                    <td><div class="cost-field"><span>€</span><input class="issue-input" value="0.08 / part"></div></td>
+                    <td><textarea class="issue-textarea">图纸发布前需要 CFT 确认。</textarea></td>
+                    <td>
+                      <select class="issue-select status-select-r" data-issue-status>
+                        <option>G</option>
+                        <option>Y</option>
+                        <option selected>R</option>
+                        <option>N</option>
+                      </select>
+                    </td>
+                    <td class="issue-action-cell">
+                      <button class="issue-delete-btn" type="button" title="删除问题行" aria-label="删除问题行" data-delete-issue-row>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="center"><strong>3</strong></td>
+                    <td><textarea class="issue-textarea">油道边缘圆角可行，但当前设计未针对去毛刺工艺进行优化。</textarea></td>
+                    <td>
+                      <select class="issue-select">
+                        <option></option>
+                        <option>不可行</option>
+                        <option selected>未优化</option>
+                      </select>
+                    </td>
+                    <td>
+                      <div class="upload-cell">
+                        <textarea class="upload-text" aria-label="图片说明或细节">A-A 剖面</textarea>
+                        <div class="image-preview" aria-live="polite">
+                          <img alt="问题附件预览">
+                          <span></span>
+                        </div>
+                        <div class="upload-actions">
+                          <button class="upload-btn" type="button">上传图片</button>
+                          <button class="remove-image-btn" type="button">移除图片</button>
+                        </div>
+                        <input class="issue-file-input" type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/tiff">
+                      </div>
+                    </td>
+                    <td><input class="issue-input" value="A-A 剖面 / R0.5"></td>
+                    <td><textarea class="issue-textarea">建议最小 R0.8。PE 确认无功能影响。</textarea></td>
+                    <td><div class="cost-field"><span>€</span><input class="issue-input" value="-0.05 / part"></div></td>
+                    <td><textarea class="issue-textarea">如可避免手工去毛刺，则存在降本机会。</textarea></td>
+                    <td>
+                      <select class="issue-select status-select-g" data-issue-status>
+                        <option selected>G</option>
+                        <option>Y</option>
+                        <option>R</option>
+                        <option>N</option>
+                      </select>
+                    </td>
+                    <td class="issue-action-cell">
+                      <button class="issue-delete-btn" type="button" title="删除问题行" aria-label="删除问题行" data-delete-issue-row>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="add-issue-row">
+              <button class="add-issue-btn" type="button" data-add-issue-row>添加问题行</button>
+            </div>
+          </section>
+
+          <section class="section" aria-label="评审人员">
+            <div class="panel-head">
+              <div class="panel-title">
+                <strong>评审人员</strong>
+                <span>手动录入参与评审人员、角色和说明</span>
+              </div>
+            </div>
+            <div class="section-body">
+              <label class="field">评审人员
+                <textarea class="comment-box reviewer-textarea">Alex Wang / 制造工程师
+Mia Chen / 产品工程师
+Kevin Liu / 质量工程师
+Sophia Zhang / 项目经理</textarea>
+              </label>
+            </div>
+          </section>
+
+          <section class="section" aria-label="小组结论和签核">
+            <div class="panel-head">
+              <div class="panel-title">
+                <strong>小组结论与签核</strong>
+                <span>提交前需要完成结论、说明和责任人确认</span>
+              </div>
+              <span class="tag green">自动保存成功</span>
+            </div>
+            <div class="section-body">
+              <div>
+                <div class="radio-group">
+                  <label class="radio-chip red"><input type="radio" name="conclusion"> 不可行</label>
+                  <label class="radio-chip yellow"><input type="radio" name="conclusion" checked> 可行（未优化 / 降本）</label>
+                  <label class="radio-chip green"><input type="radio" name="conclusion"> 可行</label>
+                </div>
+                <textarea class="comment-box">结论说明：当前设计整体可制造，但需完成 D13 公差调整、C4 夹具间隙确认及 A-A 圆角优化后再释放图纸。</textarea>
+              </div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
+
+    <footer class="bottom-bar">
+      <div class="bottom-inner">
+        <div class="save-state">
+          <span class="tag green">已保存</span>
+          <span data-save-message>最近保存：20xx-12-25 14:30</span>
+        </div>
+        <div class="bottom-actions" data-bottom-actions>
+          <button class="btn danger" type="button" data-delete-review>删除</button>
+          <button class="btn" type="button" data-save-review>保存</button>
+          <button class="btn primary" type="button" data-lock-review disabled>提交并锁定</button>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <dialog class="drawing-viewer-dialog" data-drawing-viewer>
+    <div class="drawing-viewer-content">
+      <div class="drawing-viewer-head">
+        <div class="drawing-viewer-title">
+          <strong>图纸查看</strong>
+          <span data-viewer-page-title>Rev.A / 第 1 张，共 2 张 / TH-2024-001_RevA_Main.pdf</span>
+        </div>
+        <div class="drawing-viewer-toolbar" aria-label="图纸弹窗工具栏">
+          <button class="icon-btn" type="button" title="上一张" aria-label="上一张图纸" data-viewer-prev>‹</button>
+          <button class="page-toggle-btn" type="button" title="点击切换图纸" aria-label="当前第 1 张，共 2 张，点击切换图纸" data-viewer-counter>1 / 2</button>
+          <button class="icon-btn" type="button" title="下一张" aria-label="下一张图纸" data-viewer-next>›</button>
+          <button class="icon-btn" type="button" title="放大" aria-label="放大图纸" data-viewer-zoom-in>＋</button>
+          <button class="icon-btn" type="button" title="缩小" aria-label="缩小图纸" data-viewer-zoom-out>－</button>
+          <button class="btn" type="button" data-viewer-download>下载</button>
+          <button class="icon-btn" type="button" title="关闭" aria-label="关闭图纸查看" data-viewer-close>×</button>
+        </div>
+      </div>
+      <div class="drawing-viewer-stage" data-viewer-stage>
+        <div class="drawing-viewer-sheet" data-viewer-sheet></div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="status-help-dialog" data-status-dialog>
+    <div class="status-help-content">
+      <h3>状态说明</h3>
+      <dl>
+        <div>
+          <dt class="status-select-y">Y / Yellow</dt>
+          <dd>方案暂定，需再和客户确认，暂未闭环。</dd>
+        </div>
+        <div>
+          <dt class="status-select-g">G / Green</dt>
+          <dd>各方达成一致，方案可行。</dd>
+        </div>
+        <div>
+          <dt class="status-select-r">R / Red</dt>
+          <dd>重大冲突，制造无法实现且客户不允许改图，高风险。</dd>
+        </div>
+        <div>
+          <dt class="status-select-n">N / Closed</dt>
+          <dd>问题彻底关闭。</dd>
+        </div>
+      </dl>
+      <div class="status-help-actions">
+        <button class="btn primary" type="button" data-status-close>知道了</button>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="app-dialog" data-app-dialog>
+    <div class="app-dialog-content">
+      <h3 data-dialog-title>提示</h3>
+      <p data-dialog-message></p>
+      <div class="app-dialog-actions">
+        <button class="btn" type="button" data-dialog-cancel>取消</button>
+        <button class="btn primary" type="button" data-dialog-confirm>确认</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const reviewList = document.querySelector('[data-review-list]');
+    const addReviewPointButton = document.querySelector('[data-add-review-point]');
+    const issueTbody = document.querySelector('[data-issue-tbody]');
+    const addIssueRowButton = document.querySelector('[data-add-issue-row]');
+    const drawingPanel = document.querySelector('.drawing-panel');
+    const drawingStage = document.querySelector('.drawing-stage');
+    const drawingSheet = document.querySelector('.drawing-sheet');
+    const drawingPages = Array.from(document.querySelectorAll('[data-drawing-page]'));
+    const drawingPageTitle = document.querySelector('[data-drawing-page-title]');
+    const drawingCounter = document.querySelector('[data-drawing-counter]');
+    const drawingPrevButton = document.querySelector('[data-drawing-prev]');
+    const drawingNextButton = document.querySelector('[data-drawing-next]');
+    const drawingZoomInButton = document.querySelector('[data-drawing-zoom-in]');
+    const drawingZoomOutButton = document.querySelector('[data-drawing-zoom-out]');
+    const drawingFullscreenButton = document.querySelector('[data-drawing-fullscreen]');
+    const drawingDownloadButton = document.querySelector('[data-drawing-download]');
+    const drawingViewerDialog = document.querySelector('[data-drawing-viewer]');
+    const viewerStage = document.querySelector('[data-viewer-stage]');
+    const viewerSheet = document.querySelector('[data-viewer-sheet]');
+    const viewerPageTitle = document.querySelector('[data-viewer-page-title]');
+    const viewerCounter = document.querySelector('[data-viewer-counter]');
+    const viewerPrevButton = document.querySelector('[data-viewer-prev]');
+    const viewerNextButton = document.querySelector('[data-viewer-next]');
+    const viewerZoomInButton = document.querySelector('[data-viewer-zoom-in]');
+    const viewerZoomOutButton = document.querySelector('[data-viewer-zoom-out]');
+    const viewerDownloadButton = document.querySelector('[data-viewer-download]');
+    const viewerCloseButton = document.querySelector('[data-viewer-close]');
+    const openCountMetric = document.querySelector('[data-open-count]');
+    const infeasibleCountMetric = document.querySelector('[data-infeasible-count]');
+    const unoptimizedCountMetric = document.querySelector('[data-unoptimized-count]');
+    const costTotalMetric = document.querySelector('[data-cost-total]');
+    const lockReviewButtons = Array.from(document.querySelectorAll('[data-lock-review]'));
+    const saveReviewButtons = Array.from(document.querySelectorAll('[data-save-review]'));
+    const deleteReviewButtons = Array.from(document.querySelectorAll('[data-delete-review]'));
+    const saveMessage = document.querySelector('[data-save-message]');
+    const statusHelpButton = document.querySelector('[data-status-help]');
+    const statusDialog = document.querySelector('[data-status-dialog]');
+    const statusCloseButton = document.querySelector('[data-status-close]');
+    const appDialog = document.querySelector('[data-app-dialog]');
+    const dialogTitle = document.querySelector('[data-dialog-title]');
+    const dialogMessage = document.querySelector('[data-dialog-message]');
+    const dialogCancel = document.querySelector('[data-dialog-cancel]');
+    const dialogConfirm = document.querySelector('[data-dialog-confirm]');
+    let pendingDialogAction = null;
+    let currentDrawingPage = 0;
+    let drawingZoom = 1;
+    let isDrawingDragging = false;
+    let drawingDragStartX = 0;
+    let drawingDragStartY = 0;
+    let drawingDragScrollLeft = 0;
+    let drawingDragScrollTop = 0;
+    let viewerZoom = 1;
+    let isViewerDragging = false;
+    let viewerDragStartX = 0;
+    let viewerDragStartY = 0;
+    let viewerDragScrollLeft = 0;
+    let viewerDragScrollTop = 0;
+
+    function openAppDialog({ title, message, confirmText = '确认', cancelText = '取消', danger = false, onConfirm = null, hideCancel = false }) {
+      if (!appDialog || !dialogTitle || !dialogMessage || !dialogConfirm || !dialogCancel) return;
+      dialogTitle.textContent = title;
+      dialogMessage.textContent = message;
+      dialogConfirm.textContent = confirmText;
+      dialogCancel.textContent = cancelText;
+      dialogCancel.style.display = hideCancel ? 'none' : '';
+      dialogConfirm.classList.toggle('danger', danger);
+      dialogConfirm.classList.toggle('primary', !danger);
+      pendingDialogAction = onConfirm;
+      appDialog.showModal();
+    }
+
+    function closeAppDialog(runAction = false) {
+      appDialog?.close();
+      const action = pendingDialogAction;
+      pendingDialogAction = null;
+      if (runAction && typeof action === 'function') action();
+    }
+
+    function pointActionButtons() {
+      return `
+        <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
+        </button>
+        <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+        </button>
+      `;
+    }
+
+    function issueDeleteButton() {
+      return `
+        <button class="issue-delete-btn" type="button" title="删除问题行" aria-label="删除问题行" data-delete-issue-row>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
+        </button>
+      `;
+    }
+
+    function syncDrawingPage() {
+      const total = drawingPages.length || 1;
+      drawingPages.forEach((page, index) => {
+        page.classList.toggle('active', index === currentDrawingPage);
+      });
+      if (drawingCounter) {
+        drawingCounter.textContent = `${currentDrawingPage + 1} / ${total}`;
+        drawingCounter.setAttribute('aria-label', `当前第 ${currentDrawingPage + 1} 张，共 ${total} 张，点击切换图纸`);
+      }
+      if (drawingPageTitle) {
+        const fileName = currentDrawingPage === 0 ? 'TH-2024-001_RevA_Main.pdf' : 'TH-2024-001_RevA_Detail.pdf';
+        drawingPageTitle.textContent = `Rev.A / 第 ${currentDrawingPage + 1} 张，共 ${total} 张 / ${fileName}`;
+      }
+    }
+
+    function switchDrawingPage(step = 1) {
+      const total = drawingPages.length;
+      if (!total) return;
+      currentDrawingPage = (currentDrawingPage + step + total) % total;
+      syncDrawingPage();
+    }
+
+    function currentDrawingFileName(extension = 'svg') {
+      const baseName = currentDrawingPage === 0 ? 'TH-2024-001_RevA_Main' : 'TH-2024-001_RevA_Detail';
+      return `${baseName}.${extension}`;
+    }
+
+    function syncDrawingZoom() {
+      if (!drawingSheet) return;
+      drawingSheet.style.setProperty('--drawing-zoom', drawingZoom.toFixed(2));
+      drawingStage?.classList.toggle('is-draggable', drawingZoom > 1);
+      if (drawingZoom <= 1) stopDrawingDrag();
+      if (drawingZoomInButton) {
+        drawingZoomInButton.disabled = drawingZoom >= 2;
+        drawingZoomInButton.title = `放大（${Math.round(drawingZoom * 100)}%）`;
+      }
+      if (drawingZoomOutButton) {
+        drawingZoomOutButton.disabled = drawingZoom <= .5;
+        drawingZoomOutButton.title = `缩小（${Math.round(drawingZoom * 100)}%）`;
+      }
+    }
+
+    function hasScrollableDrawing() {
+      if (!drawingStage) return false;
+      return drawingStage.scrollWidth > drawingStage.clientWidth || drawingStage.scrollHeight > drawingStage.clientHeight;
+    }
+
+    function setDrawingZoom(nextZoom) {
+      const previousZoom = drawingZoom;
+      drawingZoom = Math.min(2, Math.max(.5, nextZoom));
+      syncDrawingZoom();
+      if (drawingStage && drawingZoom > previousZoom) {
+        drawingStage.scrollTo({
+          left: Math.max(0, (drawingStage.scrollWidth - drawingStage.clientWidth) / 2),
+          top: Math.max(0, (drawingStage.scrollHeight - drawingStage.clientHeight) / 2),
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    function startDrawingDrag(event) {
+      if (!drawingStage || event.button !== 0 || drawingZoom <= 1 || !hasScrollableDrawing()) return;
+      isDrawingDragging = true;
+      drawingDragStartX = event.clientX;
+      drawingDragStartY = event.clientY;
+      drawingDragScrollLeft = drawingStage.scrollLeft;
+      drawingDragScrollTop = drawingStage.scrollTop;
+      drawingStage.classList.add('is-dragging');
+      event.preventDefault();
+    }
+
+    function moveDrawingDrag(event) {
+      if (!isDrawingDragging || !drawingStage) return;
+      const deltaX = event.clientX - drawingDragStartX;
+      const deltaY = event.clientY - drawingDragStartY;
+      drawingStage.scrollLeft = drawingDragScrollLeft - deltaX;
+      drawingStage.scrollTop = drawingDragScrollTop - deltaY;
+    }
+
+    function stopDrawingDrag() {
+      isDrawingDragging = false;
+      drawingStage?.classList.remove('is-dragging');
+    }
+
+    function renderViewerDrawing() {
+      if (!viewerSheet) return;
+      const currentPage = drawingPages[currentDrawingPage];
+      viewerSheet.replaceChildren();
+      if (currentPage) {
+        const pageCopy = currentPage.cloneNode(true);
+        pageCopy.classList.remove('drawing-page', 'active');
+        pageCopy.removeAttribute('data-drawing-page');
+        viewerSheet.appendChild(pageCopy);
+      }
+      const total = drawingPages.length || 1;
+      if (viewerCounter) {
+        viewerCounter.textContent = `${currentDrawingPage + 1} / ${total}`;
+        viewerCounter.setAttribute('aria-label', `当前第 ${currentDrawingPage + 1} 张，共 ${total} 张，点击切换图纸`);
+      }
+      if (viewerPageTitle) {
+        const fileName = currentDrawingPage === 0 ? 'TH-2024-001_RevA_Main.pdf' : 'TH-2024-001_RevA_Detail.pdf';
+        viewerPageTitle.textContent = `Rev.A / 第 ${currentDrawingPage + 1} 张，共 ${total} 张 / ${fileName}`;
+      }
+      viewerStage?.scrollTo({ left: 0, top: 0 });
+    }
+
+    function syncViewerZoom() {
+      if (!viewerSheet) return;
+      viewerSheet.style.setProperty('--viewer-zoom', viewerZoom.toFixed(2));
+      viewerStage?.classList.toggle('is-draggable', viewerZoom > 1);
+      if (viewerZoom <= 1) stopViewerDrag();
+      if (viewerZoomInButton) {
+        viewerZoomInButton.disabled = viewerZoom >= 2.5;
+        viewerZoomInButton.title = `放大（${Math.round(viewerZoom * 100)}%）`;
+      }
+      if (viewerZoomOutButton) {
+        viewerZoomOutButton.disabled = viewerZoom <= .5;
+        viewerZoomOutButton.title = `缩小（${Math.round(viewerZoom * 100)}%）`;
+      }
+    }
+
+    function setViewerZoom(nextZoom) {
+      const previousZoom = viewerZoom;
+      viewerZoom = Math.min(2.5, Math.max(.5, nextZoom));
+      syncViewerZoom();
+      if (viewerStage && viewerZoom > previousZoom) {
+        viewerStage.scrollTo({
+          left: Math.max(0, (viewerStage.scrollWidth - viewerStage.clientWidth) / 2),
+          top: Math.max(0, (viewerStage.scrollHeight - viewerStage.clientHeight) / 2),
+          behavior: 'smooth'
+        });
+      }
+    }
+
+    function hasScrollableViewer() {
+      if (!viewerStage) return false;
+      return viewerStage.scrollWidth > viewerStage.clientWidth || viewerStage.scrollHeight > viewerStage.clientHeight;
+    }
+
+    function startViewerDrag(event) {
+      if (!viewerStage || event.button !== 0 || viewerZoom <= 1 || !hasScrollableViewer()) return;
+      isViewerDragging = true;
+      viewerDragStartX = event.clientX;
+      viewerDragStartY = event.clientY;
+      viewerDragScrollLeft = viewerStage.scrollLeft;
+      viewerDragScrollTop = viewerStage.scrollTop;
+      viewerStage.classList.add('is-dragging');
+      event.preventDefault();
+    }
+
+    function moveViewerDrag(event) {
+      if (!isViewerDragging || !viewerStage) return;
+      const deltaX = event.clientX - viewerDragStartX;
+      const deltaY = event.clientY - viewerDragStartY;
+      viewerStage.scrollLeft = viewerDragScrollLeft - deltaX;
+      viewerStage.scrollTop = viewerDragScrollTop - deltaY;
+    }
+
+    function stopViewerDrag() {
+      isViewerDragging = false;
+      viewerStage?.classList.remove('is-dragging');
+    }
+
+    function switchViewerPage(step = 1) {
+      const total = drawingPages.length;
+      if (!total) return;
+      currentDrawingPage = (currentDrawingPage + step + total) % total;
+      syncDrawingPage();
+      renderViewerDrawing();
+      syncViewerZoom();
+    }
+
+    function openDrawingViewer() {
+      if (!drawingViewerDialog) return;
+      viewerZoom = Math.max(1, drawingZoom);
+      renderViewerDrawing();
+      syncViewerZoom();
+      drawingViewerDialog.showModal();
+    }
+
+    function closeDrawingViewer() {
+      stopViewerDrag();
+      drawingViewerDialog?.close();
+    }
+
+    function downloadCurrentDrawing() {
+      const currentPage = drawingPages[currentDrawingPage];
+      if (!currentPage) return;
+
+      const exportedSvg = currentPage.cloneNode(true);
+      exportedSvg.classList.remove('drawing-page', 'active');
+      exportedSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      exportedSvg.setAttribute('width', '920');
+      exportedSvg.setAttribute('height', '700');
+
+      const svgText = `<?xml version="1.0" encoding="UTF-8"?>\n${new XMLSerializer().serializeToString(exportedSvg)}`;
+      const blob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = currentDrawingFileName();
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    drawingPrevButton?.addEventListener('click', () => switchDrawingPage(-1));
+    drawingNextButton?.addEventListener('click', () => switchDrawingPage(1));
+    drawingCounter?.addEventListener('click', () => switchDrawingPage(1));
+    drawingZoomInButton?.addEventListener('click', () => setDrawingZoom(drawingZoom + .25));
+    drawingZoomOutButton?.addEventListener('click', () => setDrawingZoom(drawingZoom - .25));
+    drawingFullscreenButton?.addEventListener('click', openDrawingViewer);
+    drawingDownloadButton?.addEventListener('click', downloadCurrentDrawing);
+    drawingStage?.addEventListener('mousedown', startDrawingDrag);
+    window.addEventListener('mousemove', moveDrawingDrag);
+    window.addEventListener('mouseup', stopDrawingDrag);
+    drawingStage?.addEventListener('mouseleave', () => {
+      if (!isDrawingDragging) return;
+      drawingStage.classList.add('is-dragging');
+    });
+    viewerPrevButton?.addEventListener('click', () => switchViewerPage(-1));
+    viewerNextButton?.addEventListener('click', () => switchViewerPage(1));
+    viewerCounter?.addEventListener('click', () => switchViewerPage(1));
+    viewerZoomInButton?.addEventListener('click', () => setViewerZoom(viewerZoom + .25));
+    viewerZoomOutButton?.addEventListener('click', () => setViewerZoom(viewerZoom - .25));
+    viewerDownloadButton?.addEventListener('click', downloadCurrentDrawing);
+    viewerCloseButton?.addEventListener('click', closeDrawingViewer);
+    viewerStage?.addEventListener('mousedown', startViewerDrag);
+    window.addEventListener('mousemove', moveViewerDrag);
+    window.addEventListener('mouseup', stopViewerDrag);
+    drawingViewerDialog?.addEventListener('click', (event) => {
+      if (event.target === drawingViewerDialog) closeDrawingViewer();
+    });
+    drawingViewerDialog?.addEventListener('close', stopViewerDrag);
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') stopViewerDrag();
+    });
+
+    addReviewPointButton?.addEventListener('click', () => {
+      const nextIndex = (reviewList?.children.length || 0) + 1;
+      const item = document.createElement('li');
+      item.innerHTML = `
+        <input class="issue-input" value="新增关注点 ${nextIndex}" aria-label="关注点名称">
+        <div class="point-actions">
+          <input class="issue-input" value="D${nextIndex + 1}" aria-label="关注点编号">
+          ${pointActionButtons()}
+        </div>
+      `;
+      reviewList?.appendChild(item);
+      item.querySelector('input')?.focus();
+      item.querySelector('input')?.select();
+    });
+
+    reviewList?.addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-review-point]');
+      if (removeButton) {
+        removeButton.closest('li')?.remove();
+        return;
+      }
+
+      const editButton = event.target.closest('[aria-label="编辑"]');
+      if (editButton) {
+        const item = editButton.closest('li');
+        const label = item?.querySelector('span');
+        if (label) {
+          const input = document.createElement('input');
+          input.className = 'issue-input';
+          input.value = label.textContent.trim();
+          input.setAttribute('aria-label', '关注点名称');
+          label.replaceWith(input);
+          input.focus();
+          input.select();
+        }
+        const code = item?.querySelector('[data-point-code]');
+        if (code) {
+          const codeInput = document.createElement('input');
+          codeInput.className = 'issue-input';
+          codeInput.value = code.textContent.trim();
+          codeInput.setAttribute('aria-label', '关注点编号');
+          code.replaceWith(codeInput);
+        }
+      }
+    });
+
+    reviewList?.addEventListener('dblclick', (event) => {
+      const label = event.target.closest('li > span');
+      if (label) {
+        label.contentEditable = 'true';
+        label.focus();
+      }
+    });
+
+    reviewList?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' && event.target.matches('li > span, li > input, .point-actions input')) {
+        event.preventDefault();
+        event.target.blur();
+      }
+    });
+
+    reviewList?.addEventListener('focusout', (event) => {
+      if (event.target.matches('li > span')) {
+        event.target.contentEditable = 'false';
+      }
+      if (event.target.matches('li > input')) {
+        const label = document.createElement('span');
+        label.textContent = event.target.value.trim() || '未命名关注点';
+        event.target.replaceWith(label);
+      }
+      if (event.target.matches('.point-actions input')) {
+        const code = document.createElement('strong');
+        code.dataset.pointCode = '';
+        code.textContent = event.target.value.trim() || '未编号';
+        event.target.replaceWith(code);
+      }
+    });
+
+    function issueRowTemplate(index) {
+      return `
+        <td class="center"><strong>${index}</strong></td>
+        <td><textarea class="issue-textarea" placeholder="请输入问题描述"></textarea></td>
+        <td>
+          <select class="issue-select">
+            <option selected>-- 请选择 --</option>
+            <option>不可行</option>
+            <option>未优化</option>
+          </select>
+        </td>
+        <td>
+          <div class="upload-cell">
+            <textarea class="upload-text" aria-label="图片说明或细节" placeholder="请输入文字说明、图纸编号或细节描述"></textarea>
+            <div class="image-preview" aria-live="polite">
+              <img alt="问题附件预览">
+              <span></span>
+            </div>
+            <div class="upload-actions">
+              <button class="upload-btn" type="button">上传图片</button>
+              <button class="remove-image-btn" type="button">移除图片</button>
+            </div>
+            <input class="issue-file-input" type="file" accept="image/png,image/jpeg,image/jpg,image/webp,image/gif,image/tiff">
+          </div>
+        </td>
+        <td><input class="issue-input" placeholder="请输入问题位置"></td>
+        <td><textarea class="issue-textarea" placeholder="请输入 AE 反馈"></textarea></td>
+        <td><div class="cost-field"><span>€</span><input class="issue-input" placeholder="0.00 / part"></div></td>
+        <td><textarea class="issue-textarea" placeholder="请输入备注"></textarea></td>
+        <td>
+          <select class="issue-select status-select-g" data-issue-status>
+            <option selected>G</option>
+            <option>Y</option>
+            <option>R</option>
+            <option>N</option>
+          </select>
+        </td>
+        <td class="issue-action-cell">${issueDeleteButton()}</td>
+      `;
+    }
+
+    function refreshIssueIndexes() {
+      issueTbody?.querySelectorAll('tr').forEach((row, index) => {
+        const indexCell = row.querySelector('td:first-child strong');
+        if (indexCell) indexCell.textContent = String(index + 1);
+      });
+    }
+
+    function refreshLockButton() {
+      const statusSelects = Array.from(issueTbody?.querySelectorAll('[data-issue-status]') || []);
+      const allClosedOrGreen = statusSelects.length > 0 && statusSelects.every((select) => ['G', 'N'].includes(select.value));
+      lockReviewButtons.forEach((button) => {
+        button.disabled = !allClosedOrGreen;
+      });
+    }
+
+    function refreshIssueSummary() {
+      const rows = Array.from(issueTbody?.querySelectorAll('tr') || []);
+      const issueTypes = rows.map((row) => row.querySelector('td:nth-child(3) select')?.value || '');
+      const costTotal = rows.reduce((total, row) => {
+        const rawValue = row.querySelector('.cost-field input')?.value || '';
+        const value = Number.parseFloat(rawValue.replace('€', '').trim());
+        return Number.isFinite(value) ? total + value : total;
+      }, 0);
+
+      if (openCountMetric) openCountMetric.textContent = String(rows.length);
+      if (infeasibleCountMetric) infeasibleCountMetric.textContent = String(issueTypes.filter((type) => type === '不可行').length);
+      if (unoptimizedCountMetric) unoptimizedCountMetric.textContent = String(issueTypes.filter((type) => type === '未优化').length);
+      if (costTotalMetric) costTotalMetric.textContent = costTotal.toFixed(2);
+    }
+
+    function syncStatusColor(select) {
+      select.classList.remove('status-select-g', 'status-select-y', 'status-select-r', 'status-select-n');
+      const statusClass = {
+        G: 'status-select-g',
+        Y: 'status-select-y',
+        R: 'status-select-r',
+        N: 'status-select-n'
+      }[select.value];
+      if (statusClass) select.classList.add(statusClass);
+    }
+
+    function syncAllStatusColors() {
+      issueTbody?.querySelectorAll('[data-issue-status]').forEach(syncStatusColor);
+    }
+
+    addIssueRowButton?.addEventListener('click', () => {
+      const row = document.createElement('tr');
+      row.innerHTML = issueRowTemplate((issueTbody?.children.length || 0) + 1);
+      issueTbody?.appendChild(row);
+      refreshIssueIndexes();
+      syncAllStatusColors();
+      refreshLockButton();
+      refreshIssueSummary();
+      row.querySelector('textarea, input, select')?.focus();
+    });
+
+    issueTbody?.addEventListener('change', (event) => {
+      if (event.target.matches('[data-issue-status]')) {
+        syncStatusColor(event.target);
+      }
+
+      if (event.target.matches('.issue-file-input')) {
+        const input = event.target;
+        const file = input.files?.[0];
+        const uploadCell = input.closest('.upload-cell');
+        if (!file || !uploadCell) return;
+
+        if (!file.type.startsWith('image/')) {
+          input.value = '';
+          openAppDialog({
+            title: '图片格式不支持',
+            message: '请上传 PNG、JPG、WEBP、GIF 或 TIFF 图片。',
+            confirmText: '知道了',
+            hideCancel: true
+          });
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener('load', () => {
+          const preview = uploadCell.querySelector('.image-preview');
+          const image = preview?.querySelector('img');
+          const fileName = preview?.querySelector('span');
+          const uploadButton = uploadCell.querySelector('.upload-btn');
+          if (image) image.src = reader.result;
+          if (fileName) fileName.textContent = file.name;
+          uploadCell.classList.add('has-image');
+          if (uploadButton) uploadButton.textContent = '更换图片';
+        });
+        reader.readAsDataURL(file);
+      }
+      refreshLockButton();
+      refreshIssueSummary();
+    });
+
+    issueTbody?.addEventListener('input', (event) => {
+      if (event.target.matches('.cost-field input')) {
+        refreshIssueSummary();
+      }
+    });
+
+    issueTbody?.addEventListener('click', (event) => {
+      const deleteIssueButton = event.target.closest('[data-delete-issue-row]');
+      if (deleteIssueButton) {
+        const row = deleteIssueButton.closest('tr');
+        const rowIndex = row?.querySelector('td:first-child strong')?.textContent.trim() || '';
+        openAppDialog({
+          title: '删除问题行',
+          message: `确认删除第 ${rowIndex || '-'} 行问题吗？删除后该行内容和附件预览将被移除。`,
+          confirmText: '删除',
+          danger: true,
+          onConfirm: () => {
+            row?.remove();
+            refreshIssueIndexes();
+            refreshLockButton();
+            refreshIssueSummary();
+            if (saveMessage) saveMessage.textContent = '问题行已删除，请保存';
+          }
+        });
+        return;
+      }
+
+      const uploadButton = event.target.closest('.upload-btn');
+      if (uploadButton) {
+        uploadButton.closest('.upload-cell')?.querySelector('.issue-file-input')?.click();
+        return;
+      }
+
+      const removeButton = event.target.closest('.remove-image-btn');
+      if (removeButton) {
+        const uploadCell = removeButton.closest('.upload-cell');
+        const input = uploadCell?.querySelector('.issue-file-input');
+        const image = uploadCell?.querySelector('.image-preview img');
+        const fileName = uploadCell?.querySelector('.image-preview span');
+        const uploadButton = uploadCell?.querySelector('.upload-btn');
+        if (input) input.value = '';
+        if (image) image.removeAttribute('src');
+        if (fileName) fileName.textContent = '';
+        if (uploadButton) uploadButton.textContent = '上传图片';
+        uploadCell?.classList.remove('has-image');
+      }
+    });
+
+    saveReviewButtons.forEach((button) => button.addEventListener('click', () => {
+      if (saveMessage) saveMessage.textContent = '保存成功';
+      openAppDialog({
+        title: '保存成功',
+        message: '当前评审内容已保存。',
+        confirmText: '知道了',
+        hideCancel: true
+      });
+    }));
+
+    deleteReviewButtons.forEach((button) => button.addEventListener('click', () => {
+      openAppDialog({
+        title: '确认删除',
+        message: '删除后内容将会被清空，需要重新创建。确认删除吗？',
+        confirmText: '删除',
+        danger: true,
+        onConfirm: () => {
+        issueTbody?.replaceChildren();
+        refreshLockButton();
+        if (saveMessage) saveMessage.textContent = '内容已清空，需要重新创建';
+      }
+      });
+    }));
+
+    lockReviewButtons.forEach((button) => button.addEventListener('click', () => {
+      openAppDialog({
+        title: '提交并锁定',
+        message: '当前全部问题状态为 G 或 N，代表没有未闭环问题。确认后将锁定，并将以此为依据进行开发。',
+        confirmText: '确认锁定',
+        onConfirm: () => {
+        lockReviewButtons.forEach((lockButton) => {
+          lockButton.textContent = '变更';
+          lockButton.classList.remove('primary');
+          lockButton.classList.add('success');
+          lockButton.disabled = false;
+        });
+        document.querySelectorAll('.top-actions, [data-bottom-actions]').forEach((actions) => actions.classList.add('locked'));
+        if (saveMessage) saveMessage.textContent = '已锁定，可发起变更';
+      }
+      });
+    }));
+
+    statusHelpButton?.addEventListener('click', () => {
+      if (typeof statusDialog?.showModal === 'function') {
+        statusDialog.showModal();
+      } else {
+        openAppDialog({
+          title: '状态说明',
+          message: 'Y（Yellow 黄色）：方案暂定，需再和客户确认，暂未闭环；G（Green 绿色）：各方达成一致，方案可行；R（Red 红色）：重大冲突，制造无法实现且客户不允许改图，高风险；N：Closed，问题彻底关闭。',
+          confirmText: '知道了',
+          hideCancel: true
+        });
+      }
+    });
+
+    statusCloseButton?.addEventListener('click', () => {
+      statusDialog?.close();
+    });
+
+    statusDialog?.addEventListener('click', (event) => {
+      if (event.target === statusDialog) statusDialog.close();
+    });
+
+    dialogCancel?.addEventListener('click', () => closeAppDialog(false));
+    dialogConfirm?.addEventListener('click', () => closeAppDialog(true));
+    appDialog?.addEventListener('click', (event) => {
+      if (event.target === appDialog) closeAppDialog(false);
+    });
+
+    syncDrawingPage();
+    syncDrawingZoom();
+    syncAllStatusColors();
+    refreshLockButton();
+    refreshIssueSummary();
+  </script>
+</body>
+</html>

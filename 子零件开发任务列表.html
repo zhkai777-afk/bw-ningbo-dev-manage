@@ -1,0 +1,1569 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>子零件开发任务列表</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --muted: #f3f6fa;
+      --line: #dfe5ec;
+      --line-strong: #cfd7e3;
+      --text: #252a34;
+      --secondary: #657083;
+      --tertiary: #a5adba;
+      --primary: #1769ff;
+      --primary-hover: #0f5be6;
+      --primary-weak: #eaf2ff;
+      --success: #17a657;
+      --warning: #f79009;
+      --danger: #f04438;
+      --purple: #9b51d0;
+      --cyan: #1684d8;
+      --green: #25c36a;
+      --shadow: 0 18px 44px rgba(16, 24, 40, .16);
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1180px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 20px 20px 30px;
+      background: var(--surface);
+      border-top: 1px solid #e7ebf2;
+    }
+
+    .page-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .page-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+    }
+
+    .page-heading::before {
+      content: "";
+      width: 4px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--primary);
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 750;
+      letter-spacing: 0;
+    }
+
+    .page-subtitle {
+      color: var(--secondary);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      height: 36px;
+      min-width: 88px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: #3f4857;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: .16s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      box-shadow: 0 6px 16px rgba(23, 105, 255, .12);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      color: #fff;
+    }
+
+    .btn-plain {
+      min-width: 72px;
+      color: #555f6f;
+      background: #fff;
+    }
+
+    .btn-soft {
+      color: var(--primary);
+      border-color: #b8d3ff;
+      background: #eef5ff;
+    }
+
+    .add-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+    }
+
+    .add-icon::before,
+    .add-icon::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    .add-icon::before {
+      width: 14px;
+      height: 2px;
+      top: 6px;
+      left: 0;
+    }
+
+    .add-icon::after {
+      width: 2px;
+      height: 14px;
+      top: 0;
+      left: 6px;
+    }
+
+    .filter-panel {
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) minmax(300px, 1fr) 1px auto;
+      gap: 16px 32px;
+      align-items: center;
+      padding: 24px 18px;
+      background: var(--muted);
+      margin-bottom: 22px;
+    }
+
+    .filter-item {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-item label {
+      text-align: right;
+      color: #4d5868;
+      white-space: nowrap;
+    }
+
+    .field,
+    .select,
+    .textarea {
+      width: 100%;
+      min-width: 0;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: var(--text);
+      padding: 0 12px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    .textarea {
+      min-height: 82px;
+      padding-top: 8px;
+      resize: vertical;
+    }
+
+    .field::placeholder,
+    .textarea::placeholder {
+      color: #b5bac2;
+    }
+
+    .field:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
+    .select {
+      appearance: none;
+      padding-right: 34px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #b8c0cc 50%),
+        linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
+      background-position:
+        calc(100% - 20px) 15px,
+        calc(100% - 14px) 15px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      color: #6a7484;
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 84px;
+      background: #dde3eb;
+      grid-row: 1 / span 2;
+      grid-column: 4;
+    }
+
+    .filter-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      grid-row: 1 / span 2;
+      grid-column: 5;
+      padding: 0 0 0 10px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .table-shell {
+      border: 1px solid var(--line);
+      background: #fff;
+      overflow: auto;
+      position: relative;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1480px;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+
+    th,
+    td {
+      min-height: 48px;
+      border-bottom: 1px solid #e6ebf1;
+      padding: 13px 24px;
+      text-align: left;
+      color: #2e333c;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    th {
+      height: 48px;
+      background: #f1f4f8;
+      color: #2b3038;
+      font-weight: 700;
+    }
+
+    tr:hover td {
+      background: #fafcff;
+    }
+
+    .link {
+      border: 0;
+      background: transparent;
+      color: #0066ff;
+      padding: 0;
+      font-weight: 600;
+    }
+
+    .link:hover {
+      color: #004bcc;
+    }
+
+    .stage-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 58px;
+      height: 24px;
+      padding: 0 12px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .stage-gate1 { color: #f6a800; }
+    .stage-gate2 { color: #ff4d4f; }
+    .stage-gate3 { color: var(--purple); }
+    .stage-gate4 { color: var(--cyan); }
+    .stage-gate5 { color: var(--green); }
+    .stage-gate6 { color: #8aa0a8; }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 500;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: 0 0 auto;
+      background: currentColor;
+    }
+
+    .status-blue { color: var(--primary); }
+    .status-orange { color: var(--warning); }
+    .status-red { color: var(--danger); }
+    .status-green { color: var(--success); }
+    .status-gray { color: #8aa0a8; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      border: 1px solid #cfd7e3;
+      background: #fff;
+      color: #4d5868;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .tag-blue {
+      color: #175cd3;
+      border-color: #b8d3ff;
+      background: #eef5ff;
+    }
+
+    .tag-green {
+      color: #087a2e;
+      border-color: #b7ebc6;
+      background: #effaf3;
+    }
+
+    .tag-orange {
+      color: #b54708;
+      border-color: #fedf89;
+      background: #fff7e6;
+    }
+
+    .pagination {
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 26px;
+      padding: 20px 0 0;
+      background: #fff;
+    }
+
+    .page-size,
+    .jump-control {
+      height: 32px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: #374151;
+      padding: 0 10px;
+    }
+
+    .pager {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #737b88;
+    }
+
+    .page-num,
+    .page-arrow {
+      min-width: 32px;
+      height: 32px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: #303642;
+    }
+
+    .page-num.active {
+      color: #fff;
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    .page-arrow {
+      border-color: transparent;
+      background: transparent;
+      color: #1f2329;
+      font-size: 22px;
+    }
+
+    .page-arrow[disabled] {
+      color: #b8c0cc;
+      cursor: not-allowed;
+    }
+
+    .ellipsis {
+      min-width: 28px;
+      text-align: center;
+      color: #a0a7b3;
+    }
+
+    .drawer-mask {
+      position: fixed;
+      inset: 0;
+      z-index: 90;
+      background: rgba(16, 24, 40, .32);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .22s ease;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 100;
+      width: clamp(560px, 58vw, 980px);
+      height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      background: var(--bg);
+      box-shadow: var(--shadow);
+      transform: translateX(104%);
+      transition: transform .26s ease;
+    }
+
+    body.drawer-open {
+      overflow: hidden;
+    }
+
+    body.drawer-open .drawer-mask {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    body.drawer-open .drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-head {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 22px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .drawer-title {
+      display: grid;
+      gap: 4px;
+    }
+
+    .drawer-title h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .drawer-title span {
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .drawer-close {
+      width: 34px;
+      height: 34px;
+      border: 0;
+      background: transparent;
+      color: #8b93a1;
+      font-size: 28px;
+      line-height: 1;
+    }
+
+    .drawer-body {
+      padding: 20px 22px 96px;
+      overflow: auto;
+    }
+
+    .drawer form {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+
+    .form-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      margin-bottom: 18px;
+      overflow: visible;
+    }
+
+    .form-section-title {
+      margin: 0 20px;
+      padding: 18px 0 12px;
+      border-bottom: 1px solid #edf0f4;
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .form-section-title span {
+      margin-left: 6px;
+      color: #4d5868;
+      font-weight: 600;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 22px 20px;
+      padding: 22px 20px 24px;
+    }
+
+    .form-field {
+      min-width: 0;
+    }
+
+    .form-field.wide {
+      grid-column: 1 / -1;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      display: block;
+      min-height: 22px;
+      margin-bottom: 7px;
+      color: #141820;
+      font-weight: 500;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+      font-weight: 700;
+    }
+
+    .error-text {
+      min-height: 18px;
+      margin-top: 5px;
+      color: var(--danger);
+      font-size: 12px;
+    }
+
+    .inline-grid {
+      display: grid;
+      grid-template-columns: 170px minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+    }
+
+    .field-note {
+      margin-top: 8px;
+      color: var(--secondary);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .notice {
+      margin: 18px 20px 0;
+      padding: 10px 12px;
+      border: 1px solid #fedf89;
+      border-radius: 4px;
+      background: #fffaf0;
+      color: #92400e;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .switch-row {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #344054;
+      font-weight: 700;
+    }
+
+    .switch-row input {
+      width: 15px;
+      height: 15px;
+      margin: 0;
+      accent-color: var(--primary);
+    }
+
+    .bom-workspace {
+      margin: 0 20px 24px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fbfcff;
+      overflow: hidden;
+    }
+
+    .bom-workspace[hidden] {
+      display: none;
+    }
+
+    .bom-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .bom-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .bom-table-wrap {
+      overflow: auto;
+    }
+
+    .bom-table {
+      width: 100%;
+      min-width: 1120px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      background: #fff;
+    }
+
+    .bom-table th,
+    .bom-table td {
+      border-bottom: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: middle;
+      white-space: normal;
+      color: #2e333c;
+      font-size: 12px;
+    }
+
+    .bom-table th {
+      background: #f1f4f8;
+      font-weight: 800;
+    }
+
+    .bom-table .mini-field,
+    .bom-table .mini-select {
+      width: 100%;
+      min-width: 92px;
+      height: 30px;
+      border: 1px solid var(--line-strong);
+      border-radius: 3px;
+      background: #fff;
+      color: #2e333c;
+      padding: 0 8px;
+      font: inherit;
+    }
+
+    .bom-table .mini-field {
+      display: block;
+    }
+
+    .bom-table .mini-select {
+      appearance: none;
+      padding-right: 24px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #b8c0cc 50%),
+        linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
+      background-position:
+        calc(100% - 14px) 12px,
+        calc(100% - 9px) 12px;
+      background-size: 5px 5px, 5px 5px;
+      background-repeat: no-repeat;
+    }
+
+    .bom-indent {
+      display: inline-block;
+      width: calc((var(--level) - 1) * 18px);
+      min-width: 0;
+    }
+
+    .bom-part-cell {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 0;
+    }
+
+    .bom-action-cell {
+      text-align: center;
+    }
+
+    .bom-empty {
+      padding: 18px;
+      color: var(--secondary);
+      text-align: center;
+    }
+
+    .drawer-foot {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 0 22px;
+      border-top: 1px solid var(--line);
+      background: rgba(255, 255, 255, .96);
+      backdrop-filter: blur(10px);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 34px;
+      z-index: 150;
+      min-width: 220px;
+      transform: translateX(-50%) translateY(18px);
+      border: 1px solid #b7ebc6;
+      border-radius: 6px;
+      background: #effaf3;
+      color: #087a2e;
+      padding: 12px 18px;
+      box-shadow: 0 12px 28px rgba(16, 24, 40, .14);
+      opacity: 0;
+      pointer-events: none;
+      transition: .2s ease;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 1360px) {
+      body {
+        min-width: 980px;
+      }
+
+      .filter-panel {
+        grid-template-columns: repeat(2, minmax(300px, 1fr)) auto;
+      }
+
+      .filter-divider {
+        display: none;
+      }
+
+      .filter-actions {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        min-width: 0;
+      }
+
+      .page {
+        padding: 16px;
+      }
+
+      .page-title,
+      .toolbar,
+      .pagination {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .filter-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-item {
+        grid-template-columns: 1fr;
+      }
+
+      .filter-item label {
+        text-align: left;
+      }
+
+      .filter-actions {
+        grid-column: auto;
+        grid-row: auto;
+        padding: 0;
+      }
+
+      .drawer {
+        width: 100vw;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="page-title">
+      <div class="page-heading">
+        <div>
+          <h1>零件开发项目管理</h1>
+          <div class="page-subtitle">查看项目开发关联的零件开发任务</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" id="openDrawer" type="button">
+        <span class="add-icon" aria-hidden="true"></span>
+        新建子零件开发任务
+      </button>
+    </header>
+
+    <section class="filter-panel" aria-label="子零件开发任务筛选">
+      <div class="filter-item">
+        <label for="partNameFilter">零件名称</label>
+        <input class="field" id="partNameFilter" placeholder="Please Input">
+      </div>
+      <div class="filter-item">
+        <label for="projectFilter">所属项目</label>
+        <input class="field" id="projectFilter" placeholder="Please Input">
+      </div>
+      <div class="filter-item">
+        <label for="qualityFilter">产品质量流程</label>
+        <select class="select" id="qualityFilter">
+          <option value="">Please Selected</option>
+          <option>Full APQP process</option>
+          <option>Simplified APQP process</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="gateFilter">阶段</label>
+        <select class="select" id="gateFilter">
+          <option value="">Please Selected</option>
+          <option>Gate1</option>
+          <option>Gate2</option>
+          <option>Gate3</option>
+          <option>Gate4</option>
+          <option>Gate5</option>
+          <option>Gate6</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label for="statusFilter">状态</label>
+        <select class="select" id="statusFilter">
+          <option value="">Please Selected</option>
+          <option>未启动</option>
+          <option>进行中</option>
+          <option>当前 Gate 待完成</option>
+          <option>待影响分析</option>
+          <option>已完成</option>
+        </select>
+      </div>
+      <div class="filter-divider" aria-hidden="true"></div>
+      <div class="filter-actions">
+        <button class="btn btn-soft" type="button" id="searchButton">查询</button>
+        <button class="btn btn-plain" type="button" id="resetButton">重置</button>
+      </div>
+    </section>
+
+    <div class="toolbar" aria-label="列表操作">
+      <span class="tag tag-blue">子零件开发独立模块</span>
+      <span class="tag tag-orange">风险仅提醒，不阻塞项目 Gate</span>
+    </div>
+
+    <section class="table-shell" aria-label="子零件开发任务列表">
+      <table>
+        <thead>
+          <tr>
+            <th>项目 ID</th>
+            <th>零件名称</th>
+            <th>所属项目</th>
+            <th>产品质量流程</th>
+            <th>负责人</th>
+            <th>负责部门</th>
+            <th>供应商</th>
+            <th>创建来源</th>
+            <th>阶段</th>
+            <th>状态</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="taskTableBody"></tbody>
+      </table>
+    </section>
+
+    <footer class="pagination">
+      <select class="page-size" aria-label="每页条数">
+        <option>10条/页</option>
+        <option>20条/页</option>
+        <option>50条/页</option>
+      </select>
+      <nav class="pager" aria-label="分页">
+        <button class="page-arrow" type="button" aria-label="上一页" disabled>‹</button>
+        <button class="page-num" type="button">1</button>
+        <span class="ellipsis">...</span>
+        <button class="page-num" type="button">50</button>
+        <button class="page-num" type="button">51</button>
+        <button class="page-num active" type="button">52</button>
+        <button class="page-num" type="button">53</button>
+        <button class="page-num" type="button">54</button>
+        <span class="ellipsis">...</span>
+        <button class="page-num" type="button">90</button>
+        <button class="page-arrow" type="button" aria-label="下一页">›</button>
+      </nav>
+      <div class="pager">
+        <span>跳至</span>
+        <input class="jump-control" type="text" value="11" aria-label="跳转页码" style="width:64px;">
+        <span>/20页</span>
+      </div>
+    </footer>
+  </main>
+
+  <div class="drawer-mask" id="drawerMask"></div>
+  <aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+    <header class="drawer-head">
+      <div class="drawer-title">
+        <h2 id="drawerTitle">新建子零件开发任务</h2>
+        <span>支持手动新增，也可记录 BOM、BOM 行和供应方案来源</span>
+      </div>
+      <button class="drawer-close" id="closeDrawer" type="button" aria-label="关闭">×</button>
+    </header>
+
+    <form id="taskForm" novalidate>
+      <div class="drawer-body">
+        <section class="form-card">
+          <h3 class="form-section-title">基本信息 <span>Basic Information</span></h3>
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="required" for="taskNo">任务编号</label>
+              <input class="field" id="taskNo" name="taskNo" value="QEP-2025-05-011" data-required="任务编号">
+              <div class="error-text" data-error-for="taskNo"></div>
+            </div>
+            <div class="form-field full">
+              <label class="required" for="partSourceMode">零件名称</label>
+              <div class="inline-grid">
+                <select class="select" id="partSourceMode" name="partSourceMode" aria-label="零件选择方式">
+                  <option value="sap" selected>从 SAP 选择</option>
+                  <option value="manual">手动添加</option>
+                </select>
+                <select class="select" id="sapPartSelect" name="sapPartSelect">
+                  <option value="">请选择 SAP 零件</option>
+                  <option value="PHASER INSERT">PHASER INSERT / 5069999</option>
+                  <option value="FACE GUIDE">FACE GUIDE / 5050607</option>
+                  <option value="GUIDE SECONDARY">GUIDE SECONDARY / 5054770</option>
+                  <option value="TIMING CHAIN GUIDE">TIMING CHAIN GUIDE / 5071024</option>
+                </select>
+                <input class="field" id="partName" name="partName" placeholder="请输入零件名称" data-required="零件名称" hidden>
+              </div>
+              <div class="field-note">从 SAP 选择会自动带出推荐 BOM 信息，并支持继续编辑；手动添加时可在下方手动维护 BOM 层级。</div>
+              <div class="error-text" data-error-for="partName"></div>
+            </div>
+            <div class="form-field">
+              <label for="projectName">所属项目</label>
+              <input class="field" id="projectName" name="projectName" placeholder="请输入所属项目">
+              <div class="error-text" data-error-for="projectName"></div>
+            </div>
+            <div class="form-field">
+              <label class="required" for="qualityProcess">产品质量流程</label>
+              <select class="select" id="qualityProcess" name="qualityProcess" data-required="产品质量流程">
+                <option value="">请选择</option>
+                <option selected>Full APQP process</option>
+                <option>Simplified APQP process</option>
+              </select>
+              <div class="error-text" data-error-for="qualityProcess"></div>
+            </div>
+            <div class="form-field">
+              <label class="required" for="owner">负责人</label>
+              <select class="select" id="owner" name="owner" data-required="负责人">
+                <option value="">请选择</option>
+                <option>Li Ming</option>
+                <option>Zhang Ning</option>
+                <option>Xu Lulu</option>
+                <option>Zhang Nan</option>
+              </select>
+              <div class="error-text" data-error-for="owner"></div>
+            </div>
+            <div class="form-field">
+              <label class="required" for="department">负责部门</label>
+              <input class="field" id="department" name="department" value="DMS China-547" data-required="负责部门">
+              <div class="error-text" data-error-for="department"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <h3 class="form-section-title">开发与供应 <span>Development and Supply</span></h3>
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="required" for="gate">当前阶段</label>
+              <select class="select" id="gate" name="gate" data-required="当前阶段">
+                <option value="">请选择</option>
+                <option>Gate1</option>
+                <option>Gate2</option>
+                <option>Gate3</option>
+                <option>Gate4</option>
+                <option>Gate5</option>
+                <option>Gate6</option>
+              </select>
+              <div class="error-text" data-error-for="gate"></div>
+            </div>
+            <div class="form-field">
+              <label class="required" for="taskStatus">当前状态</label>
+              <select class="select" id="taskStatus" name="taskStatus" data-required="当前状态">
+                <option value="">请选择</option>
+                <option>未启动</option>
+                <option selected>进行中</option>
+                <option>当前 Gate 待完成</option>
+                <option>待影响分析</option>
+                <option>变更待确认</option>
+                <option>已完成</option>
+              </select>
+              <div class="error-text" data-error-for="taskStatus"></div>
+            </div>
+            <div class="form-field">
+              <label for="supplier">供应商</label>
+              <input class="field" id="supplier" name="supplier" placeholder="请输入供应商">
+            </div>
+            <div class="form-field">
+              <label for="supplierType">供应商类型</label>
+              <select class="select" id="supplierType" name="supplierType">
+                <option>一供</option>
+                <option>二供</option>
+                <option>其他</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="supplyStrategy">供应策略</label>
+              <select class="select" id="supplyStrategy" name="supplyStrategy">
+                <option>单一供应</option>
+                <option>双供备案</option>
+                <option>双供同步开发</option>
+                <option>二供后续导入</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="riskFlag">项目风险提示</label>
+              <select class="select" id="riskFlag" name="riskFlag">
+                <option>不影响项目风险提示</option>
+                <option>作为风险提醒展示</option>
+                <option>待项目团队人工判断</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <h3 class="form-section-title">来源追溯 <span>Traceability</span></h3>
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="required" for="sourceType">创建来源</label>
+              <select class="select" id="sourceType" name="sourceType" data-required="创建来源">
+                <option value="">请选择</option>
+                <option selected>手动新增</option>
+                <option>BOM 创建</option>
+              </select>
+              <div class="error-text" data-error-for="sourceType"></div>
+            </div>
+            <div class="form-field">
+              <label for="sourceBomVersion">来源 BOM 版本</label>
+              <input class="field" id="sourceBomVersion" name="sourceBomVersion" placeholder="例如 PKO_V1.0">
+            </div>
+            <div class="form-field">
+              <label for="sourceBomLine">来源 BOM 行</label>
+              <input class="field" id="sourceBomLine" name="sourceBomLine" placeholder="例如 BOM-L2-003">
+            </div>
+            <div class="form-field">
+              <label for="sourceSupplyPlan">来源供应方案</label>
+              <input class="field" id="sourceSupplyPlan" name="sourceSupplyPlan" placeholder="例如 P1-A 一供开发">
+            </div>
+            <div class="form-field wide">
+              <label for="remark">备注</label>
+              <textarea class="textarea" id="remark" name="remark" placeholder="请输入任务说明、供应商开发背景或风险提醒"></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-card">
+          <h3 class="form-section-title">BOM 信息 <span>Optional BOM</span></h3>
+          <div class="notice">新建零件开发任务时可同步创建 BOM，但不是必填项；也可以先创建任务，进入详情页后再创建或补充 BOM 信息。</div>
+          <div class="form-grid">
+            <div class="form-field wide">
+              <label class="switch-row" for="createBomNow">
+                <input type="checkbox" id="createBomNow">
+                新建任务时同步创建 BOM
+              </label>
+              <div class="field-note">从 SAP 选择零件后会自动带出层级 BOM 初稿；你可以继续从 SAP 添加零件，也可以手动新增 BOM 行。</div>
+            </div>
+          </div>
+          <div class="bom-workspace" id="bomWorkspace" hidden>
+            <div class="bom-toolbar">
+              <span class="tag tag-blue">层级 BOM 初稿</span>
+              <div class="bom-actions">
+                <select class="select" id="sapBomAdd" aria-label="从 SAP 添加 BOM 零件" style="width:220px">
+                  <option value="">从 SAP 继续添加零件</option>
+                  <option value="SEAL RING">SEAL RING / 5077001</option>
+                  <option value="SPRING PIN">SPRING PIN / 5077002</option>
+                  <option value="PLASTIC COVER">PLASTIC COVER / 5077003</option>
+                </select>
+                <button class="btn btn-plain" type="button" id="addManualBomRow">手动新增 BOM 行</button>
+              </div>
+            </div>
+            <div class="bom-table-wrap">
+              <table class="bom-table" aria-label="新建任务时创建的 BOM 信息">
+                <colgroup>
+                  <col style="width:86px">
+                  <col style="width:230px">
+                  <col style="width:140px">
+                  <col style="width:90px">
+                  <col style="width:180px">
+                  <col style="width:132px">
+                  <col style="width:190px">
+                  <col style="width:72px">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>层级</th>
+                    <th>零件名称</th>
+                    <th>零件编号</th>
+                    <th>数量</th>
+                    <th>父级零件</th>
+                    <th>是否需要 APQP</th>
+                    <th>供应方案</th>
+                    <th class="bom-action-cell">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="bomRowsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="drawer-foot">
+        <button class="btn btn-plain" id="cancelDrawer" type="button">取消</button>
+        <button class="btn btn-plain" id="saveDraft" type="button">保存草稿</button>
+        <button class="btn btn-primary" id="confirmTask" type="submit">确定</button>
+      </footer>
+    </form>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const detailUrl = "子零件开发任务详情_调整版.html";
+    const tasks = [
+      ["QEP-2025-05-001", "D20-TSC/5050607/SINTEX-BAPL", "AC Busbar Assembly0.8", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate1", "进行中"],
+      ["QEP-2025-05-002", "D20-TSC/5050607/SINTEX-BAPL", "FACE GUIDE", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate1", "进行中"],
+      ["QEP-2025-05-003", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "GUIDE SECONDARY", "Full APQP process", "Xu Lulu", "DMS China-547", "Shanghai Supplier C", "BOM 创建", "Gate1", "进行中"],
+      ["QEP-2025-05-004", "D20-TSC/5050607/SINTEX-BAPL", "Radiator", "Full APQP process", "Zhang Nan", "DMS China-547", "Suzhou Supplier D", "手动新增", "Gate1", "进行中"],
+      ["QEP-2025-05-005", "D20-TSC/5050607/SINTEX-BAPL", "AC Busbar Assembly0.8", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate2", "进行中"],
+      ["QEP-2025-05-006", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Fuel Injector", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate2", "进行中"],
+      ["QEP-2025-05-007", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Catalytic Converter", "Full APQP process", "Xu Lulu", "DMS China-547", "Shanghai Supplier C", "BOM 创建", "Gate3", "进行中"],
+      ["QEP-2025-05-008", "D20-TSC/5050607/SINTEX-BAPL", "Shock Absorber", "Full APQP process", "Zhang Nan", "DMS China-547", "Suzhou Supplier D", "手动新增", "Gate4", "进行中"],
+      ["QEP-2025-05-009", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Transmission", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate5", "进行中"],
+      ["QEP-2025-05-010", "D20-TSC/5050607/SINTEX-BAPL", "Bumper", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate6", "进行中"]
+    ].map(([id, partName, project, quality, owner, department, supplier, source, gate, status]) => ({
+      id,
+      partName,
+      project,
+      quality,
+      owner,
+      department,
+      supplier,
+      source,
+      gate,
+      status
+    }));
+
+    const taskTableBody = document.querySelector("#taskTableBody");
+    const drawerMask = document.querySelector("#drawerMask");
+    const taskForm = document.querySelector("#taskForm");
+    const toast = document.querySelector("#toast");
+    const partSourceMode = document.querySelector("#partSourceMode");
+    const sapPartSelect = document.querySelector("#sapPartSelect");
+    const partNameInput = document.querySelector("#partName");
+    const createBomNow = document.querySelector("#createBomNow");
+    const bomWorkspace = document.querySelector("#bomWorkspace");
+    const bomRowsBody = document.querySelector("#bomRowsBody");
+    const sapBomAdd = document.querySelector("#sapBomAdd");
+    let bomRows = [];
+    const sapPartBomTemplates = {
+      "PHASER INSERT": [
+        { level: 1, name: "PHASER INSERT", no: "5069999", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 双供同步开发" },
+        { level: 2, name: "SEAL RING", no: "5077001", qty: "1", parent: "PHASER INSERT", apqp: "是", supplyPlan: "一供 / 单一供应" },
+        { level: 2, name: "SPRING PIN", no: "5077002", qty: "2", parent: "PHASER INSERT", apqp: "否", supplyPlan: "二供备案" }
+      ],
+      "FACE GUIDE": [
+        { level: 1, name: "FACE GUIDE", no: "5050607", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 单一供应" },
+        { level: 2, name: "PLASTIC COVER", no: "5077003", qty: "1", parent: "FACE GUIDE", apqp: "是", supplyPlan: "一供 / 单一供应" }
+      ],
+      "GUIDE SECONDARY": [
+        { level: 1, name: "GUIDE SECONDARY", no: "5054770", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 双供备案" }
+      ],
+      "TIMING CHAIN GUIDE": [
+        { level: 1, name: "TIMING CHAIN GUIDE", no: "5071024", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 二供后续导入" }
+      ]
+    };
+    const sapBomParts = {
+      "SEAL RING": { level: 2, name: "SEAL RING", no: "5077001", qty: "1", parent: "", apqp: "是", supplyPlan: "一供 / 单一供应" },
+      "SPRING PIN": { level: 2, name: "SPRING PIN", no: "5077002", qty: "1", parent: "", apqp: "否", supplyPlan: "二供备案" },
+      "PLASTIC COVER": { level: 2, name: "PLASTIC COVER", no: "5077003", qty: "1", parent: "", apqp: "是", supplyPlan: "一供 / 双供同步开发" }
+    };
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function stageMarkup(stage) {
+      const classMap = {
+        Gate1: "stage-gate1",
+        Gate2: "stage-gate2",
+        Gate3: "stage-gate3",
+        Gate4: "stage-gate4",
+        Gate5: "stage-gate5",
+        Gate6: "stage-gate6"
+      };
+      return `<span class="stage-pill ${classMap[stage] || "stage-gate1"}">${escapeHtml(stage)}</span>`;
+    }
+
+    function statusMarkup(status) {
+      const classMap = {
+        "未启动": "status-gray",
+        "进行中": "status-blue",
+        "当前 Gate 待完成": "status-orange",
+        "待影响分析": "status-orange",
+        "变更待确认": "status-red",
+        "已完成": "status-green"
+      };
+      return `<span class="status ${classMap[status] || "status-blue"}"><span class="dot"></span>${escapeHtml(status)}</span>`;
+    }
+
+    function sourceMarkup(source) {
+      const className = source === "BOM 创建" ? "tag-blue" : "tag-green";
+      return `<span class="tag ${className}">${escapeHtml(source)}</span>`;
+    }
+
+    function renderTasks(rows = tasks) {
+      taskTableBody.innerHTML = rows.map((task) => `
+        <tr>
+          <td>${escapeHtml(task.id)}</td>
+          <td>${escapeHtml(task.partName)}</td>
+          <td>${escapeHtml(task.project)}</td>
+          <td>${escapeHtml(task.quality)}</td>
+          <td>${escapeHtml(task.owner)}</td>
+          <td>${escapeHtml(task.department)}</td>
+          <td>${escapeHtml(task.supplier || "-")}</td>
+          <td>${sourceMarkup(task.source)}</td>
+          <td>${stageMarkup(task.gate)}</td>
+          <td>${statusMarkup(task.status)}</td>
+          <td><button class="link" type="button" data-detail="${escapeHtml(task.id)}">详情</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function renderBomRows() {
+      if (!bomRows.length) {
+        bomRowsBody.innerHTML = `<tr><td colspan="8"><div class="bom-empty">暂无 BOM 行，可从 SAP 添加零件或手动新增 BOM 行。</div></td></tr>`;
+        return;
+      }
+      bomRowsBody.innerHTML = bomRows.map((row, index) => `
+        <tr>
+          <td>
+            <select class="mini-select" data-bom-field="level" data-bom-index="${index}" style="--level:${Number(row.level) || 1}">
+              ${[1, 2, 3, 4].map((level) => `<option value="${level}" ${Number(row.level) === level ? "selected" : ""}>L${level}</option>`).join("")}
+            </select>
+          </td>
+          <td><div class="bom-part-cell"><span class="bom-indent" style="--level:${Number(row.level) || 1}"></span><input class="mini-field" data-bom-field="name" data-bom-index="${index}" value="${escapeHtml(row.name)}"></div></td>
+          <td><input class="mini-field" data-bom-field="no" data-bom-index="${index}" value="${escapeHtml(row.no)}"></td>
+          <td><input class="mini-field" data-bom-field="qty" data-bom-index="${index}" value="${escapeHtml(row.qty)}"></td>
+          <td><input class="mini-field" data-bom-field="parent" data-bom-index="${index}" value="${escapeHtml(row.parent)}"></td>
+          <td>
+            <select class="mini-select" data-bom-field="apqp" data-bom-index="${index}">
+              <option ${row.apqp === "是" ? "selected" : ""}>是</option>
+              <option ${row.apqp === "否" ? "selected" : ""}>否</option>
+            </select>
+          </td>
+          <td><input class="mini-field" data-bom-field="supplyPlan" data-bom-index="${index}" value="${escapeHtml(row.supplyPlan)}"></td>
+          <td class="bom-action-cell"><button class="link" type="button" data-remove-bom-row="${index}">删除</button></td>
+        </tr>
+      `).join("");
+    }
+
+    function syncPartSourceMode() {
+      const isSap = partSourceMode.value === "sap";
+      sapPartSelect.hidden = !isSap;
+      sapPartSelect.toggleAttribute("disabled", !isSap);
+      partNameInput.hidden = isSap;
+      if (isSap) {
+        partNameInput.value = sapPartSelect.value || "";
+      } else {
+        sapPartSelect.value = "";
+      }
+    }
+
+    function loadSapBomTemplate(partName) {
+      const template = sapPartBomTemplates[partName] || [];
+      bomRows = template.map((row) => ({ ...row }));
+      renderBomRows();
+    }
+
+    function syncSapPartSelection() {
+      if (partSourceMode.value !== "sap") return;
+      partNameInput.value = sapPartSelect.value || "";
+      if (sapPartSelect.value) {
+        document.querySelector("#sourceType").value = "BOM 创建";
+        document.querySelector("#sourceBomLine").value = sapPartSelect.value;
+        if (!document.querySelector("#sourceBomVersion").value) {
+          document.querySelector("#sourceBomVersion").value = "SAP_WORKING_BOM";
+        }
+        loadSapBomTemplate(sapPartSelect.value);
+      } else {
+        bomRows = [];
+        renderBomRows();
+      }
+    }
+
+    function setBomWorkspace(open) {
+      bomWorkspace.hidden = !open;
+      if (open && !bomRows.length && partNameInput.value && partSourceMode.value === "sap") {
+        loadSapBomTemplate(partNameInput.value);
+      }
+      if (open) renderBomRows();
+    }
+
+    function setDrawer(open) {
+      document.body.classList.toggle("drawer-open", open);
+      if (open) {
+        document.querySelector("#sapPartSelect").focus();
+      }
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      window.clearTimeout(showToast.timer);
+      showToast.timer = window.setTimeout(() => toast.classList.remove("show"), 1800);
+    }
+
+    function valueOf(selector) {
+      const element = document.querySelector(selector);
+      return element ? element.value.trim() : "";
+    }
+
+    function validateForm() {
+      let valid = true;
+      taskForm.querySelectorAll("[data-required]").forEach((field) => {
+        const error = taskForm.querySelector(`[data-error-for="${field.id}"]`);
+        const isEmpty = !field.value.trim();
+        if (error) {
+          error.textContent = isEmpty ? `请填写${field.dataset.required}` : "";
+        }
+        field.style.borderColor = isEmpty ? "var(--danger)" : "";
+        valid = valid && !isEmpty;
+      });
+      const partError = taskForm.querySelector('[data-error-for="partName"]');
+      if (partError) {
+        partError.textContent = partNameInput.value.trim() ? "" : "请选择或填写零件名称";
+      }
+      sapPartSelect.style.borderColor = !partNameInput.value.trim() && partSourceMode.value === "sap" ? "var(--danger)" : "";
+      return valid;
+    }
+
+    function collectTask(statusOverride) {
+      return {
+        id: valueOf("#taskNo"),
+        partName: valueOf("#partName"),
+        project: valueOf("#projectName") || "-",
+        quality: valueOf("#qualityProcess"),
+        owner: valueOf("#owner"),
+        department: valueOf("#department"),
+        supplier: valueOf("#supplier") || "-",
+        source: valueOf("#sourceType"),
+        gate: valueOf("#gate"),
+        status: statusOverride || valueOf("#taskStatus")
+      };
+    }
+
+    function resetForm() {
+      taskForm.reset();
+      document.querySelector("#taskNo").value = "QEP-2025-05-011";
+      document.querySelector("#qualityProcess").value = "Full APQP process";
+      document.querySelector("#department").value = "DMS China-547";
+      document.querySelector("#taskStatus").value = "进行中";
+      document.querySelector("#sourceType").value = "手动新增";
+      document.querySelector("#partSourceMode").value = "sap";
+      document.querySelector("#sapPartSelect").value = "";
+      document.querySelector("#partName").value = "";
+      document.querySelector("#partName").hidden = true;
+      document.querySelector("#sapPartSelect").hidden = false;
+      document.querySelector("#createBomNow").checked = false;
+      bomRows = [];
+      setBomWorkspace(false);
+      taskForm.querySelectorAll(".error-text").forEach((error) => {
+        error.textContent = "";
+      });
+      taskForm.querySelectorAll("[data-required]").forEach((field) => {
+        field.style.borderColor = "";
+      });
+      sapPartSelect.style.borderColor = "";
+    }
+
+    function submitTask(statusOverride) {
+      if (!validateForm()) return;
+      const task = collectTask(statusOverride);
+      tasks.unshift(task);
+      renderTasks();
+      resetForm();
+      setDrawer(false);
+      showToast(statusOverride === "未启动" ? "草稿已保存为未启动任务" : "子零件开发任务已创建");
+    }
+
+    function applyFilter() {
+      const partName = valueOf("#partNameFilter").toLowerCase();
+      const project = valueOf("#projectFilter").toLowerCase();
+      const quality = valueOf("#qualityFilter");
+      const gate = valueOf("#gateFilter");
+      const status = valueOf("#statusFilter");
+      const filtered = tasks.filter((task) => {
+        return (!partName || task.partName.toLowerCase().includes(partName))
+          && (!project || task.project.toLowerCase().includes(project))
+          && (!quality || task.quality === quality)
+          && (!gate || task.gate === gate)
+          && (!status || task.status === status);
+      });
+      renderTasks(filtered);
+    }
+
+    document.querySelector("#openDrawer").addEventListener("click", () => setDrawer(true));
+    document.querySelector("#closeDrawer").addEventListener("click", () => setDrawer(false));
+    document.querySelector("#cancelDrawer").addEventListener("click", () => setDrawer(false));
+    drawerMask.addEventListener("click", () => setDrawer(false));
+    document.querySelector("#saveDraft").addEventListener("click", () => submitTask("未启动"));
+    partSourceMode.addEventListener("change", () => {
+      syncPartSourceMode();
+      syncSapPartSelection();
+    });
+    sapPartSelect.addEventListener("change", syncSapPartSelection);
+    createBomNow.addEventListener("change", () => setBomWorkspace(createBomNow.checked));
+    document.querySelector("#addManualBomRow").addEventListener("click", () => {
+      const parent = bomRows.find((row) => Number(row.level) === 1)?.name || partNameInput.value || "-";
+      bomRows.push({ level: parent === "-" ? 1 : 2, name: "", no: "", qty: "1", parent, apqp: "是", supplyPlan: "" });
+      createBomNow.checked = true;
+      setBomWorkspace(true);
+    });
+    sapBomAdd.addEventListener("change", () => {
+      const selected = sapBomAdd.value;
+      if (!selected) return;
+      const parent = bomRows.find((row) => Number(row.level) === 1)?.name || partNameInput.value || "-";
+      bomRows.push({ ...sapBomParts[selected], parent });
+      sapBomAdd.value = "";
+      createBomNow.checked = true;
+      setBomWorkspace(true);
+    });
+    bomRowsBody.addEventListener("input", (event) => {
+      const field = event.target.dataset.bomField;
+      const index = Number(event.target.dataset.bomIndex);
+      if (!field || Number.isNaN(index) || !bomRows[index]) return;
+      bomRows[index][field] = event.target.value;
+    });
+    bomRowsBody.addEventListener("change", (event) => {
+      const field = event.target.dataset.bomField;
+      const index = Number(event.target.dataset.bomIndex);
+      if (!field || Number.isNaN(index) || !bomRows[index]) return;
+      bomRows[index][field] = event.target.value;
+      renderBomRows();
+    });
+    bomRowsBody.addEventListener("click", (event) => {
+      const removeButton = event.target.closest("[data-remove-bom-row]");
+      if (!removeButton) return;
+      bomRows.splice(Number(removeButton.dataset.removeBomRow), 1);
+      renderBomRows();
+    });
+    taskForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      submitTask();
+    });
+    document.querySelector("#searchButton").addEventListener("click", applyFilter);
+    document.querySelector("#resetButton").addEventListener("click", () => {
+      document.querySelector("#partNameFilter").value = "";
+      document.querySelector("#projectFilter").value = "";
+      document.querySelector("#qualityFilter").value = "";
+      document.querySelector("#gateFilter").value = "";
+      document.querySelector("#statusFilter").value = "";
+      renderTasks();
+    });
+    taskTableBody.addEventListener("click", (event) => {
+      const detailButton = event.target.closest("[data-detail]");
+      if (detailButton) {
+        window.location.href = `${detailUrl}?taskId=${encodeURIComponent(detailButton.dataset.detail)}`;
+      }
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && document.body.classList.contains("drawer-open")) {
+        setDrawer(false);
+      }
+    });
+
+    renderTasks();
+    syncPartSourceMode();
+    renderBomRows();
+  </script>
+</body>
+</html>

@@ -84,7 +84,7 @@
 
     .project-top {
       display: grid;
-      grid-template-columns: minmax(640px, 1fr) 450px;
+      grid-template-columns: minmax(520px, 1fr) minmax(560px, auto);
       gap: 24px;
       align-items: start;
     }
@@ -115,8 +115,17 @@
       color: #344054;
     }
 
+    .info-grid.project-ref-grid {
+      grid-template-columns: minmax(220px, 1fr);
+    }
+
     .info-item b {
       color: #1f2a44;
+      font-weight: 700;
+    }
+
+    .empty-value {
+      color: #8592a6;
       font-weight: 700;
     }
 
@@ -147,13 +156,20 @@
     .project-actions,
     .project-status-actions {
       justify-content: flex-end;
-      gap: 12px;
+      gap: 8px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
     }
 
     .project-status-actions {
       display: inline-flex;
       align-items: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+    }
+
+    .project-actions .btn,
+    .project-status-actions .btn {
+      padding: 0 10px;
     }
 
     .btn {
@@ -248,7 +264,7 @@
     .stat-grid {
       justify-content: space-between;
       text-align: center;
-      gap: 24px;
+      gap: 18px;
     }
 
     .stat-label {
@@ -307,6 +323,68 @@
     .status-conditional {
       color: #b54708;
       background: var(--warning-weak);
+    }
+
+    .health-control {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      min-width: 96px;
+    }
+
+    .health-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 20px;
+    }
+
+    .health-link {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .health-link:hover {
+      color: #0b55d9;
+      text-decoration: underline;
+    }
+
+    .health-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .health-green {
+      color: #067647;
+      background: var(--success-weak);
+      border-color: #abefc6;
+    }
+
+    .health-yellow {
+      color: #b54708;
+      background: var(--warning-weak);
+      border-color: #fedf89;
+    }
+
+    .health-red {
+      color: #b42318;
+      background: var(--danger-weak);
+      border-color: #fecdca;
     }
 
     .nav-panel {
@@ -1090,7 +1168,7 @@
 
     .stage-task-table .fixed-status {
       position: sticky;
-      right: 190px;
+      right: 88px;
       z-index: 2;
       background: #fff;
       border-left: 1px solid #d7dee8;
@@ -1854,7 +1932,7 @@
 
     .bom-summary {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 12px;
       margin-bottom: 14px;
     }
@@ -1865,17 +1943,6 @@
       padding: 12px;
       border-radius: var(--radius-sm);
       min-height: 76px;
-    }
-
-    .bom-summary-item.is-action {
-      cursor: pointer;
-      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
-    }
-
-    .bom-summary-item.is-action:hover {
-      border-color: var(--primary);
-      background: #f7fbff;
-      box-shadow: 0 8px 18px rgba(23, 105, 255, .08);
     }
 
     .bom-summary-item span {
@@ -1892,19 +1959,12 @@
       line-height: 1.2;
     }
 
-    .bom-summary-item small {
-      display: block;
-      margin-top: 7px;
-      color: #667085;
-      font-size: 12px;
-      font-weight: 750;
-      line-height: 1.45;
-      white-space: normal;
-    }
-
-    .bom-summary-item .blue-link {
-      margin-top: 7px;
-      font-size: 12px;
+    .bom-summary-item .select-field {
+      width: 100%;
+      min-width: 0;
+      margin-top: 10px;
+      height: 32px;
+      font-size: 13px;
     }
 
     .bom-table-wrap {
@@ -1992,6 +2052,35 @@
     .tree-indent-2 { padding-left: 24px; }
     .tree-indent-3 { padding-left: 48px; }
     .tree-indent-4 { padding-left: 72px; }
+
+    .supply-type-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 44px;
+      min-height: 24px;
+      padding: 2px 10px;
+      border: 1px solid #cfd7e3;
+      border-radius: 999px;
+      background: #fff;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 900;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .supply-type-primary {
+      border-color: #b8d3ff;
+      background: #eef5ff;
+      color: #175cd3;
+    }
+
+    .supply-type-secondary {
+      border-color: #fedf89;
+      background: #fff7e6;
+      color: #b54708;
+    }
 
     .bom-tools {
       justify-content: space-between;
@@ -2181,6 +2270,8 @@
       background: rgba(255, 255, 255, .96);
       border-top: 1px solid var(--line);
     }
+
+    .bom-selection-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0;padding:10px 12px;border:1px solid #d7e3f8;border-left:3px solid var(--primary);border-radius:4px;background:#f8fbff}.bom-selection-bar[hidden],.bom-inline-drawer[hidden],.bom-search-results[hidden],.bom-drawer-section[hidden]{display:none}.bom-selection-info{color:#344054;font-size:12px;font-weight:900}.bom-selection-info span{color:#667085;font-weight:800;margin-left:8px}.bom-selection-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.bom-workspace-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:12px;align-items:start}.bom-workspace-layout.has-drawer{grid-template-columns:minmax(0,1fr) minmax(380px,400px)}.bom-inline-drawer{border:1px solid var(--line);border-radius:4px;background:#fff;box-shadow:-8px 0 22px rgba(16,24,40,.08);overflow:hidden;position:sticky;top:12px;min-width:0}.bom-drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid var(--line);background:#f8fafc}.bom-drawer-head h3{margin:0;color:#1f2a44;font-size:14px;font-weight:900}.bom-drawer-head p{margin:4px 0 0;color:#667085;font-size:12px;font-weight:800;line-height:1.5}.bom-drawer-body{display:grid;gap:12px;padding:12px;max-height:560px;overflow-y:auto;overflow-x:hidden}.bom-drawer-mode{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:4px;border:1px solid var(--line);border-radius:4px;background:#f5f7fa}.bom-drawer-mode button{border:0;background:transparent;min-height:32px;border-radius:3px;color:#566176;font-weight:900;cursor:pointer}.bom-drawer-mode button.active{background:#fff;color:var(--primary);box-shadow:0 1px 3px rgba(16,24,40,.10)}.bom-drawer-section,.bom-library-results{display:grid;gap:10px}.bom-drawer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:10px;row-gap:12px}.bom-drawer-group{display:grid;gap:10px;padding:10px;border:1px solid var(--line);border-radius:4px;background:#fbfcfe}.bom-drawer-group h4{margin:0;color:#344054;font-size:12px;font-weight:900}.bom-drawer-grid label,.bom-drawer-section label{display:grid;gap:5px;min-width:0;color:#667085;font-size:12px;font-weight:800}.bom-drawer-grid .span-2{grid-column:1/-1}.bom-drawer-grid .field,.bom-drawer-grid .select-field,.bom-drawer-section .field{width:100%;min-width:0;max-width:100%;margin-top:0;box-sizing:border-box}.bom-library-result{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px;border:1px solid var(--line);border-radius:4px;background:#fbfcfe}.bom-library-result b{color:#1f2a44;font-size:12px;font-weight:900}.bom-library-result span{color:#667085;font-size:11px;font-weight:800}.bom-add-link{height:28px;min-width:46px;border:1px solid #cfd7e3;background:#fff;color:#175cd3;border-radius:4px;padding:0 9px;font:inherit;font-size:12px;font-weight:800;cursor:pointer}.bom-add-link:hover{border-color:#9dbcf8;background:#f8fbff}.bom-drawer-foot{display:flex;justify-content:flex-end;gap:8px;padding:12px;border-top:1px solid var(--line);background:#fbfcfe}.bom-part-search{display:grid;grid-template-columns:minmax(260px,1.2fr) minmax(220px,1fr) auto auto;gap:10px;align-items:end;margin-top:12px;padding:14px;border:1px solid #d7e3f8;border-left:3px solid var(--primary);border-radius:4px;background:#f8fbff}.bom-part-search-wrap{border:1px solid var(--line);border-radius:4px;background:#fff;padding:14px;margin-bottom:14px}.bom-part-search-wrap h3{margin:0;color:#1f2a44;font-size:14px;font-weight:900}.bom-part-search label{display:grid;gap:5px;color:#344054;font-size:12px;font-weight:900}.bom-part-search .field{width:100%}.bom-part-search-note{margin:9px 0 0;color:#667085;font-size:12px;font-weight:800}.bom-part-search-note.is-success{color:#067647}.bom-part-search-note.is-warning{color:#b54708}.bom-search-results{margin-top:12px;border:1px solid #d9e0ea;border-radius:4px;background:#fff;overflow:hidden}.bom-search-results-head,.bom-search-result-header,.bom-search-result-row{display:grid;grid-template-columns:minmax(190px,1.25fr) 140px 150px 170px 92px;gap:12px;align-items:center;padding:9px 12px}.bom-search-results-head{grid-template-columns:minmax(0,1fr) auto;border-bottom:1px solid var(--line);background:#f5f7fa;color:#344054;font-size:12px;font-weight:900}.bom-search-results-head span,.bom-search-result-header{color:#667085;font-size:12px;font-weight:800}.bom-search-result-row{min-height:54px;border-top:1px solid var(--line);font-weight:900}.bom-search-result-row.is-added{background:#f0fdf4}.bom-search-part-name{display:inline-flex;align-items:center;gap:8px}.bom-search-added-tag,.bom-search-added-text{color:#067647;font-size:12px;font-weight:900}@media(max-width:900px){.bom-part-search,.bom-search-results-head,.bom-search-result-header,.bom-search-result-row,.bom-workspace-layout.has-drawer{grid-template-columns:1fr}}
 
     .issue-page {
       min-height: 520px;
@@ -2590,6 +2681,28 @@
       font-weight: 800;
     }
 
+    .team-table th:last-child,
+    .team-table td:last-child,
+    .team-table td:last-child .link-button {
+      min-width: 96px;
+      white-space: nowrap;
+    }
+
+    .team-table th,
+    .team-table td {
+      height: auto;
+      min-height: 50px;
+      padding: 12px 18px;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .team-table .reviewer-mark,
+    .team-table .link-button {
+      margin-top: 0;
+      vertical-align: top;
+    }
+
     .reviewer-mark {
       display: inline-flex;
       align-items: center;
@@ -2966,6 +3079,26 @@
       font-weight: 900;
     }
 
+    .team-table th,
+    .team-table td,
+    .library-table th,
+    .library-table td {
+      height: auto;
+      min-height: 50px;
+      padding: 12px 18px;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .team-table .reviewer-mark,
+    .team-table .link-button,
+    .library-table .file-label,
+    .library-table .source-badge,
+    .library-table .blue-link {
+      margin-top: 0;
+      vertical-align: top;
+    }
+
     .quality-footer,
     .team-footer,
     .library-footer {
@@ -3300,6 +3433,73 @@
       white-space: nowrap;
     }
 
+    .submit-reviewer-panel {
+      margin-top: 16px;
+      padding: 14px;
+      border: 1px solid #d6e4ff;
+      background: #f7fbff;
+    }
+
+    .submit-reviewer-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .submit-reviewer-head b {
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .submit-reviewer-head span {
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .submit-reviewer-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .submit-reviewer-option {
+      display: grid;
+      grid-template-columns: 18px 32px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .submit-reviewer-option input {
+      margin: 0;
+    }
+
+    .submit-reviewer-option strong,
+    .submit-reviewer-option small {
+      display: block;
+      white-space: normal;
+    }
+
+    .submit-reviewer-option strong {
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .submit-reviewer-option small {
+      margin-top: 2px;
+      color: var(--text-secondary);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .member-remove {
       border: 0;
       background: transparent;
@@ -3600,7 +3800,7 @@
       top: 0;
       right: 0;
       z-index: 100;
-      width: min(1180px, calc(100vw - 72px));
+      width: clamp(560px, 58vw, 980px);
       height: 100vh;
       display: grid;
       grid-template-rows: auto 1fr auto;
@@ -3624,7 +3824,7 @@
     }
 
     .project-edit-head {
-      height: 86px;
+      min-height: 74px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -3634,12 +3834,23 @@
       background: #fff;
     }
 
-    .project-edit-logo {
-      color: #0b1a33;
-      font-size: 30px;
-      line-height: 1;
+    .project-edit-head-title {
+      display: grid;
+      gap: 4px;
+    }
+
+    .project-edit-head-title h2 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 18px;
+      line-height: 1.25;
       font-weight: 800;
-      letter-spacing: 1.5px;
+    }
+
+    .project-edit-head-title span {
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.35;
     }
 
     .project-edit-close {
@@ -3648,13 +3859,13 @@
       border: 0;
       background: transparent;
       color: #8b93a1;
-      font-size: 32px;
+      font-size: 28px;
       line-height: 1;
       cursor: pointer;
     }
 
     .project-edit-body {
-      padding: 20px 22px 100px;
+      padding: 20px 22px 96px;
       overflow: auto;
     }
 
@@ -3682,17 +3893,17 @@
 
     .project-edit-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(190px, 1fr));
-      gap: 28px 24px;
-      padding: 26px 20px 28px;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
+      gap: 22px 20px;
+      padding: 22px 20px 24px;
     }
 
     .project-edit-grid.two {
-      grid-template-columns: repeat(2, minmax(240px, 1fr)) 1fr 1fr;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
     }
 
     .project-edit-grid.three {
-      grid-template-columns: repeat(3, minmax(220px, 1fr)) 1fr;
+      grid-template-columns: repeat(2, minmax(220px, 1fr));
     }
 
     .project-edit-field {
@@ -3921,6 +4132,13 @@
 
     .requirement-table th {
       font-weight: 900;
+    }
+
+    .requirement-table .time-cell {
+      min-width: 180px;
+      white-space: nowrap;
+      overflow: visible;
+      text-overflow: clip;
     }
 
     .requirement-table .actions {
@@ -4165,6 +4383,215 @@
       overflow: hidden;
     }
 
+    .confirm-modal.stage-submit-modal {
+      width: min(820px, calc(100vw - 28px));
+      max-height: calc(100vh - 24px);
+    }
+
+    .stage-submit-body {
+      padding: 20px 24px 14px;
+      overflow-y: auto;
+      color: #344054;
+      line-height: 1.55;
+      font-weight: 700;
+    }
+
+    .stage-submit-section {
+      padding: 14px 0 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .stage-submit-section:last-child {
+      border-bottom: 0;
+    }
+
+    .stage-submit-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: #1f2937;
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .stage-submit-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      border-radius: 4px;
+      background: var(--primary);
+    }
+
+    .submit-info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .submit-info-card {
+      min-height: 72px;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+      display: grid;
+      align-content: center;
+      gap: 6px;
+    }
+
+    .submit-info-label {
+      color: #8a94a6;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .submit-info-value {
+      color: #1f2937;
+      font-size: 14px;
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .submit-form-group {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .submit-form-label {
+      color: #344054;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .submit-member-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .submit-member-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 26px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid #bcd3ff;
+      background: #eef5ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .submit-member-remove {
+      width: 16px;
+      height: 16px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(30, 102, 255, .12);
+      color: var(--primary);
+      cursor: pointer;
+      font: inherit;
+      line-height: 16px;
+    }
+
+    .submit-member-chip.is-add {
+      border-color: var(--line-strong);
+      background: #f4f6f9;
+      color: #667085;
+      cursor: pointer;
+    }
+
+    .approval-matrix {
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+      display: grid;
+      gap: 8px;
+    }
+
+    .approval-member-row {
+      display: grid;
+      grid-template-columns: minmax(120px, 1fr) 96px minmax(0, 2fr);
+      align-items: center;
+      gap: 12px;
+      color: #475467;
+      font-size: 13px;
+    }
+
+    .approval-member-row strong {
+      color: #1f2937;
+    }
+
+    .submit-status-tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 70px;
+      height: 24px;
+      border-radius: 4px;
+      background: #eef2f7;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .submit-progress-box {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+
+    .submit-progress-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 9px;
+      color: #667085;
+      font-size: 13px;
+    }
+
+    .submit-progress-meta strong {
+      color: #1f2937;
+    }
+
+    .submit-progress-track {
+      width: 100%;
+      height: 7px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #e5e7eb;
+    }
+
+    .submit-progress-bar {
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: var(--primary);
+      transition: width .2s ease;
+    }
+
+    .submit-review-note {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    @media (max-width: 760px) {
+      .submit-info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .approval-member-row {
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+    }
+
     #messageModal .confirm-modal {
       width: min(980px, calc(100vw - 40px));
     }
@@ -4209,6 +4636,15 @@
       background: #f5f7fa;
       color: #344054;
       font-weight: 900;
+    }
+
+    #messageModal .bom-table-wrap {
+      margin-top: 14px;
+      max-height: 360px;
+    }
+
+    #messageModal .bom-table {
+      min-width: 2460px;
     }
 
     .confirm-body p {
@@ -4572,21 +5008,14 @@
           <div>
             <div class="project-code">SCA220HCM2506281</div>
             <h1 class="project-title">PHASER INSERT</h1>
-            <div class="info-grid">
-              <div class="info-item"><b>销售责任单元：</b>宁波</div>
-              <div class="info-item"><b>客户品牌：</b>Volkswagen</div>
-              <div class="info-item"><b>产品类别：</b>VT</div>
-              <div class="info-item"><b>产品：</b>VCT</div>
-              <div class="info-item"><b>系统：</b>VVT系统</div>
-              <div class="info-item"><b>LRP Type：</b>LRPV1</div>
-              <div class="info-item"><b>PM：</b>Wu Zhuoren</div>
-              <div class="info-item"><b>关联开发项目编号：</b><button class="project-code-link" type="button" data-open-project="SCA220HCM2506281">SCA220HCM2506281</button></div>
-              <div class="info-item more-link">更多项目信息</div>
+            <div class="info-grid project-ref-grid">
+              <div class="info-item"><b>关联开发项目编号：</b><button class="project-code-link" type="button" data-open-project="SCA220HCM2506281">SCA220HCM2506281</button><span class="empty-value" data-project-code-empty hidden>-</span></div>
             </div>
           </div>
           <aside class="project-side">
             <div class="project-actions">
               <button class="btn btn-outline-danger" type="button" data-task-delete><svg class="icon"><use href="#i-trash"></use></svg>删除任务</button>
+              <button class="btn" type="button" data-open-dr-review><svg class="icon"><use href="#i-eye"></use></svg>DR设计评审</button>
               <button class="btn" type="button" data-task-edit><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
               <span class="project-status-actions" data-project-status-actions></span>
             </div>
@@ -4604,8 +5033,18 @@
                 <div class="stat-value" data-current-stage-label>Gate1</div>
               </div>
               <div>
-                <div class="stat-label">Status</div>
-                <span class="status-pill status-running" data-project-status-pill>in progress / 正在进行中</span>
+                <div class="stat-label">任务健康度</div>
+                <div class="health-control">
+                  <span class="health-pill health-green" data-part-health-pill>绿色</span>
+                  <div class="health-actions">
+                    <button class="health-link" type="button" data-edit-part-health>修改</button>
+                    <button class="health-link" type="button" data-view-part-health-reason hidden>查看原因</button>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="stat-label">状态</div>
+                <span class="status-pill status-running" data-project-status-pill>正在进行中</span>
               </div>
             </div>
           </aside>
@@ -4614,22 +5053,22 @@
 
       <section class="nav-panel">
         <nav class="tabs" aria-label="项目详情导航">
-          <button class="tab active" type="button" data-tab-target="records" aria-selected="true">项目记录</button>
-          <button class="tab" type="button" data-tab-target="development" aria-selected="false">项目开发任务</button>
+          <button class="tab active" type="button" data-tab-target="development" aria-selected="true">项目开发任务</button>
           <button class="tab" type="button" data-tab-target="bom" aria-selected="false">生产BOM</button>
           <button class="tab" type="button" data-tab-target="requirements" aria-selected="false">客户要求</button>
           <button class="tab" type="button" data-tab-target="issues" aria-selected="false">问题清单</button>
           <button class="tab" type="button" data-tab-target="quality" aria-selected="false">质量问题（8D）</button>
+          <button class="tab" type="button" data-tab-target="team" aria-selected="false">团队成员</button>
           <button class="tab" type="button" data-tab-target="library" aria-selected="false">资料库</button>
+          <button class="tab" type="button" data-tab-target="records" aria-selected="false">项目记录</button>
           <button class="tab setting" type="button"><svg class="icon"><use href="#i-gear"></use></svg>设置页签顺序</button>
         </nav>
       </section>
 
-      <div class="tab-panel active" data-tab-panel="records">
+      <div class="tab-panel" data-tab-panel="records" hidden>
         <section class="bom-panel record-page">
           <div class="bom-top">
             <div>
-              <div class="section-kicker">Part Project Records</div>
               <div class="bom-title-row">
                 <h2 class="section-title">项目记录</h2>
                 <span class="tag tag-blue" data-record-event-count>0 条动态</span>
@@ -4638,38 +5077,6 @@
                 <span>记录子零件 Gate、BOM、供应方案、任务、审批和状态变化</span>
               </div>
             </div>
-            <div class="bom-actions">
-              <select class="select-field" data-record-role-select aria-label="角色视角">
-                <option value="SQD">SQD</option>
-                <option value="AQE">AQE</option>
-                <option value="PM">PM</option>
-                <option value="SCM">SCM</option>
-                <option value="reviewer">审核人员</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="record-hero">
-            <section class="record-section">
-              <div class="record-section-head">
-                <h3>当前提醒</h3>
-                <span class="tag tag-blue" data-record-alert-count>0 条</span>
-              </div>
-              <div class="record-alert-list" data-record-alerts></div>
-            </section>
-            <section class="record-section">
-              <div class="record-section-head">
-                <h3>子零件状态摘要</h3>
-              </div>
-              <div class="record-summary-grid">
-                <div class="record-summary-item"><span>当前阶段</span><strong data-record-summary-stage>Gate1</strong></div>
-                <div class="record-summary-item"><span>任务状态</span><strong data-record-summary-status>in progress / 正在进行中</strong></div>
-                <div class="record-summary-item"><span>BOM状态</span><strong data-record-summary-bom>Gate1-V1.0 · 锁定</strong></div>
-                <div class="record-summary-item"><span>供应方案</span><strong data-record-summary-supply>一供同步开发</strong></div>
-                <div class="record-summary-item"><span>APQP状态</span><strong data-record-summary-apqp>进行中</strong></div>
-                <div class="record-summary-item"><span>Gate阻塞</span><strong data-record-summary-blocking>是</strong></div>
-              </div>
-            </section>
           </div>
 
           <section class="record-section">
@@ -4692,11 +5099,10 @@
         </section>
       </div>
 
-      <div class="tab-panel" data-tab-panel="development" hidden>
+      <div class="tab-panel active" data-tab-panel="development">
         <section class="bom-panel development-page">
           <div class="bom-top">
             <div>
-              <div class="section-kicker">Development Task</div>
               <div class="bom-title-row">
                 <h2 class="section-title">项目开发任务</h2>
               </div>
@@ -4705,13 +5111,38 @@
               <button class="btn btn-ghost" type="button" id="auditRecordButton">审核记录</button>
               <button class="btn btn-primary" type="button" id="manageStageTask">任务管理</button>
               <button class="btn btn-primary" type="button" id="submitStageTask">提交</button>
+              <select class="review-status-select" id="gateReviewStatus" hidden aria-label="模拟审核状态">
+                <option value="reviewing">审核中</option>
+                <option value="approved">审核通过</option>
+                <option value="conditional">带条件通过</option>
+                <option value="rejected">未通过</option>
+              </select>
             </div>
           </div>
+
+          <section class="record-section">
+            <div class="record-section-head">
+              <div>
+                <h3>当前提醒</h3>
+              </div>
+              <div class="bom-actions">
+                <span class="tag tag-blue" data-record-alert-count>0 条</span>
+                <select class="select-field" data-record-role-select aria-label="角色视角">
+                  <option value="SQD">SQD</option>
+                  <option value="AQE">AQE</option>
+                  <option value="PM">PM</option>
+                  <option value="SCM">SCM</option>
+                  <option value="reviewer">审核人员</option>
+                </select>
+              </div>
+            </div>
+            <div class="record-alert-list" data-record-alerts></div>
+          </section>
 
           <section class="stage-carousel" aria-label="项目阶段">
             <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
             <div class="stage-strip" data-stage-strip>
-              <button class="stage-card active" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
+              <button class="stage-card active" type="button" data-stage-id="Gate1" data-stage-note="子零件开发任务在独立模块内推进，可来源于项目 BOM/APQP，也可手动创建；其 Gate 状态仅作为项目风险提示，不阻塞项目开发 Gate。">
                 <div class="stage-title">Gate1 <span class="status-pill status-running">进行中</span></div>
                 <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
@@ -4747,15 +5178,15 @@
 
           <section class="stage-note">
             <h3>阶段说明</h3>
-            <p>PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。</p>
+        <p>子零件开发任务在独立模块内推进，可来源于项目 BOM/APQP，也可手动创建；其 Gate 状态仅作为项目风险提示，不阻塞项目开发 Gate。</p>
             <div class="stage-review-alert" id="stageReviewAlert" hidden>当前阶段审核未通过，可通过查看审核记录了解审核情况、拒绝成员和对应原因。</div>
           </section>
 
           <div class="toolbar">
             <div class="stage-task-filterbar">
               <label>
-                ID / Title
-                <input class="field" type="search" placeholder="输入 K-PAC ID 或 Title" data-stage-task-keyword>
+                编号 / 标题
+                <input class="field" type="search" placeholder="输入 K-PAC 编号或标题" data-stage-task-keyword>
               </label>
               <div class="stage-dept-multiselect" data-stage-dept-filter>
                 <span>负责部门</span>
@@ -4770,14 +5201,6 @@
               <button class="filter" type="button" data-stage-status-filter="overdue">已逾期 (0)</button>
               <button class="filter" type="button" data-stage-status-filter="done">已完成 (0)</button>
             </div>
-            <div class="project-actions">
-              <select class="review-status-select" id="gateReviewStatus" hidden aria-label="模拟审核状态">
-                <option value="reviewing">审核中</option>
-                <option value="approved">审核通过</option>
-                <option value="conditional">带条件通过</option>
-                <option value="rejected">未通过</option>
-              </select>
-            </div>
           </div>
 
           <div id="stageTaskTables"></div>
@@ -4788,31 +5211,26 @@
         <section class="bom-panel bom-page" data-bom-page="list">
           <div class="bom-top">
             <div>
-              <div class="section-kicker">Part BOM</div>
               <div class="bom-title-row">
                 <h2 class="section-title">关联生产BOM</h2>
-                <span class="tag tag-blue">BOM行 + 供应方案</span>
               </div>
               <div class="bom-meta">
-                <span>来源项目：SCA220HCM2506281 / EA888 E5 VCT</span>
-                <span>来源BOM版本：Gate1-V1.0</span>
-                <span>当前零件：PHASER INSERT</span>
+                <span data-source-project-text>来源项目：SCA220HCM2506281 / EA888 E5 VCT</span>
+                <span data-source-bom-version-text>来源BOM版本：Gate1-V1.0</span>
+                <span data-current-part-text>当前零件：PHASER INSERT</span>
                 <span>负责人：SQD / Zack</span>
               </div>
             </div>
             <div class="bom-actions">
-              <button class="btn" type="button" data-view-part-apqp><svg class="icon"><use href="#i-eye"></use></svg>子零件APQP信息</button>
+              <button class="btn" type="button" data-bom-export-template><svg class="icon"><use href="#i-download"></use></svg>导出BOM</button>
+              <button class="btn btn-primary" type="button" data-bom-create><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM</button>
+              <button class="btn btn-primary" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-lock"></use></svg>确认BOM</button>
             </div>
           </div>
 
           <div class="bom-filter part-bom-filter">
             <label>关键信息
               <input class="field" type="search" placeholder="零件名 / 客户号 / BW号 / SAP号" data-bom-search>
-            </label>
-            <label>阶段版本
-              <select class="select-field" data-bom-history-select>
-                <option value="">全部阶段版本</option>
-              </select>
             </label>
             <div class="bom-filter-actions">
               <button class="btn btn-primary" type="button" data-bom-query>查询</button>
@@ -4821,24 +5239,25 @@
           </div>
 
           <div class="bom-summary">
-            <div class="bom-summary-item"><span>当前BOM版本</span><b data-bom-current-version>Gate1-V1.0</b></div>
-            <div class="bom-summary-item"><span>状态</span><b data-bom-current-status>锁定</b><small>项目BOM已确认并同步至子零件</small></div>
-            <div class="bom-summary-item"><span>当前零件</span><b data-bom-l1-count>1</b></div>
-            <div class="bom-summary-item"><span>BOM明细</span><b data-bom-all-count>4</b></div>
-            <div class="bom-summary-item is-action" data-bom-blocking-detail><span>阻塞未完成</span><b data-bom-blocking-count>1</b><small>需开发 + 阻塞Gate + 当前未完成</small><button class="blue-link" type="button">查看明细</button></div>
-            <div class="bom-summary-item is-action" data-bom-sync-detail><span>版本对比</span><b data-bom-sync-status>新增1 / 删除1</b><small>新增 / 删除 / 无变更</small><button class="blue-link" type="button">查看记录</button></div>
+            <div class="bom-summary-item">
+              <span>当前生效版本</span>
+              <b data-bom-effective-version>Gate1-V1.0</b>
+              <select class="select-field" data-bom-version-switch aria-label="切换BOM版本"></select>
+            </div>
+            <div class="bom-summary-item"><span>当前工作版本</span><b data-bom-working-version>Gate1-V1.1</b></div>
+            <div class="bom-summary-item"><span>完整层级零件</span><b data-bom-all-count>4</b></div>
+            <div class="bom-summary-item"><span>工作版本变更</span><b data-bom-work-change-count>2</b></div>
           </div>
 
           <div class="bom-table-wrap">
             <table class="bom-table" aria-label="该零件BOM信息">
               <colgroup>
-                <col style="width:70px"><col style="width:70px"><col style="width:230px"><col style="width:150px">
+                <col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px">
                 <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
                 <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px">
                 <col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px">
-                <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:150px">
-                <col style="width:150px"><col style="width:180px"><col style="width:130px"><col style="width:120px">
-                <col style="width:130px"><col style="width:150px"><col style="width:160px"><col style="width:140px">
+                <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px">
+                <col style="width:140px"><col style="width:200px">
               </colgroup>
               <thead data-bom-head></thead>
               <tbody data-bom-list-body></tbody>
@@ -4851,7 +5270,6 @@
         <section class="bom-panel requirement-panel">
           <div class="bom-top">
             <div>
-              <div class="section-kicker">Customer Requirement</div>
               <div class="bom-title-row">
                 <h2 class="section-title">客户要求</h2>
               </div>
@@ -4863,9 +5281,9 @@
           <div class="bom-table-wrap requirement-table-wrap">
             <table class="requirement-table" aria-label="客户要求列表">
               <colgroup>
-                <col style="width:58%">
+                <col style="width:52%">
                 <col style="width:12%">
-                <col style="width:14%">
+                <col style="width:20%">
                 <col style="width:16%">
               </colgroup>
               <thead>
@@ -4880,19 +5298,19 @@
                 <tr>
                   <td>核心性能要求</td>
                   <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
+                  <td class="time-cell">2025-10-10 11:34:19</td>
                   <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
                 <tr>
                   <td>适配与兼容要求</td>
                   <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
+                  <td class="time-cell">2025-10-10 11:34:19</td>
                   <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
                 <tr>
                   <td>交付与文档要求</td>
                   <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
+                  <td class="time-cell">2025-10-10 11:34:19</td>
                   <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
               </tbody>
@@ -4905,7 +5323,6 @@
         <section class="bom-panel issue-page">
           <header class="bom-top issue-head">
             <div>
-              <div class="section-kicker">Issue List</div>
               <div class="bom-title-row">
                 <h2 class="section-title">问题清单</h2>
               </div>
@@ -5019,7 +5436,6 @@
         <section class="bom-panel quality-page">
           <header class="bom-top quality-head">
             <div>
-              <div class="section-kicker">Quality 8D</div>
               <div class="bom-title-row">
                 <h2 class="section-title">质量问题管控--8D（3）</h2>
               </div>
@@ -5156,7 +5572,6 @@
         <section class="bom-panel team-page">
           <header class="bom-top team-head">
             <div>
-              <div class="section-kicker">Project Team</div>
               <div class="bom-title-row">
                 <h2 class="section-title">项目团队成员 <span class="team-count" id="teamMemberCount">(3)</span></h2>
               </div>
@@ -5225,7 +5640,6 @@
         <section class="bom-panel library-page">
           <header class="bom-top library-head">
             <div>
-              <div class="section-kicker">Document Library</div>
               <div class="bom-title-row">
                 <h2 class="section-title">项目资料库</h2>
               </div>
@@ -5389,122 +5803,48 @@
   <div class="bom-modal" data-bom-modal hidden>
     <section class="bom-modal-sheet modal-wide" role="dialog" aria-modal="true" aria-labelledby="bomModalTitle">
       <header class="bom-modal-head">
-        <h2 class="bom-modal-title" id="bomModalTitle" data-bom-work-title>创建BOM</h2>
-        <button class="close-btn" type="button" data-close-bom-modal aria-label="关闭">
-          <svg class="icon"><use href="#i-stop"></use></svg>
-        </button>
+        <h2 class="bom-modal-title" id="bomModalTitle" data-bom-work-title>编辑项目BOM容器</h2>
+        <button class="close-btn" type="button" data-close-bom-modal aria-label="关闭"><svg class="icon"><use href="#i-stop"></use></svg></button>
       </header>
       <div class="bom-modal-body">
-        <div class="bom-top">
-          <div>
-            <div class="section-kicker" data-bom-work-kicker>AE 创建</div>
-            <div class="bom-title-row">
-              <span class="status-pill status-draft" data-bom-work-status>草稿</span>
-              <span class="tag tag-blue" data-bom-scope-label>完整层级</span>
-            </div>
-            <div class="bom-version-line">
-              <span>版本：<b data-bom-work-version>PKO-V0.1</b></span>
-              <span>状态提交后自动锁定；锁定后再次编辑将生成新版本号</span>
-            </div>
-            <div class="detail-line">
-              <span>项目：SCA220HCM2506281 / EA888 E5 VCT</span>
-              <span>产品应用：TM Chain</span>
-              <span data-bom-work-role>当前角色：AE</span>
-            </div>
+        <section class="bom-part-search-wrap" data-bom-create-options>
+          <h3>搜索零件</h3>
+          <div class="bom-part-search">
+            <label>零件/材料名称<input class="field" type="search" placeholder="如 CHAIN MODULE / HOUSING" data-bom-part-search-name></label>
+            <label>SAP / BW / 原材料零件号<input class="field" type="search" placeholder="如 5006761 / SP-20251010" data-bom-part-search-no></label>
+            <button class="btn btn-primary" type="button" data-bom-part-search-confirm>查询</button>
+            <button class="btn" type="button" data-bom-part-search-reset>重置</button>
           </div>
-        </div>
-
-        <section class="form-section" data-bom-create-options>
-          <h3>选择产品</h3>
-          <div class="bom-product-picker" data-bom-product-picker>
-            <div class="bom-product-group">
-              <div class="bom-product-group-title">VVT系统</div>
-              <div class="bom-product-options">
-                <label class="bom-product-option"><input type="checkbox" value="phaser"><b>Phaser</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="vfs"><b>VFS</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="cb"><b>CB</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="ocv"><b>OCV</b></label>
-              </div>
-            </div>
-            <div class="bom-product-group">
-              <div class="bom-product-group-title">TD系统</div>
-              <div class="bom-product-options">
-                <label class="bom-product-option"><input type="checkbox" value="chain" checked><b>Chain</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="tsc"><b>TSC</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="timing-tensioner"><b>Timing Tensioner</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="op-tensioner"><b>OP tensioner</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="sprocket"><b>Sprocket</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="cc-guide"><b>CC Guide</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="arm-guide"><b>Arm Guide</b></label>
-              </div>
-            </div>
-            <div class="bom-product-group">
-              <div class="bom-product-group-title">其他产品</div>
-              <div class="bom-product-options">
-                <label class="bom-product-option"><input type="checkbox" value="pp-chain-part"><b>PP(Chain内部子零件)</b></label>
-                <label class="bom-product-option"><input type="checkbox" value="motor-chain"><b>Motor Chain</b></label>
-              </div>
-            </div>
-          </div>
+          <p class="bom-part-search-note" data-bom-part-search-result>输入零件编号或零件名称后点击查询，可模糊匹配SAP模拟数据中的零件。</p>
+          <div class="bom-search-results" data-bom-search-results hidden></div>
         </section>
-
-        <div class="bom-filter">
-          <label>SAP零件号
-            <input class="field" type="search" placeholder="输入SAP/BW/原材料零件号" data-row-part-no>
-          </label>
-          <label>零件/材料名称
-            <input class="field" type="search" placeholder="输入零件名称" data-row-search>
-          </label>
-          <label>产品应用
-            <select class="select-field" data-row-application>
-              <option value="">全部</option>
-              <option>Phaser</option>
-              <option>VFS</option>
-              <option>CB</option>
-              <option>OCV</option>
-              <option>Chain</option>
-              <option>TSC</option>
-              <option>Timing Tensioner</option>
-              <option>OP tensioner</option>
-              <option>Sprocket</option>
-              <option>CC Guide</option>
-              <option>Arm Guide</option>
-              <option>PP(Chain内部子零件)</option>
-              <option>Motor Chain</option>
-            </select>
-          </label>
-          <label>客户零件号
-            <input class="field" type="search" placeholder="输入客户零件号" data-row-customer>
-          </label>
-          <button class="btn btn-primary" type="button" data-row-query>查询</button>
-          <button class="btn" type="button" data-row-reset>重置</button>
+        <div class="bom-filter bom-work-filter">
+          <label>SAP零件号<input class="field" type="search" placeholder="输入SAP/BW/原材料零件号" data-row-part-no></label>
+          <label>零件/材料名称<input class="field" type="search" placeholder="输入零件名称" data-row-search></label>
+          <label>产品应用<select class="select-field" data-row-application><option value="">全部</option><option>Phaser</option><option>VCT</option><option>VFS</option><option>CB</option><option>OCV</option><option>Chain</option><option>TSC</option><option>Timing Tensioner</option><option>OP tensioner</option><option>Sprocket</option><option>CC Guide</option><option>Arm Guide</option><option>PP(Chain内部子零件)</option><option>Motor Chain</option></select></label>
+          <label>供应类型<select class="select-field" data-row-supply-type><option value="">全部</option><option>一供</option><option>二供</option></select></label>
+          <label>客户零件号<input class="field" type="search" placeholder="输入客户零件号" data-row-customer></label>
+          <div class="bom-filter-actions"><button class="btn btn-primary" type="button" data-row-query>查询</button><button class="btn" type="button" data-row-reset>重置</button></div>
         </div>
-
-        <div class="bom-tools">
-          <div class="bom-version-line">
-            <span data-bom-display-mode>显示：完整层级</span>
-            <span data-bom-row-count>0项</span>
-          </div>
+        <div class="bom-tools"><div class="bom-version-line"><span data-bom-display-mode>显示：完整层级</span><span data-bom-row-count>0项</span></div></div>
+        <div class="bom-selection-bar" data-bom-selection-bar hidden>
+          <div class="bom-selection-info" data-bom-selection-info></div>
+          <div class="bom-selection-actions"><button class="btn btn-primary" type="button" data-bom-drawer-open="library">从零件库添加</button><button class="btn" type="button" data-bom-drawer-open="manual">手动添加</button><button class="btn" type="button" data-bom-copy-selection>复制</button><button class="btn" type="button" data-bom-drawer-open="edit">编辑</button><button class="btn btn-outline-danger" type="button" data-bom-delete-selection>删除</button></div>
         </div>
-
-        <div class="bom-table-wrap">
-          <table class="bom-table" aria-label="BOM编辑明细">
-            <colgroup>
-              <col style="width:48px"><col style="width:70px"><col style="width:70px"><col style="width:250px"><col style="width:150px">
-              <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
-              <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px">
-              <col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px">
-              <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:160px">
-              <col style="width:140px">
-            </colgroup>
-            <thead data-bom-edit-head></thead>
-            <tbody data-bom-edit-body></tbody>
-          </table>
+        <div class="bom-workspace-layout" data-bom-workspace-layout>
+          <div class="bom-table-wrap"><table class="bom-table bom-edit-table" aria-label="BOM编辑明细"><colgroup><col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px"><col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px"><col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px"><col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px"><col style="width:140px"><col style="width:200px"></colgroup><thead data-bom-edit-head></thead><tbody data-bom-edit-body></tbody></table></div>
+          <aside class="bom-inline-drawer" data-bom-inline-drawer hidden>
+            <header class="bom-drawer-head"><div><h3 data-bom-drawer-title>添加子项</h3><p data-bom-drawer-context>请选择 BOM 行后进行操作。</p></div><button class="close-btn" type="button" data-bom-drawer-close aria-label="关闭"><svg class="icon"><use href="#i-stop"></use></svg></button></header>
+            <div class="bom-drawer-body"><div class="bom-drawer-mode" data-bom-drawer-mode><button type="button" data-bom-drawer-tab="library">零件库</button><button type="button" data-bom-drawer-tab="manual">手动录入</button></div><section class="bom-drawer-section" data-bom-drawer-section="library"><label>搜索零件库<input class="field" type="search" placeholder="输入零件号或名称" data-bom-library-search></label><div class="bom-library-results" data-bom-library-results></div></section><section class="bom-drawer-section" data-bom-drawer-section="manual">
+              <div class="bom-drawer-group"><h4>关键信息</h4><div class="bom-drawer-grid"><label>级数<input class="field" data-inline-part-field="level" readonly></label><label>数量<input class="field" data-inline-part-field="qty" value="1"></label><label>供应类型<select class="select-field" data-inline-part-field="supplyType"><option>一供</option><option>二供</option></select></label><label>APQP负责人<input class="field" data-inline-part-field="apqpOwner" placeholder="默认 SQD / Zack"></label><label class="span-2">零件 / 材料名称 *<input class="field" data-inline-part-field="name" placeholder="输入零件名称"></label><label class="span-2">产品应用<input class="field" data-inline-part-field="application" placeholder="如 Chain / Phaser"></label></div></div>
+              <div class="bom-drawer-group"><h4>编码信息</h4><div class="bom-drawer-grid"><label class="span-2">客户零件号<input class="field" data-inline-part-field="customerNo" placeholder="可选"></label><label>BW 零件号<input class="field" data-inline-part-field="bwNo" placeholder="BW号"></label><label>图纸版本<input class="field" data-inline-part-field="drawingRev" value="A" placeholder="如 A / B / C"></label><label class="span-2">样件 SAP 零件号<input class="field" data-inline-part-field="sampleSapNo" placeholder="输入样件 SAP 号"></label><label class="span-2">量产 SAP 零件号<input class="field" data-inline-part-field="massSapNo" placeholder="输入量产 SAP 号"></label></div></div>
+              <div class="bom-drawer-group"><h4>材料、重量与图纸</h4><div class="bom-drawer-grid"><label>原材料零件号<input class="field" data-inline-part-field="rawNo" placeholder="可选"></label><label>原材料<input class="field" data-inline-part-field="rawMaterial" placeholder="可选"></label><label>重量 Piece(g)<input class="field" data-inline-part-field="weightPiece" placeholder="单件重量"></label><label>重量 Assembly(g)<input class="field" data-inline-part-field="weightAssembly" placeholder="总成重量"></label><label>共用零件<select class="select-field" data-inline-part-field="sharedPart"><option>否</option><option>是</option></select></label><label>借用项目<input class="field" data-inline-part-field="borrowedProject" placeholder="可选"></label><label>图纸状态<select class="select-field" data-inline-part-field="releaseStatus"><option>已释放</option><option>评审中</option><option>待释放</option></select></label><label>原材料供应商名称<input class="field" data-inline-part-field="rawSupplier" placeholder="供应商名称"></label><label>分供方名称<input class="field" data-inline-part-field="subSupplier" placeholder="分供方名称"></label><label class="span-2">备注<input class="field" data-inline-part-field="remark" placeholder="填写备注"></label></div></div>
+              <div class="bom-drawer-group"><h4>版本对比</h4><div class="bom-drawer-grid"><label>版本对比<select class="select-field" data-inline-part-field="changeStatus"><option>新增</option><option>无变更</option><option>复现新增</option></select></label></div></div>
+            </section></div><footer class="bom-drawer-foot"><button class="btn" type="button" data-bom-drawer-close>取消</button><button class="btn btn-primary" type="button" data-bom-drawer-save>保存</button></footer>
+          </aside>
         </div>
       </div>
-      <footer class="bom-modal-foot">
-        <button class="btn" type="button" data-close-bom-modal>关闭</button>
-      </footer>
+      <footer class="bom-modal-foot"><button class="btn" type="button" data-close-bom-modal>关闭</button><button class="btn" type="button" data-bom-save-draft>保存草稿</button><button class="btn btn-primary" type="button" data-bom-submit-foot>提交至SCM</button></footer>
     </section>
   </div>
 
@@ -5825,17 +6165,82 @@
   </div>
 
   <div class="modal-backdrop" id="submitConfirmModal" hidden>
-    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="submitConfirmTitle">
+    <section class="confirm-modal stage-submit-modal" id="submitConfirmDialog" role="dialog" aria-modal="true" aria-labelledby="submitConfirmTitle">
       <div class="modal-head">
-        <h3 id="submitConfirmTitle">提交确认</h3>
+        <h3 id="submitConfirmTitle">发起阶段审核</h3>
         <button class="modal-close" type="button" data-close-submit-confirm aria-label="关闭">×</button>
       </div>
-      <div class="confirm-body">
-        <p id="submitConfirmMessage">确认提交当前 Gate 阶段任务吗？提交后将由项目审核组成员进行审核。</p>
+      <div class="stage-submit-body">
+        <section class="stage-submit-section">
+          <h4 class="stage-submit-title">任务基本信息</h4>
+          <div class="submit-info-grid">
+            <div class="submit-info-card">
+              <span class="submit-info-label">任务名称</span>
+              <strong class="submit-info-value" id="submitTaskName">发起阶段审核</strong>
+            </div>
+            <div class="submit-info-card">
+              <span class="submit-info-label">所属项目</span>
+              <strong class="submit-info-value" id="submitProjectName">EA888 E5 VCT</strong>
+            </div>
+            <div class="submit-info-card">
+              <span class="submit-info-label">当前阶段</span>
+              <strong class="submit-info-value" id="submitCurrentStage">Gate1 / Gate2</strong>
+            </div>
+            <div class="submit-info-card">
+              <span class="submit-info-label">创建时间</span>
+              <strong class="submit-info-value" id="submitCreatedAt">-</strong>
+            </div>
+            <div class="submit-info-card">
+              <span class="submit-info-label">要求完成时间</span>
+              <strong class="submit-info-value" id="submitDueDate">-</strong>
+            </div>
+            <div class="submit-info-card">
+              <span class="submit-info-label">任务状态</span>
+              <strong class="submit-info-value" id="submitTaskStatus">待处理</strong>
+            </div>
+          </div>
+        </section>
+        <section class="stage-submit-section">
+          <h4 class="stage-submit-title">发起阶段审核</h4>
+          <div class="submit-form-group">
+            <label class="submit-form-label" for="submitReviewType">审核类型</label>
+            <select class="review-status-select" id="submitReviewType">
+              <option value="gate">阶段完成审核 (Gate Review)</option>
+            </select>
+          </div>
+          <div class="submit-form-group">
+            <span class="submit-form-label">审核人员</span>
+            <div class="submit-member-list" data-submit-reviewer-list></div>
+            <div class="submit-member-list">
+              <button class="submit-member-chip is-add" type="button" data-add-submit-reviewer>+ 添加成员</button>
+            </div>
+          </div>
+          <div class="submit-form-group">
+            <span class="submit-form-label">审核规则</span>
+            <div class="approval-matrix" data-submit-reviewer-rules></div>
+          </div>
+          <div class="submit-form-group">
+            <span class="submit-form-label">阶段任务完成情况</span>
+            <div class="submit-progress-box">
+              <div class="submit-progress-meta">
+                <span>任务完成率</span>
+                <strong id="submitReviewProgressText">0% (0/0)</strong>
+              </div>
+              <div class="submit-progress-track">
+                <div class="submit-progress-bar" id="submitReviewProgressBar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="submit-form-group" id="submitConfirmMessage">确认发起当前阶段审核，提交后将通知审核人员处理。</div>
+          <div class="submit-form-group">
+            <label class="submit-form-label" for="submitReviewNote">审核说明</label>
+            <textarea class="field submit-review-note" id="submitReviewNote" rows="3" placeholder="请输入审核说明..."></textarea>
+          </div>
+        </section>
       </div>
       <div class="modal-foot">
         <button class="btn" type="button" data-close-submit-confirm>取消</button>
-        <button class="btn btn-primary" type="button" id="confirmSubmitStageTask">确认提交</button>
+        <button class="btn btn-primary" type="button" id="confirmSubmitStageTask">确认发起</button>
       </div>
     </section>
   </div>
@@ -5875,180 +6280,137 @@
   <div class="project-edit-mask" id="projectEditMask"></div>
   <aside class="project-edit-drawer" id="projectEditDrawer" role="dialog" aria-modal="true" aria-labelledby="projectEditTitle">
     <header class="project-edit-head">
-      <div class="project-edit-logo">BORGWARNER</div>
-      <button class="project-edit-close" id="closeProjectEditDrawer" type="button" aria-label="关闭">›</button>
+      <div class="project-edit-head-title">
+        <h2 id="projectEditTitle">编辑子零件开发任务</h2>
+        <span>字段结构与列表页新建子零件开发任务抽屉保持一致</span>
+      </div>
+      <button class="project-edit-close" id="closeProjectEditDrawer" type="button" aria-label="关闭">×</button>
     </header>
 
     <div class="project-edit-body">
       <section class="project-edit-card">
-        <h2 class="project-edit-title" id="projectEditTitle">基本信息 <span>Basic Information</span></h2>
+        <h2 class="project-edit-title">基本信息 <span>Basic Information</span></h2>
         <div class="project-edit-grid">
           <div class="project-edit-field">
-            <label class="required" for="editSellingRu">销售责任单元<span class="en">Selling RU</span></label>
-            <input class="field" id="editSellingRu" value="宁波" placeholder="请输入">
+            <label class="required" for="editTaskNo">任务编号</label>
+            <input class="field" id="editTaskNo" value="QEP-2025-05-011" placeholder="请输入任务编号">
           </div>
           <div class="project-edit-field">
-            <label class="required" for="editCustomerBrand">客户<span class="en">Customer Brand</span></label>
-            <select class="select" id="editCustomerBrand">
+            <label class="required" for="editPartName">零件名称</label>
+            <input class="field" id="editPartName" value="PHASER INSERT" placeholder="请输入零件名称">
+          </div>
+          <div class="project-edit-field">
+            <label for="editProjectName">所属项目</label>
+            <input class="field" id="editProjectName" value="SCA220HCM2506281 / EA888 E5 VCT" placeholder="请输入所属项目">
+          </div>
+          <div class="project-edit-field">
+            <label class="required" for="editQualityProcess">产品质量流程</label>
+            <select class="select" id="editQualityProcess">
               <option>请选择</option>
-              <option selected>Volkswagen</option>
-              <option>BMW</option>
-              <option>Mercedes-Benz</option>
-              <option>Geely</option>
+              <option selected>Full APQP process</option>
+              <option>Simplified APQP process</option>
             </select>
           </div>
           <div class="project-edit-field">
-            <label class="required" for="editProgram">项目<span class="en">Program</span></label>
-            <input class="field" id="editProgram" value="EA888 E5 VCT" placeholder="请输入">
-          </div>
-          <div class="project-edit-field">
-            <label class="required">产品<span class="en">Product</span></label>
-            <div class="product-check-grid" aria-label="产品多选">
-              <label><input type="checkbox" value="Phaser" checked data-edit-product data-system="VVT系统">Phaser</label>
-              <label><input type="checkbox" value="VFS" data-edit-product data-system="VVT系统">VFS</label>
-              <label><input type="checkbox" value="CB" data-edit-product data-system="VVT系统">CB</label>
-              <label><input type="checkbox" value="OCV" data-edit-product data-system="VVT系统">OCV</label>
-              <label><input type="checkbox" value="Chain" data-edit-product data-system="TD">Chain</label>
-              <label><input type="checkbox" value="TSC" data-edit-product data-system="TD">TSC</label>
-              <label><input type="checkbox" value="Timing Tensioner" data-edit-product data-system="TD">Timing Tensioner</label>
-              <label><input type="checkbox" value="OP tensioner" data-edit-product data-system="TD">OP tensioner</label>
-              <label><input type="checkbox" value="Sprocket" data-edit-product data-system="TD">Sprocket</label>
-              <label><input type="checkbox" value="CC Guide" data-edit-product data-system="TD">CC Guide</label>
-              <label><input type="checkbox" value="Arm Guide" data-edit-product data-system="TD">Arm Guide</label>
-              <label><input type="checkbox" value="PP(Chain内部子零件)" data-edit-product data-system="TD">PP(Chain内部子零件)</label>
-              <label><input type="checkbox" value="Motor Chain" data-edit-product data-system="TD">Motor Chain</label>
-            </div>
-          </div>
-          <div class="project-edit-field">
-            <label for="editSystemValue">系统</label>
-            <div class="readonly-value" id="editSystemValue">VVT系统</div>
-          </div>
-          <div class="project-edit-field">
-            <label class="required" for="editProjectManager">项目经理<span class="en">Project Manager</span></label>
-            <select class="select" id="editProjectManager">
-              <option>请选择项目经理</option>
-              <option>王浩</option>
-              <option>李敏</option>
-              <option>陈杰</option>
-              <option>赵琳</option>
-              <option selected>Wu Zhuoren</option>
+            <label class="required" for="editOwner">负责人</label>
+            <select class="select" id="editOwner">
+              <option>请选择</option>
+              <option>Li Ming</option>
+              <option>Zhang Ning</option>
+              <option>Xu Lulu</option>
+              <option>Zhang Nan</option>
+              <option selected>Zack</option>
             </select>
+          </div>
+          <div class="project-edit-field">
+            <label class="required" for="editDepartment">负责部门</label>
+            <input class="field" id="editDepartment" value="DMS China-547" placeholder="请输入负责部门">
           </div>
         </div>
       </section>
 
       <section class="project-edit-card">
-        <h2 class="project-edit-title">销售 &amp; 前瞻规划 <span>Business and Market Data</span></h2>
+        <h2 class="project-edit-title">开发与供应 <span>Development and Supply</span></h2>
         <div class="project-edit-grid">
           <div class="project-edit-field">
-            <label for="editPeakVolume">峰值订单量 <span class="en">Peak Volume</span></label>
-            <input class="field" id="editPeakVolume" value="420,000" placeholder="请输入">
+            <label class="required" for="editCurrentGate">当前阶段</label>
+            <select class="select" id="editCurrentGate">
+              <option>请选择</option>
+              <option selected>Gate1</option>
+              <option>Gate2</option>
+              <option>Gate3</option>
+              <option>Gate4</option>
+              <option>Gate5</option>
+              <option>Gate6</option>
+            </select>
           </div>
           <div class="project-edit-field">
-            <label for="editPrice">定价 <span class="en">Price（RMB：元）</span></label>
-            <input class="field" id="editPrice" value="86.50" placeholder="请输入">
+            <label class="required" for="editTaskStatus">当前状态</label>
+            <select class="select" id="editTaskStatus">
+              <option>请选择</option>
+              <option>未启动</option>
+              <option selected>进行中</option>
+              <option>当前 Gate 待完成</option>
+              <option>待影响分析</option>
+              <option>变更待确认</option>
+              <option>已完成</option>
+            </select>
           </div>
           <div class="project-edit-field">
-            <label for="editRevenue">预计营收 <span class="en">Revenue（RMB：元）</span></label>
-            <input class="field" id="editRevenue" value="36,330,000" placeholder="请输入">
+            <label for="editSupplier">供应商</label>
+            <input class="field" id="editSupplier" value="A-Supplier" placeholder="请输入供应商">
           </div>
           <div class="project-edit-field">
-            <label for="editApplicationVolume">配套需求量 <span class="en">Application Volume</span></label>
-            <input class="field" id="editApplicationVolume" value="380,000" placeholder="请输入">
+            <label for="editSupplierType">供应商类型</label>
+            <select class="select" id="editSupplierType">
+              <option selected>一供</option>
+              <option>二供</option>
+              <option>其他</option>
+            </select>
+          </div>
+          <div class="project-edit-field">
+            <label for="editSupplyStrategy">供应策略</label>
+            <select class="select" id="editSupplyStrategy">
+              <option>单一供应</option>
+              <option>双供备案</option>
+              <option selected>双供同步开发</option>
+              <option>二供后续导入</option>
+            </select>
+          </div>
+          <div class="project-edit-field">
+            <label for="editRiskFlag">项目风险提示</label>
+            <select class="select" id="editRiskFlag">
+              <option>不影响项目风险提示</option>
+              <option selected>作为风险提醒展示</option>
+              <option>待项目团队人工判断</option>
+            </select>
           </div>
         </div>
       </section>
 
       <section class="project-edit-card">
-        <h2 class="project-edit-title">采购与排程 <span>Procurement and Schedule</span></h2>
-        <div class="project-edit-grid two">
-          <div class="project-edit-field">
-            <label for="editSourcingQuarter">定点季度 <span class="en">Sourcing Quarter</span></label>
-            <select class="select" id="editSourcingQuarter">
-              <option>请选择</option>
-              <option selected>2026 Q1</option>
-              <option>2026 Q2</option>
-              <option>2026 Q3</option>
-              <option>2026 Q4</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label for="editSourcingDate">定点日期 <span class="en">Sourcing Date</span></label>
-            <input class="field" id="editSourcingDate" type="date" value="2026-02-20">
-          </div>
-        </div>
-      </section>
-
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">评价与分级 <span>Evaluation and Classification</span></h2>
-        <div class="project-edit-grid three">
-          <div class="project-edit-field">
-            <label for="editSop">SOP</label>
-            <input class="field" id="editSop" type="date" value="2027-12-01">
-          </div>
-          <div class="project-edit-field">
-            <label for="editRank">等级 <span class="en">Rank</span></label>
-            <select class="select" id="editRank">
-              <option>请选择</option>
-              <option selected>A</option>
-              <option>B</option>
-              <option>C</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label for="editLrpType">物流计划类型 <span class="en">LRP Type</span></label>
-            <select class="select" id="editLrpType">
-              <option>请选择</option>
-              <option>Booked</option>
-              <option>未预定</option>
-              <option selected>LRP+</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="score-grid">
-          <div class="score-item">
-            <div class="score-title">开发跟进评级 <span class="en">Pursuit Rating</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editPursuit"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editPursuit"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editPursuit" checked><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">财务数据 <span class="en">Financials</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editFinancials"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editFinancials" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editFinancials"><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">制造 <span class="en">MFG</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editMfg"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editMfg"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editMfg" checked><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">价格及成本 <span class="en">Price &amp; Costs</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editCost"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editCost" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editCost"><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">产品 <span class="en">Product</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editProductScore"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editProductScore"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editProductScore" checked><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">品质 <span class="en">Quality</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editQuality"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editQuality"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editQuality" checked><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">关联关系 <span class="en">Relationships</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editRelationship"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editRelationship" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editRelationship"><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">供应商 <span class="en">Suppliers</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editSupplier"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editSupplier"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editSupplier" checked><span class="color-block green"></span>G</label></div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">时间节点 <span class="en">Timing</span></div>
-            <div class="score-options"><label class="radio"><input type="radio" name="editTiming"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editTiming" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editTiming"><span class="color-block green"></span>G</label></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">备注信息 <span>Remarks</span></h2>
+        <h2 class="project-edit-title">来源追溯 <span>Traceability</span></h2>
         <div class="project-edit-grid">
+          <div class="project-edit-field">
+            <label class="required" for="editSourceType">创建来源</label>
+            <select class="select" id="editSourceType">
+              <option>请选择</option>
+              <option>手动新增</option>
+              <option selected>BOM 创建</option>
+            </select>
+          </div>
+          <div class="project-edit-field">
+            <label for="editSourceBomVersion">来源 BOM 版本</label>
+            <input class="field" id="editSourceBomVersion" value="Gate1-V1.0" placeholder="例如 PKO_V1.0">
+          </div>
+          <div class="project-edit-field">
+            <label for="editSourceBomLine">来源 BOM 行</label>
+            <input class="field" id="editSourceBomLine" value="phaser-insert-1 / PHASER INSERT" placeholder="例如 BOM-L2-003">
+          </div>
+          <div class="project-edit-field">
+            <label for="editSourceSupplyPlan">来源供应方案</label>
+            <input class="field" id="editSourceSupplyPlan" value="A-Supplier / 一供同步开发" placeholder="例如 P1-A 一供开发">
+          </div>
           <div class="project-edit-field wide">
             <label for="editRemarks">备注</label>
             <textarea class="textarea" id="editRemarks" placeholder="请输入">PHASER INSERT 子零件开发任务，来源于 Gate1 锁定生产 BOM。</textarea>
@@ -6083,6 +6445,37 @@
       <div class="modal-foot">
         <button class="btn" type="button" data-close-part-status>取消</button>
         <button class="btn btn-primary" type="button" id="confirmPartStatus">确认</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="partHealthModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="partHealthTitle">
+      <div class="modal-head">
+        <h3 id="partHealthTitle">修改任务健康度</h3>
+        <button class="modal-close" type="button" data-close-part-health aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p>请选择子零件开发任务健康度，并录入本次判断原因。</p>
+        <div class="gate-blocker-list">
+          <label class="gate-blocker-item" style="display:grid;gap:8px">
+            <span><span class="required">*</span>任务健康度</span>
+            <select class="field-input" id="partHealthValue">
+              <option value="green">绿色</option>
+              <option value="yellow">黄色</option>
+              <option value="red">红色</option>
+            </select>
+          </label>
+          <label class="gate-blocker-item" style="display:grid;gap:8px">
+            <span><span class="required">*</span>原因</span>
+            <textarea class="issue-textarea" id="partHealthReason" rows="4" placeholder="请输入调整原因，例如供应商风险、样件问题、质量风险、节点延期或资料缺口"></textarea>
+          </label>
+        </div>
+        <div class="form-error" id="partHealthError" hidden style="margin:10px 0 0">请填写任务健康度调整原因。</div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-part-health>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmPartHealth">确认</button>
       </div>
     </section>
   </div>
@@ -10243,6 +10636,17 @@
     const confirmSubmitStageTask = document.getElementById("confirmSubmitStageTask");
     const submitConfirmTitle = document.getElementById("submitConfirmTitle");
     const submitConfirmMessage = document.getElementById("submitConfirmMessage");
+    const submitTaskName = document.getElementById("submitTaskName");
+    const submitProjectName = document.getElementById("submitProjectName");
+    const submitCurrentStage = document.getElementById("submitCurrentStage");
+    const submitCreatedAt = document.getElementById("submitCreatedAt");
+    const submitDueDate = document.getElementById("submitDueDate");
+    const submitTaskStatus = document.getElementById("submitTaskStatus");
+    const submitReviewType = document.getElementById("submitReviewType");
+    const submitReviewerRules = document.querySelector("[data-submit-reviewer-rules]");
+    const submitReviewProgressText = document.getElementById("submitReviewProgressText");
+    const submitReviewProgressBar = document.getElementById("submitReviewProgressBar");
+    const submitReviewerList = document.querySelector("[data-submit-reviewer-list]");
     const auditRecordModal = document.getElementById("auditRecordModal");
     const auditRecordTip = document.getElementById("auditRecordTip");
     const auditRecordBody = document.getElementById("auditRecordBody");
@@ -10251,12 +10655,6 @@
     const recordTimeline = document.querySelector("[data-record-timeline]");
     const recordEventCount = document.querySelector("[data-record-event-count]");
     const recordRoleSelect = document.querySelector("[data-record-role-select]");
-    const recordSummaryStage = document.querySelector("[data-record-summary-stage]");
-    const recordSummaryStatus = document.querySelector("[data-record-summary-status]");
-    const recordSummaryBom = document.querySelector("[data-record-summary-bom]");
-    const recordSummarySupply = document.querySelector("[data-record-summary-supply]");
-    const recordSummaryApqp = document.querySelector("[data-record-summary-apqp]");
-    const recordSummaryBlocking = document.querySelector("[data-record-summary-blocking]");
     const partStatusModal = document.getElementById("partStatusModal");
     const partStatusTitle = document.getElementById("partStatusTitle");
     const partStatusMessage = document.getElementById("partStatusMessage");
@@ -10264,6 +10662,11 @@
     const partStatusReason = document.getElementById("partStatusReason");
     const partStatusError = document.getElementById("partStatusError");
     const confirmPartStatus = document.getElementById("confirmPartStatus");
+    const partHealthModal = document.getElementById("partHealthModal");
+    const partHealthValue = document.getElementById("partHealthValue");
+    const partHealthReason = document.getElementById("partHealthReason");
+    const partHealthError = document.getElementById("partHealthError");
+    const confirmPartHealth = document.getElementById("confirmPartHealth");
     const messageModal = document.getElementById("messageModal");
     const messageModalTitle = document.getElementById("messageModalTitle");
     const messageModalBody = document.getElementById("messageModalBody");
@@ -10294,12 +10697,16 @@
     let activeFillTaskId = "";
     let pendingSubmitStage = "";
     let gate1ReviewState = "running";
+    const stageReviewStates = { Gate1: "running", Gate2: "running", Gate3: "running", Gate4: "running", Gate5: "running", Gate6: "running" };
+    let selectedSubmitReviewerIds = new Set(["sophia-qin"]);
     let memberModalMode = "team";
     let partTaskStatus = "inProgress";
+    let partTaskHealth = "green";
     let pendingPartStatus = "";
     let currentRecordRole = "SQD";
     let currentRecordFilter = "all";
     const partStatusRecords = [];
+    const partHealthRecords = [];
     const partTaskMeta = {
       sourceBomVersion: "Gate1-V1.0",
       sourceBomLine: "phaser-insert-1 / PHASER INSERT",
@@ -10308,7 +10715,9 @@
       supplyStrategy: "双供同步开发",
       startGate: "Gate1",
       owner: "SQD / Zack",
-      blockingGate: true,
+      blockingGate: false,
+      projectImpact: "风险提示",
+      creationSource: "BOM 创建",
       apqpStatus: "进行中"
     };
     const partEvents = [
@@ -10329,7 +10738,7 @@
         category: "supply",
         type: "供应商",
         title: "确认供应方案",
-        description: "A-Supplier 作为一供同步开发，任务默认阻塞项目 Gate；B-Supplier 作为二供备案，当前不阻塞。",
+        description: "A-Supplier 作为一供同步开发，纳入子零件开发模块重点跟踪；B-Supplier 作为二供备案，当前仅作风险参考，不阻塞项目 Gate。",
         actor: "Zack",
         role: "SQD",
         scope: "供应方案"
@@ -10447,7 +10856,7 @@
           kind: "任务",
           level: "risk",
           title: `${activeStage} 仍有 ${pendingTasks} 项任务待完成`,
-          description: "当前 Gate 提交审核前，需完成本 Gate 下的阻塞型子零件开发任务。",
+          description: "当前 Gate 提交审核前，需完成本子零件模块内的必做任务；项目端仅接收风险提示，由项目团队人工判断。",
           roles: ["SQD", "PM", "ALL"],
           action: "查看任务",
           tab: "development"
@@ -10478,7 +10887,7 @@
         kind: "供应商",
         level: "update",
         title: `${partTaskMeta.supplierType} ${partTaskMeta.supplier} 参与${partTaskMeta.supplyStrategy}`,
-        description: `起始 Gate：${partTaskMeta.startGate}；${partTaskMeta.blockingGate ? "默认阻塞项目 Gate" : "当前不阻塞项目 Gate"}。`,
+        description: `起始 Gate：${partTaskMeta.startGate}；对项目 Gate 的影响：${partTaskMeta.projectImpact || "风险提示"}，不作为系统硬阻塞。`,
         roles: ["SQD", "AQE", "PM", "SCM"]
       });
       return alerts.filter(partRecordRoleMatch);
@@ -10498,16 +10907,6 @@
           ${alert.tab ? `<button class="btn" type="button" data-record-go-tab="${escapeHtml(alert.tab)}">${escapeHtml(alert.action || "查看")}</button>` : ""}
         </article>
       `).join("") : `<div class="record-empty">当前角色暂无需要特别关注的提醒。</div>`;
-    }
-
-    function renderRecordSummary() {
-      const config = partStatusConfig[partTaskStatus] || partStatusConfig.inProgress;
-      if (recordSummaryStage) recordSummaryStage.textContent = activeStage;
-      if (recordSummaryStatus) recordSummaryStatus.textContent = `${config.value} / ${config.label}`;
-      if (recordSummaryBom) recordSummaryBom.textContent = `${currentVersion()} · ${statusText(bomState.status)}`;
-      if (recordSummarySupply) recordSummarySupply.textContent = `${partTaskMeta.supplierType} · ${partTaskMeta.supplyStrategy}`;
-      if (recordSummaryApqp) recordSummaryApqp.textContent = partTaskMeta.apqpStatus;
-      if (recordSummaryBlocking) recordSummaryBlocking.textContent = partTaskMeta.blockingGate ? "是" : "否";
     }
 
     function renderRecordTimeline() {
@@ -10533,7 +10932,6 @@
     }
 
     function renderPartRecords() {
-      renderRecordSummary();
       renderRecordAlerts();
       renderRecordTimeline();
     }
@@ -10580,12 +10978,83 @@
       }
     };
 
+    const partHealthConfig = {
+      green: {
+        label: "绿色",
+        className: "health-green"
+      },
+      yellow: {
+        label: "黄色",
+        className: "health-yellow"
+      },
+      red: {
+        label: "红色",
+        className: "health-red"
+      }
+    };
+
+    function latestPartHealthRecord() {
+      return partHealthRecords[partHealthRecords.length - 1] || null;
+    }
+
+    function renderPartTaskHealth() {
+      const config = partHealthConfig[partTaskHealth] || partHealthConfig.green;
+      const pill = document.querySelector("[data-part-health-pill]");
+      if (pill) {
+        pill.className = `health-pill ${config.className}`;
+        pill.textContent = config.label;
+      }
+      const reasonButton = document.querySelector("[data-view-part-health-reason]");
+      if (reasonButton) {
+        reasonButton.hidden = !latestPartHealthRecord();
+      }
+    }
+
+    function resetPartHealthForm() {
+      if (partHealthValue) {
+        partHealthValue.value = partTaskHealth;
+      }
+      if (partHealthReason) {
+        partHealthReason.value = "";
+      }
+      if (partHealthError) {
+        partHealthError.hidden = true;
+      }
+    }
+
+    function openPartHealthModal() {
+      if (!partHealthModal) return;
+      resetPartHealthForm();
+      partHealthModal.hidden = false;
+      partHealthValue?.focus();
+    }
+
+    function closePartHealthModal() {
+      if (partHealthModal) {
+        partHealthModal.hidden = true;
+      }
+      resetPartHealthForm();
+    }
+
+    function openPartHealthReason() {
+      const record = latestPartHealthRecord();
+      if (!record) return;
+      const config = partHealthConfig[record.health] || partHealthConfig.green;
+      showMessage("任务健康度原因", `
+        <div class="gate-blocker-list">
+          <div class="gate-blocker-item"><b>健康度</b><span>${escapeHtml(config.label)}</span></div>
+          <div class="gate-blocker-item"><b>原因</b><span>${escapeHtml(record.reason)}</span></div>
+          <div class="gate-blocker-item"><b>提交时间</b><span>${escapeHtml(record.createdAt || "-")}</span></div>
+        </div>
+      `);
+    }
+
     function renderPartTaskStatus() {
       const config = partStatusConfig[partTaskStatus] || partStatusConfig.inProgress;
       const pill = document.querySelector("[data-project-status-pill]");
       if (pill) {
         pill.className = `status-pill ${config.className}`;
-        pill.textContent = `${config.value} / ${config.label}`;
+        pill.textContent = config.label;
       }
       const actions = document.querySelector("[data-project-status-actions]");
       if (actions) {
@@ -10615,7 +11084,7 @@
       addPartEvent({
         category: "status",
         type: "状态",
-        title: `子零件开发任务状态更新为 ${partStatusConfig[nextStatus].value} / ${partStatusConfig[nextStatus].label}`,
+        title: `子零件开发任务状态更新为${partStatusConfig[nextStatus].label}`,
         description: reason || "状态由页面顶部状态动作触发。",
         actor: "当前用户",
         role: currentRecordRole,
@@ -10630,10 +11099,10 @@
       if (partStatusTitle) partStatusTitle.textContent = `${config.label}确认`;
       if (partStatusMessage) {
         partStatusMessage.textContent = nextStatus === "pending"
-          ? "请填写暂停说明；确认后子零件开发任务状态将显示为 pending / 暂停。"
+          ? "请填写暂停说明；确认后子零件开发任务状态将显示为暂停。"
           : nextStatus === "cancel"
             ? "请填写终止说明；确认后该任务不再进入后续 Gate 推进。"
-            : `确认将子零件开发任务状态切换为 ${config.value} / ${config.label}？`;
+            : `确认将子零件开发任务状态切换为${config.label}？`;
       }
       if (partStatusForm) partStatusForm.hidden = !(nextStatus === "pending" || nextStatus === "cancel");
       if (partStatusReason) partStatusReason.value = "";
@@ -10654,7 +11123,7 @@
       const config = partStatusConfig[record.status] || partStatusConfig.inProgress;
       showMessage(`${config.label}原因`, `
         <div class="record-summary-grid">
-          <div class="record-summary-item"><span>状态</span><strong>${escapeHtml(config.value)} / ${escapeHtml(config.label)}</strong></div>
+          <div class="record-summary-item"><span>状态</span><strong>${escapeHtml(config.label)}</strong></div>
           <div class="record-summary-item"><span>提交时间</span><strong>${escapeHtml(record.createdAt || "-")}</strong></div>
           <div class="record-summary-item" style="grid-column:1/-1"><span>说明</span><strong>${escapeHtml(record.reason || "-")}</strong></div>
         </div>
@@ -10732,20 +11201,18 @@
     }
 
     function operationHtml(task) {
-      const childButton = `<button class="blue-link" type="button" data-view-child-tasks="${escapeHtml(task.id)}">查看子级任务</button>`;
       if (task.status === "done") {
-        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button>${childButton}</span>`;
+        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
       }
       if (task.status === "rejected") {
         return `
           <span class="inline-actions">
             <button class="blue-link" type="button" data-view-reject="${escapeHtml(task.id)}">查看原因</button>
             <button class="blue-link" type="button" data-complete-stage-task="${escapeHtml(task.id)}">完成</button>
-            ${childButton}
           </span>
         `;
       }
-      return `<span class="inline-actions"><button class="blue-link" type="button" data-complete-stage-task="${escapeHtml(task.id)}">完成</button>${childButton}</span>`;
+      return `<span class="inline-actions"><button class="blue-link" type="button" data-complete-stage-task="${escapeHtml(task.id)}">完成</button></span>`;
     }
 
     function renderStageTasks(stage = activeStage) {
@@ -10775,15 +11242,15 @@
                   <col style="width:180px">
                   <col style="width:140px">
                   <col style="width:130px">
-                  <col style="width:190px">
+                  <col style="width:88px">
                 </colgroup>
                 <thead>
                   <tr>
                     <th class="center">编号</th>
-                    <th>K-PAC ID</th>
-                    <th>K-PAC Title</th>
+                    <th>K-PAC编号</th>
+                    <th>K-PAC标题</th>
                     <th>任务类型</th>
-                    <th>Description</th>
+                    <th>任务描述</th>
                     <th>负责部门</th>
                     <th>起止时间</th>
                     <th>操作人</th>
@@ -10813,7 +11280,7 @@
         `;
       }).join("") : `
         <section class="table-panel">
-          <div class="empty-tip">暂无符合条件的任务，请调整 ID / Title 或负责部门筛选条件。</div>
+          <div class="empty-tip">暂无符合条件的任务，请调整编号、标题或负责部门筛选条件。</div>
         </section>
       `;
 
@@ -10828,8 +11295,9 @@
       stageStatusFilters.forEach((button) => {
         button.classList.toggle("active", button.dataset.stageStatusFilter === activeStageStatusFilter);
       });
+      const reviewState = getStageReviewState(stage);
       if (submitStageTask) {
-        submitStageTask.hidden = false;
+        submitStageTask.hidden = reviewState === "reviewing";
       }
       if (manageStageTask) {
         manageStageTask.hidden = false;
@@ -10838,21 +11306,20 @@
         auditRecordButton.hidden = false;
       }
       if (gateReviewStatus) {
-        const showReviewStatus = stage === "Gate1" && gate1ReviewState !== "running";
-        gateReviewStatus.hidden = !showReviewStatus;
-        gateReviewStatus.value = gate1ReviewState === "rejected"
+        gateReviewStatus.hidden = reviewState !== "reviewing";
+        gateReviewStatus.value = reviewState === "rejected"
           ? "rejected"
-          : gate1ReviewState === "approved"
+          : reviewState === "approved"
             ? "approved"
-            : gate1ReviewState === "conditional"
+            : reviewState === "conditional"
               ? "conditional"
               : "reviewing";
       }
       if (stageReviewAlert) {
-        const showAlert = stage === "Gate1" && (gate1ReviewState === "rejected" || gate1ReviewState === "conditional");
+        const showAlert = reviewState === "rejected" || reviewState === "conditional";
         stageReviewAlert.hidden = !showAlert;
-        stageReviewAlert.classList.toggle("is-conditional", gate1ReviewState === "conditional");
-        stageReviewAlert.textContent = gate1ReviewState === "conditional"
+        stageReviewAlert.classList.toggle("is-conditional", reviewState === "conditional");
+        stageReviewAlert.textContent = reviewState === "conditional"
           ? "当前阶段带条件通过，可通过审核记录查看具体内容。"
           : "当前阶段审核未通过，可通过查看审核记录了解审核情况、拒绝成员和对应原因。";
       }
@@ -10928,10 +11395,10 @@
           <thead>
             <tr>
               <th>编号</th>
-              <th>K-PAC ID</th>
-              <th>K-PAC Title</th>
+              <th>K-PAC编号</th>
+              <th>K-PAC标题</th>
               <th>任务类型</th>
-              <th>Description</th>
+              <th>任务描述</th>
               <th>负责部门</th>
               <th>零件号 / 层级</th>
               <th>操作人</th>
@@ -11092,6 +11559,34 @@
       pill.textContent = text;
     }
 
+    function getStageReviewState(stage) {
+      return stageReviewStates[stage] || "running";
+    }
+
+    function setStageReviewState(stage, state) {
+      stageReviewStates[stage] = state;
+      if (stage === "Gate1") {
+        gate1ReviewState = state;
+      }
+    }
+
+    function nextStageId(stage) {
+      const index = stageCards.findIndex((item) => item.dataset.stageId === stage);
+      return index >= 0 ? stageCards[index + 1]?.dataset.stageId || "" : "";
+    }
+
+    function completeStageTasksForSubmit(stage) {
+      let completedCount = 0;
+      allStageRows(stage).forEach((task) => {
+        if (task.status === "todo" || task.status === "rejected" || task.status === "overdue") {
+          task.status = "done";
+          task.operator = task.operator || "张工(工程部)";
+          completedCount += 1;
+        }
+      });
+      return completedCount;
+    }
+
     function gateReadinessIssues(stage) {
       const issues = [];
       const pendingTasks = allStageRows(stage).filter((task) => task.status === "todo" || task.status === "rejected");
@@ -11101,16 +11596,12 @@
       if (bomState.status !== "locked") {
         issues.push(`当前 BOM 状态为 ${statusText(bomState.status)}，需锁定生效后才能作为 Gate 审核依据。`);
       }
-      const blockingRows = unfinishedBlockingBomRows();
-      if (partTaskMeta.blockingGate && blockingRows.length) {
-        issues.push(`当前 Gate 下存在 ${blockingRows.length} 条阻塞型供应商开发任务未完成。`);
-      }
       return issues;
     }
 
     function showGateBlockers(stage, issues) {
       showMessage(`${stage} 提交受阻`, `
-        <p>当前子零件开发任务暂不能提交 Gate 审核，请先处理以下对象：</p>
+        <p>当前子零件开发任务暂不能提交本模块 Gate 审核，请先处理以下对象：</p>
         <div class="gate-blocker-list">
           ${issues.map((issue) => `<div class="gate-blocker-item">${escapeHtml(issue)}</div>`).join("")}
         </div>
@@ -11118,36 +11609,40 @@
     }
 
     function submitGateStage() {
+      const completedCount = completeStageTasksForSubmit(activeStage);
+      const reviewerSummary = selectedSubmitReviewerSummary();
       const issues = gateReadinessIssues(activeStage);
       if (issues.length) {
+        renderStageTasks(activeStage);
         showGateBlockers(activeStage, issues);
         return;
       }
       if (activeStage === "Gate1") {
-        gate1ReviewState = "reviewing";
+        setStageReviewState("Gate1", "reviewing");
         updateStagePill("Gate1", "审核中", "status-review");
-        setPartTaskStatus("approval", "Gate1 阶段任务已提交审核，等待审核人员给出结论。");
+        setPartTaskStatus("approval", `Gate1 阶段任务已提交审核，等待${reviewerSummary}给出结论。`);
         addPartEvent({
           category: "approval",
           type: "审批",
           title: "发起 Gate1 阶段审核",
-          description: "子零件 Gate1 阶段任务已满足准入条件，进入审核中。",
+          description: completedCount
+            ? `演示提交已自动完成 ${completedCount} 项 Gate1 阶段任务，并进入审核中。审批成员：${reviewerSummary}。`
+            : `子零件 Gate1 阶段任务已满足准入条件，进入审核中。审批成员：${reviewerSummary}。`,
           actor: "Zack",
           role: "SQD",
           scope: "Gate1"
         });
       } else {
-        allStageRows(activeStage).forEach((task) => {
-          if (task.status === "todo") {
-            task.status = "done";
-          }
-        });
-        updateStagePill(activeStage, "已完成", "status-done");
+        setStageReviewState(activeStage, "reviewing");
+        updateStagePill(activeStage, "审核中", "status-review");
+        setPartTaskStatus("approval", `${activeStage} 阶段任务已提交审核，等待${reviewerSummary}给出结论。`);
         addPartEvent({
-          category: "stage",
-          type: "阶段",
-          title: `${activeStage} 阶段完成`,
-          description: "当前阶段任务全部闭环，阶段状态更新为已完成。",
+          category: "approval",
+          type: "审批",
+          title: `发起 ${activeStage} 阶段审核`,
+          description: completedCount
+            ? `演示提交已自动完成 ${completedCount} 项${activeStage}阶段任务，并进入审核中。审批成员：${reviewerSummary}。`
+            : `当前${activeStage}阶段任务已满足准入条件，进入审核中。审批成员：${reviewerSummary}。`,
           actor: "Zack",
           role: "SQD",
           scope: activeStage
@@ -11156,10 +11651,100 @@
       renderStageTasks(activeStage);
     }
 
+    function submitReviewerCandidates() {
+      const fallback = [
+        { id: "sophia-qin", name: "Sophia Qin", initials: "SQ", department: "质量部", role: "AQE" },
+        { id: "alice-chen", name: "Alice Chen", initials: "AC", department: "项目管理部", role: "PM" },
+        { id: "chen-wei", name: "Chen Wei", initials: "CW", department: "供应链部", role: "SCM" },
+        { id: "zack", name: "Zack", initials: "ZA", department: "供应商质量", role: "SQD" }
+      ];
+      return fallback.map((candidate) => memberMap?.get(candidate.id) || candidate);
+    }
+
+    function selectedSubmitReviewers() {
+      const reviewers = submitReviewerCandidates().filter((member) => selectedSubmitReviewerIds.has(member.id));
+      return reviewers.length ? reviewers : submitReviewerCandidates().filter((member) => member.role === "AQE");
+    }
+
+    function selectedSubmitReviewerSummary() {
+      return selectedSubmitReviewers().map((member) => `${member.role} / ${member.name}`).join("、") || "AQE";
+    }
+
+    function renderSubmitReviewers() {
+      if (!submitReviewerList) return;
+      if (!selectedSubmitReviewerIds.size) {
+        selectedSubmitReviewerIds = new Set(["sophia-qin"]);
+      }
+      const reviewers = selectedSubmitReviewers();
+      submitReviewerList.innerHTML = reviewers.map((member) => `
+        <span class="submit-member-chip">
+          ${escapeHtml(member.role || "审核")} / ${escapeHtml(member.name)}
+          <button class="submit-member-remove" type="button" data-remove-submit-reviewer="${escapeHtml(member.id)}" aria-label="移除${escapeHtml(member.name)}">×</button>
+        </span>
+      `).join("");
+      if (submitReviewerRules) {
+        submitReviewerRules.innerHTML = reviewers.map((member) => `
+          <div class="approval-member-row">
+            <strong>${escapeHtml(member.role || "审核人员")} / ${escapeHtml(member.name)}</strong>
+            <span class="submit-status-tag">待审核</span>
+            <span>${reviewers.length > 1 ? "所有审核人员完成后汇总阶段结论" : "审核人员完成后汇总阶段结论"}</span>
+          </div>
+        `).join("");
+      }
+    }
+
+    function stageSubmitDueDate(stage) {
+      const endDates = allStageRows(stage)
+        .map((task) => String(task.dateRange || "").split("~").pop()?.trim())
+        .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
+        .sort();
+      if (endDates.length) return endDates[endDates.length - 1];
+      return getCurrentTime().slice(0, 10);
+    }
+
+    function sourceProjectName() {
+      const sourceText = document.querySelector("[data-source-project-text]")?.textContent?.trim();
+      if (sourceText) {
+        return sourceText.replace(/^来源项目：/, "");
+      }
+      return document.getElementById("editProgram")?.value?.trim() || "EA888 E5 VCT";
+    }
+
+    function updateSubmitReviewProgress(stage) {
+      const rows = allStageRows(stage);
+      const total = rows.length;
+      const done = rows.filter((task) => task.status === "done").length;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+      if (submitReviewProgressText) {
+        submitReviewProgressText.textContent = `${percent}% (${done}/${total})`;
+      }
+      if (submitReviewProgressBar) {
+        submitReviewProgressBar.style.width = `${percent}%`;
+      }
+    }
+
+    function updateSubmitConfirmMeta(stage) {
+      const nextStage = nextStageId(stage);
+      if (submitTaskName) submitTaskName.textContent = "发起阶段审核";
+      if (submitProjectName) submitProjectName.textContent = sourceProjectName();
+      if (submitCurrentStage) submitCurrentStage.textContent = nextStage ? `${stage} / ${nextStage}` : stage;
+      if (submitCreatedAt) submitCreatedAt.textContent = getCurrentTime().slice(0, 16);
+      if (submitDueDate) submitDueDate.textContent = stageSubmitDueDate(stage);
+      if (submitTaskStatus) submitTaskStatus.textContent = "待处理";
+      if (submitReviewType) {
+        submitReviewType.innerHTML = `<option value="gate">阶段完成审核 (Gate Review)</option>`;
+      }
+      renderSubmitReviewers();
+      updateSubmitReviewProgress(stage);
+    }
+
     function openSubmitConfirmModal() {
       pendingSubmitStage = activeStage;
-      submitConfirmTitle.textContent = `${pendingSubmitStage} 提交确认`;
-      submitConfirmMessage.textContent = `确认提交 ${pendingSubmitStage} 阶段任务吗？提交后将由项目审核组成员进行审核，通过后进入下一个环节。`;
+      selectedSubmitReviewerIds = new Set(["sophia-qin"]);
+      updateSubmitConfirmMeta(pendingSubmitStage);
+      submitConfirmTitle.textContent = "发起阶段审核";
+      submitConfirmMessage.textContent = `确认提交 ${pendingSubmitStage} 阶段任务吗？提交后将由指定审批成员进行审核，通过后进入下一个环节。`;
+      if (confirmSubmitStageTask) confirmSubmitStageTask.textContent = "确认发起";
       submitConfirmModal.hidden = false;
     }
 
@@ -11169,8 +11754,9 @@
     }
 
     function renderAuditRecords() {
-      const isRejected = activeStage === "Gate1" && gate1ReviewState === "rejected";
-      const isConditional = activeStage === "Gate1" && gate1ReviewState === "conditional";
+      const reviewState = getStageReviewState(activeStage);
+      const isRejected = reviewState === "rejected";
+      const isConditional = reviewState === "conditional";
       auditRecordTip.textContent = isRejected
         ? "当前阶段审核未通过，以下为审核组拒绝成员及原因。"
         : isConditional
@@ -11437,7 +12023,38 @@
         button.addEventListener("click", closeSubmitConfirmModal);
       });
 
+      submitConfirmModal.addEventListener("change", (event) => {
+        const checkbox = event.target.closest("[data-submit-reviewer]");
+        if (!checkbox) return;
+        if (checkbox.checked) {
+          selectedSubmitReviewerIds.add(checkbox.dataset.submitReviewer);
+        } else {
+          selectedSubmitReviewerIds.delete(checkbox.dataset.submitReviewer);
+        }
+        if (!selectedSubmitReviewerIds.size) {
+          selectedSubmitReviewerIds.add("sophia-qin");
+          renderSubmitReviewers();
+        }
+      });
+
       submitConfirmModal.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-submit-reviewer]");
+        if (removeButton) {
+          selectedSubmitReviewerIds.delete(removeButton.dataset.removeSubmitReviewer);
+          if (!selectedSubmitReviewerIds.size) {
+            selectedSubmitReviewerIds.add("sophia-qin");
+          }
+          renderSubmitReviewers();
+          return;
+        }
+        if (event.target.closest("[data-add-submit-reviewer]")) {
+          const nextReviewer = submitReviewerCandidates().find((member) => !selectedSubmitReviewerIds.has(member.id));
+          if (nextReviewer) {
+            selectedSubmitReviewerIds.add(nextReviewer.id);
+            renderSubmitReviewers();
+          }
+          return;
+        }
         if (event.target === submitConfirmModal) {
           closeSubmitConfirmModal();
         }
@@ -11453,52 +12070,62 @@
 
     if (gateReviewStatus) {
       gateReviewStatus.addEventListener("change", () => {
+        const reviewStage = activeStage;
+        const nextStage = nextStageId(reviewStage);
         if (gateReviewStatus.value === "rejected") {
-          gate1ReviewState = "rejected";
-          updateStagePill("Gate1", "未通过", "status-failed");
-          setPartTaskStatus("inProgress", "Gate1 审核未通过，任务退回进行中。");
+          setStageReviewState(reviewStage, "rejected");
+          updateStagePill(reviewStage, "未通过", "status-failed");
+          setPartTaskStatus("inProgress", `${reviewStage} 审核未通过，任务退回进行中。`);
           addPartEvent({
             category: "approval",
             type: "审批",
-            title: "Gate1 审核未通过",
+            title: `${reviewStage} 审核未通过`,
             description: "审核拒绝原因可在审核记录中查看，子零件开发任务退回进行中。",
             actor: "审核人员",
             role: "Reviewer",
-            scope: "Gate1"
+            scope: reviewStage
           });
         } else if (gateReviewStatus.value === "approved") {
-          gate1ReviewState = "approved";
-          updateStagePill("Gate1", "已完成", "status-done");
-          updateStagePill("Gate2", "进行中", "status-running");
-          setPartTaskStatus("inProgress", "Gate1 审核通过，子零件开发任务进入 Gate2。");
+          setStageReviewState(reviewStage, "approved");
+          updateStagePill(reviewStage, "已完成", "status-done");
+          if (nextStage) {
+            updateStagePill(nextStage, "进行中", "status-running");
+          }
+          setPartTaskStatus("inProgress", nextStage ? `${reviewStage} 审核通过，子零件开发任务进入 ${nextStage}。` : `${reviewStage} 审核通过，当前零件开发阶段已闭环。`);
           addPartEvent({
             category: "approval",
             type: "审批",
-            title: "Gate1 审核通过，进入 Gate2",
-            description: "Gate1 阶段审核通过，Gate2 阶段任务启动。",
+            title: nextStage ? `${reviewStage} 审核通过，进入 ${nextStage}` : `${reviewStage} 审核通过`,
+            description: nextStage ? `${reviewStage} 阶段审核通过，${nextStage} 阶段任务启动。` : `${reviewStage} 阶段审核通过。`,
             actor: "审核人员",
             role: "Reviewer",
-            scope: "Gate1 / Gate2"
+            scope: nextStage ? `${reviewStage} / ${nextStage}` : reviewStage
           });
-          setActiveStage("Gate2");
+          if (nextStage) {
+            setActiveStage(nextStage);
+          }
         } else if (gateReviewStatus.value === "conditional") {
-          gate1ReviewState = "conditional";
-          updateStagePill("Gate1", "带条件通过", "status-conditional");
-          updateStagePill("Gate2", "进行中", "status-running");
-          setPartTaskStatus("inProgress", "Gate1 带条件通过，条件内容记录在审核记录中。");
+          setStageReviewState(reviewStage, "conditional");
+          updateStagePill(reviewStage, "带条件通过", "status-conditional");
+          if (nextStage) {
+            updateStagePill(nextStage, "进行中", "status-running");
+          }
+          setPartTaskStatus("inProgress", `${reviewStage} 带条件通过，条件内容记录在审核记录中。`);
           addPartEvent({
             category: "approval",
             type: "审批",
-            title: "Gate1 带条件通过，进入 Gate2",
-            description: "审核小组允许进入 Gate2，但需按审核记录补充后续条件。",
+            title: nextStage ? `${reviewStage} 带条件通过，进入 ${nextStage}` : `${reviewStage} 带条件通过`,
+            description: nextStage ? `审核小组允许进入 ${nextStage}，但需按审核记录补充后续条件。` : "审核小组允许阶段闭环，但需按审核记录补充后续条件。",
             actor: "审核人员",
             role: "Reviewer",
-            scope: "Gate1 / Gate2"
+            scope: nextStage ? `${reviewStage} / ${nextStage}` : reviewStage
           });
-          setActiveStage("Gate2");
+          if (nextStage) {
+            setActiveStage(nextStage);
+          }
         } else {
-          gate1ReviewState = "reviewing";
-          updateStagePill("Gate1", "审核中", "status-review");
+          setStageReviewState(reviewStage, "reviewing");
+          updateStagePill(reviewStage, "审核中", "status-review");
         }
         renderStageTasks(activeStage);
       });
@@ -11522,7 +12149,7 @@
 
     if (manageStageTask) {
       manageStageTask.addEventListener("click", () => {
-        renderStageTasks(activeStage);
+        window.location.href = "task-management.html";
       });
     }
 
@@ -11575,7 +12202,6 @@
       stageTaskTables.addEventListener("click", (event) => {
         const completeButton = event.target.closest("[data-complete-stage-task]");
         const viewButton = event.target.closest("[data-view-task]");
-        const childTasksButton = event.target.closest("[data-view-child-tasks]");
         const rejectReasonButton = event.target.closest("[data-view-reject]");
 
 
@@ -11586,11 +12212,6 @@
 
         if (viewButton) {
           openTaskFillModal(viewButton.dataset.viewTask);
-          return;
-        }
-
-        if (childTasksButton) {
-          openChildTaskDrawer(childTasksButton.dataset.viewChildTasks);
           return;
         }
 
@@ -11724,7 +12345,7 @@
       row.innerHTML = `
         <td></td>
         <td></td>
-        <td></td>
+        <td class="time-cell"></td>
         <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
       `;
       row.children[0].textContent = title;
@@ -12385,9 +13006,9 @@
 
     const bomHeaders = [
       ["序号", "No."],
+      ["产品应用", "Product Application"],
       ["级数", "Level"],
       ["零件 / 材料名称", "Part/material name"],
-      ["产品应用", "Product Application"],
       ["数量", "Qty"],
       ["客户零件号", "customer Part NO."],
       ["BW 零件号", "BW Part NO."],
@@ -12400,16 +13021,11 @@
       ["重量", "Weight Assembly(g)"],
       ["共用零件", "Common"],
       ["借用项目", "Borrowed Project"],
-      ["图纸释放状态", "Release"],
+      ["图纸状态", "DRW Status"],
       ["原材料供应商名称", "Raw Supplier"],
       ["分供方名称", "Sub Supplier"],
-      ["是否需要APQP", "Need APQP"],
-      ["生成开发任务", "Create Task"],
-      ["APQP负责人", "APQP Owner"],
-      ["供应方案", "Supply Plan"],
-      ["起始Gate", "Start Gate"],
-      ["阻塞Gate", "Block Gate"],
-      ["版本对比", "Diff Result"],
+      ["供应类型", "Supply Type"],
+      ["版本对比", "Version Compare"],
       ["备注", "Remark"]
     ];
 
@@ -12420,6 +13036,10 @@
       status: "locked",
       syncStatus: "synced",
       syncedVersion: "Gate1-V1.0",
+      effectiveVersion: "Gate1-V1.0",
+      lockedVersion: "Gate1-V1.0",
+      workingVersion: "Gate1-V1.1",
+      workingStatus: "待SCM确认",
       previousVersion: "Gate1-V0.9",
       syncedFrom: "项目生产BOM / SCM确认版本",
       syncedAt: "2025-05-20 16:00",
@@ -12429,6 +13049,11 @@
       scopedRootId: null,
       historyViewing: false,
       undoStack: [],
+      selectedRowIds: [],
+      drawerMode: "manual",
+      drawerParentId: null,
+      drawerEditId: null,
+      searchMatches: [],
       histories: [],
       rows: [
         { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 双供同步开发", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", childTaskDone: true, remark: "当前开发零件" },
@@ -12442,8 +13067,102 @@
         { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "WEAR PAD", bwNo: "5070002", supplyPlan: "二供 · 后续导入", diffResult: "新增", action: "按项目端确认结果同步，Gate3启动" },
         { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "OLD GUIDE PIN", bwNo: "5068801", supplyPlan: "一供 · 单一供应", diffResult: "删除", action: "项目端已关闭/取消对应任务" },
         { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "STEEL PIN", bwNo: "5070003", supplyPlan: "共用件 · 备案", diffResult: "无变更", action: "保留备案，不生成开发任务" }
+      ],
+      workingDiffRows: [
+        { version: "Gate1-V1.1", previousVersion: "Gate1-V1.0", name: "WEAR PAD", bwNo: "5070002", supplyPlan: "二供 · 同步开发", diffResult: "供应策略变化", action: "二供由后续导入调整为同步开发，待 SCM 确认后生效" },
+        { version: "Gate1-V1.1", previousVersion: "Gate1-V1.0", name: "SEAL RING", bwNo: "5070004", supplyPlan: "一供 · 单一供应", diffResult: "新增", action: "工作版本新增，确认后同步子零件开发判断" }
+      ],
+      versionRecords: [
+        { version: "Gate1-V1.1", status: "工作版本", relation: "即将生效", owner: "SCM / Chen Wei", time: "2025-05-22 09:30", compareTo: "Gate1-V1.0", changeCount: 2 },
+        { version: "Gate1-V1.0", status: "已锁定生效", relation: "当前生效版本", owner: "SCM / Chen Wei", time: "2025-05-20 16:00", compareTo: "Gate1-V0.9", changeCount: 2 },
+        { version: "Gate1-V0.9", status: "历史版本", relation: "上一版本", owner: "AE / Li Ming", time: "2025-05-18 14:20", compareTo: "-", changeCount: 0 }
       ]
     };
+
+    function applyIncomingBomTaskContext() {
+      const params = new URLSearchParams(window.location.search);
+      const source = params.get("source") || "";
+      if (!["bom", "apqp", "manual"].includes(source)) return;
+      const partNo = params.get("partNo") || "";
+      const partName = params.get("partName") || "";
+      const projectCode = params.get("projectCode") || "";
+      const bomVersion = params.get("bomVersion") || "";
+      const bomRowId = params.get("bomRowId") || "";
+      const apqpId = params.get("apqpId") || "";
+      const partTaskNo = params.get("partTaskNo") || "";
+      const level = (params.get("level") || "").replace(/^L/, "");
+      const supplier = params.get("supplier") || "";
+      const owner = params.get("owner") || "";
+      const status = params.get("status") || "";
+      const displayName = partName || document.querySelector(".project-title")?.textContent?.trim() || "子零件开发任务";
+      if (partName) document.querySelector(".project-title").textContent = displayName;
+      if (partNo) document.querySelector(".project-code").textContent = partNo;
+      const projectButton = document.querySelector("[data-open-project]");
+      const projectCodeEmpty = document.querySelector("[data-project-code-empty]");
+      if (projectButton) {
+        if (projectCode) {
+          projectButton.textContent = projectCode;
+          projectButton.dataset.openProject = projectCode;
+          projectButton.hidden = false;
+          if (projectCodeEmpty) projectCodeEmpty.hidden = true;
+        } else {
+          projectButton.hidden = true;
+          projectButton.removeAttribute("data-open-project");
+          if (projectCodeEmpty) projectCodeEmpty.hidden = false;
+        }
+      }
+      const sourceProjectText = document.querySelector("[data-source-project-text]");
+      if (sourceProjectText && projectCode) sourceProjectText.textContent = `来源项目：${projectCode}`;
+      const sourceBomVersionText = document.querySelector("[data-source-bom-version-text]");
+      if (sourceBomVersionText && bomVersion) sourceBomVersionText.textContent = `来源BOM版本：${bomVersion}`;
+      const currentPartText = document.querySelector("[data-current-part-text]");
+      if (currentPartText) currentPartText.textContent = `当前零件：${displayName}${partNo ? ` / ${partNo}` : ""}`;
+      const stageMatch = bomVersion.match(/^(.+)-V/);
+      if (stageMatch) bomState.stage = stageMatch[1];
+      const version = parseVersionNumber(bomVersion);
+      if (version.major || version.minor) {
+        bomState.versionMajor = version.major;
+        bomState.versionMinor = version.minor;
+      }
+      if (bomVersion) {
+        bomState.syncedVersion = bomVersion;
+        bomState.effectiveVersion = bomVersion;
+        bomState.lockedVersion = bomVersion;
+        if (!params.get("workingVersion")) {
+          bomState.workingVersion = formatVersion(version.major || bomState.versionMajor, (version.minor || bomState.versionMinor) + 1);
+        }
+      }
+      if (params.get("workingVersion")) bomState.workingVersion = params.get("workingVersion");
+      partTaskMeta.sourceBomVersion = bomVersion || partTaskMeta.sourceBomVersion;
+      partTaskMeta.creationSource = source === "manual" ? "手动新增" : source === "apqp" ? "项目 APQP 关联" : "BOM 创建";
+      partTaskMeta.projectImpact = "风险提示";
+      partTaskMeta.blockingGate = false;
+      partTaskMeta.sourceBomLine = source === "manual" ? "手动新增 / 无强绑定 BOM 行" : `${bomRowId || "BOM行"} / ${displayName}`;
+      if (apqpId) partTaskMeta.apqpNo = apqpId;
+      if (partTaskNo) partTaskMeta.partTaskNo = partTaskNo;
+      if (supplier) partTaskMeta.supplier = supplier;
+      if (owner) partTaskMeta.owner = owner;
+      if (status) partTaskMeta.apqpStatus = status;
+      if (bomState.rows[0]) {
+        bomState.rows[0] = {
+          ...bomState.rows[0],
+          id: bomRowId || bomState.rows[0].id,
+          level: Number(level) || bomState.rows[0].level,
+          name: displayName,
+          bwNo: partNo || bomState.rows[0].bwNo,
+          subSupplier: supplier || bomState.rows[0].subSupplier,
+          remark: source === "manual" ? "手动新增子零件开发任务" : "从项目 BOM/APQP 关联跳转进入"
+        };
+      }
+      if (bomState.diffRows[0]) {
+        bomState.diffRows[0] = {
+          ...bomState.diffRows[0],
+          version: bomVersion || bomState.diffRows[0].version,
+          name: displayName,
+          bwNo: partNo || bomState.diffRows[0].bwNo
+        };
+      }
+    }
 
     const bomProductCatalog = [
       { key: "phaser", name: "Phaser", root: "VVT PHASER ASSY", seed: 6318, material: "Aluminum" },
@@ -12554,25 +13273,6 @@
       }
     }
 
-    function renderBomHistoryOptions() {
-      const select = document.querySelector("[data-bom-history-select]");
-      if (!select) return;
-      const selectedValue = select.value;
-      const current = currentVersion();
-      const historyOptions = bomState.histories
-        .filter((item) => item.version !== current)
-        .map((item) => `<option value="${item.version}">${item.version} · ${item.submittedAt}</option>`)
-        .join("");
-      select.innerHTML = `
-        <option value="">全部阶段版本</option>
-        ${current !== "-" ? `<option value="${current}">当前版本 · ${current}</option>` : ""}
-        ${historyOptions}
-      `;
-      if (Array.from(select.options).some((option) => option.value === selectedValue)) {
-        select.value = selectedValue;
-      }
-    }
-
     function restoreLatestBomSnapshot() {
       const latest = bomState.histories[0];
       if (!latest) return;
@@ -12620,8 +13320,8 @@
 
     function renderBomHeads() {
       const headCells = bomHeaders.map(([cn, en]) => `<th>${cn}<span>${en}</span></th>`).join("");
-      document.querySelector("[data-bom-head]").innerHTML = `<tr>${headCells}</tr>`;
-      document.querySelector("[data-bom-edit-head]").innerHTML = `<tr><th class="center">选</th>${headCells}<th class="fixed-op">操作<span>Operation</span></th></tr>`;
+      document.querySelector("[data-bom-head]").innerHTML = `<tr><th class="center"><input type="checkbox" data-bom-list-check-all aria-label="全选BOM"></th>${headCells}</tr>`;
+      document.querySelector("[data-bom-edit-head]").innerHTML = `<tr><th class="center"><input type="checkbox" data-bom-check-all aria-label="全选编辑BOM"></th>${headCells}</tr>`;
     }
 
     function rowMatches(row, keyword, application, customerNo, partNoKeyword = "") {
@@ -12661,18 +13361,17 @@
 
     function renderBlockingDetailTable() {
       return renderMetricTable(
-        ["零件/材料", "BW零件号", "供应商", "供应方案", "起始Gate", "阻塞Gate", "任务状态", "负责人"],
+        ["零件/材料", "BW零件号", "供应商", "供应方案", "项目风险提示", "任务状态", "负责人"],
         unfinishedBlockingBomRows().map((row) => [
           row.name,
           row.bwNo,
           row.subSupplier || row.rawSupplier,
           row.supplyPlan,
-          row.startGate,
-          row.blockGate,
+          row.blockGate === "是" ? "提示" : "普通",
           row.childTaskDone === true ? "已完成" : "未完成",
           row.apqpOwner
         ]),
-        "当前没有未完成的阻塞型开发任务。"
+        "当前没有需要重点提示的未完成开发任务。"
       );
     }
 
@@ -12695,70 +13394,234 @@
       );
     }
 
-    function diffSummaryText() {
-      const rows = bomState.diffRows || bomState.rows.map((row) => ({ diffResult: row.changeStatus || "无变更" }));
-      const added = rows.filter((row) => row.diffResult === "新增").length;
-      const removed = rows.filter((row) => row.diffResult === "删除").length;
-      return added || removed ? `新增${added} / 删除${removed}` : "无变更";
+    function workingBomChangeCount() {
+      const rows = bomState.workingDiffRows || [];
+      return rows.filter((row) => row.diffResult && row.diffResult !== "无变更").length;
+    }
+
+    function bomHistoryOptions() {
+      return [
+        { value: bomState.workingVersion, label: `${bomState.workingVersion} · 当前工作版本` },
+        { value: bomState.effectiveVersion || currentVersion(), label: `${bomState.effectiveVersion || currentVersion()} · 当前生效版本` },
+        { value: bomState.previousVersion, label: `${bomState.previousVersion} · 历史版本` }
+      ].filter((item, index, list) => item.value && list.findIndex((other) => other.value === item.value) === index);
+    }
+
+    function rowsForHistoryVersion(version) {
+      const effectiveVersion = bomState.effectiveVersion || currentVersion();
+      const rows = cloneRows(bomState.rows);
+      if (version === bomState.workingVersion) {
+        const wearPad = rows.find((row) => row.bwNo === "5070002");
+        if (wearPad) {
+          wearPad.supplyPlan = "二供 · 同步开发";
+          wearPad.changeStatus = "供应策略变化";
+          wearPad.remark = "工作版本调整二供策略，待 SCM 确认后生效";
+        }
+        rows.push({
+          id: "working-seal-ring",
+          no: rows.length + 1,
+          level: 2,
+          name: "SEAL RING",
+          application: "VCT",
+          qty: "1",
+          customerNo: "-",
+          bwNo: "5070004",
+          drawingRev: "A",
+          sampleSapNo: "SAP-P-9001-04",
+          massSapNo: "SAP-S-9001-04",
+          rawNo: "RM-FKM",
+          rawMaterial: "FKM",
+          weightPiece: "0.9",
+          weightAssembly: "0.9",
+          sharedPart: "否",
+          borrowedProject: "-",
+          releaseStatus: "评审中",
+          rawSupplier: "Ningbo Rubber",
+          subSupplier: "D-Supplier",
+          needApqp: "是",
+          createTask: "是",
+          apqpOwner: "SQD / Zack",
+          supplyPlan: "一供 · 单一供应",
+          startGate: "Gate2",
+          blockGate: "否",
+          changeStatus: "新增",
+          remark: "当前工作版本新增"
+        });
+        return rows;
+      }
+      if (version === effectiveVersion) {
+        return rows;
+      }
+      if (version === bomState.previousVersion) {
+        return rows
+          .filter((row) => row.bwNo !== "5070002")
+          .map((row) => ({ ...row, changeStatus: "历史版本" }))
+          .concat({
+            id: "history-old-guide-pin",
+            no: rows.length,
+            level: 2,
+            name: "OLD GUIDE PIN",
+            application: "VCT",
+            qty: "1",
+            customerNo: "-",
+            bwNo: "5068801",
+            drawingRev: "R0",
+            sampleSapNo: "SAP-P-8801",
+            massSapNo: "SAP-S-8801",
+            rawNo: "RM-SUS304",
+            rawMaterial: "SUS304",
+            weightPiece: "0.5",
+            weightAssembly: "0.5",
+            sharedPart: "否",
+            borrowedProject: "-",
+            releaseStatus: "已释放",
+            rawSupplier: "Ningbo Steel",
+            subSupplier: "A-Supplier",
+            needApqp: "是",
+            createTask: "是",
+            apqpOwner: "SQD / Zack",
+            supplyPlan: "一供 · 单一供应",
+            startGate: "Gate1",
+            blockGate: "是",
+            changeStatus: "历史版本",
+            remark: "上一版本零件"
+          })
+          .map((row, index) => ({ ...row, no: index + 1 }));
+      }
+      return rows;
+    }
+
+    function renderBomVersionSwitchOptions() {
+      const select = document.querySelector("[data-bom-version-switch]");
+      if (!select) return;
+      const selectedValue = select.value || bomState.effectiveVersion || currentVersion();
+      select.innerHTML = bomHistoryOptions().map((item) => `<option value="${escapeHtml(item.value)}">${escapeHtml(item.label)}</option>`).join("");
+      if (Array.from(select.options).some((option) => option.value === selectedValue)) {
+        select.value = selectedValue;
+      } else if (bomState.effectiveVersion) {
+        select.value = bomState.effectiveVersion;
+      }
     }
 
     function renderBomList() {
       const keyword = document.querySelector("[data-bom-search]")?.value.trim() || "";
-      const version = document.querySelector("[data-bom-history-select]")?.value || "";
-      const l1Rows = bomState.rows
-        .filter((row) => rowMatches(row, keyword, "", ""))
-        .filter(() => !version || currentVersion() === version);
+      renderBomVersionSwitchOptions();
+      const selectedVersion = document.querySelector("[data-bom-version-switch]")?.value || bomState.effectiveVersion || currentVersion();
+      const versionRows = rowsForHistoryVersion(selectedVersion);
+      const l1Rows = versionRows
+        .filter((row) => rowMatches(row, keyword, "", ""));
 
-      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="27" class="bom-empty-tip">${bomState.rows.length ? "未找到匹配的BOM信息" : "暂无该零件BOM数据"}</td></tr>`;
-      document.querySelector("[data-bom-current-version]").textContent = currentVersion();
-      document.querySelector("[data-bom-current-status]").textContent = statusText(bomState.status);
-      document.querySelector("[data-bom-l1-count]").textContent = bomState.rows.filter((row) => row.level === 1).length;
-      document.querySelector("[data-bom-all-count]").textContent = bomState.rows.length;
-      document.querySelector("[data-bom-blocking-count]").textContent = unfinishedBlockingBomRows().length;
-      document.querySelector("[data-bom-sync-status]").textContent = diffSummaryText();
-      renderBomHistoryOptions();
+      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="${bomHeaders.length + 1}" class="bom-empty-tip">${versionRows.length ? "未找到匹配的BOM信息" : "暂无该版本BOM数据"}</td></tr>`;
+      const effectiveVersion = bomState.effectiveVersion || currentVersion();
+      const workingVersion = bomState.workingVersion || "-";
+      document.querySelector("[data-bom-effective-version]").textContent = effectiveVersion;
+      document.querySelector("[data-bom-working-version]").textContent = workingVersion;
+      document.querySelector("[data-bom-all-count]").textContent = versionRows.length;
+      const changeCount = document.querySelector("[data-bom-work-change-count]");
+      if (changeCount) changeCount.textContent = workingBomChangeCount();
     }
 
     function renderBomEditor() {
       const keyword = document.querySelector("[data-row-search]")?.value.trim() || "";
       const application = document.querySelector("[data-row-application]")?.value || "";
+      const supplyType = document.querySelector("[data-row-supply-type]")?.value || "";
       const customerNo = document.querySelector("[data-row-customer]")?.value.trim() || "";
       const partNoKeyword = document.querySelector("[data-row-part-no]")?.value.trim() || "";
-      const rows = rowsForCurrentScope().filter((row) => rowMatches(row, keyword, application, customerNo, partNoKeyword));
+      const rows = rowsForCurrentScope().filter((row) => rowMatches(row, keyword, application, customerNo, partNoKeyword) && (!supplyType || supplyTypeText(row) === supplyType));
 
-      bomEditBody.innerHTML = rows.map((row) => bomRowHtml(row, true)).join("") || `<tr><td colspan="29" class="center">未找到匹配的BOM项</td></tr>`;
+      bomEditBody.innerHTML = rows.map((row) => bomRowHtml(row, true)).join("") || `<tr><td colspan="${bomHeaders.length + 1}" class="center">未找到匹配的BOM项</td></tr>`;
       rowCount.textContent = `${rows.length}项`;
       document.querySelector("[data-bom-display-mode]").textContent = bomState.scopedRootId ? "显示：当前L1及其子集" : "显示：完整层级";
-      document.querySelector("[data-bom-scope-label]").textContent = bomState.scopedRootId ? "L1子集编辑" : "完整层级";
-      document.querySelector("[data-bom-work-version]").textContent = currentVersion();
+      const scopeLabel = document.querySelector("[data-bom-scope-label]");
+      if (scopeLabel) scopeLabel.textContent = bomState.scopedRootId ? "L1子集编辑" : "完整层级";
+      const workVersion = document.querySelector("[data-bom-work-version]");
+      if (workVersion) workVersion.textContent = currentVersion();
       const statusEl = document.querySelector("[data-bom-work-status]");
-      statusEl.textContent = statusText(bomState.status);
-      statusEl.className = `status-pill ${statusClass(bomState.status)}`;
+      if (statusEl) {
+        statusEl.textContent = statusText(bomState.status);
+        statusEl.className = `status-pill ${statusClass(bomState.status)}`;
+      }
+      updateBomSelectionUI(rows);
+    }
+
+    function supplyTypeText(row) {
+      const text = String(row.supplyType || row.supplyPlan || "").trim();
+      if (text.includes("一供")) return "一供";
+      if (text.includes("二供")) return "二供";
+      return "-";
+    }
+
+    function supplyTypeTagHtml(row) {
+      const type = supplyTypeText(row);
+      if (type === "一供") return `<span class="supply-type-tag supply-type-primary">一供</span>`;
+      if (type === "二供") return `<span class="supply-type-tag supply-type-secondary">二供</span>`;
+      return "-";
+    }
+
+    function canOpenPartTask(row) {
+      return row.createTask === "是" || row.needApqp === "是" || Boolean(row.apqpNo || row.partTaskNo || row.childTaskDone);
+    }
+
+    function bomPartTaskLinkHtml(row) {
+      const partNo = row.bwNo || row.sampleSapNo || row.massSapNo || "-";
+      if (!partNo || partNo === "-" || !canOpenPartTask(row)) return escapeHtml(partNo);
+      return `<button class="blue-link" type="button" data-open-part-task="${escapeHtml(row.id)}" title="跳转至对应的零件开发任务">${escapeHtml(partNo)}</button>`;
+    }
+
+    function findBomRowById(rowId) {
+      return bomState.rows.find((row) => row.id === rowId)
+        || (bomState.histories || []).flatMap((history) => history.rows || []).find((row) => row.id === rowId)
+        || rowsForHistoryVersion(bomState.workingVersion || currentVersion()).find((row) => row.id === rowId)
+        || null;
+    }
+
+    function openPartDevelopmentTask(rowId) {
+      const row = findBomRowById(rowId);
+      if (!row) return;
+      const target = new URL("子零件开发任务详情_调整版.html", window.location.href);
+      target.searchParams.set("source", "bom");
+      target.searchParams.set("projectCode", document.querySelector("[data-source-project-text]")?.textContent?.replace(/^来源项目：/, "").trim() || "");
+      target.searchParams.set("bomVersion", document.querySelector("[data-bom-version-switch]")?.value || bomState.effectiveVersion || currentVersion());
+      target.searchParams.set("bomRowId", row.id);
+      target.searchParams.set("partNo", row.bwNo || row.sampleSapNo || row.massSapNo || "");
+      target.searchParams.set("partName", row.name || "");
+      target.searchParams.set("level", `L${row.level || ""}`);
+      target.searchParams.set("supplier", row.subSupplier || row.rawSupplier || "");
+      target.searchParams.set("owner", row.apqpOwner || "");
+      window.location.href = target.toString();
+    }
+
+    function handleBomPartTaskClick(event) {
+      const button = event.target.closest("[data-open-part-task]");
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      openPartDevelopmentTask(button.dataset.openPartTask);
     }
 
     function bomRowHtml(row, selectable) {
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
       const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
+      const supplyType = supplyTypeTagHtml(row);
+      const partNo = bomPartTaskLinkHtml(row);
       const cells = [
-        row.no, level, partName, row.application, row.qty, row.customerNo, row.bwNo, row.drawingRev,
+        row.no, row.application, level, partName, row.qty, row.customerNo, partNo, row.drawingRev,
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
         row.sharedPart, row.borrowedProject, row.releaseStatus, row.rawSupplier, row.subSupplier,
-        row.needApqp || "-", row.createTask || "-", row.apqpOwner || "-", row.supplyPlan || "-",
-        row.startGate || "-", row.blockGate || "-", row.changeStatus || "无变更", row.remark
+        supplyType, row.changeStatus || "无变更", row.remark
       ];
-      const readonly = selectable && (bomState.mode === "detail" || bomState.historyViewing);
-      const operation = readonly
-        ? `<span class="bom-op"><span>只读</span></span>`
-        : `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button><button class="blue-link" type="button" data-remove-row="${row.id}">删除</button></span>`;
       const body = cells.map((cell) => `<td>${cell}</td>`).join("");
-      const editOperation = selectable ? `<td class="fixed-op">${operation}</td>` : "";
-      return `<tr data-row-id="${row.id}">${selectable ? `<td class="center"><input type="checkbox" data-row-check="${row.id}"></td>` : ""}${body}${editOperation}</tr>`;
+      const rowCheck = selectable
+        ? `<td class="center"><input type="checkbox" data-row-check="${row.id}" ${bomState.selectedRowIds.includes(row.id) ? "checked" : ""}></td>`
+        : `<td class="center"><input type="checkbox" data-bom-list-check="${escapeHtml(row.id)}" aria-label="选择${escapeHtml(row.name)}"></td>`;
+      return `<tr data-row-id="${row.id}">${rowCheck}${body}</tr>`;
     }
 
     function openWorkspace(mode, rowId = null, historyVersion = null) {
       if (mode !== "create" && !historyVersion && !bomState.rows.length) return;
       bomState.mode = mode;
       const isCreate = mode === "create";
+      const isEdit = mode === "edit";
       const isScm = mode === "scm";
       const isDetail = mode === "detail";
       const historyItem = historyVersion ? bomState.histories.find((item) => item.version === historyVersion) : null;
@@ -12775,6 +13638,9 @@
         seedBomFromSelection();
         bomState.scopedRootId = null;
         bomState.historyViewing = false;
+      } else if (isEdit) {
+        bomState.status = "draft";
+        bomState.historyViewing = false;
       } else if (isScm && bomState.status === "locked") {
         bomState.status = "draft";
         bomState.historyViewing = false;
@@ -12788,15 +13654,17 @@
         bomState.scopedRootId = !isCreate && rowId && bomState.rows.find((row) => row.id === rowId)?.level === 1 ? rowId : null;
       }
 
-      document.querySelector("[data-bom-work-kicker]").textContent = historyItem ? "历史版本" : isCreate ? "AE 创建" : isScm ? "SCM 编辑" : "BOM详情";
-      document.querySelector("[data-bom-work-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : isCreate ? "创建BOM" : isScm ? "编辑BOM" : "BOM详情";
-      document.querySelector("[data-bom-work-role]").textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate ? "AE" : isScm ? "SCM" : "PM / 查看"}`;
+      const workKicker = document.querySelector("[data-bom-work-kicker]");
+      if (workKicker) workKicker.textContent = historyItem ? "历史版本" : isCreate ? "AE 创建" : isEdit ? "AE 编辑" : isScm ? "SCM 编辑" : "BOM详情";
+      document.querySelector("[data-bom-work-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : "编辑项目BOM容器";
+      const workRole = document.querySelector("[data-bom-work-role]");
+      if (workRole) workRole.textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate || isEdit ? "AE" : isScm ? "SCM" : "PM / 查看"}`;
       const headerSubmitButton = document.querySelector("[data-bom-submit]");
       const footerSubmitButton = document.querySelector("[data-bom-submit-foot]");
       const detailButton = document.querySelector("[data-bom-view-detail]");
       if (headerSubmitButton) headerSubmitButton.hidden = isDetail || Boolean(historyItem);
       if (footerSubmitButton) footerSubmitButton.hidden = isDetail || Boolean(historyItem);
-      document.querySelector("[data-bom-create-options]").hidden = !isCreate || Boolean(historyItem);
+      document.querySelector("[data-bom-create-options]").hidden = isDetail || Boolean(historyItem);
       if (detailButton) detailButton.hidden = isDetail;
       document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
       document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
@@ -12809,6 +13677,8 @@
 
     function closeBomModal() {
       bomModal.hidden = true;
+      bomState.selectedRowIds = [];
+      closeBomInlineDrawer();
       if (bomState.historyViewing) {
         restoreLatestBomSnapshot();
       }
@@ -12829,6 +13699,103 @@
       bomModal.hidden = true;
       renderBomList();
     }
+
+
+    function selectedBomRows() { return bomState.rows.filter((row) => bomState.selectedRowIds.includes(row.id)); }
+    function childLevelFor(row) { return Math.min(Number(row && row.level || 1) + 1, 4); }
+    function canAddChild(row) { return Number(row && row.level || 1) < 4; }
+    function updateBomSelectionUI(visibleRows = rowsForCurrentScope()) {
+      const selected = selectedBomRows();
+      const bar = document.querySelector("[data-bom-selection-bar]");
+      const info = document.querySelector("[data-bom-selection-info]");
+      const checkAll = document.querySelector("[data-bom-check-all]");
+      if (checkAll) {
+        const ids = visibleRows.map((row) => row.id);
+        const count = ids.filter((id) => bomState.selectedRowIds.includes(id)).length;
+        checkAll.checked = Boolean(ids.length && count === ids.length);
+        checkAll.indeterminate = Boolean(count && count < ids.length);
+      }
+      if (!bar || !info) return;
+      bar.hidden = !selected.length;
+      if (!selected.length) { closeBomInlineDrawer(); return; }
+      if (selected.length === 1) {
+        const row = selected[0];
+        const child = childLevelFor(row);
+        info.innerHTML = "已选择：" + escapeHtml(row.name) + " <span>L" + row.level + " / 将添加 L" + child + " 子项</span>";
+        document.querySelectorAll('[data-bom-drawer-open="library"], [data-bom-drawer-open="manual"]').forEach((button) => {
+          button.hidden = !canAddChild(row);
+          button.textContent = button.dataset.bomDrawerOpen === "library" ? "从零件库添加 L" + child : "手动添加 L" + child;
+        });
+        document.querySelector('[data-bom-drawer-open="edit"]')?.removeAttribute("hidden");
+      } else {
+        info.innerHTML = "已选择 " + selected.length + " 项 <span>多选仅支持批量删除</span>";
+        document.querySelectorAll('[data-bom-drawer-open="library"], [data-bom-drawer-open="manual"], [data-bom-drawer-open="edit"]').forEach((button) => { button.hidden = true; });
+      }
+    }
+    function copySelectedBomRowsAsSecondary() {
+      const selected = selectedBomRows();
+      if (!selected.length) return;
+      bomState.undoStack.push(cloneRows(bomState.rows));
+      const copiedIds = [];
+      selected.forEach((row) => {
+        const sourceIndex = bomState.rows.findIndex((item) => item.id === row.id);
+        if (sourceIndex < 0) return;
+        const copiedRow = {
+          ...row,
+          id: row.id + "-secondary-" + Date.now() + "-" + Math.random().toString(16).slice(2, 6),
+          no: bomState.rows.length + copiedIds.length + 1,
+          supplyPlan: "二供 · 复制新增",
+          subSupplier: row.subSupplier && row.subSupplier !== "-" ? row.subSupplier : "二供待定",
+          changeStatus: "复制新增",
+          remark: row.remark && row.remark !== "-" ? row.remark + "；复制为二供" : "复制为二供"
+        };
+        bomState.rows.splice(sourceIndex + 1, 0, copiedRow);
+        copiedIds.push(copiedRow.id);
+      });
+      renumberRows();
+      bomState.status = "draft";
+      bomState.selectedRowIds = copiedIds;
+      closeBomInlineDrawer();
+      renderBomEditor();
+      renderBomList();
+      showMessage("复制成功", "<p>已复制 " + copiedIds.length + " 个勾选零件，复制项已默认为二供。</p>");
+    }
+
+    function clearBomPartSearchInputs() { ["[data-bom-part-search-name]", "[data-bom-part-search-no]"].forEach((selector) => { const field = document.querySelector(selector); if (field) field.value = ""; }); }
+    function setBomSearchResults(rows = []) {
+      const box = document.querySelector("[data-bom-search-results]");
+      if (!box) return;
+      box.hidden = !rows.length;
+      box.innerHTML = rows.length ? '<div class="bom-search-results-head"><b>候选零件</b><span>请复核后添加至下方 BOM 列表</span></div><div class="bom-search-result-header"><span>零件/材料名称</span><span>产品应用</span><span>BW 零件号</span><span>SAP 零件号</span><span>操作</span></div>' + rows.map((row) => {
+        const added = bomState.rows.some((item) => item.productKey === row.productKey);
+        return '<div class="bom-search-result-row ' + (added ? 'is-added' : '') + '"><div class="bom-search-part-name"><b>' + escapeHtml(row.name) + '</b>' + (added ? '<span class="bom-search-added-tag">已添加</span>' : '') + '</div><b>' + escapeHtml(row.application) + '</b><b>' + escapeHtml(row.bwNo) + '</b><b>' + escapeHtml(row.sampleSapNo) + '</b>' + (added ? '<span class="bom-search-added-text">已在列表中</span>' : '<button class="btn btn-primary" type="button" data-bom-add-product="' + escapeHtml(row.productKey) + '">添加</button>') + '</div>';
+      }).join("") : "";
+    }
+    function searchBomPart() {
+      const name = document.querySelector("[data-bom-part-search-name]")?.value.trim().toLowerCase() || "";
+      const no = document.querySelector("[data-bom-part-search-no]")?.value.trim().toLowerCase() || "";
+      const tip = document.querySelector("[data-bom-part-search-result]");
+      if (!name && !no) { bomState.searchMatches = []; setBomSearchResults(); if (tip) { tip.textContent = "请输入零件编号或零件名称后再查询。"; tip.className = "bom-part-search-note is-warning"; } return; }
+      const rows = bomProductCatalog.flatMap((product, index) => buildProductBomRows(product, index)).filter((row) => {
+        const nc = [row.name, row.application, row.rawMaterial].join(" ").toLowerCase();
+        const pc = [row.bwNo, row.sampleSapNo, row.massSapNo, row.rawNo].join(" ").toLowerCase();
+        return (!name || nc.includes(name)) && (!no || pc.includes(no));
+      }).filter((row, index, all) => all.findIndex((item) => item.productKey === row.productKey) === index).slice(0, 6);
+      bomState.searchMatches = rows; setBomSearchResults(rows);
+      if (tip) { tip.textContent = rows.length ? "已匹配 " + rows.length + " 条零件信息，请复核后点击添加。" : "未找到匹配零件，请调整零件名称或SAP/BW/原材料零件号后重试。"; tip.className = rows.length ? "bom-part-search-note" : "bom-part-search-note is-warning"; }
+    }
+    function appendBomFromProduct(product) { const n = new Set(bomState.rows.map((row) => row.productKey)).size; bomState.undoStack.push(cloneRows(bomState.rows)); bomState.rows.push(...buildProductBomRows(product, n).map((row) => ({ ...row, id: row.id + "-" + Date.now() }))); renumberRows(); bomState.status = "draft"; }
+    function addBomSearchResult(key) { const product = bomProductMap[key]; const tip = document.querySelector("[data-bom-part-search-result]"); if (!product) return; if (bomState.rows.some((row) => row.productKey === key)) { if (tip) { tip.textContent = product.name + " 的完整 BOM 结构已在下方列表中，无需重复添加。"; tip.className = "bom-part-search-note is-warning"; } setBomSearchResults(bomState.searchMatches); return; } appendBomFromProduct(product); setBomSearchResults(bomState.searchMatches); if (tip) { tip.textContent = "已添加 " + product.name + " 对应的完整 BOM 结构，可继续复核并添加当前匹配结果。"; tip.className = "bom-part-search-note is-success"; } renderBomEditor(); renderBomList(); }
+    function setBomDrawerMode(mode) { bomState.drawerMode = mode; document.querySelectorAll("[data-bom-drawer-tab]").forEach((button) => button.classList.toggle("active", button.dataset.bomDrawerTab === mode)); document.querySelectorAll("[data-bom-drawer-section]").forEach((section) => { section.hidden = section.dataset.bomDrawerSection !== mode; }); }
+    function inlineField(name) { return document.querySelector('[data-inline-part-field="' + name + '"]'); }
+    function inlineFieldValue(name) { return inlineField(name)?.value.trim() || "-"; }
+    function setInlineFieldValue(name, value) { const field = inlineField(name); if (field) field.value = value ?? ""; }
+    function fillInlineDrawer(row, mode) { const data = { level: row ? String(mode === "edit" ? row.level : childLevelFor(row)) : "1", qty: mode === "edit" ? row.qty : "1", supplyType: supplyTypeText(row || {}) === "二供" ? "二供" : "一供", apqpOwner: row?.apqpOwner || "SQD / Zack", name: mode === "edit" ? row.name : "", application: row?.application || "VCT", customerNo: mode === "edit" ? row.customerNo : "-", bwNo: mode === "edit" ? row.bwNo : "", drawingRev: mode === "edit" ? row.drawingRev : "A", sampleSapNo: mode === "edit" ? row.sampleSapNo : "", massSapNo: mode === "edit" ? row.massSapNo : "", rawNo: mode === "edit" ? row.rawNo : "", rawMaterial: mode === "edit" ? row.rawMaterial : "", weightPiece: mode === "edit" ? row.weightPiece : "", weightAssembly: mode === "edit" ? row.weightAssembly : "", sharedPart: mode === "edit" ? row.sharedPart : "否", borrowedProject: mode === "edit" ? row.borrowedProject : "-", releaseStatus: mode === "edit" ? row.releaseStatus : "评审中", rawSupplier: mode === "edit" ? row.rawSupplier : "", subSupplier: mode === "edit" ? row.subSupplier : "", remark: mode === "edit" ? row.remark : "手动添加", changeStatus: mode === "edit" ? row.changeStatus : "新增" }; Object.entries(data).forEach(([k,v]) => setInlineFieldValue(k,v)); }
+    function renderBomLibraryResults() { const box = document.querySelector("[data-bom-library-results]"); if (!box) return; const kw = document.querySelector("[data-bom-library-search]")?.value.trim().toLowerCase() || ""; const rows = bomProductCatalog.filter((p) => !kw || [p.name,p.root,p.key].join(" ").toLowerCase().includes(kw)).slice(0,6); box.innerHTML = rows.map((p) => '<div class="bom-library-result"><div><b>' + escapeHtml(p.root) + '</b><span>' + escapeHtml(p.name) + ' · BW ' + escapeHtml(partNo(p.seed,0)) + '</span></div><button class="bom-add-link" type="button" data-bom-library-add="' + escapeHtml(p.key) + '">添加</button></div>').join("") || '<div class="bom-empty-tip">未找到匹配零件</div>'; }
+    function openBomInlineDrawer(mode) { const selected = selectedBomRows(); if (!selected.length) return; const row = selected[0]; const drawer = document.querySelector("[data-bom-inline-drawer]"); const layout = document.querySelector("[data-bom-workspace-layout]"); if (!drawer || !layout) return; bomState.drawerParentId = row.id; bomState.drawerEditId = mode === "edit" ? row.id : null; drawer.hidden = false; layout.classList.add("has-drawer"); document.querySelector("[data-bom-drawer-title]").textContent = mode === "edit" ? "编辑BOM项" : "添加 L" + childLevelFor(row) + " 子项"; document.querySelector("[data-bom-drawer-context]").textContent = mode === "edit" ? "正在编辑：" + row.name : "将添加为：" + row.name + " 下的 L" + childLevelFor(row) + " 子项"; document.querySelector("[data-bom-drawer-mode]").hidden = mode === "edit"; fillInlineDrawer(row, mode); setBomDrawerMode(mode === "library" ? "library" : "manual"); renderBomLibraryResults(); }
+    function closeBomInlineDrawer() { document.querySelector("[data-bom-inline-drawer]")?.setAttribute("hidden", ""); document.querySelector("[data-bom-workspace-layout]")?.classList.remove("has-drawer"); bomState.drawerParentId = null; bomState.drawerEditId = null; }
+    function saveInlineDrawer() { const target = bomState.rows.find((row) => row.id === bomState.drawerEditId); const parent = bomState.rows.find((row) => row.id === bomState.drawerParentId); const payload = { level: Number(inlineFieldValue("level")), name: inlineFieldValue("name"), application: inlineFieldValue("application"), qty: inlineFieldValue("qty"), customerNo: inlineFieldValue("customerNo"), bwNo: inlineFieldValue("bwNo"), drawingRev: inlineFieldValue("drawingRev"), sampleSapNo: inlineFieldValue("sampleSapNo"), massSapNo: inlineFieldValue("massSapNo"), rawNo: inlineFieldValue("rawNo"), rawMaterial: inlineFieldValue("rawMaterial"), weightPiece: inlineFieldValue("weightPiece"), weightAssembly: inlineFieldValue("weightAssembly"), sharedPart: inlineFieldValue("sharedPart"), borrowedProject: inlineFieldValue("borrowedProject"), releaseStatus: inlineFieldValue("releaseStatus"), rawSupplier: inlineFieldValue("rawSupplier"), subSupplier: inlineFieldValue("subSupplier"), supplyPlan: inlineFieldValue("supplyType") + " · 手动维护", apqpOwner: inlineFieldValue("apqpOwner"), changeStatus: inlineFieldValue("changeStatus"), remark: inlineFieldValue("remark") }; if (!payload.name || payload.name === "-") { showMessage("无法保存", "<p>请填写零件 / 材料名称。</p>"); return; } bomState.undoStack.push(cloneRows(bomState.rows)); if (target) Object.assign(target, payload); else if (parent) bomState.rows.splice(bomState.rows.findIndex((row) => row.id === parent.id) + 1, 0, { id: "inline-" + Date.now(), no: bomState.rows.length + 1, productKey: parent.productKey, needApqp: "是", createTask: "是", startGate: "Gate1", blockGate: "是", impactAction: "手动维护新增", ...payload }); bomState.status = "draft"; renumberRows(); closeBomInlineDrawer(); renderBomEditor(); renderBomList(); }
+    function saveBomDraft() { bomState.status = "draft"; renderBomEditor(); renderBomList(); showMessage("保存草稿", "<p>BOM 草稿已保存，当前包含 " + bomState.rows.length + " 条零件数据。</p>"); }
 
     function fieldValue(name) {
       return document.querySelector(`[data-part-field="${name}"]`).value.trim() || "-";
@@ -12941,9 +13908,65 @@
       renderBomList();
     }
 
-    document.querySelector("[data-bom-create]")?.addEventListener("click", () => openWorkspace("create"));
-    document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", () => openWorkspace("scm"));
+    function openBomRowEditFromList(rowId) {
+      const row = bomState.rows.find((item) => item.id === rowId);
+      if (!row) return;
+      openWorkspace("scm");
+      window.setTimeout(() => openPartModal(rowId), 0);
+    }
+
+    function currentBomListRows() {
+      const keyword = document.querySelector("[data-bom-search]")?.value.trim() || "";
+      const selectedVersion = document.querySelector("[data-bom-version-switch]")?.value || bomState.effectiveVersion || currentVersion();
+      return rowsForHistoryVersion(selectedVersion).filter((row) => rowMatches(row, keyword, "", ""));
+    }
+
+    function selectedBomListRows() {
+      const checkedIds = Array.from(document.querySelectorAll("[data-bom-list-check]:checked")).map((input) => input.dataset.bomListCheck);
+      const rows = currentBomListRows();
+      return checkedIds.length ? rows.filter((row) => checkedIds.includes(row.id)) : rows;
+    }
+
+    function exportBomTemplate() {
+      const rows = selectedBomListRows();
+      if (!rows.length) {
+        showMessage("无法导出BOM", "<p>当前没有可导出的 BOM 数据，请先调整查询条件。</p>");
+        return;
+      }
+      const headers = ["序号", "产品应用", "层级", "零件/材料名称", "数量", "客户零件号", "BW零件号", "图纸版本", "样件SAP零件号", "量产SAP零件号", "原材料零件号", "原材料", "原材料供应商", "子供应商", "备注"];
+      const csvRows = [headers, ...rows.map((row) => [row.no, row.application, `L${row.level}`, row.name, row.qty, row.customerNo, row.bwNo, row.drawingRev, row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.rawSupplier, row.subSupplier, row.remark])];
+      const csv = csvRows.map((row) => row.map((value) => `"${String(value ?? "-").replace(/"/g, '""')}"`).join(",")).join("\n");
+      const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `${currentVersion()}_PHASER_INSERT_BOM.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+      showMessage("导出成功", `<p>已导出 ${rows.length} 条 BOM 数据。</p>`);
+    }
+
+    function confirmBom() {
+      if (!bomState.rows.length) {
+        showMessage("无法确认BOM", "<p>当前没有可确认的 BOM 数据。</p>");
+        return;
+      }
+      snapshotBomHistory();
+      bomState.status = "locked";
+      bomState.effectiveVersion = currentVersion();
+      bomState.lockedVersion = currentVersion();
+      bomState.syncedVersion = currentVersion();
+      bomState.workingStatus = "已确认";
+      renderBomList();
+      showMessage("确认成功", `<p>BOM 已确认并锁定为 ${currentVersion()}，子零件开发任务将按当前版本同步。</p>`);
+    }
+
+    document.querySelector("[data-bom-create]")?.addEventListener("click", () => openWorkspace("edit"));
+    document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", confirmBom);
+    document.querySelector("[data-bom-export-template]")?.addEventListener("click", exportBomTemplate);
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
+    document.querySelector("[data-open-dr-review]")?.addEventListener("click", () => {
+      window.open("DR设计评审_Open_Issue_List_DEMO.html", "_blank");
+    });
     document.querySelector("[data-task-edit]")?.addEventListener("click", () => {
       setProjectEditDrawer(true);
     });
@@ -12951,6 +13974,43 @@
       openPartStatusConfirm("cancel");
       if (partStatusTitle) partStatusTitle.textContent = "删除任务确认";
       if (partStatusMessage) partStatusMessage.textContent = "请填写删除说明；确认后任务将标记为终止并不再进入后续开发流程。";
+    });
+    document.querySelector("[data-edit-part-health]")?.addEventListener("click", openPartHealthModal);
+    document.querySelector("[data-view-part-health-reason]")?.addEventListener("click", openPartHealthReason);
+    document.querySelectorAll("[data-close-part-health]").forEach((button) => {
+      button.addEventListener("click", closePartHealthModal);
+    });
+    partHealthModal?.addEventListener("click", (event) => {
+      if (event.target === partHealthModal) {
+        closePartHealthModal();
+      }
+    });
+    confirmPartHealth?.addEventListener("click", () => {
+      const nextHealth = partHealthValue?.value || "green";
+      const reason = partHealthReason?.value.trim() || "";
+      if (!reason) {
+        if (partHealthError) partHealthError.hidden = false;
+        partHealthReason?.focus();
+        return;
+      }
+      partTaskHealth = partHealthConfig[nextHealth] ? nextHealth : "green";
+      const config = partHealthConfig[partTaskHealth] || partHealthConfig.green;
+      partHealthRecords.push({
+        health: partTaskHealth,
+        reason,
+        createdAt: getCurrentTime()
+      });
+      renderPartTaskHealth();
+      addPartEvent({
+        category: "status",
+        type: "健康度",
+        title: `子零件开发任务健康度调整为${config.label}`,
+        description: reason,
+        actor: "当前用户",
+        role: currentRecordRole,
+        scope: "任务健康度"
+      });
+      closePartHealthModal();
     });
     document.querySelector("[data-project-status-actions]")?.addEventListener("click", (event) => {
       const actionButton = event.target.closest("[data-project-status-action]");
@@ -12995,19 +14055,7 @@
         closeMessage();
       }
     });
-    document.querySelector("[data-view-part-apqp]")?.addEventListener("click", openPartApqpTaskDrawer);
-    document.querySelector("[data-bom-blocking-detail]")?.addEventListener("click", () => {
-      showMessage("阻塞未完成口径", `
-        <p>统计口径：BOM 行或供应方案同时满足“生成开发任务 = 是、阻塞Gate = 是、当前任务未完成”。这些对象会阻塞当前 Gate 提交审核。</p>
-        ${renderBlockingDetailTable()}
-      `);
-    });
-    document.querySelector("[data-bom-sync-detail]")?.addEventListener("click", () => {
-      showMessage("版本对比", `
-        <p>统计口径：项目BOM完成确认、影响分析和供应方案处理后，同步到当前子零件BOM。这里展示同步结果，项目端流程状态不进入本页。</p>
-        ${renderBomSyncTable()}
-      `);
-    });
+    document.querySelector("[data-bom-version-switch]")?.addEventListener("change", renderBomList);
     document.querySelector("[data-open-project]")?.addEventListener("click", (event) => {
       goProjectDetail();
     });
@@ -13020,24 +14068,32 @@
       input.addEventListener("change", syncEditSystemValue);
     });
     saveProjectEditDraft?.addEventListener("click", () => {
-      showMessage("保存草稿", "<p>子零件开发项目信息草稿已保存。</p>");
+      showMessage("保存草稿", "<p>子零件开发任务信息草稿已保存。</p>");
     });
     confirmProjectEdit?.addEventListener("click", () => {
       setProjectEditDrawer(false);
       addPartEvent({
         category: "status",
         type: "状态",
-        title: "编辑子零件开发项目信息",
-        description: "项目信息表单已保存，字段结构与项目列表新建项目表单保持一致。",
+        title: "编辑子零件开发任务信息",
+        description: "任务信息表单已保存，字段结构与子零件开发任务列表的新建抽屉保持一致。",
         actor: "当前用户",
         role: currentRecordRole,
-        scope: "项目信息"
+        scope: "任务信息"
       });
-      showMessage("保存成功", "<p>子零件开发项目信息已更新。</p>");
+      showMessage("保存成功", "<p>子零件开发任务信息已更新。</p>");
     });
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
     document.querySelector("[data-bom-submit]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
+    document.querySelector("[data-bom-head]")?.addEventListener("change", (event) => {
+      const checkAll = event.target.closest("[data-bom-list-check-all]");
+      if (!checkAll) return;
+      document.querySelectorAll("[data-bom-list-check]").forEach((input) => {
+        input.checked = checkAll.checked;
+      });
+    });
+    bomEditBody?.addEventListener("click", handleBomPartTaskClick);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
     document.querySelectorAll("[data-bom-product-picker] input").forEach((input) => input.addEventListener("change", () => {
@@ -13049,19 +14105,30 @@
     }));
     document.querySelector("[data-bom-reset]").addEventListener("click", () => {
       document.querySelector("[data-bom-search]").value = "";
-      document.querySelector("[data-bom-history-select]").value = "";
       renderBomList();
     });
     document.querySelector("[data-row-reset]").addEventListener("click", () => {
       document.querySelector("[data-row-part-no]").value = "";
       document.querySelector("[data-row-search]").value = "";
       document.querySelector("[data-row-application]").value = "";
+      document.querySelector("[data-row-supply-type]").value = "";
       document.querySelector("[data-row-customer]").value = "";
       renderBomEditor();
     });
     document.querySelector("[data-open-part-modal]")?.addEventListener("click", () => openPartModal());
     document.querySelectorAll("[data-close-part-modal]").forEach((button) => button.addEventListener("click", closePartModal));
-    document.querySelector("[data-add-part-confirm]").addEventListener("click", savePart);
+    document.querySelector("[data-add-part-confirm]")?.addEventListener("click", savePart);
+    document.querySelector("[data-bom-save-draft]")?.addEventListener("click", saveBomDraft);
+    document.querySelector("[data-bom-part-search-confirm]")?.addEventListener("click", searchBomPart);
+    document.querySelectorAll("[data-bom-part-search-name], [data-bom-part-search-no]").forEach((input) => input.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); searchBomPart(); } }));
+    document.querySelector("[data-bom-search-results]")?.addEventListener("click", (event) => { const addButton = event.target.closest("[data-bom-add-product]"); if (addButton) addBomSearchResult(addButton.dataset.bomAddProduct); });
+    document.querySelector("[data-bom-part-search-reset]")?.addEventListener("click", () => { clearBomPartSearchInputs(); bomState.searchMatches = []; setBomSearchResults(); const tip = document.querySelector("[data-bom-part-search-result]"); if (tip) { tip.textContent = "输入零件编号或零件名称后点击查询，可模糊匹配SAP模拟数据中的零件。"; tip.className = "bom-part-search-note"; } });
+    document.querySelector("[data-bom-selection-bar]")?.addEventListener("click", (event) => { const drawerButton = event.target.closest("[data-bom-drawer-open]"); if (drawerButton) openBomInlineDrawer(drawerButton.dataset.bomDrawerOpen); if (event.target.closest("[data-bom-copy-selection]")) copySelectedBomRowsAsSecondary(); if (event.target.closest("[data-bom-delete-selection]")) removeRows(bomState.selectedRowIds); });
+    document.querySelectorAll("[data-bom-drawer-close]").forEach((button) => button.addEventListener("click", closeBomInlineDrawer));
+    document.querySelector("[data-bom-drawer-mode]")?.addEventListener("click", (event) => { const tabButton = event.target.closest("[data-bom-drawer-tab]"); if (tabButton) setBomDrawerMode(tabButton.dataset.bomDrawerTab); });
+    document.querySelector("[data-bom-library-search]")?.addEventListener("input", renderBomLibraryResults);
+    document.querySelector("[data-bom-library-results]")?.addEventListener("click", (event) => { const addButton = event.target.closest("[data-bom-library-add]"); if (!addButton) return; const parent = bomState.rows.find((row) => row.id === bomState.drawerParentId); const product = bomProductMap[addButton.dataset.bomLibraryAdd]; if (!parent || !product) return; const child = buildProductBomRows(product, 0)[0]; bomState.undoStack.push(cloneRows(bomState.rows)); bomState.rows.splice(bomState.rows.findIndex((row) => row.id === parent.id) + 1, 0, { ...child, id: "library-" + Date.now(), no: bomState.rows.length + 1, level: childLevelFor(parent), productKey: parent.productKey, changeStatus: "新增", remark: "零件库添加：" + child.name }); renumberRows(); closeBomInlineDrawer(); renderBomEditor(); renderBomList(); });
+    document.querySelector("[data-bom-drawer-save]")?.addEventListener("click", saveInlineDrawer);
     document.querySelector("[data-copy-selected]")?.addEventListener("click", () => {
       const checked = Array.from(document.querySelectorAll("[data-row-check]:checked")).map((input) => input.dataset.rowCheck);
       const copies = bomState.rows.filter((row) => checked.includes(row.id)).map((row) => ({ ...row, id: `p${Date.now()}-${row.id}`, no: bomState.rows.length + 1, name: `${row.name} COPY` }));
@@ -13077,14 +14144,31 @@
     document.querySelector("[data-undo-delete]")?.addEventListener("click", undoDelete);
     document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     bomEditBody.addEventListener("click", (event) => {
+      if (event.target.closest("[data-open-part-task]")) return;
+      const checkbox = event.target.closest("[data-row-check]");
+      if (checkbox) {
+        const id = checkbox.dataset.rowCheck;
+        bomState.selectedRowIds = checkbox.checked ? Array.from(new Set([...bomState.selectedRowIds, id])) : bomState.selectedRowIds.filter((item) => item !== id);
+        updateBomSelectionUI();
+        return;
+      }
       const editButton = event.target.closest("[data-edit-row]");
       const removeButton = event.target.closest("[data-remove-row]");
-      if (editButton) openPartModal(editButton.dataset.editRow);
+      if (editButton) { bomState.selectedRowIds = [editButton.dataset.editRow]; renderBomEditor(); openBomInlineDrawer("edit"); }
       if (removeButton) removeRows([removeButton.dataset.removeRow]);
     });
+    document.querySelector("[data-bom-edit-head]")?.addEventListener("change", (event) => {
+      const checkAll = event.target.closest("[data-bom-check-all]");
+      if (!checkAll) return;
+      const ids = Array.from(document.querySelectorAll("[data-row-check]")).map((input) => input.dataset.rowCheck);
+      bomState.selectedRowIds = checkAll.checked ? ids : [];
+      renderBomEditor();
+    });
+    applyIncomingBomTaskContext();
     renderBomHeads();
     renderBomList();
     renderTeamTable();
+    renderPartTaskHealth();
     renderPartTaskStatus();
     updateStageScrollState();
     renderStageTasks(activeStage);

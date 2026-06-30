@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>项目详情 - PM阶段任务提醒</title>
+  <title>项目开发详情6月26日第一版</title>
   <style>
     :root {
       --page-max: 1670px;
@@ -223,11 +223,11 @@
 
     .stat-grid {
       display: grid;
-      grid-template-columns: repeat(4, max-content);
+      grid-template-columns: repeat(5, max-content);
       justify-content: end;
       align-items: start;
       text-align: center;
-      gap: 24px;
+      gap: 18px;
     }
 
     .stat-label {
@@ -271,6 +271,68 @@
     .status-cancel {
       color: var(--danger);
       background: var(--danger-weak);
+    }
+
+    .health-control {
+      display: grid;
+      justify-items: center;
+      gap: 6px;
+      min-width: 96px;
+    }
+
+    .health-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 20px;
+    }
+
+    .health-link {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .health-link:hover {
+      color: #0b55d9;
+      text-decoration: underline;
+    }
+
+    .health-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 64px;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-weight: 900;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .health-green {
+      color: #067647;
+      background: var(--success-weak);
+      border-color: #abefc6;
+    }
+
+    .health-yellow {
+      color: #b54708;
+      background: var(--warning-weak);
+      border-color: #fedf89;
+    }
+
+    .health-red {
+      color: #b42318;
+      background: var(--danger-weak);
+      border-color: #fecdca;
     }
 
     .project-status-actions {
@@ -1419,7 +1481,7 @@
 
     .stage-task-table .fixed-status {
       position: sticky;
-      right: 190px;
+      right: 96px;
       z-index: 2;
       background: #fff;
       border-left: 1px solid #d7dee8;
@@ -2099,14 +2161,10 @@
     }
 
     .plan-layout {
-      display: grid;
-      grid-template-columns: minmax(360px, 430px) minmax(0, 1fr);
-      gap: 18px;
-      align-items: start;
+      display: block;
       margin-top: 16px;
     }
 
-    .plan-form-stack,
     .plan-visual-stack {
       display: grid;
       gap: 14px;
@@ -2214,6 +2272,12 @@
       border-color: #fecdca;
       background: var(--danger-weak);
       color: #b42318;
+    }
+
+    .plan-alert.is-warning {
+      border-color: #fedf89;
+      background: #fffaeb;
+      color: #b54708;
     }
 
     .timeline-panel,
@@ -2324,11 +2388,16 @@
       min-width: 0;
     }
 
+    .customer-milestones [data-plan-node="customerProtype"] {
+      grid-column: 3 / 5;
+      justify-self: stretch;
+    }
+
     .milestone > span:first-child {
       max-width: 112px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
       font-size: 12px;
     }
 
@@ -2355,6 +2424,79 @@
       color: #164c8f;
       font-size: 13px;
       font-weight: 900;
+    }
+
+    .milestone-date.is-empty,
+    .gate-name span.is-empty {
+      color: #98a2b3;
+      font-weight: 800;
+    }
+
+    .milestone-date.is-warning,
+    .gate-name span.is-warning {
+      color: #b54708;
+    }
+
+    .milestone-date-input,
+    .gate-date-input {
+      display: none;
+      width: 132px;
+      height: 32px;
+      border: 1px solid var(--line-strong);
+      border-radius: 5px;
+      background: #fff;
+      color: #1d2939;
+      padding: 0 8px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .milestone-date-input:focus,
+    .gate-date-input:focus {
+      outline: 2px solid rgba(23, 105, 255, .18);
+      border-color: var(--primary);
+    }
+
+    .milestone-date-input.is-invalid,
+    .gate-date-input.is-invalid {
+      border-color: var(--danger);
+      background: #fff7f7;
+    }
+
+    .milestone.is-buffer-risk .milestone-dot,
+    .gate-cell.is-buffer-risk {
+      border-color: #f79009;
+      box-shadow: 0 0 0 3px rgba(247, 144, 9, .12);
+    }
+
+    .buffer-risk-tag {
+      display: none;
+      min-height: 18px;
+      align-items: center;
+      justify-content: center;
+      padding: 1px 6px;
+      border-radius: 999px;
+      border: 1px solid #fedf89;
+      background: #fffaeb;
+      color: #b54708;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .milestone.is-buffer-risk .buffer-risk-tag,
+    .gate-cell.is-buffer-risk .buffer-risk-tag {
+      display: inline-flex;
+    }
+
+    .plan-page.is-editing .milestone-date,
+    .plan-page.is-editing .gate-name > span[data-date-label] {
+      display: none;
+    }
+
+    .plan-page.is-editing .milestone-date-input,
+    .plan-page.is-editing .gate-date-input {
+      display: block;
     }
 
     .gate-grid {
@@ -2794,6 +2936,42 @@
       line-height: 1.5;
     }
 
+    .change-trace-table {
+      min-width: 2100px;
+      width: max-content;
+      table-layout: auto;
+    }
+
+    .change-trace-table th,
+    .change-trace-table td {
+      height: auto;
+      min-height: 47px;
+      padding: 10px 12px;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+      vertical-align: middle;
+      line-height: 1.5;
+    }
+
+    .change-trace-table th:nth-child(1),
+    .change-trace-table td:nth-child(1) {
+      min-width: 420px;
+    }
+
+    .change-trace-table th:nth-child(4),
+    .change-trace-table td:nth-child(4),
+    .change-trace-table th:nth-child(5),
+    .change-trace-table td:nth-child(5),
+    .change-trace-table th:nth-child(7),
+    .change-trace-table td:nth-child(7),
+    .change-trace-table th:nth-child(8),
+    .change-trace-table td:nth-child(8),
+    .change-trace-table th:nth-child(12),
+    .change-trace-table td:nth-child(12) {
+      min-width: 180px;
+    }
+
     .export-record-list {
       display: grid;
       gap: 8px;
@@ -2812,6 +2990,152 @@
 
     .apqp-list-modal.is-extra-wide {
       width: min(1480px, calc(100vw - 40px));
+    }
+
+    .apqp-create-table {
+      min-width: 3200px;
+      width: max-content;
+      table-layout: auto;
+    }
+
+    .apqp-create-table th,
+    .apqp-create-table td {
+      height: auto;
+      min-height: 47px;
+      padding: 10px 12px;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+      vertical-align: middle;
+      line-height: 1.45;
+    }
+
+    .apqp-create-table th:nth-child(1),
+    .apqp-create-table th:nth-child(4),
+    .apqp-create-table th:nth-child(6),
+    .apqp-create-table th:nth-child(15),
+    .apqp-create-table th:nth-child(16),
+    .apqp-create-table th:nth-child(20),
+    .apqp-create-table th:nth-child(21),
+    .apqp-create-table th:nth-child(24),
+    .apqp-create-table th:nth-child(25),
+    .apqp-create-table th:nth-child(26),
+    .apqp-create-table td:nth-child(1),
+    .apqp-create-table td:nth-child(4),
+    .apqp-create-table td:nth-child(6),
+    .apqp-create-table td:nth-child(15),
+    .apqp-create-table td:nth-child(16),
+    .apqp-create-table td:nth-child(20),
+    .apqp-create-table td:nth-child(21),
+    .apqp-create-table td:nth-child(24),
+    .apqp-create-table td:nth-child(25),
+    .apqp-create-table td:nth-child(26) {
+      white-space: nowrap;
+    }
+
+    .apqp-create-table th:nth-child(2),
+    .apqp-create-table td:nth-child(2),
+    .apqp-create-table th:nth-child(7),
+    .apqp-create-table td:nth-child(7),
+    .apqp-create-table th:nth-child(8),
+    .apqp-create-table td:nth-child(8),
+    .apqp-create-table th:nth-child(9),
+    .apqp-create-table td:nth-child(9),
+    .apqp-create-table th:nth-child(10),
+    .apqp-create-table td:nth-child(10),
+    .apqp-create-table th:nth-child(11),
+    .apqp-create-table td:nth-child(11) {
+      min-width: 130px;
+    }
+
+    .apqp-create-table th:nth-child(5),
+    .apqp-create-table td:nth-child(5),
+    .apqp-create-table th:nth-child(18),
+    .apqp-create-table td:nth-child(18),
+    .apqp-create-table th:nth-child(19),
+    .apqp-create-table td:nth-child(19) {
+      min-width: 180px;
+    }
+
+    .apqp-create-table th:nth-child(25),
+    .apqp-create-table td:nth-child(25) {
+      position: sticky;
+      right: 0;
+      z-index: 4;
+      min-width: 130px;
+      background: #fff;
+      box-shadow: -10px 0 18px rgba(16, 24, 40, .1);
+      border-left: 1px solid #d7dee8;
+    }
+
+    .apqp-create-table th:nth-child(25) {
+      z-index: 5;
+      background: #f5f7fa;
+    }
+
+    .apqp-create-table tbody tr:hover td:nth-child(25),
+    .apqp-create-table tbody tr:focus-within td:nth-child(25) {
+      background: #f2f7ff;
+    }
+
+    .apqp-create-table td:nth-child(25) .select-field {
+      min-width: 104px;
+      width: 104px;
+      padding-right: 26px;
+    }
+
+    .apqp-create-table th:nth-child(27),
+    .apqp-create-table td:nth-child(27) {
+      min-width: 260px;
+    }
+
+    .apqp-task-table {
+      min-width: 1320px;
+      width: max-content;
+      table-layout: auto;
+    }
+
+    .apqp-task-table th,
+    .apqp-task-table td {
+      height: auto;
+      min-height: 47px;
+      padding: 10px 14px;
+      overflow: visible;
+      text-overflow: clip;
+      white-space: normal;
+      vertical-align: middle;
+      line-height: 1.45;
+    }
+
+    .apqp-task-table th:nth-child(1),
+    .apqp-task-table td:nth-child(1) {
+      min-width: 150px;
+      white-space: nowrap;
+    }
+
+    .apqp-task-table th:nth-child(2),
+    .apqp-task-table td:nth-child(2),
+    .apqp-task-table th:nth-child(5),
+    .apqp-task-table td:nth-child(5),
+    .apqp-task-table th:nth-child(6),
+    .apqp-task-table td:nth-child(6),
+    .apqp-task-table th:nth-child(8),
+    .apqp-task-table td:nth-child(8),
+    .apqp-task-table th:nth-child(9),
+    .apqp-task-table td:nth-child(9),
+    .apqp-task-table th:nth-child(10),
+    .apqp-task-table td:nth-child(10) {
+      min-width: 110px;
+      white-space: nowrap;
+    }
+
+    .apqp-task-table th:nth-child(3),
+    .apqp-task-table td:nth-child(3),
+    .apqp-task-table th:nth-child(4),
+    .apqp-task-table td:nth-child(4),
+    .apqp-task-table th:nth-child(7),
+    .apqp-task-table td:nth-child(7) {
+      min-width: 180px;
     }
 
     .bom-export-modal {
@@ -2966,6 +3290,11 @@
       line-height: 1.45;
     }
 
+    .bom-impact-item .blue-link {
+      justify-self: start;
+      margin-top: 2px;
+    }
+
     .bom-table-wrap {
       width: 100%;
       overflow-x: auto;
@@ -3001,6 +3330,11 @@
       width: max-content;
       min-width: 100%;
       table-layout: auto;
+    }
+
+    .bom-assembly-table {
+      width: 100%;
+      min-width: 1540px;
     }
 
     .bom-table th {
@@ -3663,6 +3997,12 @@
       gap: 8px;
       margin: 0;
       font-size: 18px;
+    }
+
+    .bom-modal-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .close-btn {
@@ -4585,6 +4925,10 @@
       overflow: hidden;
     }
 
+    #memberModal {
+      z-index: 90;
+    }
+
     .member-modal .modal-head {
       height: 80px;
       align-items: flex-start;
@@ -5030,20 +5374,48 @@
 
     .requirement-table th,
     .requirement-table td {
-      height: 52px;
-      padding: 0 60px;
+      min-height: 52px;
+      height: auto;
+      padding: 14px 28px;
       font-weight: 500;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      line-height: 1.55;
+      vertical-align: top;
     }
 
     .requirement-table th {
       font-weight: 900;
+      vertical-align: middle;
+    }
+
+    .requirement-table th:last-child,
+    .requirement-table td:last-child {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      box-shadow: -8px 0 16px rgba(16, 24, 40, .06);
+      white-space: nowrap;
+      overflow-wrap: normal;
+      word-break: keep-all;
+    }
+
+    .requirement-table th:last-child {
+      z-index: 3;
+      background: #f5f7fa;
     }
 
     .requirement-table .actions {
       display: flex;
       gap: 12px;
       align-items: center;
-      height: 52px;
+      min-height: 24px;
+      height: auto;
+      white-space: nowrap;
     }
 
     .link-button {
@@ -5782,6 +6154,16 @@
                 <div class="stat-value" data-current-stage-label>PKO</div>
               </div>
               <div>
+                <div class="stat-label">项目健康度</div>
+                <div class="health-control">
+                  <span class="health-pill health-green" data-project-health-pill>绿色</span>
+                  <div class="health-actions">
+                    <button class="health-link" type="button" data-edit-project-health>修改</button>
+                    <button class="health-link" type="button" data-view-project-health-reason hidden>查看原因</button>
+                  </div>
+                </div>
+              </div>
+              <div>
                 <div class="stat-label">Status</div>
                 <span class="status-pill status-running" data-project-status-pill>进行中</span>
               </div>
@@ -5925,23 +6307,32 @@
               </div>
             </div>
             <div class="bom-actions">
-              <button class="btn" type="button" data-bom-open-detail="bom-001"><svg class="icon"><use href="#i-eye"></use></svg>预览BOM</button>
-              <button class="btn" type="button" data-bom-change-trace><svg class="icon"><use href="#i-eye"></use></svg>变更记录</button>
               <button class="btn" type="button" data-bom-export-template><svg class="icon"><use href="#i-download"></use></svg>导出BOM</button>
+              <button class="btn" type="button" data-copy-selected-l1-secondary disabled><svg class="icon"><use href="#i-copy"></use></svg>复制BOM</button>
               <button class="btn" type="button" data-bom-apqp-tasks hidden><svg class="icon"><use href="#i-eye"></use></svg>APQP任务</button>
               <button class="btn btn-primary" type="button" data-bom-create-apqp><svg class="icon"><use href="#i-check"></use></svg>创建APQP</button>
               <button class="btn btn-primary" type="button" data-bom-create><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM</button>
-              <button class="btn btn-primary" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-check"></use></svg>确认BOM（SCM）</button>
+              <button class="btn btn-primary" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-check"></use></svg>确认BOM</button>
             </div>
           </div>
 
           <div class="bom-filter">
-            <label>关键信息
-              <input class="field" type="search" placeholder="零件名 / 客户号 / BW号 / SAP号" data-bom-search>
+            <label>L1总成编号
+              <input class="field" type="search" placeholder="输入L1总成编号" data-bom-l1-no-filter>
+            </label>
+            <label>L1总成名称
+              <input class="field" type="search" placeholder="输入L1总成名称" data-bom-l1-name-filter>
             </label>
             <label>BOM版本
-              <select class="select-field" data-bom-version-select>
-                <option value="latest">最新版本</option>
+              <input class="field" type="search" placeholder="输入生效或工作版本" data-bom-version-filter>
+            </label>
+            <label>状态
+              <select class="select-field" data-bom-status-filter>
+                <option value="">全部</option>
+                <option value="AE编辑中">AE编辑中</option>
+                <option value="待SCM确认">待SCM确认</option>
+                <option value="已生效">已生效</option>
+                <option value="未创建">未创建</option>
               </select>
             </label>
             <div class="bom-filter-actions">
@@ -5951,25 +6342,18 @@
           </div>
 
           <div class="bom-summary">
-            <div class="bom-summary-item"><span>当前BOM版本</span><b data-bom-current-version>PKO-V1.0</b></div>
-            <div class="bom-summary-item"><span>状态</span><b data-bom-current-status>锁定</b></div>
-            <div class="bom-summary-item"><span>L1总成</span><b data-bom-l1-count>2</b></div>
-            <div class="bom-summary-item"><span>完整层级零件</span><b data-bom-all-count>11</b></div>
-            <div class="bom-summary-item"><span>阻塞型APQP</span><b data-bom-blocking-count>0</b></div>
-            <div class="bom-summary-item"><span>待处理变更</span><b data-bom-change-count>0</b></div>
+            <div class="bom-summary-item"><span>L1总成数</span><b data-bom-l1-count>0</b></div>
+            <div class="bom-summary-item"><span>已生效L1</span><b data-bom-all-count>0</b></div>
+            <div class="bom-summary-item"><span>待SCM确认L1</span><b data-bom-blocking-count>0</b></div>
+            <div class="bom-summary-item"><span>有未处理变更L1</span><b data-bom-change-count>0</b></div>
           </div>
 
           <div class="bom-table-wrap" data-bom-list-wrap>
-            <table class="bom-table bom-detail-table" aria-label="生产BOM列表">
+            <table class="bom-table bom-detail-table bom-assembly-table" aria-label="生产BOM列表">
               <colgroup>
-                <col style="width:70px"><col style="width:70px"><col style="width:260px"><col style="width:150px">
-                <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
-                <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px">
-                <col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px">
-                <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px">
-                <col style="width:200px"><col style="width:140px"><col style="width:150px"><col style="width:120px">
-                <col style="width:110px"><col style="width:110px"><col style="width:120px"><col style="width:120px">
-                <col style="width:180px"><col style="width:150px">
+                <col style="width:62px"><col style="width:130px"><col style="width:220px"><col style="width:130px">
+                <col style="width:130px"><col style="width:120px"><col style="width:150px"><col style="width:130px">
+                <col style="width:120px"><col style="width:150px"><col style="width:150px"><col style="width:170px">
               </colgroup>
               <thead data-bom-head></thead>
               <tbody data-bom-list-body></tbody>
@@ -5989,16 +6373,6 @@
               <div class="bom-meta">
                 <span>记录阶段推进、BOM、任务、成员、审批和状态变化</span>
               </div>
-            </div>
-            <div class="bom-actions">
-              <select class="select-field" data-record-role-select aria-label="角色视角">
-                <option value="PM">PM</option>
-                <option value="AE">AE</option>
-                <option value="SCM">SCM</option>
-                <option value="AQE">AQE</option>
-                <option value="SQD">SQD</option>
-                <option value="reviewer">审核人员</option>
-              </select>
             </div>
           </div>
           <section class="record-section">
@@ -6036,10 +6410,10 @@
           <div class="bom-table-wrap requirement-table-wrap">
             <table class="requirement-table" aria-label="客户要求列表">
               <colgroup>
-                <col style="width:58%">
-                <col style="width:12%">
-                <col style="width:14%">
-                <col style="width:16%">
+                <col style="width:520px">
+                <col style="width:180px">
+                <col style="width:220px">
+                <col style="width:190px">
               </colgroup>
               <thead>
                 <tr>
@@ -6083,63 +6457,14 @@
               </div>
             </div>
             <div class="bom-actions plan-actions">
-              <button class="btn" type="button" id="resetPlan">恢复默认</button>
-              <button class="btn btn-primary" type="button" id="savePlan">保存计划</button>
+              <button class="btn" type="button" id="resetPlan" hidden>取消</button>
+              <button class="btn" type="button" id="editPlan">编辑</button>
+              <button class="btn btn-primary" type="button" id="savePlan" hidden>保存计划</button>
             </div>
           </div>
-          <div id="planAlert" class="plan-alert">计划节点校验通过，BW 内部计划与 Gate 计划均未晚于客户要求节点。</div>
+          <div id="planAlert" class="plan-alert">请点击编辑维护客户、BW 与 Gate 计划日期。客户日期录入后，BW 日期默认按提前 30 天生成。</div>
 
           <div class="plan-layout">
-            <div class="plan-form-stack">
-              <article class="plan-block">
-                <h3>客户版时间节点</h3>
-                <p>PKO 阶段由 PM 录入客户要求的 Quote Due、Nomination、Protype、OTS、PPAP、SOP。</p>
-                <div class="plan-fields">
-                  <div class="plan-field"><label for="customerQuoteDue">Quote Due</label><input id="customerQuoteDue" type="date" value="2025-11-29" data-plan-field="customerQuoteDue"></div>
-                  <div class="plan-field"><label for="customerNomination">Nomination</label><input id="customerNomination" type="date" value="2026-01-20" data-plan-field="customerNomination"></div>
-                  <div class="plan-field"><label for="customerProtype">Protype</label><input id="customerProtype" type="date" value="2026-03-29" data-plan-field="customerProtype"></div>
-                  <div class="plan-field"><label for="customerOts">客户 OTS</label><input id="customerOts" type="date" value="2026-08-22" data-plan-field="customerOts"></div>
-                  <div class="plan-field"><label for="customerPpap">客户 PPAP</label><input id="customerPpap" type="date" value="2026-10-16" data-plan-field="customerPpap"></div>
-                  <div class="plan-field"><label for="customerSop">客户 SOP</label><input id="customerSop" type="date" value="2026-12-28" data-plan-field="customerSop"></div>
-                </div>
-              </article>
-
-              <article class="plan-block">
-                <h3>BW 内部版时间节点</h3>
-                <p>内部节点根据客户要求倒排，不能晚于客户对应节点。</p>
-                <div class="plan-fields">
-                  <div class="plan-field"><label for="bwPmKickoff">PM Kick off</label><input id="bwPmKickoff" type="date" value="2025-03-26" data-plan-field="bwPmKickoff" data-limit="customerQuoteDue"></div>
-                  <div class="plan-field"><label for="bwArApproval">AR Approval</label><input id="bwArApproval" type="date" value="2025-04-21" data-plan-field="bwArApproval" data-limit="customerNomination"></div>
-                  <div class="plan-field"><label for="bwToolingKickoff">Tooling kick off</label><input id="bwToolingKickoff" type="date" value="2025-04-25" data-plan-field="bwToolingKickoff" data-limit="customerProtype"></div>
-                  <div class="plan-field"><label for="bwProtype">Protype</label><input id="bwProtype" type="date" value="2026-03-27" data-plan-field="bwProtype" data-limit="customerProtype"></div>
-                  <div class="plan-field"><label for="bwOts">BW OTS</label><input id="bwOts" type="date" value="2026-08-01" data-plan-field="bwOts" data-limit="customerOts"></div>
-                  <div class="plan-field"><label for="bwPpap">BW PPAP</label><input id="bwPpap" type="date" value="2026-09-15" data-plan-field="bwPpap" data-limit="customerPpap"></div>
-                  <div class="plan-field"><label for="bwSop">BW SOP</label><input id="bwSop" type="date" value="2026-11-20" data-plan-field="bwSop" data-limit="customerSop"></div>
-                </div>
-                <div class="mapping-list" aria-label="BW节点与Gate映射">
-                  <div class="mapping-item"><span>PM Kick off</span><b>= PKO</b></div>
-                  <div class="mapping-item"><span>AR Approval</span><b>= Gate1</b></div>
-                  <div class="mapping-item"><span>Tooling kick off</span><b>= Gate2</b></div>
-                  <div class="mapping-item"><span>BW 内部 OTS</span><b>= Gate3</b></div>
-                  <div class="mapping-item"><span>BW 内部 PPAP</span><b>= Gate4</b></div>
-                  <div class="mapping-item"><span>BW 内部 SOP</span><b>= Gate5</b></div>
-                </div>
-              </article>
-
-              <article class="plan-block">
-                <h3>Gate 时间节点</h3>
-                <p>PM 基于内部计划创建 Gate 节点，关键 Gate 与 BW 内部节点保持一致。</p>
-                <div class="plan-fields">
-                  <div class="plan-field"><label for="gatePko">PKO</label><input id="gatePko" type="date" value="2025-03-26" data-plan-field="gatePko" data-limit="customerQuoteDue"></div>
-                  <div class="plan-field"><label for="gate1">Gate1</label><input id="gate1" type="date" value="2025-04-21" data-plan-field="gate1" data-limit="customerNomination"></div>
-                  <div class="plan-field"><label for="gate2">Gate2</label><input id="gate2" type="date" value="2025-04-25" data-plan-field="gate2" data-limit="customerProtype"></div>
-                  <div class="plan-field"><label for="gate3">Gate3 / OTS</label><input id="gate3" type="date" value="2026-08-01" data-plan-field="gate3" data-limit="customerOts"></div>
-                  <div class="plan-field"><label for="gate4">Gate4 / PPAP</label><input id="gate4" type="date" value="2026-09-15" data-plan-field="gate4" data-limit="customerPpap"></div>
-                  <div class="plan-field"><label for="gate5">Gate5 / SOP</label><input id="gate5" type="date" value="2026-11-20" data-plan-field="gate5" data-limit="customerSop"></div>
-                </div>
-              </article>
-            </div>
-
             <div class="plan-visual-stack">
               <section class="timeline-panel" aria-label="客户与BW项目时间轴">
                 <h3 class="timeline-title">客户 / BW 双时间轴</h3>
@@ -6148,13 +6473,13 @@
                   <div class="timeline-track">
                     <div class="timeline-line"></div>
                     <div class="timeline-arrow"></div>
-                    <div class="milestones" style="--milestone-count: 6">
-                      <div class="milestone"><span>Quote Due</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerQuoteDue">2025/11/29</span></div>
-                      <div class="milestone"><span>Nomination</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerNomination">2026/01/20</span></div>
-                      <div class="milestone"><span>Protype</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerProtype">2026/03/29</span></div>
-                      <div class="milestone"><span>OTS</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerOts">2026/08/22</span></div>
-                      <div class="milestone"><span>PPAP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerPpap">2026/10/16</span></div>
-                      <div class="milestone"><span>SOP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerSop">2026/12/28</span></div>
+                    <div class="milestones customer-milestones" style="--milestone-count: 7">
+                      <div class="milestone" data-plan-node="customerQuoteDue"><span>Quote Due</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerQuoteDue">未设置</span><input class="milestone-date-input" type="date" data-plan-field="customerQuoteDue"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="customerNomination"><span>Nomination</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerNomination">未设置</span><input class="milestone-date-input" type="date" data-plan-field="customerNomination"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="customerProtype"><span>Protype</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerProtype">未设置</span><input class="milestone-date-input" type="date" data-plan-field="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="customerOts"><span>OTS</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerOts">未设置</span><input class="milestone-date-input" type="date" data-plan-field="customerOts"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="customerPpap"><span>PPAP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerPpap">未设置</span><input class="milestone-date-input" type="date" data-plan-field="customerPpap"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="customerSop"><span>SOP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="customerSop">未设置</span><input class="milestone-date-input" type="date" data-plan-field="customerSop"><span class="buffer-risk-tag">缓冲不足</span></div>
                     </div>
                   </div>
                 </div>
@@ -6165,13 +6490,13 @@
                     <div class="timeline-line"></div>
                     <div class="timeline-arrow"></div>
                     <div class="milestones" style="--milestone-count: 7">
-                      <div class="milestone"><span>PM Kick off</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwPmKickoff">2025/03/26</span></div>
-                      <div class="milestone"><span>AR Approval</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwArApproval">2025/04/21</span></div>
-                      <div class="milestone"><span>Tooling kick off</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwToolingKickoff">2025/04/25</span></div>
-                      <div class="milestone"><span>Protype</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwProtype">2026/03/27</span></div>
-                      <div class="milestone"><span>OTS / Gate3</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwOts">2026/08/01</span></div>
-                      <div class="milestone"><span>PPAP / Gate4</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwPpap">2026/09/15</span></div>
-                      <div class="milestone"><span>SOP / Gate5</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwSop">2026/11/20</span></div>
+                      <div class="milestone" data-plan-node="bwPmKickoff"><span>PM Kick off</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwPmKickoff">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwPmKickoff" data-limit="customerQuoteDue"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="bwArApproval"><span>AR Approval</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwArApproval">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwArApproval" data-limit="customerNomination"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="bwToolingKickoff"><span>Tooling kick off</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwToolingKickoff">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwToolingKickoff" data-limit="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="bwProtype"><span>Protype</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwProtype">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwProtype" data-limit="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="bwOts"><span>OTS</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwOts">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwOts" data-limit="customerOts"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="bwPpap"><span>PPAP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwPpap">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwPpap" data-limit="customerPpap"><span class="buffer-risk-tag">缓冲不足</span></div>
+                      <div class="milestone" data-plan-node="bwSop"><span>SOP</span><span class="milestone-dot"></span><span class="milestone-date" data-date-label="bwSop">未设置</span><input class="milestone-date-input" type="date" data-plan-field="bwSop" data-limit="customerSop"><span class="buffer-risk-tag">缓冲不足</span></div>
                     </div>
                   </div>
                 </div>
@@ -6180,12 +6505,12 @@
               <section class="gate-panel" aria-label="Gate计划">
                 <h3 class="gate-title">Gate 计划基线</h3>
                 <div class="gate-grid">
-                  <div class="gate-cell"><div><span class="gate-badge kickoff">PKO</span></div><div class="gate-name">Program Kick Off<span data-date-label="gatePko">2025/03/26</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">1</span></div><div class="gate-name">AR Approval<span data-date-label="gate1">2025/04/21</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">2</span></div><div class="gate-name">Tooling Kick Off<span data-date-label="gate2">2025/04/25</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">3</span></div><div class="gate-name">OTS<span data-date-label="gate3">2026/08/01</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">4</span></div><div class="gate-name">PPAP<span data-date-label="gate4">2026/09/15</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">5</span></div><div class="gate-name">SOP<span data-date-label="gate5">2026/11/20</span></div></div>
+                  <div class="gate-cell" data-plan-node="gatePko"><div><span class="gate-badge kickoff">PKO</span></div><div class="gate-name">Program Kick Off<span data-date-label="gatePko">未设置</span><input class="gate-date-input" type="date" data-plan-field="gatePko" data-limit="customerQuoteDue"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate1"><div><span class="gate-badge">1</span></div><div class="gate-name">AR Approval<span data-date-label="gate1">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate1" data-limit="customerNomination"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate2"><div><span class="gate-badge">2</span></div><div class="gate-name">Tooling Kick Off<span data-date-label="gate2">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate2" data-limit="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate3"><div><span class="gate-badge">3</span></div><div class="gate-name">OTS<span data-date-label="gate3">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate3" data-limit="customerOts"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate4"><div><span class="gate-badge">4</span></div><div class="gate-name">PPAP<span data-date-label="gate4">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate4" data-limit="customerPpap"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate5"><div><span class="gate-badge">5</span></div><div class="gate-name">SOP<span data-date-label="gate5">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate5" data-limit="customerSop"><span class="buffer-risk-tag">缓冲不足</span></div></div>
                   <div class="gate-cell"><div><span class="gate-badge">6</span></div><div class="gate-name">Hand Over<span>待 SOP 后确认</span></div></div>
                 </div>
               </section>
@@ -6752,7 +7077,6 @@
             <button class="btn btn-primary" type="button" data-bom-drawer-open="library">从零件库添加</button>
             <button class="btn" type="button" data-bom-drawer-open="manual">手动添加</button>
             <button class="btn" type="button" data-bom-drawer-open="edit">编辑</button>
-            <button class="btn btn-primary" type="button" data-copy-l1-assembly hidden>复制L1总成</button>
             <button class="btn btn-outline-danger" type="button" data-bom-delete-selection>删除</button>
           </div>
         </div>
@@ -6811,6 +7135,9 @@
                         <option>一供</option>
                         <option>二供</option>
                       </select>
+                    </label>
+                    <label>APQP负责人
+                      <input class="field" data-inline-part-field="apqpOwner" list="bomOwnerOptions" placeholder="默认 AQE">
                     </label>
                     <label class="span-2">零件 / 材料名称 *
                       <input class="field" data-inline-part-field="name" placeholder="输入零件名称">
@@ -6883,15 +7210,12 @@
                   </div>
                 </div>
                 <div class="bom-drawer-group">
-                  <h4>变更状态</h4>
+                  <h4>版本对比</h4>
                   <div class="bom-drawer-grid">
-                    <label>变更状态
+                    <label>版本对比
                       <select class="select-field" data-inline-part-field="changeStatus">
-                        <option>无变更</option>
                         <option>新增</option>
-                        <option>删除待确认</option>
-                        <option>替换待确认</option>
-                        <option>供应商变更</option>
+                        <option>无变更</option>
                       </select>
                     </label>
                   </div>
@@ -6917,9 +7241,12 @@
     <section class="bom-modal-sheet modal-wide" role="dialog" aria-modal="true" aria-labelledby="bomDetailTitle">
       <header class="bom-modal-head">
         <h2 class="bom-modal-title" id="bomDetailTitle" data-bom-detail-title>BOM详情</h2>
-        <button class="close-btn" type="button" data-close-bom-detail aria-label="关闭">
-          <svg class="icon"><use href="#i-stop"></use></svg>
-        </button>
+        <div class="bom-modal-actions">
+          <button class="btn btn-primary" type="button" data-bom-detail-edit hidden><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM</button>
+          <button class="close-btn" type="button" data-close-bom-detail aria-label="关闭">
+            <svg class="icon"><use href="#i-stop"></use></svg>
+          </button>
+        </div>
       </header>
       <div class="bom-modal-body">
         <div class="bom-filter bom-detail-filter">
@@ -7447,6 +7774,52 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="projectHealthModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="projectHealthTitle">
+      <div class="modal-head">
+        <h3 id="projectHealthTitle">修改项目健康度</h3>
+        <button class="modal-close" type="button" data-close-project-health aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p>请选择项目健康度，并录入本次判断原因。</p>
+        <div class="project-status-form">
+          <label class="project-status-field">
+            <span><span class="required">*</span>项目健康度</span>
+            <select class="field" id="projectHealthValue">
+              <option value="green">绿色</option>
+              <option value="yellow">黄色</option>
+              <option value="red">红色</option>
+            </select>
+          </label>
+          <label class="project-status-field">
+            <span><span class="required">*</span>原因</span>
+            <textarea class="field" id="projectHealthReason" rows="4" placeholder="请输入调整原因，例如交付风险、质量问题、供应风险或客户节点变化"></textarea>
+          </label>
+          <div class="form-error project-status-error" id="projectHealthError" hidden>请填写项目健康度调整原因。</div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-project-health>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmProjectHealth">确认</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="projectHealthReasonModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="projectHealthReasonTitle">
+      <div class="modal-head">
+        <h3 id="projectHealthReasonTitle">项目健康度原因</h3>
+        <button class="modal-close" type="button" data-close-project-health-reason aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <div class="project-status-reason-view" id="projectHealthReasonBody"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn btn-primary" type="button" data-close-project-health-reason>知道了</button>
+      </div>
+    </section>
+  </div>
+
   <div class="modal-backdrop" id="auditRecordModal" hidden>
     <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="auditRecordTitle">
       <div class="modal-head">
@@ -7661,26 +8034,35 @@
       <div class="audit-record-body">
         <p class="audit-record-tip" data-bom-apqp-create-tip>请基于当前锁定 BOM 选择需要创建 APQP 的零件。</p>
         <div class="table-wrap">
-          <table class="stage-task-table" aria-label="待创建APQP零件清单">
+          <table class="stage-task-table apqp-create-table" aria-label="待创建APQP零件清单">
             <thead>
               <tr>
                 <th>是否创建</th>
-                <th>BOM版本</th>
-                <th>L1总成</th>
-                <th>零件编号</th>
-                <th>零件名称</th>
-                <th>任务类型</th>
-                <th>层级</th>
-                <th>父级零件</th>
-                <th>来源配方</th>
-                <th>供应商</th>
+                <th>序号</th>
+                <th>产品应用</th>
+                <th>级数</th>
+                <th>零件 / 材料名称</th>
+                <th>数量</th>
+                <th>客户零件号</th>
+                <th>BW 零件号</th>
+                <th>图纸版本</th>
+                <th>样件 SAP 零件号</th>
+                <th>量产 SAP 零件号</th>
+                <th>原材料零件号</th>
+                <th>原材料</th>
+                <th>重量</th>
+                <th>重量</th>
+                <th>共用零件</th>
+                <th>借用项目</th>
+                <th>图纸状态</th>
+                <th>原材料供应商名称</th>
+                <th>分供方名称</th>
                 <th>供应类型</th>
-                <th>是否新零件</th>
-                <th>是否差异零件</th>
+                <th>版本对比</th>
+                <th>备注</th>
                 <th>建议创建</th>
                 <th>默认负责人</th>
                 <th>起始Gate</th>
-                <th>是否阻塞Gate</th>
                 <th>状态 / 原因</th>
               </tr>
             </thead>
@@ -7698,25 +8080,24 @@
   <div class="modal-backdrop" id="bomApqpTasksModal" hidden>
     <section class="confirm-modal apqp-list-modal" role="dialog" aria-modal="true" aria-labelledby="bomApqpTasksTitle">
       <div class="modal-head">
-        <h3 id="bomApqpTasksTitle">BOM APQP任务</h3>
+        <h3 id="bomApqpTasksTitle">BOM APQP / 子零件开发关联任务</h3>
         <button class="modal-close" type="button" data-close-bom-apqp-tasks aria-label="关闭">×</button>
       </div>
       <div class="audit-record-body">
-        <p class="audit-record-tip" data-bom-apqp-task-tip>展示由当前BOM生成的全部APQP任务。</p>
+        <p class="audit-record-tip" data-bom-apqp-task-tip>展示由当前 L1 BOM 关联的 APQP 与子零件开发任务；子零件任务用于风险提示和跳转追溯，不作为项目 Gate 硬阻塞。</p>
         <div class="table-wrap">
-          <table class="stage-task-table" aria-label="BOM APQP任务列表">
+          <table class="stage-task-table apqp-task-table" aria-label="BOM APQP任务列表">
             <thead>
               <tr>
-                <th>APQP编号</th>
+                <th>任务号 / APQP编号</th>
                 <th>层级</th>
                 <th>零件 / 材料名称</th>
                 <th>供应商</th>
                 <th>供应类型</th>
                 <th>负责人</th>
-                <th>来源BOM</th>
+                <th>来源L1 BOM</th>
                 <th>起始Gate</th>
                 <th>当前Gate</th>
-                <th>是否阻塞Gate</th>
                 <th>状态</th>
               </tr>
             </thead>
@@ -7779,6 +8160,50 @@
       </div>
       <div class="modal-foot">
         <button class="btn btn-primary" type="button" data-close-bom-supply-list>关闭</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="bomAssemblyHistoryModal" hidden>
+    <section class="confirm-modal apqp-list-modal is-extra-wide" role="dialog" aria-modal="true" aria-labelledby="bomAssemblyHistoryTitle">
+      <div class="modal-head">
+        <h3 id="bomAssemblyHistoryTitle">L1 BOM历史版本</h3>
+        <button class="modal-close" type="button" data-close-bom-assembly-history aria-label="关闭">×</button>
+      </div>
+      <div class="audit-record-body">
+        <div class="bom-modal-tools">
+          <label>L1总成
+            <input class="field" data-assembly-history-l1 readonly>
+          </label>
+          <label>查看版本
+            <select class="select-field" data-assembly-history-version></select>
+          </label>
+          <label>版本状态
+            <input class="field" data-assembly-history-status readonly>
+          </label>
+          <label>更新时间
+            <input class="field" data-assembly-history-time readonly>
+          </label>
+        </div>
+        <div class="bom-summary" data-assembly-history-summary></div>
+        <div class="bom-table-wrap">
+          <table class="bom-table bom-detail-table" aria-label="L1 BOM历史版本明细">
+            <colgroup>
+              <col style="width:64px"><col style="width:130px"><col style="width:90px"><col style="width:240px">
+              <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
+              <col style="width:130px"><col style="width:130px"><col style="width:130px"><col style="width:150px">
+              <col style="width:110px"><col style="width:130px"><col style="width:120px"><col style="width:130px">
+              <col style="width:130px"><col style="width:150px"><col style="width:150px"><col style="width:120px">
+              <col style="width:130px"><col style="width:180px"><col style="width:90px">
+            </colgroup>
+            <thead data-assembly-history-head></thead>
+            <tbody data-assembly-history-body></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-export-assembly-history><svg class="icon"><use href="#i-download"></use></svg>导出</button>
+        <button class="btn btn-primary" type="button" data-close-bom-assembly-history>关闭</button>
       </div>
     </section>
   </div>
@@ -7846,14 +8271,14 @@
               <option>零件名称变化</option>
               <option>供应商变化</option>
               <option>是否需要 APQP 变化</option>
-              <option>是否阻塞项目 Gate 变化</option>
+              <option>项目风险提示变化</option>
               <option>其他字段变化</option>
             </select>
           </label>
           <button class="btn btn-primary" type="button" data-render-change-trace>查询</button>
         </div>
         <div class="table-wrap">
-          <table class="stage-task-table" aria-label="BOM变更记录">
+          <table class="stage-task-table change-trace-table" aria-label="BOM变更记录">
             <thead>
               <tr>
                 <th>变更说明</th>
@@ -7920,8 +8345,6 @@
               <option value="primary">导出全部一供零件</option>
               <option value="secondary">导出全部二供零件</option>
               <option value="all">导出一供和二供全部零件</option>
-              <option value="l1">按L1总成选择</option>
-              <option value="mixed">按零件混合导出</option>
             </select>
           </label>
         </div>
@@ -13292,7 +13715,6 @@
   <script>
     const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
     const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
-    const recordRoleSelect = document.querySelector("[data-record-role-select]");
     const recordAlerts = document.querySelector("[data-record-alerts]");
     const recordAlertCount = document.querySelector("[data-record-alert-count]");
     const recordTimeline = document.querySelector("[data-record-timeline]");
@@ -13369,8 +13791,10 @@
     const removeAllMembers = document.getElementById("removeAllMembers");
     const clearSelectedMembers = document.getElementById("clearSelectedMembers");
     const confirmMembers = document.getElementById("confirmMembers");
+    const planPage = document.querySelector(".plan-page");
     const planInputs = Array.from(document.querySelectorAll("[data-plan-field]"));
     const planAlert = document.getElementById("planAlert");
+    const editPlanButton = document.getElementById("editPlan");
     const savePlanButton = document.getElementById("savePlan");
     const resetPlanButton = document.getElementById("resetPlan");
     const defaultPlan = Object.fromEntries(planInputs.map((input) => [input.dataset.planField, input.value]));
@@ -13419,6 +13843,13 @@
     const projectStatusReasonModal = document.getElementById("projectStatusReasonModal");
     const projectStatusReasonTitle = document.getElementById("projectStatusReasonTitle");
     const projectStatusReasonBody = document.getElementById("projectStatusReasonBody");
+    const projectHealthModal = document.getElementById("projectHealthModal");
+    const projectHealthValue = document.getElementById("projectHealthValue");
+    const projectHealthReason = document.getElementById("projectHealthReason");
+    const projectHealthError = document.getElementById("projectHealthError");
+    const confirmProjectHealth = document.getElementById("confirmProjectHealth");
+    const projectHealthReasonModal = document.getElementById("projectHealthReasonModal");
+    const projectHealthReasonBody = document.getElementById("projectHealthReasonBody");
     const projectEditDrawer = document.getElementById("projectEditDrawer");
     const projectEditMask = document.getElementById("projectEditMask");
     const closeProjectEditDrawer = document.getElementById("closeProjectEditDrawer");
@@ -13472,6 +13903,7 @@
     let activeStageStatusFilter = "all";
     let activeFillTaskId = "";
     let projectStatus = "inProgress";
+    let projectHealth = "green";
     let pendingProjectStatus = "";
     let pkoTasksManaged = false;
     let pendingSubmitStage = "";
@@ -13483,9 +13915,16 @@
     let handoverSelectionId = "";
     const standardGateStages = ["Gate2", "Gate3", "Gate5", "Gate6"];
     const projectStatusRecords = [];
+    const projectHealthRecords = [];
     let currentRecordRole = "PM";
     let currentRecordFilter = "all";
     let submitReviewerIds = ["general-manager"];
+    let planEditMode = false;
+    let planDraftSnapshot = null;
+    let planProgrammaticUpdate = false;
+    const planManualFields = new Set();
+    let planWarningReminderKeys = new Set();
+    let planWarningReminderOpen = false;
     const projectEvents = [
       {
         id: "evt-cko",
@@ -13592,7 +14031,7 @@
           kind: "待办",
           level: "risk",
           title: "Gate1 已进入，BOM 尚未创建",
-          description: "AE 需创建生产 BOM；PM 和 AQE 可看到当前 BOM 前置条件未闭环。",
+          description: "AE 需建立项目 BOM 容器并生成至少一个 L1 总成 BOM；PM 和 AQE 可看到当前 L1 BOM 前置条件未闭环。",
           roles: ["AE", "PM", "AQE"],
           action: "去生产BOM",
           tab: "bom"
@@ -13602,8 +14041,8 @@
         alerts.push({
           kind: "待确认",
           level: "risk",
-          title: `BOM ${bomVersion} 等待 SCM 确认`,
-          description: "SCM 确认前，PM 不能将 BOM 作为已闭环输入推进后续 APQP。",
+          title: `L1 BOM 版本集合等待 SCM 确认`,
+          description: "SCM 确认前，对应 L1 总成 BOM 不能作为已锁定生效版本推进 L1 APQP。",
           roles: ["SCM", "PM"],
           action: "查看BOM",
           tab: "bom"
@@ -13613,7 +14052,7 @@
         alerts.push({
           kind: "待办",
           level: "risk",
-          title: "BOM 已确认，APQP 尚未创建",
+          title: "L1 BOM 已确认，APQP 尚未创建",
           description: "PM/AQE 需基于 L1 层级创建 APQP，后续子零件任务才能分配。",
           roles: ["PM", "AQE"],
           action: "创建APQP",
@@ -13867,29 +14306,26 @@
     }
 
     function operationHtml(task) {
-      const childButton = `<button class="blue-link" type="button" data-view-child-tasks="${escapeHtml(task.id)}">查看子级任务</button>`;
       if (task.status === "approval") {
         return `
           <span class="inline-actions">
             <button class="blue-link" type="button" data-approve-task="${escapeHtml(task.id)}">通过</button>
             <button class="blue-link" type="button" data-reject-task="${escapeHtml(task.id)}">拒绝</button>
-            ${childButton}
           </span>
         `;
       }
       if (task.status === "approved" || task.status === "done") {
-        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button>${childButton}</span>`;
+        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
       }
       if (task.status === "rejected") {
         return `
           <span class="inline-actions">
             <button class="blue-link" type="button" data-view-reject="${escapeHtml(task.id)}">查看原因</button>
             <button class="blue-link" type="button" data-complete-stage-task="${escapeHtml(task.id)}">完成</button>
-            ${childButton}
           </span>
         `;
       }
-      return `<span class="inline-actions"><button class="blue-link" type="button" data-complete-stage-task="${escapeHtml(task.id)}">完成</button>${childButton}</span>`;
+      return `<span class="inline-actions"><button class="blue-link" type="button" data-complete-stage-task="${escapeHtml(task.id)}">完成</button></span>`;
     }
 
     function renderStageTasks(stage = activeStage) {
@@ -13919,7 +14355,7 @@
                   <col style="width:180px">
                   <col style="width:140px">
                   <col style="width:130px">
-                  <col style="width:190px">
+                  <col style="width:96px">
                 </colgroup>
                 <thead>
                   <tr>
@@ -14417,6 +14853,93 @@
         actions: []
       }
     };
+
+    const projectHealthConfig = {
+      green: {
+        label: "绿色",
+        className: "health-green"
+      },
+      yellow: {
+        label: "黄色",
+        className: "health-yellow"
+      },
+      red: {
+        label: "红色",
+        className: "health-red"
+      }
+    };
+
+    function latestProjectHealthRecord() {
+      return projectHealthRecords[projectHealthRecords.length - 1] || null;
+    }
+
+    function renderProjectHealth() {
+      const config = projectHealthConfig[projectHealth] || projectHealthConfig.green;
+      const pill = document.querySelector("[data-project-health-pill]");
+      if (pill) {
+        pill.className = `health-pill ${config.className}`;
+        pill.textContent = config.label;
+      }
+      const reasonButton = document.querySelector("[data-view-project-health-reason]");
+      if (reasonButton) {
+        reasonButton.hidden = !latestProjectHealthRecord();
+      }
+    }
+
+    function resetProjectHealthForm() {
+      if (projectHealthValue) {
+        projectHealthValue.value = projectHealth;
+      }
+      if (projectHealthReason) {
+        projectHealthReason.value = "";
+      }
+      if (projectHealthError) {
+        projectHealthError.hidden = true;
+      }
+    }
+
+    function openProjectHealthModal() {
+      if (!projectHealthModal) return;
+      resetProjectHealthForm();
+      projectHealthModal.hidden = false;
+      projectHealthValue?.focus();
+    }
+
+    function closeProjectHealthModal() {
+      if (projectHealthModal) {
+        projectHealthModal.hidden = true;
+      }
+      resetProjectHealthForm();
+    }
+
+    function openProjectHealthReason() {
+      const record = latestProjectHealthRecord();
+      if (!record || !projectHealthReasonModal || !projectHealthReasonBody) {
+        return;
+      }
+      const config = projectHealthConfig[record.health] || projectHealthConfig.green;
+      projectHealthReasonBody.innerHTML = `
+        <div class="project-status-reason-item">
+          <span>健康度</span>
+          <strong>${escapeHtml(config.label)}</strong>
+        </div>
+        <div class="project-status-reason-item">
+          <span>原因</span>
+          <p>${escapeHtml(record.reason)}</p>
+        </div>
+        <div class="project-status-reason-item">
+          <span>提交时间</span>
+          <strong>${escapeHtml(record.createdAt || "-")}</strong>
+        </div>
+      `;
+      projectHealthReasonModal.hidden = false;
+    }
+
+    function closeProjectHealthReason() {
+      if (projectHealthReasonModal) {
+        projectHealthReasonModal.hidden = true;
+      }
+    }
 
     function renderProjectStatus() {
       const config = projectStatusConfig[projectStatus] || projectStatusConfig.inProgress;
@@ -14939,14 +15462,174 @@
     }
 
     function formatDate(value) {
-      return value ? value.replaceAll("-", "/") : "-";
+      return value ? value.replaceAll("-", "/") : "未设置";
+    }
+
+    const customerToBwPlanMap = {
+      customerQuoteDue: "bwPmKickoff",
+      customerNomination: "bwArApproval",
+      customerProtype: ["bwToolingKickoff", "bwProtype"],
+      customerOts: "bwOts",
+      customerPpap: "bwPpap",
+      customerSop: "bwSop"
+    };
+
+    const bwToGatePlanMap = {
+      bwPmKickoff: "gatePko",
+      bwArApproval: "gate1",
+      bwToolingKickoff: "gate2",
+      bwOts: "gate3",
+      bwPpap: "gate4",
+      bwSop: "gate5"
+    };
+
+    const planLimitNames = {
+      customerQuoteDue: "客户 Quote Due",
+      customerNomination: "客户 Nomination",
+      customerProtype: "客户 Protype",
+      customerOts: "客户 OTS",
+      customerPpap: "客户 PPAP",
+      customerSop: "客户 SOP"
+    };
+
+    const planFieldNames = {
+      customerQuoteDue: "客户 Quote Due",
+      customerNomination: "客户 Nomination",
+      customerProtype: "客户 Protype",
+      customerOts: "客户 OTS",
+      customerPpap: "客户 PPAP",
+      customerSop: "客户 SOP",
+      bwPmKickoff: "PM Kick off",
+      bwArApproval: "AR Approval",
+      bwToolingKickoff: "Tooling kick off",
+      bwProtype: "BW Protype",
+      bwOts: "BW OTS",
+      bwPpap: "BW PPAP",
+      bwSop: "BW SOP",
+      gatePko: "PKO",
+      gate1: "Gate1",
+      gate2: "Gate2",
+      gate3: "Gate3 / OTS",
+      gate4: "Gate4 / PPAP",
+      gate5: "Gate5 / SOP"
+    };
+
+    function planValues() {
+      return Object.fromEntries(planInputs.map((input) => [input.dataset.planField, input.value]));
+    }
+
+    function setPlanInputValue(field, value) {
+      const input = getPlanInput(field);
+      if (!input) return;
+      planProgrammaticUpdate = true;
+      input.value = value || "";
+      planProgrammaticUpdate = false;
+    }
+
+    function addDays(value, days) {
+      if (!value) return "";
+      const date = new Date(`${value}T00:00:00`);
+      if (Number.isNaN(date.getTime())) return "";
+      date.setDate(date.getDate() + days);
+      const pad = (number) => String(number).padStart(2, "0");
+      return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+    }
+
+    function daysBetween(startValue, endValue) {
+      if (!startValue || !endValue) return null;
+      const start = new Date(`${startValue}T00:00:00`);
+      const end = new Date(`${endValue}T00:00:00`);
+      if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return null;
+      return Math.round((end - start) / 86400000);
+    }
+
+    function linkedGateForBw(field) {
+      return bwToGatePlanMap[field] || "";
+    }
+
+    function refreshPlanButtons() {
+      if (planPage) planPage.classList.toggle("is-editing", planEditMode);
+      if (editPlanButton) editPlanButton.hidden = planEditMode;
+      if (savePlanButton) savePlanButton.hidden = !planEditMode;
+      if (resetPlanButton) resetPlanButton.hidden = !planEditMode;
+      planInputs.forEach((input) => {
+        input.disabled = !planEditMode;
+      });
+    }
+
+    function startPlanEdit() {
+      planDraftSnapshot = planValues();
+      planEditMode = true;
+      refreshPlanButtons();
+      const currentResult = validatePlan(false, { returnDetail: true });
+      planWarningReminderKeys = new Set(currentResult.warnings || []);
+      if (planAlert) {
+        planAlert.classList.remove("is-error", "is-warning");
+        planAlert.textContent = "正在编辑项目计划，可直接在时间轴和 Gate 基线中维护日期。";
+      }
+    }
+
+    function cancelPlanEdit() {
+      const snapshot = planDraftSnapshot || defaultPlan;
+      planInputs.forEach((input) => {
+        input.value = snapshot[input.dataset.planField] || "";
+      });
+      planEditMode = false;
+      planDraftSnapshot = null;
+      planWarningReminderKeys = new Set();
+      planWarningReminderOpen = false;
+      refreshPlanButtons();
+      validatePlan(false);
+    }
+
+    function handlePlanInput(field) {
+      const input = getPlanInput(field);
+      if (!input) return;
+      if (customerToBwPlanMap[field]) {
+        const bwFields = Array.isArray(customerToBwPlanMap[field]) ? customerToBwPlanMap[field] : [customerToBwPlanMap[field]];
+        const defaultBwValue = addDays(input.value, -30);
+        bwFields.forEach((bwField) => {
+          const gateField = linkedGateForBw(bwField);
+          if (!planManualFields.has(bwField)) {
+            setPlanInputValue(bwField, defaultBwValue);
+          }
+          if (gateField && !planManualFields.has(gateField)) {
+            setPlanInputValue(gateField, getPlanInput(bwField)?.value || defaultBwValue);
+          }
+        });
+      }
+      if (bwToGatePlanMap[field]) {
+        const gateField = linkedGateForBw(field);
+        if (gateField && !planManualFields.has(gateField)) {
+          setPlanInputValue(gateField, input.value);
+        }
+      }
+    }
+
+    async function showImmediatePlanWarnings(warnings = []) {
+      if (!planEditMode || planWarningReminderOpen || !warnings.length) return;
+      const freshWarnings = warnings.filter((warning) => !planWarningReminderKeys.has(warning));
+      if (!freshWarnings.length) return;
+      freshWarnings.forEach((warning) => planWarningReminderKeys.add(warning));
+      planWarningReminderOpen = true;
+      await showBomConfirm({
+        title: "计划缓冲不足提醒",
+        message: "当前调整的 BW 或 Gate 节点距离客户要求不足 30 天，可能存在计划缓冲不足风险。",
+        detail: freshWarnings.slice(0, 6).map((warning) => ({
+          title: "缓冲不足",
+          description: warning
+        }))
+      });
+      planWarningReminderOpen = false;
     }
 
     function updateDateLabels() {
       document.querySelectorAll("[data-date-label]").forEach((label) => {
         const input = getPlanInput(label.dataset.dateLabel);
         if (input) {
-          label.textContent = formatDate(input.value);
+          const text = formatDate(input.value);
+          label.textContent = text;
+          label.classList.toggle("is-empty", !input.value);
         }
       });
       document.querySelectorAll("[data-stage-deadline]").forEach((label) => {
@@ -14957,58 +15640,15 @@
       });
     }
 
-    function syncMappedPlanField(sourceField) {
-      const syncMap = {
-        bwPmKickoff: "gatePko",
-        bwArApproval: "gate1",
-        bwToolingKickoff: "gate2",
-        bwOts: "gate3",
-        bwPpap: "gate4",
-        bwSop: "gate5",
-        gatePko: "bwPmKickoff",
-        gate1: "bwArApproval",
-        gate2: "bwToolingKickoff",
-        gate3: "bwOts",
-        gate4: "bwPpap",
-        gate5: "bwSop"
-      };
-      const source = getPlanInput(sourceField);
-      const target = getPlanInput(syncMap[sourceField]);
-      if (source && target) {
-        target.value = source.value;
-      }
-    }
-
-    function validatePlan(showSaved) {
+    function validatePlan(showSaved, options = {}) {
       if (!planAlert || planInputs.length === 0) {
-        return true;
+        return { valid: true, warnings: [] };
       }
 
       const errors = [];
-      const values = Object.fromEntries(planInputs.map((input) => [input.dataset.planField, input.value]));
-      const limitNames = {
-        customerQuoteDue: "客户 Quote Due",
-        customerNomination: "客户 Nomination",
-        customerProtype: "客户 Protype",
-        customerOts: "客户 OTS",
-        customerPpap: "客户 PPAP",
-        customerSop: "客户 SOP"
-      };
-      const fieldNames = {
-        bwPmKickoff: "PM Kick off",
-        bwArApproval: "AR Approval",
-        bwToolingKickoff: "Tooling kick off",
-        bwProtype: "BW Protype",
-        bwOts: "BW OTS",
-        bwPpap: "BW PPAP",
-        bwSop: "BW SOP",
-        gatePko: "PKO",
-        gate1: "Gate1",
-        gate2: "Gate2",
-        gate3: "Gate3 / OTS",
-        gate4: "Gate4 / PPAP",
-        gate5: "Gate5 / SOP"
-      };
+      const warnings = [];
+      const values = planValues();
+      const warningFields = new Set();
 
       planInputs.forEach((input) => {
         input.classList.remove("is-invalid");
@@ -15019,7 +15659,12 @@
         input.max = values[limitField] || "";
         if (input.value && values[limitField] && input.value > values[limitField]) {
           input.classList.add("is-invalid");
-          errors.push(`${fieldNames[input.dataset.planField]} 不能晚于 ${limitNames[limitField]}`);
+          errors.push(`${planFieldNames[input.dataset.planField]} 不能晚于 ${planLimitNames[limitField]}`);
+        }
+        const gapDays = daysBetween(input.value, values[limitField]);
+        if (gapDays !== null && gapDays >= 0 && gapDays < 30) {
+          warningFields.add(input.dataset.planField);
+          warnings.push(`${planFieldNames[input.dataset.planField]} 距离 ${planLimitNames[limitField]} 仅 ${gapDays} 天`);
         }
       });
 
@@ -15051,14 +15696,27 @@
       });
 
       updateDateLabels();
+      document.querySelectorAll("[data-plan-node]").forEach((node) => {
+        const field = node.dataset.planNode;
+        const isWarning = warningFields.has(field);
+        node.classList.toggle("is-buffer-risk", isWarning);
+        node.querySelector("[data-date-label]")?.classList.toggle("is-warning", isWarning);
+      });
       const uniqueErrors = [...new Set(errors)];
+      const uniqueWarnings = [...new Set(warnings)];
+      const hasAnyDate = planInputs.some((input) => input.value);
       planAlert.classList.toggle("is-error", uniqueErrors.length > 0);
+      planAlert.classList.toggle("is-warning", uniqueErrors.length === 0 && uniqueWarnings.length > 0);
       planAlert.textContent = uniqueErrors.length
         ? uniqueErrors.join("；")
-        : showSaved
-          ? "项目计划已保存，BW 内部节点和 Gate 节点均满足客户时间要求。"
-          : "计划节点校验通过，BW 内部计划与 Gate 计划均未晚于客户要求节点。";
-      return uniqueErrors.length === 0;
+        : uniqueWarnings.length
+          ? `${showSaved ? "项目计划已保存，但存在缓冲不足节点：" : "以下节点距离客户要求不足 30 天："}${uniqueWarnings.join("；")}`
+          : !hasAnyDate
+            ? "请点击编辑维护客户、BW 与 Gate 计划日期。客户日期录入后，BW 日期默认按提前 30 天生成。"
+          : showSaved
+            ? "项目计划已保存，BW 内部节点和 Gate 节点均满足客户时间要求。"
+            : "计划节点校验通过，BW 内部计划与 Gate 计划均未晚于客户要求节点。";
+      return options.returnDetail ? { valid: uniqueErrors.length === 0, warnings: uniqueWarnings } : uniqueErrors.length === 0;
     }
 
     tabs.forEach((tab) => {
@@ -15086,11 +15744,6 @@
         tab.click();
       }
     }
-
-    recordRoleSelect?.addEventListener("change", () => {
-      currentRecordRole = recordRoleSelect.value || "PM";
-      renderProjectRecords();
-    });
 
     recordFilterGroup?.addEventListener("click", (event) => {
       const button = event.target.closest("[data-record-filter]");
@@ -15148,6 +15801,62 @@
       if (event.key === "Escape" && document.body.classList.contains("part-drawer-open")) {
         setProjectEditDrawer(false);
       }
+    });
+
+    document.querySelector("[data-edit-project-health]")?.addEventListener("click", openProjectHealthModal);
+    document.querySelector("[data-view-project-health-reason]")?.addEventListener("click", openProjectHealthReason);
+
+    if (projectHealthModal) {
+      document.querySelectorAll("[data-close-project-health]").forEach((button) => {
+        button.addEventListener("click", closeProjectHealthModal);
+      });
+      projectHealthModal.addEventListener("click", (event) => {
+        if (event.target === projectHealthModal) {
+          closeProjectHealthModal();
+        }
+      });
+    }
+
+    if (projectHealthReasonModal) {
+      document.querySelectorAll("[data-close-project-health-reason]").forEach((button) => {
+        button.addEventListener("click", closeProjectHealthReason);
+      });
+      projectHealthReasonModal.addEventListener("click", (event) => {
+        if (event.target === projectHealthReasonModal) {
+          closeProjectHealthReason();
+        }
+      });
+    }
+
+    confirmProjectHealth?.addEventListener("click", () => {
+      const nextHealth = projectHealthValue?.value || "green";
+      const reason = projectHealthReason?.value.trim() || "";
+      if (!reason) {
+        if (projectHealthError) {
+          projectHealthError.textContent = "请填写项目健康度调整原因。";
+          projectHealthError.hidden = false;
+        }
+        projectHealthReason?.focus();
+        return;
+      }
+      projectHealth = projectHealthConfig[nextHealth] ? nextHealth : "green";
+      const config = projectHealthConfig[projectHealth] || projectHealthConfig.green;
+      projectHealthRecords.push({
+        health: projectHealth,
+        reason,
+        createdAt: getCurrentTime()
+      });
+      renderProjectHealth();
+      addProjectEvent({
+        category: "status",
+        type: "健康度",
+        title: `项目健康度调整为${config.label}`,
+        description: reason,
+        actor: "Wu Zhuoren",
+        role: "PM",
+        scope: "项目健康度"
+      });
+      closeProjectHealthModal();
     });
 
     function updateStageScrollState() {
@@ -15304,7 +16013,7 @@
         if (blockers.length) {
           showBomConfirm({
             title: "当前Gate暂不能提交",
-            message: "项目当前 Gate 存在 BOM 或子零件 APQP 阻塞项，请处理后再提交审批。",
+            message: "项目当前 Gate 存在 L1 BOM 未锁定或未关闭变更，请处理后再提交审批。子零件 APQP 状态仅作为风险提醒，不阻塞项目 Gate。",
             detail: blockers
           });
           return;
@@ -15490,7 +16199,6 @@
         const handoverMemberButton = event.target.closest("[data-select-handover-members]");
         const completeButton = event.target.closest("[data-complete-stage-task]");
         const viewButton = event.target.closest("[data-view-task]");
-        const childTasksButton = event.target.closest("[data-view-child-tasks]");
         const approveButton = event.target.closest("[data-approve-task]");
         const rejectButton = event.target.closest("[data-reject-task]");
         const rejectReasonButton = event.target.closest("[data-view-reject]");
@@ -15529,11 +16237,6 @@
 
         if (viewButton) {
           openTaskFillModal(viewButton.dataset.viewTask, "view");
-          return;
-        }
-
-        if (childTasksButton) {
-          openChildTaskDrawer(childTasksButton.dataset.viewChildTasks);
           return;
         }
 
@@ -15737,36 +16440,61 @@
     }
 
     planInputs.forEach((input) => {
-      input.addEventListener("input", () => {
-        syncMappedPlanField(input.dataset.planField);
-        validatePlan(false);
+      input.addEventListener("input", async () => {
+        if (!planProgrammaticUpdate) {
+          planManualFields.add(input.dataset.planField);
+          handlePlanInput(input.dataset.planField);
+        }
+        const result = validatePlan(false, { returnDetail: true });
+        await showImmediatePlanWarnings(result.warnings);
       });
     });
 
+    if (editPlanButton) {
+      editPlanButton.addEventListener("click", startPlanEdit);
+    }
+
     if (savePlanButton) {
-      savePlanButton.addEventListener("click", () => {
-        if (validatePlan(true)) {
-          addProjectEvent({
-            category: "plan",
-            type: "计划",
-            title: "PM 保存项目计划",
-            description: "项目关键节点计划已保存，BW 内部节点和 Gate 节点通过校验。",
-            actor: "Wu Zhuoren",
-            role: "PM",
-            scope: "项目计划"
+      savePlanButton.addEventListener("click", async () => {
+        const result = validatePlan(false, { returnDetail: true });
+        if (!result.valid) return;
+        if (result.warnings.length) {
+          const confirmed = await showBomConfirm({
+            title: "确认保存计划风险",
+            message: "存在 BW 或 Gate 节点距离客户要求不足 30 天，可能存在计划缓冲不足风险。确认继续保存吗？",
+            detail: result.warnings.slice(0, 6).map((warning) => ({
+              title: "缓冲不足",
+              description: warning
+            }))
           });
+          if (!confirmed) return;
         }
+        planEditMode = false;
+        planDraftSnapshot = null;
+        planWarningReminderKeys = new Set();
+        planWarningReminderOpen = false;
+        refreshPlanButtons();
+        validatePlan(true);
+        addProjectEvent({
+          category: "plan",
+          type: "计划",
+          title: "PM 保存项目计划",
+          description: result.warnings.length
+            ? "项目关键节点计划已保存，部分 BW 或 Gate 节点存在不足 30 天缓冲并已确认。"
+            : "项目关键节点计划已保存，BW 内部节点和 Gate 节点通过校验。",
+          actor: "Wu Zhuoren",
+          role: "PM",
+          scope: "项目计划"
+        });
       });
     }
 
     if (resetPlanButton) {
-      resetPlanButton.addEventListener("click", () => {
-        planInputs.forEach((input) => {
-          input.value = defaultPlan[input.dataset.planField];
-        });
-        validatePlan(false);
-      });
+      resetPlanButton.addEventListener("click", cancelPlanEdit);
     }
+
+    refreshPlanButtons();
+    validatePlan(false);
 
     function getCurrentTime() {
       const now = new Date();
@@ -16594,7 +17322,7 @@
       ["原材料供应商名称", "Raw Supplier"],
       ["分供方名称", "Sub Supplier"],
       ["供应类型", "Supply Type"],
-      ["变更状态", "Change Status"],
+      ["版本对比", "Version Compare"],
       ["备注", "Remark"],
       ["操作", "Operation"]
     ];
@@ -16609,6 +17337,21 @@
       ["操作", "Operation"]
     ];
 
+    const bomAssemblyHeaders = [
+      ["选择", "Select"],
+      ["L1总成编号", "L1 Assembly No."],
+      ["L1总成名称", "L1 Assembly Name"],
+      ["当前生效版本", "Active Version"],
+      ["最新工作版本", "Working Version"],
+      ["状态", "Status"],
+      ["草稿/待确认变更", "Open Changes"],
+      ["供应类型", "Supply Type"],
+      ["APQP状态", "APQP Status"],
+      ["负责人", "Owner"],
+      ["更新时间", "Updated At"],
+      ["操作", "Operation"]
+    ];
+
     const bomState = {
       stage: "PKO",
       versionMajor: 0,
@@ -16618,6 +17361,8 @@
       mode: "detail",
       editingRowId: null,
       selectedRowIds: [],
+      selectedAssemblyIds: [],
+      selectedAssemblyHistoryRowId: "",
       drawerMode: "",
       drawerParentId: null,
       scopedRootId: null,
@@ -16629,6 +17374,7 @@
       lockedAt: "",
       apqpTasks: [],
       apqpSelection: new Set(),
+      apqpOwnerOverrides: {},
       exportRecords: [],
       changeRecords: [],
       undoStack: [],
@@ -16852,11 +17598,169 @@
       return normalizeBomRows(rows.map((row) => ({ ...row })));
     }
 
+    function l1RootsFor(rows = bomState.rows) {
+      return rows.filter((row) => Number(row.level) === 1);
+    }
+
+    function assemblyCodeFor(root, rows = bomState.rows) {
+      const roots = l1RootsFor(rows);
+      const index = Math.max(0, roots.findIndex((row) => row.id === root.id));
+      return String.fromCharCode(65 + index);
+    }
+
+    function stageBomVersion(number = 1) {
+      return `${bomState.stage}_V${number}.0`;
+    }
+
+    function bomVersionNumber(version = "") {
+      const match = String(version).match(/_V(\d+)\.0$/);
+      return match ? Number(match[1]) : 0;
+    }
+
+    function nextL1WorkingVersion(root) {
+      if (root.workingBomVersion && root.workingBomVersion !== "-" && root.workingBomVersion !== root.activeBomVersion) return root.workingBomVersion;
+      const activeNo = bomVersionNumber(root.activeBomVersion);
+      return stageBomVersion(activeNo ? activeNo + 1 : 1);
+    }
+
+    function ensureL1WorkingVersion(root, status = "draft") {
+      root.workingBomVersion = nextL1WorkingVersion(root);
+      root.assemblyStatus = status;
+      root.updatedAt = getCurrentTime();
+      return root.workingBomVersion;
+    }
+
+    function targetEditingRoots() {
+      return bomState.scopedRootId
+        ? l1RootsFor(bomState.rows).filter((root) => root.id === bomState.scopedRootId)
+        : l1RootsFor(bomState.rows);
+    }
+
+    function canConfirmAssemblyRoot(root, rows = bomState.rows, snapshot = latestBomSnapshot()) {
+      if (!root) return false;
+      const meta = assemblyMeta(root, rows, snapshot);
+      return meta.status !== "已生效" && meta.workingVersion && meta.workingVersion !== "-";
+    }
+
+    function assemblyVersionFor(root, rows = bomState.rows, snapshot = latestBomSnapshot()) {
+      const openChanges = descendantsOf(root.id, rows).filter((row) => row.changeStatus && !["无变更", "已确认", "已取消", "已生效"].includes(row.changeStatus));
+      const activeVersion = root.activeBomVersion || "-";
+      const workingVersion = root.workingBomVersion || (activeVersion === "-" ? stageBomVersion(1) : activeVersion);
+      return { code: assemblyCodeFor(root, rows), activeVersion, workingVersion, openChanges };
+    }
+
+    function nextAssemblyVersion(root, rows = bomState.rows) {
+      return nextL1WorkingVersion(root);
+    }
+
+    function pushAssemblyHistory(root, status, actor = "Chen Wei") {
+      root.versionHistory = root.versionHistory || [];
+      const version = root.activeBomVersion || root.workingBomVersion || "-";
+      if (version === "-") return;
+      const existingIndex = root.versionHistory.findIndex((item) => item.version === version);
+      const history = {
+        version,
+        status,
+        actor,
+        time: getCurrentTime(),
+        summary: `${root.name} BOM ${version} ${status}`
+      };
+      if (existingIndex >= 0) root.versionHistory[existingIndex] = history;
+      else root.versionHistory.unshift(history);
+    }
+
+    async function confirmSelectedAssemblyVersions() {
+      const selectedRoots = bomState.selectedAssemblyIds
+        .map((id) => bomState.rows.find((row) => row.id === id && Number(row.level) === 1))
+        .filter(Boolean)
+        .filter((root) => canConfirmAssemblyRoot(root));
+      if (!selectedRoots.length) {
+        await showBomConfirm({ title: "无法确认BOM", message: "请先勾选需要 SCM 确认的 L1 BOM 工作版本。" });
+        return;
+      }
+      const confirmed = await showBomConfirm({
+        title: "确认L1 BOM版本",
+        message: `确认将 ${selectedRoots.length} 个 L1 BOM 工作版本锁定为当前生效版本？`,
+        detail: selectedRoots.map((root) => ({
+          title: `${root.name} · ${root.workingBomVersion}`,
+          description: "确认后当前生效版本与最新工作版本保持一致，并写入该 L1 的历史版本。"
+        }))
+      });
+      if (!confirmed) return;
+      const confirmedAt = getCurrentTime();
+      selectedRoots.forEach((root) => {
+        root.activeBomVersion = root.workingBomVersion || stageBomVersion(1);
+        root.workingBomVersion = root.activeBomVersion;
+        root.assemblyStatus = "已生效";
+        root.updatedAt = confirmedAt;
+        descendantsOf(root.id).forEach((row) => {
+          if (row.changeStatus && !["无变更", "已取消"].includes(row.changeStatus)) row.changeStatus = "已生效";
+        });
+        pushAssemblyHistory(root, "已生效", "Chen Wei");
+      });
+      bomState.status = "locked";
+      bomState.workflowStatus = "confirmed";
+      bomState.lockedAt = confirmedAt;
+      bomState.selectedAssemblyIds = [];
+      snapshotBomHistory();
+      renderBomList();
+      renderProjectRecords();
+    }
+
+    function assemblyStatusFor(root, snapshot = latestBomSnapshot()) {
+      if (root.assemblyStatus) return root.assemblyStatus;
+      if (root.workingBomVersion && root.activeBomVersion && root.workingBomVersion === root.activeBomVersion) return "已生效";
+      if (root.workingBomVersion) return "AE编辑中";
+      if (root.activeBomVersion) return "已生效";
+      if (snapshot.status === "empty") return "未创建";
+      return "AE编辑中";
+    }
+
+    function assemblyApqpStatus(root) {
+      const task = bomState.apqpTasks.find((item) => item.sourceBomRowId === root.id || item.rowId === root.id);
+      if (task) return task.status || "已创建";
+      return root.apqpStatus && root.apqpStatus !== "未创建" ? root.apqpStatus : "未创建";
+    }
+
+    function assemblyMeta(root, rows = bomState.rows, snapshot = latestBomSnapshot()) {
+      const version = assemblyVersionFor(root, rows, snapshot);
+      const status = assemblyStatusFor(root, snapshot);
+      return {
+        ...version,
+        status,
+        openChangeCount: version.openChanges.length,
+        apqpStatus: assemblyApqpStatus(root),
+        owner: root.apqpOwner || root.primaryOwner || "AQE / 质量部",
+        updatedAt: root.updatedAt || snapshot.lockedAt || snapshot.submittedAt || bomState.lockedAt || "-"
+      };
+    }
+
+    function apqpOwnerRole(owner = "") {
+      const text = String(owner || "").toUpperCase();
+      return ["AQE", "SQD", "AE", "SCM", "PM", "CQE", "ME"].find((role) => text.includes(role)) || owner || "SQD";
+    }
+
+    function apqpOwnerOptions(defaultOwner = "") {
+      return Array.from(new Set([apqpOwnerRole(defaultOwner), "AQE", "SQD", "AE", "SCM", "PM", "CQE", "ME"]));
+    }
+
+    function apqpOwnerSelectHtml(candidate) {
+      const selectedOwner = apqpOwnerRole(bomState.apqpOwnerOverrides[candidate.sourceKey] || candidate.owner || "");
+      return `
+        <select class="select-field" data-apqp-owner="${escapeHtml(candidate.sourceKey)}" ${candidate.disabled ? "disabled" : ""} aria-label="选择默认负责人">
+          ${Array.from(new Set([selectedOwner, ...apqpOwnerOptions(candidate.owner)].filter(Boolean))).map((owner) => `<option value="${escapeHtml(owner)}" ${owner === selectedOwner ? "selected" : ""}>${escapeHtml(owner)}</option>`).join("")}
+        </select>
+      `;
+    }
+
     function historyStage(version) {
       return version?.split("-V")[0] || bomState.stage;
     }
 
     function selectedBomSnapshot() {
+      if (String(bomState.selectedListVersion || "").startsWith("assembly|")) {
+        return selectedAssemblyVersionSnapshot(bomState.selectedListVersion);
+      }
       if (bomState.selectedListVersion === "latest") {
         return latestBomSnapshot();
       }
@@ -16887,10 +17791,83 @@
 
     function bomVersionLabel(snapshot) {
       if (snapshot.isLatest) {
-        const version = snapshot.version === "-" ? "暂无BOM" : snapshot.version;
-        return `最新版本 · ${version}`;
+        const roots = l1RootsFor(snapshot.rows || []);
+        return roots.length ? `最新L1版本集合 · ${roots.length}个L1` : "暂无L1 BOM";
       }
-      return `${snapshot.stage || historyStage(snapshot.version)} · ${snapshot.version} · ${snapshot.submittedAt}`;
+      return `历史L1版本集合 · ${snapshot.version} · ${snapshot.submittedAt}`;
+    }
+
+    function assemblyVersionValue(rowId, kind, version = "") {
+      return `assembly|${rowId}|${kind}|${version || ""}`;
+    }
+
+    function parseAssemblyVersionValue(value = "") {
+      const [type, rowId, kind, ...versionParts] = String(value).split("|");
+      return type === "assembly" ? { rowId, kind, version: versionParts.join("|") } : null;
+    }
+
+    function snapshotRowsForAssemblyVersion(rowId, assemblyVersion = "") {
+      const snapshotVersion = snapshotVersionForAssembly(rowId, assemblyVersion);
+      const snapshot = snapshotVersion ? bomState.histories.find((item) => item.version === snapshotVersion) : null;
+      const rows = snapshot?.rows || bomState.rows;
+      const root = rows.find((row) => row.id === rowId) || bomState.rows.find((row) => row.id === rowId);
+      if (!root) return { rows: [], root: null, snapshot: snapshot || latestBomSnapshot() };
+      return {
+        rows: descendantsOf(root.id, rows),
+        root,
+        snapshot: snapshot || latestBomSnapshot()
+      };
+    }
+
+    function selectedAssemblyVersionSnapshot(value = "") {
+      const parsed = parseAssemblyVersionValue(value);
+      if (!parsed) return latestBomSnapshot();
+      const liveRoot = bomState.rows.find((row) => row.id === parsed.rowId);
+      const meta = liveRoot ? assemblyMeta(liveRoot, bomState.rows, latestBomSnapshot()) : null;
+      const assemblyVersion = parsed.version || (parsed.kind === "working" ? meta?.workingVersion : meta?.activeVersion);
+      const result = snapshotRowsForAssemblyVersion(parsed.rowId, assemblyVersion);
+      const status = parsed.kind === "working" && meta?.workingVersion !== meta?.activeVersion ? "draft" : "locked";
+      return {
+        version: assemblyVersion || currentVersion(),
+        stage: bomState.stage,
+        status,
+        workflowStatus: status === "locked" ? "confirmed" : "aeEditing",
+        controlCode: status === "locked" ? controlCodeFor(assemblyVersion) : "",
+        lockedAt: result.root?.updatedAt || result.snapshot.lockedAt || "",
+        rows: result.rows,
+        isLatest: false,
+        isAssemblyVersion: true,
+        assemblyRowId: parsed.rowId,
+        assemblyName: result.root?.name || liveRoot?.name || "-",
+        submittedAt: result.snapshot.submittedAt || result.root?.updatedAt || "-"
+      };
+    }
+
+    function assemblyVersionOptions(row) {
+      if (!row) return [];
+      const meta = assemblyMeta(row, bomState.rows, latestBomSnapshot());
+      const options = [];
+      if (meta.workingVersion && meta.workingVersion !== "-") {
+        options.push({
+          value: assemblyVersionValue(row.id, "working", meta.workingVersion),
+          label: `${row.name} · ${meta.workingVersion} · ${meta.workingVersion === meta.activeVersion ? "当前生效" : "当前工作"}`
+        });
+      }
+      if (meta.activeVersion && meta.activeVersion !== "-" && meta.activeVersion !== meta.workingVersion) {
+        options.push({
+          value: assemblyVersionValue(row.id, "active", meta.activeVersion),
+          label: `${row.name} · ${meta.activeVersion} · 当前生效`
+        });
+      }
+      (row.versionHistory || [])
+        .filter((item) => item.version && item.version !== meta.activeVersion && item.version !== meta.workingVersion)
+        .forEach((item) => {
+          options.push({
+            value: assemblyVersionValue(row.id, "history", item.version),
+            label: `${row.name} · ${item.version} · ${item.status || "历史版本"}`
+          });
+        });
+      return options;
     }
 
     function snapshotBomHistory() {
@@ -16912,40 +17889,6 @@
         bomState.histories.unshift(snapshot);
       }
       bomState.selectedListVersion = "latest";
-    }
-
-    function renderBomVersionOptions() {
-      const select = document.querySelector("[data-bom-version-select]");
-      if (!select) return;
-      const selectedValue = bomState.selectedListVersion;
-      const latestSnapshot = {
-        version: currentVersion(),
-        stage: bomState.stage,
-        status: bomState.status,
-        workflowStatus: bomState.workflowStatus,
-        controlCode: bomState.controlCode,
-        lockedAt: bomState.lockedAt,
-        rows: bomState.rows,
-        isLatest: true
-      };
-      select.innerHTML = [
-        `<option value="latest">${escapeHtml(bomVersionLabel(latestSnapshot))}</option>`,
-        ...bomState.histories.map((item) => `<option value="${escapeHtml(item.version)}">${escapeHtml(bomVersionLabel({
-          ...item,
-          stage: item.stage || historyStage(item.version),
-          isLatest: false
-        }))}</option>`)
-      ].join("");
-      if (Array.from(select.options).some((option) => option.value === selectedValue)) {
-        select.value = selectedValue;
-      } else {
-        bomState.selectedListVersion = "latest";
-        select.value = "latest";
-      }
-      const historyButton = document.querySelector("[data-bom-open-history]");
-      if (historyButton) {
-        historyButton.disabled = !bomState.histories.length;
-      }
     }
 
     function restoreLatestBomSnapshot() {
@@ -17014,11 +17957,19 @@
 
     function appendBomFromProduct(product) {
       const startIndex = new Set(bomState.rows.map((row) => row.productKey)).size;
-      bomState.rows.push(...buildProductBomRows(product, startIndex).map((row) => ({
+      const rows = buildProductBomRows(product, startIndex).map((row) => ({
         ...row,
         id: `${product.key}-${Date.now()}-${row.level}-${row.bwNo}`,
         changeStatus: "新增"
-      })));
+      }));
+      rows.forEach((row) => {
+        if (Number(row.level) === 1) {
+          row.workingBomVersion = stageBomVersion(1);
+          row.assemblyStatus = "AE编辑中";
+          row.updatedAt = getCurrentTime();
+        }
+      });
+      bomState.rows.push(...rows);
       renumberRows();
       bomState.undoStack = [];
       bomState.versionMajor = 0;
@@ -17032,6 +17983,10 @@
 
     function recipeLabel(row) {
       return row.recipeType || (row.remark?.includes("二供配方") ? "二供配方" : "一供配方");
+    }
+
+    function assemblySupplyType(row) {
+      return recipeLabel(row).includes("二供") || row.supplyType === "二供" ? "二供" : "一供";
     }
 
     function recipeRootFor(row, rows = bomState.rows) {
@@ -17180,6 +18135,8 @@
         supplyType: "二供",
         name: index === 0 ? `${row.name} / 二供复制` : row.name,
         bwNo: index === 0 ? `${row.bwNo || "L1"}-B` : row.bwNo,
+        activeBomVersion: index === 0 ? "-" : row.activeBomVersion,
+        workingBomVersion: index === 0 ? nextAssemblyVersion(baseRoot) : row.workingBomVersion,
         apqpCreated: false,
         apqpStatus: "未创建",
         apqpNo: "",
@@ -17192,6 +18149,7 @@
       bomState.workflowStatus = bomState.workflowStatus === "confirmed" ? "aeEditing" : bomState.workflowStatus;
       bomState.versionMinor = bomState.versionMinor || 1;
       bomState.selectedRowIds = [copiedRows[0].id];
+      bomState.selectedAssemblyIds = [copiedRows[0].id];
       renumberRows();
       addProjectEvent({
         category: "bom",
@@ -17336,7 +18294,8 @@
 
     function renderBomHeads() {
       const headCells = bomHeaders.map(([cn, en], index) => `<th class="${index === bomHeaders.length - 1 ? "fixed-op" : ""}">${cn}<span>${en}</span></th>`).join("");
-      document.querySelector("[data-bom-head]").innerHTML = `<tr>${headCells}</tr>`;
+      const assemblyHeadCells = bomAssemblyHeaders.map(([cn, en], index) => `<th class="${index === bomAssemblyHeaders.length - 1 ? "fixed-op" : ""}">${cn}<span>${en}</span></th>`).join("");
+      document.querySelector("[data-bom-head]").innerHTML = `<tr>${assemblyHeadCells}</tr>`;
       document.querySelector("[data-bom-edit-head]").innerHTML = `<tr><th class="center"><input type="checkbox" data-bom-check-all aria-label="全选当前BOM列表"></th>${headCells}</tr>`;
       document.querySelector("[data-bom-detail-head]").innerHTML = `<tr>${headCells}</tr>`;
     }
@@ -17374,33 +18333,81 @@
       return `
         <div class="supply-cell">
           <div class="supply-line"><b>${escapeHtml(supplier)}</b></div>
-          <div class="supply-line">${statusTag(strategy, strategyVariant)}${block ? statusTag("阻塞Gate", "is-risk") : ""}</div>
+          <div class="supply-line">${statusTag(strategy, strategyVariant)}${block ? statusTag("子零件风险提示", "is-warn") : ""}</div>
         </div>
       `;
     }
 
     function renderBomList() {
-      const keyword = document.querySelector("[data-bom-search]")?.value.trim() || "";
+      const l1NoKeyword = document.querySelector("[data-bom-l1-no-filter]")?.value.trim().toLowerCase() || "";
+      const l1NameKeyword = document.querySelector("[data-bom-l1-name-filter]")?.value.trim().toLowerCase() || "";
+      const versionKeyword = document.querySelector("[data-bom-version-filter]")?.value.trim().toLowerCase() || "";
       const status = document.querySelector("[data-bom-status-filter]")?.value || "";
+      bomState.selectedListVersion = "latest";
+      bomState.selectedAssemblyHistoryRowId = "";
       const selectedSnapshot = selectedBomSnapshot();
       const sourceRows = selectedSnapshot.rows || [];
+      if (selectedSnapshot.isAssemblyVersion) {
+        const detailRows = sourceRows
+          .filter((row) => rowMatches(row, l1NameKeyword, "", ""))
+          .filter((row) => {
+            const noText = [row.bwNo, row.sampleSapNo, row.massSapNo].join(" ").toLowerCase();
+            const nameText = [row.name, row.application].join(" ").toLowerCase();
+            const versionText = [selectedSnapshot.version].join(" ").toLowerCase();
+            return (!l1NoKeyword || noText.includes(l1NoKeyword))
+              && (!l1NameKeyword || nameText.includes(l1NameKeyword))
+              && (!versionKeyword || versionText.includes(versionKeyword));
+          });
+        renderBomHeads();
+        bomListBody.innerHTML = detailRows.map((row) => bomRowHtml(row, { context: "detail" })).join("") || `<tr><td colspan="${bomHeaders.length}" class="bom-empty-tip">当前版本暂无匹配的 BOM 明细</td></tr>`;
+        document.querySelector("[data-bom-l1-count]").textContent = selectedSnapshot.assemblyName || "-";
+        document.querySelector("[data-bom-all-count]").textContent = detailRows.length;
+        document.querySelector("[data-bom-blocking-count]").textContent = selectedSnapshot.version || "-";
+        document.querySelector("[data-bom-change-count]").textContent = detailRows.filter((row) => row.changeStatus && !["无变更", "已确认", "已取消", "已生效"].includes(row.changeStatus)).length;
+        document.querySelector("[data-bom-export-template]")?.toggleAttribute("disabled", !detailRows.length);
+        return;
+      }
       const l1Rows = sourceRows.filter((row) => row.level === 1)
-        .filter((row) => rowMatches(row, keyword, "", ""))
-        .filter(() => !status || selectedSnapshot.status === status);
+        .filter((row) => {
+          const meta = assemblyMeta(row, sourceRows, selectedSnapshot);
+          const noText = [row.bwNo, row.sampleSapNo, row.massSapNo].join(" ").toLowerCase();
+          const nameText = [row.name, row.application].join(" ").toLowerCase();
+          const versionText = [meta.activeVersion, meta.workingVersion].join(" ").toLowerCase();
+          return (!l1NoKeyword || noText.includes(l1NoKeyword))
+            && (!l1NameKeyword || nameText.includes(l1NameKeyword))
+            && (!versionKeyword || versionText.includes(versionKeyword))
+            && (!status || meta.status === status);
+        });
 
       const isLatest = selectedSnapshot.isLatest;
-      const colSpan = bomHeaders.length;
+      const colSpan = bomAssemblyHeaders.length;
       const isControlled = selectedSnapshot.status === "locked";
-      const controlCode = selectedSnapshot.controlCode || (isControlled ? "受控BOM" : "");
-      bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, { context: isLatest ? "list" : "historyList" })).join("") || `<tr><td colspan="${colSpan}" class="bom-empty-tip">${sourceRows.length ? "未找到匹配的L1 BOM" : "暂无BOM数据，请点击“编辑BOM”后搜索零件生成模拟数据"}</td></tr>`;
-      document.querySelector("[data-bom-current-version]").textContent = selectedSnapshot.version || "-";
-      document.querySelector("[data-bom-current-status]").textContent = isControlled ? "受控" : isLatest ? displayBomStatus() : statusText(selectedSnapshot.status);
-      document.querySelector("[data-bom-l1-count]").textContent = sourceRows.filter((row) => row.level === 1).length;
-      document.querySelector("[data-bom-all-count]").textContent = sourceRows.length;
-      document.querySelector("[data-bom-blocking-count]").textContent = bomState.apqpTasks.filter((task) => task.blockGate === "是" && !["当前Gate已完成", "已完成", "已取消"].includes(task.status)).length;
-      document.querySelector("[data-bom-change-count]").textContent = sourceRows.filter((row) => row.changeStatus && !["无变更", "已确认", "已取消", "已生效"].includes(row.changeStatus)).length;
-      const canScmConfirm = bomState.rows.length && bomState.status !== "locked" && ["pendingScm", "scmDraft"].includes(bomState.workflowStatus);
+      const allL1Rows = sourceRows.filter((row) => row.level === 1);
+      const assemblyMetas = allL1Rows.map((row) => assemblyMeta(row, sourceRows, selectedSnapshot));
+      bomState.selectedAssemblyIds = bomState.selectedAssemblyIds.filter((id) => {
+        const root = allL1Rows.find((row) => row.id === id);
+        return Boolean(root);
+      });
+      const assemblyRows = l1Rows.map((row) => bomAssemblyRowHtml(row, { context: isLatest ? "list" : "historyList", rows: sourceRows, snapshot: selectedSnapshot }));
+      renderBomHeads();
+      bomListBody.innerHTML = assemblyRows.join("") || `<tr><td colspan="${colSpan}" class="bom-empty-tip">${sourceRows.length ? "未找到匹配的L1总成BOM" : "暂无L1总成BOM，请点击“编辑BOM”后搜索零件生成模拟数据"}</td></tr>`;
+      document.querySelector("[data-bom-l1-count]").textContent = allL1Rows.length;
+      document.querySelector("[data-bom-all-count]").textContent = assemblyMetas.filter((meta) => meta.status === "已生效").length;
+      document.querySelector("[data-bom-blocking-count]").textContent = assemblyMetas.filter((meta) => meta.status === "待SCM确认").length;
+      document.querySelector("[data-bom-change-count]").textContent = assemblyMetas.filter((meta) => meta.openChangeCount > 0).length;
+      const canScmConfirm = bomState.selectedAssemblyIds.some((id) => {
+        const root = allL1Rows.find((row) => row.id === id);
+        return canConfirmAssemblyRoot(root, sourceRows, selectedSnapshot);
+      });
       document.querySelector("[data-bom-scm-edit]")?.toggleAttribute("disabled", !canScmConfirm);
+      const copySecondaryButton = document.querySelector("[data-copy-selected-l1-secondary]");
+      if (copySecondaryButton) {
+        const selectedRoot = allL1Rows.find((row) => row.id === bomState.selectedAssemblyIds[0]);
+        copySecondaryButton.disabled = !isLatest
+          || bomState.selectedAssemblyIds.length !== 1
+          || !selectedRoot
+          || assemblySupplyType(selectedRoot) === "二供";
+      }
       const hasApqpTasks = bomState.apqpTasks.length > 0;
       const createApqpButton = document.querySelector("[data-bom-create-apqp]");
       const apqpTasksButton = document.querySelector("[data-bom-apqp-tasks]");
@@ -17417,7 +18424,6 @@
       }
       document.querySelector("[data-bom-export-template]")?.toggleAttribute("disabled", !sourceRows.length);
       renderRecipeOverview(sourceRows);
-      renderBomVersionOptions();
     }
 
     function renderBomEditor() {
@@ -17454,7 +18460,6 @@
       const addButtons = document.querySelectorAll('[data-bom-drawer-open="library"], [data-bom-drawer-open="manual"]');
       const editButton = document.querySelector('[data-bom-drawer-open="edit"]');
       const secondaryButtons = document.querySelectorAll("[data-create-secondary-recipe]");
-      const copyL1Button = document.querySelector("[data-copy-l1-assembly]");
       if (checkAll) {
         const visibleIds = visibleRows.map((row) => row.id);
         const selectedVisibleCount = visibleIds.filter((id) => bomState.selectedRowIds.includes(id)).length;
@@ -17482,7 +18487,6 @@
         secondaryButtons.forEach((button) => {
           button.hidden = isScmMode || Number(row.level) !== 1 || recipeLabel(row).includes("二供");
         });
-        if (copyL1Button) copyL1Button.hidden = isScmMode || Number(row.level) !== 1;
       } else {
         selectionInfo.innerHTML = isScmMode
           ? `已选择 ${selected.length} 项 <span>SCM确认模式不支持批量操作</span>`
@@ -17490,7 +18494,6 @@
         addButtons.forEach((button) => { button.hidden = true; });
         if (editButton) editButton.hidden = true;
         secondaryButtons.forEach((button) => { button.hidden = true; });
-        if (copyL1Button) copyL1Button.hidden = true;
         closeBomInlineDrawer();
       }
       document.querySelector("[data-bom-delete-selection]")?.toggleAttribute("hidden", isScmMode);
@@ -17505,7 +18508,16 @@
       const scopedRows = (rowId
         ? descendantsOf(rowId, sourceRows)
         : sourceRows).filter(rowMatchesDetailFilter);
-      document.querySelector("[data-bom-detail-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : "BOM详情";
+      const rootRow = rowId ? sourceRows.find((row) => row.id === rowId) : null;
+      const detailMeta = rootRow ? assemblyMeta(rootRow, sourceRows, historyItem || latestBomSnapshot()) : null;
+      document.querySelector("[data-bom-detail-title]").textContent = rootRow
+        ? `${rootRow.name} BOM明细 · ${detailMeta.activeVersion} ${detailMeta.status}`
+        : historyItem ? `查看历史L1 BOM ${historyItem.version}` : "项目BOM容器明细";
+      const detailEditButton = document.querySelector("[data-bom-detail-edit]");
+      if (detailEditButton) {
+        detailEditButton.hidden = Boolean(historyItem) || !rootRow;
+        detailEditButton.dataset.editRow = rootRow?.id || "";
+      }
       const sourceMeta = historyItem || {
         status: bomState.status,
         controlCode: bomState.controlCode,
@@ -17547,6 +18559,7 @@
           <div class="bom-impact-item">
             <b>${escapeHtml(item.title)}</b>
             <span>${escapeHtml(item.description)}</span>
+            ${item.action ? `<button class="blue-link" type="button" data-bom-confirm-action="${escapeHtml(item.action)}" data-row-id="${escapeHtml(item.rowId || "")}" data-version="${escapeHtml(item.version || "")}">${escapeHtml(item.actionLabel || "查看")}</button>` : ""}
           </div>
         `).join("");
       }
@@ -17569,6 +18582,15 @@
       return [row.bwNo, row.sampleSapNo, row.massSapNo, row.name].join("|");
     }
 
+    function versionCompareStatus(row) {
+      return ["新增", "二供配方新增", "新增待确认"].includes(row?.changeStatus) ? "新增" : "无变更";
+    }
+
+    function versionCompareTag(row) {
+      const status = versionCompareStatus(row);
+      return statusTag(status, status === "新增" ? "is-risk" : "is-ok");
+    }
+
     function detectBomImpacts(previousRows = [], currentRows = bomState.rows) {
       const previousMap = new Map(previousRows.map((row) => [rowSignature(row), normalizeBomRow({ ...row })]));
       const currentMap = new Map(currentRows.map((row) => [rowSignature(row), normalizeBomRow(row)]));
@@ -17577,18 +18599,18 @@
         const old = previousMap.get(key);
         if (!old) {
           row.changeStatus = "新增";
-          impacts.push({ type: "新增零件", row, blocksGate: row.apqpPolicy !== "不生成", action: "判断是否生成子零件 APQP，并确认起始 Gate。" });
+          impacts.push({ type: "新增零件", row, blocksGate: Number(row.level) === 1, action: "判断是否需要创建或关联子零件开发任务，并确认子零件开发起始 Gate；默认仅作为项目风险提示。" });
           return;
         }
         if (old.supplyType !== row.supplyType) {
           row.changeStatus = "供应商变更";
-          impacts.push({ type: "一供/二供变更", row, blocksGate: true, action: "供应类型变更需确认是否影响 APQP 创建、导出方案和 Gate 阻塞判断。" });
+          impacts.push({ type: "一供/二供变更", row, blocksGate: Number(row.level) === 1, action: "供应类型变更需确认是否影响项目级 L1 BOM 审批依据；对子零件开发的影响由人工判断。" });
         } else if (old.primarySupplier !== row.primarySupplier || old.secondarySupplier !== row.secondarySupplier) {
           row.changeStatus = "供应商变更";
-          impacts.push({ type: "供应商变化", row, blocksGate: true, action: "触发供应商开发任务重评，确认一供/二供任务是否继承或重建。" });
+          impacts.push({ type: "供应商变化", row, blocksGate: Number(row.level) === 1, action: "触发供应商开发任务重评，确认一供/二供任务是否继承或重建；默认不阻塞项目 Gate。" });
         } else if (old.secondaryStrategy !== row.secondaryStrategy) {
           row.changeStatus = "供应商变更";
-          impacts.push({ type: "二供策略变化", row, blocksGate: row.secondaryStrategy === "同步开发", action: "备案改同步开发时从指定 Gate 创建二供 APQP。" });
+          impacts.push({ type: "二供策略变化", row, blocksGate: false, action: "备案改同步开发时从指定 Gate 创建或启动二供子零件开发任务；不作为项目 Gate 硬阻塞。" });
         } else if (old.qty !== row.qty || old.level !== row.level || old.releaseStatus !== row.releaseStatus) {
           row.changeStatus = "已确认";
           impacts.push({ type: "数量/层级/图纸变化", row, blocksGate: false, action: "记录变更并通知 SCM，默认不重建 APQP。" });
@@ -17598,7 +18620,7 @@
       });
       previousMap.forEach((row, key) => {
         if (!currentMap.has(key)) {
-          impacts.push({ type: "删除零件", row: { ...row, changeStatus: "删除待确认" }, blocksGate: true, action: "关闭或取消关联 APQP，保留历史任务记录。" });
+          impacts.push({ type: "删除零件", row: { ...row, changeStatus: "删除待确认" }, blocksGate: Number(row.level) === 1, action: "关闭或取消关联子零件开发任务，保留历史任务记录；默认不阻塞项目 Gate。" });
         }
       });
       bomState.lastImpacts = impacts;
@@ -17607,28 +18629,23 @@
 
     function gateSubmitBlockers(stage) {
       if (!stage || stage === "CKO" || stage === "PKO" || stage === "HandOver") return [];
-      const blockers = [];
-      const unresolvedChanges = bomState.rows.filter((row) => row.changeStatus && !["无变更", "已确认", "已取消", "已生效"].includes(row.changeStatus));
-      unresolvedChanges.slice(0, 6).forEach((row) => {
-        blockers.push({
-          title: `BOM变更未处理 · ${row.name}`,
-          description: `${row.changeStatus} 需要完成影响确认后，才能提交 ${stage} 审批。`
-        });
-      });
-      const blockingTasks = bomState.apqpTasks.filter((task) => task.blockGate === "是" && gateReached(task.startGate, stage) && !["当前Gate已完成", "已完成", "已取消"].includes(task.status));
-      blockingTasks.slice(0, 6).forEach((task) => {
-        blockers.push({
-          title: `阻塞型子零件APQP未完成 · ${task.partName}`,
-          description: `${task.supplyType || "-"} ${task.supplier || "-"}，当前状态：${task.status}，起始Gate：${task.startGate || "Gate1"}。`
-        });
-      });
-      if (bomState.status !== "locked" && bomState.rows.length) {
-        blockers.unshift({
-          title: "BOM尚未锁定生效",
-          description: "当前 BOM 必须由 SCM 确认并锁定后，才能作为 Gate 审批依据。"
-        });
-      }
-      return blockers;
+      return l1RootsFor(bomState.rows).flatMap((root) => {
+        const meta = assemblyMeta(root, bomState.rows, latestBomSnapshot());
+        const blockers = [];
+        if (meta.status !== "已锁定生效") {
+          blockers.push({
+            title: `${root.name} 存在${meta.status}版本 ${meta.workingVersion === "-" ? meta.activeVersion : meta.workingVersion}`,
+            description: `该 L1 总成 BOM 尚未形成可用于项目 Gate 审批的已锁定生效版本。`
+          });
+        }
+        if (meta.openChangeCount) {
+          blockers.push({
+            title: `${root.name} 存在未关闭BOM变更`,
+            description: `${meta.openChangeCount} 项变更尚未完成项目级影响确认；影响范围限定在该 L1 总成内。`
+          });
+        }
+        return blockers;
+      }).slice(0, 8);
     }
 
     function bomOperationHtml(row, context = "list") {
@@ -17644,6 +18661,45 @@
       return escapeHtml(value && value !== "-" ? value : fallback);
     }
 
+    function bomPartTaskLinkHtml(row) {
+      const partNo = row.bwNo || row.sampleSapNo || row.massSapNo || "-";
+      if (!partNo || partNo === "-") return escapeHtml(partNo);
+      const hasApqpTask = bomState.apqpTasks.some((task) => task.sourceBomRowId === row.id || task.rowId === row.id);
+      if (!hasApqpTask) return escapeHtml(partNo);
+      return `<button class="blue-link" type="button" data-open-part-task="${escapeHtml(row.id)}" title="跳转至对应的子零件开发任务">${escapeHtml(partNo)}</button>`;
+    }
+
+    function findBomRowById(rowId) {
+      const selectedRows = selectedBomSnapshot()?.rows || [];
+      return bomState.rows.find((row) => row.id === rowId)
+        || selectedRows.find((row) => row.id === rowId)
+        || bomState.histories.flatMap((history) => history.rows || []).find((row) => row.id === rowId)
+        || null;
+    }
+
+    function openPartDevelopmentTask(rowId) {
+      const row = findBomRowById(rowId);
+      if (!row) return;
+      const target = new URL("子零件开发任务详情_调整版.html", window.location.href);
+      target.searchParams.set("source", "bom");
+      target.searchParams.set("projectCode", document.querySelector(".project-code")?.textContent?.trim() || "");
+      target.searchParams.set("bomVersion", selectedBomSnapshot()?.version || currentVersion());
+      target.searchParams.set("bomRowId", row.id);
+      target.searchParams.set("partNo", row.bwNo || row.sampleSapNo || row.massSapNo || "");
+      target.searchParams.set("partName", row.name || "");
+      target.searchParams.set("level", `L${row.level || ""}`);
+      target.searchParams.set("supplier", row.subSupplier || row.rawSupplier || "");
+      window.location.href = target.toString();
+    }
+
+    function handleBomPartTaskClick(event) {
+      const button = event.target.closest("[data-open-part-task]");
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      openPartDevelopmentTask(button.dataset.openPartTask);
+    }
+
     function bomWorkspaceRowHtml(row, options = {}) {
       const { selectable = false } = options;
       normalizeBomRow(row);
@@ -17656,7 +18712,7 @@
       `;
       const codeCell = `
         <div class="bom-code-cell">
-          <b>BW ${compactText(row.bwNo)}</b>
+          <b>BW ${bomPartTaskLinkHtml(row)}</b>
           <span>SAP ${compactText(row.sampleSapNo)}</span>
           <span>${compactText(row.application)}</span>
         </div>
@@ -17664,13 +18720,13 @@
       const apqpCell = `
         <div class="bom-rule-cell">
           ${statusTag(row.apqpPolicy, row.apqpPolicy === "不生成" ? "is-ok" : "is-warn")}
-          ${statusTag(row.blockGate === "是" ? "阻塞Gate" : "不阻塞", row.blockGate === "是" ? "is-risk" : "is-ok")}
+          ${statusTag(row.blockGate === "是" ? "项目风险提示" : "普通关联", row.blockGate === "是" ? "is-warn" : "is-ok")}
           ${statusTag(row.startGate || "Gate1")}
         </div>
       `;
       const statusCell = `
         <div class="bom-status-cell">
-          ${statusTag(row.changeStatus || "无变更", row.changeStatus && row.changeStatus !== "无变更" ? "is-risk" : "is-ok")}
+          ${versionCompareTag(row)}
           ${statusTag(row.apqpStatus || "未创建", row.apqpStatus === "未创建" ? "" : row.apqpStatus === "已取消" ? "is-risk" : "is-ok")}
         </div>
       `;
@@ -17696,11 +18752,11 @@
       const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
       const operation = bomOperationHtml(row, context);
       const cells = [
-        row.no, row.application, level, partName, row.qty, row.customerNo, row.bwNo, row.drawingRev,
+        row.no, row.application, level, partName, row.qty, row.customerNo, bomPartTaskLinkHtml(row), row.drawingRev,
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
         row.sharedPart, row.borrowedProject, normalizeDrawingStatus(row.releaseStatus), row.rawSupplier, row.subSupplier,
         statusTag(row.supplyType || "二供", row.supplyType === "一供" ? "is-ok" : "is-warn"),
-        statusTag(row.changeStatus || "无变更", row.changeStatus && row.changeStatus !== "无变更" ? "is-risk" : "is-ok"),
+        versionCompareTag(row),
         row.remark,
         operation
       ];
@@ -17708,6 +18764,39 @@
       const checked = bomState.selectedRowIds.includes(row.id) ? "checked" : "";
       const selectedClass = checked ? " class=\"is-selected\"" : "";
       return `<tr data-row-id="${row.id}"${selectedClass}>${selectable ? `<td class="center"><input type="checkbox" data-row-check="${row.id}" ${checked}></td>` : ""}${body}</tr>`;
+    }
+
+    function bomAssemblyOperationHtml(row, context = "list") {
+      const versionButton = `<button class="blue-link" type="button" data-assembly-history="${escapeHtml(row.id)}">查看版本</button>`;
+      if (context === "historyList") {
+        return `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${escapeHtml(row.id)}">查看明细</button>${versionButton}</span>`;
+      }
+      return `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${escapeHtml(row.id)}">查看明细</button>${versionButton}</span>`;
+    }
+
+    function bomAssemblyRowHtml(row, options = {}) {
+      const { context = "list", rows = bomState.rows, snapshot = latestBomSnapshot() } = options;
+      normalizeBomRow(row);
+      const meta = assemblyMeta(row, rows, snapshot);
+      const statusVariant = meta.status === "已生效" ? "is-ok" : meta.status === "待SCM确认" ? "is-warn" : "";
+      const apqpVariant = meta.apqpStatus === "未创建" ? "" : meta.apqpStatus === "已取消" ? "is-risk" : "is-ok";
+      const checked = bomState.selectedAssemblyIds.includes(row.id) ? "checked" : "";
+      const cells = [
+        `<input type="checkbox" data-assembly-check="${escapeHtml(row.id)}" ${checked} aria-label="选择${escapeHtml(row.name)}">`,
+        row.bwNo || "-",
+        row.name || "-",
+        meta.activeVersion === "-" ? "-" : statusTag(meta.activeVersion, "is-ok"),
+        meta.workingVersion === "-" ? "-" : statusTag(meta.workingVersion, meta.status === "已生效" ? "is-ok" : "is-warn"),
+        statusTag(meta.status, statusVariant),
+        meta.openChangeCount ? `${meta.openChangeCount} 项` : "0 项",
+        statusTag(assemblySupplyType(row), assemblySupplyType(row) === "一供" ? "is-ok" : "is-warn"),
+        statusTag(meta.apqpStatus, apqpVariant),
+        meta.owner,
+        meta.updatedAt,
+        bomAssemblyOperationHtml(row, context)
+      ];
+      const body = cells.map((cell, index) => `<td class="${index === cells.length - 1 ? "fixed-op" : ""}">${cell}</td>`).join("");
+      return `<tr data-row-id="${escapeHtml(row.id)}">${body}</tr>`;
     }
 
     function openWorkspace(mode, rowId = null, historyVersion = null) {
@@ -17743,10 +18832,16 @@
         bomState.historyViewing = false;
       }
       if (!historyItem) {
-        bomState.scopedRootId = !isCreate && rowId && bomState.rows.find((row) => row.id === rowId)?.level === 1 ? rowId : null;
+        bomState.scopedRootId = rowId && bomState.rows.find((row) => row.id === rowId)?.level === 1 ? rowId : null;
       }
 
-      document.querySelector("[data-bom-work-title]").textContent = historyItem ? `查看历史BOM ${historyItem.version}` : isCreate ? "编辑BOM" : isScm ? "确认BOM（SCM）" : "BOM详情";
+      const scopedRoot = bomState.scopedRootId ? bomState.rows.find((row) => row.id === bomState.scopedRootId && row.level === 1) : null;
+      const scopedMeta = scopedRoot ? assemblyMeta(scopedRoot) : null;
+      document.querySelector("[data-bom-work-title]").textContent = historyItem
+        ? `查看历史L1 BOM ${historyItem.version}`
+        : scopedRoot
+          ? `${scopedRoot.name} L1 BOM · ${nextL1WorkingVersion(scopedRoot)}`
+          : isCreate ? "编辑项目BOM容器" : isScm ? "确认L1 BOM（SCM）" : "项目BOM容器详情";
       const workRole = document.querySelector("[data-bom-work-role]");
       if (workRole) workRole.textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate ? "AE" : isScm ? "SCM" : "PM / 查看"}`;
       const headerSubmitButton = document.querySelector("[data-bom-submit]");
@@ -17755,7 +18850,7 @@
       if (headerSubmitButton) headerSubmitButton.hidden = isDetail || Boolean(historyItem);
       if (footerSubmitButton) footerSubmitButton.hidden = isDetail || Boolean(historyItem);
       if (footerSubmitButton) footerSubmitButton.textContent = isScm ? "确认并锁定" : "提交至SCM";
-      document.querySelector("[data-bom-create-options]").hidden = !isCreate || Boolean(historyItem);
+      document.querySelector("[data-bom-create-options]").hidden = !isCreate || Boolean(historyItem) || Boolean(scopedRoot);
       if (detailButton) detailButton.hidden = isDetail;
       document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
       document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
@@ -17788,7 +18883,7 @@
           message: "确认提交并锁定 BOM 版本？锁定后再次编辑将生成新版本，并保留本次变更影响。",
           detail: impacts.slice(0, 5).map((impact) => ({
             title: `${impact.type} · ${impact.row.name || "-"}`,
-            description: `${impact.blocksGate ? "会阻塞Gate" : "不默认阻塞"}；${impact.action}`
+            description: `${impact.blocksGate ? "影响项目级准入，需人工确认" : "仅作风险提示，不默认阻塞项目 Gate"}；${impact.action}`
           }))
         });
         if (!confirmed) return;
@@ -17799,6 +18894,20 @@
         bomState.workflowStatus = "confirmed";
         bomState.lockedAt = getCurrentTime();
         bomState.controlCode = controlCodeFor(currentVersion());
+        const scopedRoot = bomState.scopedRootId ? bomState.rows.find((row) => row.id === bomState.scopedRootId && row.level === 1) : null;
+        if (scopedRoot) {
+          scopedRoot.activeBomVersion = nextAssemblyVersion(scopedRoot);
+          scopedRoot.workingBomVersion = "-";
+          scopedRoot.updatedAt = bomState.lockedAt;
+          descendantsOf(scopedRoot.id).forEach((row) => {
+            if (row.changeStatus && !["无变更", "已取消"].includes(row.changeStatus)) row.changeStatus = "已生效";
+          });
+        } else {
+          l1RootsFor(bomState.rows).forEach((root) => {
+            root.activeBomVersion = root.activeBomVersion || `${assemblyCodeFor(root)}-V1`;
+            root.updatedAt = bomState.lockedAt;
+          });
+        }
         if (previousRows.length) {
           bomState.changeRecords.unshift(...buildFieldChangeRecords(previousRows, bomState.rows, {
             version: currentVersion(),
@@ -17820,7 +18929,7 @@
       } else {
         const confirmed = await showBomConfirm({
           title: "提交至SCM确认",
-          message: "确认提交至 SCM 进行 BOM 确认？提交后当前 BOM 将进入待确认状态。"
+          message: "确认提交至 SCM 进行 L1 BOM 确认？提交后对应工作版本将进入待 SCM 确认状态。"
         });
         if (!confirmed) return;
         if (bomState.versionMajor === 0 && bomState.versionMinor === 0) {
@@ -17830,14 +18939,16 @@
         bomState.workflowStatus = "pendingScm";
         bomState.controlCode = "";
         bomState.lockedAt = "";
+        const targetRoots = targetEditingRoots();
+        targetRoots.forEach((root) => ensureL1WorkingVersion(root, "待SCM确认"));
         addProjectEvent({
           category: "bom",
           type: "BOM",
-          title: `AE 提交 BOM ${currentVersion()} 至 SCM`,
-          description: `AE 完成 BOM 编辑并提交 SCM 确认，共 ${bomState.rows.length} 条零件数据。`,
+          title: "AE 提交 L1 BOM 至 SCM",
+          description: `AE 已提交 ${targetRoots.length} 个 L1 BOM 工作版本至 SCM 确认。`,
           actor: "Li Ming",
           role: "AE",
-          scope: currentVersion()
+          scope: targetRoots.map((root) => root.workingBomVersion).join(" / ")
         });
       }
       bomState.scopedRootId = null;
@@ -17857,6 +18968,7 @@
       bomState.workflowStatus = bomState.mode === "scm" ? "scmDraft" : "aeEditing";
       bomState.controlCode = "";
       bomState.lockedAt = "";
+      targetEditingRoots().forEach((root) => ensureL1WorkingVersion(root, "AE编辑中"));
       bomState.scopedRootId = null;
       bomState.selectedRowIds = [];
       closeBomInlineDrawer();
@@ -17876,6 +18988,16 @@
       return row.level === 1 ? "L1总成APQP" : "子零件APQP";
     }
 
+    function shouldCreateApqpBySharedPart(row) {
+      return row.sharedPart !== "是";
+    }
+
+    function sharedPartApqpReason(row) {
+      return shouldCreateApqpBySharedPart(row)
+        ? "共用零件为否，默认需要创建APQP"
+        : "共用零件为是，默认不创建APQP";
+    }
+
     function apqpCandidates() {
       if (!(bomState.status === "locked" && bomState.workflowStatus === "confirmed")) return [];
       const existingKeys = createdApqpKeys();
@@ -17885,8 +19007,10 @@
         const parent = parentRowFor(row);
         const isDiffPart = Boolean(row.recipeChanged || row.supplyType === "二供" || String(row.changeStatus || "").includes("二供"));
         const isNewPart = ["新增", "二供配方新增"].includes(row.changeStatus) || isDiffPart;
+        const rootMeta = assemblyMeta(root, bomState.rows, latestBomSnapshot());
+        if (rootMeta.status !== "已生效") return [];
         const commonPayload = {
-          bomVersion: currentVersion(),
+          bomVersion: `${root?.name || row.name} / ${rootMeta.activeVersion}`,
           l1Name: root?.name || row.name,
           parentName: parent?.name || "-",
           isNewPart,
@@ -17908,8 +19032,8 @@
             startGate: row.startGate || "Gate1",
             blockGate: "是",
             status: "未启动",
-            recommended: true,
-            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : "L1总成默认建议创建APQP",
+            recommended: shouldCreateApqpBySharedPart(row),
+            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : sharedPartApqpReason(row),
             disabled: existingKeys.has(sourceKey),
             sourceKey,
             ...commonPayload
@@ -17929,8 +19053,8 @@
             startGate: row.primaryStartGate || row.startGate || "Gate1",
             blockGate: row.primaryBlockGate || row.blockGate || "是",
             status: "未启动",
-            recommended: isDiffPart || row.sharedPart !== "是",
-            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : isDiffPart ? "差异新零件建议创建子零件APQP" : row.sharedPart === "是" ? "成熟共用件可按需创建" : "新开发或外购开发件建议创建",
+            recommended: shouldCreateApqpBySharedPart(row),
+            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : sharedPartApqpReason(row),
             disabled: existingKeys.has(sourceKey),
             sourceKey,
             ...commonPayload
@@ -17948,8 +19072,8 @@
             startGate: row.secondaryStartGate || row.startGate || "Gate1",
             blockGate: row.secondaryBlockGate || "是",
             status: "未启动",
-            recommended: true,
-            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : "二供同步开发或需开发，建议创建APQP",
+            recommended: shouldCreateApqpBySharedPart(row),
+            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : sharedPartApqpReason(row),
             disabled: existingKeys.has(sourceKey),
             sourceKey,
             ...commonPayload
@@ -17967,8 +19091,8 @@
             startGate: row.secondaryStartGate || "Gate2",
             blockGate: row.secondaryBlockGate || (gateReached(row.secondaryStartGate) ? "是" : "否"),
             status: gateReached(row.secondaryStartGate) ? "未启动" : "待启动",
-            recommended: gateReached(row.secondaryStartGate),
-            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : "二供后续导入，达到起始Gate后按需创建",
+            recommended: shouldCreateApqpBySharedPart(row),
+            reason: existingKeys.has(sourceKey) ? "该BOM行已创建APQP" : sharedPartApqpReason(row),
             disabled: existingKeys.has(sourceKey),
             sourceKey,
             ...commonPayload
@@ -17985,10 +19109,10 @@
       const confirmButton = document.querySelector("[data-confirm-bom-apqp-create]");
       if (tip) {
         tip.textContent = bomState.status !== "locked" || bomState.workflowStatus !== "confirmed"
-          ? "BOM 必须经 SCM 确认并锁定后，才能生成正式 APQP / 子零件开发任务。"
+          ? "对应 L1 总成 BOM 必须经 SCM 确认并锁定后，才能生成正式 APQP / 子零件开发任务。"
           : candidates.length
-          ? `以下 ${candidates.length} 条候选任务可按 BOM 行选择创建；已创建过的 BOM 行会被锁定并显示原因。`
-          : "当前BOM没有符合条件的供应方案，可能已全部创建、为共用件或二供仅备案。";
+          ? `以下 ${candidates.length} 条候选任务可按 L1 BOM 行选择创建；已创建过的 BOM 行会被锁定并显示原因。`
+          : "当前 L1 BOM 集合没有符合条件的供应方案，可能已全部创建、为共用件或二供仅备案。";
       }
       const selectable = candidates.filter((candidate) => !candidate.disabled && candidate.recommended);
       bomState.apqpSelection = new Set(selectable.map((candidate) => candidate.sourceKey));
@@ -17997,25 +19121,34 @@
       body.innerHTML = candidates.length ? candidates.map((candidate) => `
         <tr>
           <td class="center"><input type="checkbox" data-apqp-select="${escapeHtml(candidate.sourceKey)}" ${candidate.disabled ? "disabled" : candidate.recommended ? "checked" : ""}></td>
-          <td>${escapeHtml(candidate.bomVersion)}</td>
-          <td>${escapeHtml(candidate.l1Name)}</td>
-          <td>${escapeHtml(candidate.row.bwNo || candidate.row.sampleSapNo || "-")}</td>
-          <td>${escapeHtml(candidate.row.name)}</td>
-          <td>${escapeHtml(candidate.taskType)}</td>
-          <td>L${candidate.row.level}</td>
-          <td>${escapeHtml(candidate.parentName)}</td>
-          <td>${escapeHtml(candidate.recipeType || recipeLabel(recipeRootFor(candidate.row) || candidate.row))}</td>
-          <td>${escapeHtml(candidate.supplier)}</td>
-          <td>${escapeHtml(candidate.supplyType)}</td>
-          <td>${statusTag(candidate.isNewPart ? "是" : "否", candidate.isNewPart ? "is-warn" : "is-ok")}</td>
-          <td>${statusTag(candidate.isDiffPart ? "是" : "否", candidate.isDiffPart ? "is-risk" : "is-ok")}</td>
+          <td>${escapeHtml(candidate.row.no || "-")}</td>
+          <td>${escapeHtml(candidate.row.application || "-")}</td>
+          <td><span class="level-badge level-${candidate.row.level}">L${candidate.row.level}</span></td>
+          <td>${escapeHtml(candidate.row.name || "-")}</td>
+          <td>${escapeHtml(candidate.row.qty || "-")}</td>
+          <td>${escapeHtml(candidate.row.customerNo || "-")}</td>
+          <td>${escapeHtml(candidate.row.bwNo || "-")}</td>
+          <td>${escapeHtml(candidate.row.drawingRev || "-")}</td>
+          <td>${escapeHtml(candidate.row.sampleSapNo || "-")}</td>
+          <td>${escapeHtml(candidate.row.massSapNo || "-")}</td>
+          <td>${escapeHtml(candidate.row.rawNo || "-")}</td>
+          <td>${escapeHtml(candidate.row.rawMaterial || "-")}</td>
+          <td>${escapeHtml(candidate.row.weightPiece || "-")}</td>
+          <td>${escapeHtml(candidate.row.weightAssembly || "-")}</td>
+          <td>${escapeHtml(candidate.row.sharedPart || "-")}</td>
+          <td>${escapeHtml(candidate.row.borrowedProject || "-")}</td>
+          <td>${escapeHtml(normalizeDrawingStatus(candidate.row.releaseStatus))}</td>
+          <td>${escapeHtml(candidate.row.rawSupplier || "-")}</td>
+          <td>${escapeHtml(candidate.supplier || candidate.row.subSupplier || "-")}</td>
+          <td>${escapeHtml(candidate.supplyType || candidate.row.supplyType || "-")}</td>
+          <td>${versionCompareTag(candidate.row)}</td>
+          <td>${escapeHtml(candidate.row.remark || "-")}</td>
           <td>${statusTag(candidate.recommended ? "建议创建" : "可选", candidate.recommended ? "is-warn" : "is-ok")}</td>
-          <td>${escapeHtml(candidate.owner)}</td>
+          <td>${apqpOwnerSelectHtml(candidate)}</td>
           <td>${escapeHtml(candidate.startGate)}</td>
-          <td>${statusTag(candidate.blockGate, candidate.blockGate === "是" ? "is-risk" : "is-ok")}</td>
           <td>${escapeHtml(candidate.reason)}</td>
         </tr>
-      `).join("") : `<tr><td class="bom-empty-tip" colspan="18">暂无可创建APQP的供应方案</td></tr>`;
+      `).join("") : `<tr><td class="bom-empty-tip" colspan="27">暂无可创建APQP的供应方案</td></tr>`;
     }
 
     function openApqpCreateModal() {
@@ -18028,7 +19161,12 @@
     }
 
     function confirmBomApqpCreate() {
-      const candidates = apqpCandidates().filter((candidate) => !candidate.disabled && bomState.apqpSelection.has(candidate.sourceKey));
+      const candidates = apqpCandidates()
+        .filter((candidate) => !candidate.disabled && bomState.apqpSelection.has(candidate.sourceKey))
+        .map((candidate) => ({
+          ...candidate,
+          owner: apqpOwnerRole(bomState.apqpOwnerOverrides[candidate.sourceKey] || candidate.owner)
+        }));
       if (!candidates.length) {
         showBomConfirm({ title: "无法创建APQP", message: "请至少选择一条可创建 APQP 的 BOM 行。" });
         return;
@@ -18052,7 +19190,7 @@
           supplyType: candidate.supplyType,
           owner: candidate.owner,
           type: candidate.taskType,
-          sourceBomVersion: currentVersion(),
+          sourceBomVersion: candidate.bomVersion,
           startGate: candidate.startGate,
           currentGate: bomState.stage,
           blockGate: candidate.blockGate,
@@ -18068,7 +19206,7 @@
         category: "apqp",
         type: "APQP",
         title: "基于 BOM 创建 APQP",
-        description: `已按用户选择创建 ${candidates.length} 条 APQP 任务，来源 BOM 版本、BOM 行和供应类型均已记录。`,
+        description: `已按用户选择创建 ${candidates.length} 条 APQP 任务，来源 L1 BOM 版本、BOM 行和供应类型均已记录。`,
         actor: "Wu Zhuoren",
         role: "PM",
         scope: currentVersion()
@@ -18082,12 +19220,12 @@
       const tip = document.querySelector("[data-bom-apqp-task-tip]");
       const tasks = bomState.apqpTasks;
       if (tip) {
-        tip.textContent = tasks.length ? `共 ${tasks.length} 个由当前BOM生成的 APQP / 子零件开发任务。` : "当前BOM尚未生成APQP任务。";
+        tip.textContent = tasks.length ? `共 ${tasks.length} 个由 L1 BOM 生效版本生成的 APQP / 子零件开发任务。` : "当前 L1 BOM 集合尚未生成APQP任务。";
       }
       if (!body) return;
       body.innerHTML = tasks.length ? tasks.map((task) => `
         <tr>
-          <td>${escapeHtml(task.id)}</td>
+          <td><button class="blue-link" type="button" data-open-apqp-task-detail="${escapeHtml(task.id)}" title="跳转至子零件开发任务详情">${escapeHtml(task.id)}</button></td>
           <td>L${task.level}</td>
           <td>${escapeHtml(task.partName)}</td>
           <td>${escapeHtml(task.supplier || "-")}</td>
@@ -18096,10 +19234,160 @@
           <td>${escapeHtml(task.sourceBomVersion || currentVersion())}</td>
           <td>${escapeHtml(task.startGate || "Gate1")}</td>
           <td>${escapeHtml(task.currentGate || task.stage || bomState.stage)}</td>
-          <td>${statusTag(task.blockGate || "否", task.blockGate === "是" ? "is-risk" : "is-ok")}</td>
           <td><span class="status-dot">${escapeHtml(task.status)}</span></td>
         </tr>
-      `).join("") : `<tr><td class="bom-empty-tip" colspan="11">暂无APQP任务</td></tr>`;
+      `).join("") : `<tr><td class="bom-empty-tip" colspan="10">暂无APQP任务</td></tr>`;
+    }
+
+    function openApqpTaskDetail(taskId) {
+      const task = bomState.apqpTasks.find((item) => item.id === taskId);
+      if (!task) return;
+      const target = new URL("子零件开发任务详情_调整版.html", window.location.href);
+      target.searchParams.set("source", "apqp");
+      target.searchParams.set("apqpId", task.id);
+      target.searchParams.set("partTaskNo", task.partTaskNo || task.id);
+      target.searchParams.set("projectCode", document.querySelector(".project-code")?.textContent?.trim() || "");
+      target.searchParams.set("bomVersion", task.sourceBomVersion || currentVersion());
+      target.searchParams.set("bomRowId", task.sourceBomRowId || task.rowId || "");
+      target.searchParams.set("partNo", task.bwNo || "");
+      target.searchParams.set("partName", task.partName || "");
+      target.searchParams.set("level", `L${task.level || ""}`);
+      target.searchParams.set("supplier", task.supplier || "");
+      target.searchParams.set("owner", task.owner || "");
+      target.searchParams.set("status", task.status || "");
+      window.location.href = target.toString();
+    }
+
+    function assemblyHistoryOptionMeta(value = "") {
+      const parsed = parseAssemblyVersionValue(value);
+      if (!parsed) return null;
+      const liveRoot = bomState.rows.find((row) => row.id === parsed.rowId);
+      const historyItem = liveRoot?.versionHistory?.find((item) => item.version === parsed.version);
+      const snapshotVersion = snapshotVersionForAssembly(parsed.rowId, parsed.version);
+      const snapshot = snapshotVersion ? bomState.histories.find((item) => item.version === snapshotVersion) : null;
+      const meta = liveRoot ? assemblyMeta(liveRoot, bomState.rows, latestBomSnapshot()) : null;
+      const status = parsed.kind === "working" && parsed.version !== meta?.activeVersion
+        ? "当前工作版本"
+        : parsed.kind === "active"
+          ? "当前生效版本"
+          : historyItem?.status || (parsed.version === meta?.activeVersion ? "当前生效版本" : "历史版本");
+      return {
+        parsed,
+        liveRoot,
+        historyItem,
+        snapshot,
+        status,
+        time: historyItem?.time || snapshot?.submittedAt || liveRoot?.updatedAt || "-"
+      };
+    }
+
+    function renderAssemblyHistoryModal() {
+      const select = document.querySelector("[data-assembly-history-version]");
+      const selectedValue = select?.value || "";
+      const snapshot = selectedAssemblyVersionSnapshot(selectedValue);
+      const optionMeta = assemblyHistoryOptionMeta(selectedValue);
+      const root = snapshot.rows?.find((row) => Number(row.level) === 1) || optionMeta?.liveRoot || null;
+      const meta = root ? assemblyMeta(root, snapshot.rows || bomState.rows, snapshot) : null;
+      const l1Input = document.querySelector("[data-assembly-history-l1]");
+      const statusInput = document.querySelector("[data-assembly-history-status]");
+      const timeInput = document.querySelector("[data-assembly-history-time]");
+      const summary = document.querySelector("[data-assembly-history-summary]");
+      const head = document.querySelector("[data-assembly-history-head]");
+      const body = document.querySelector("[data-assembly-history-body]");
+
+      if (l1Input) l1Input.value = root ? `${root.bwNo || "-"} / ${root.name || "-"}` : "-";
+      if (statusInput) statusInput.value = optionMeta?.status || snapshot.status || "-";
+      if (timeInput) timeInput.value = optionMeta?.time || snapshot.submittedAt || "-";
+      if (summary) {
+        summary.innerHTML = [
+          ["BOM版本", snapshot.version || "-"],
+          ["状态", optionMeta?.status || meta?.status || "-"],
+          ["草稿/待确认变更", `${meta?.openChangeCount ?? 0} 项`],
+          ["APQP状态", meta?.apqpStatus || "-"],
+          ["负责人", meta?.owner || "-"]
+        ].map(([label, value]) => `<div class="bom-summary-item"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join("");
+      }
+      if (head) {
+        head.innerHTML = `<tr>${bomHeaders.map(([cn, en]) => `<th><span>${escapeHtml(cn)}</span><small>${escapeHtml(en)}</small></th>`).join("")}</tr>`;
+      }
+      if (body) {
+        const rows = snapshot.rows || [];
+        body.innerHTML = rows.length
+          ? rows.map((row) => bomRowHtml(row, { context: "historyList" })).join("")
+          : `<tr><td colspan="${bomHeaders.length}" class="center">当前版本暂无BOM明细</td></tr>`;
+      }
+    }
+
+    function openAssemblyHistory(rowId) {
+      const row = bomState.rows.find((item) => item.id === rowId);
+      if (!row) return;
+      bomState.selectedAssemblyHistoryRowId = rowId;
+      const options = assemblyVersionOptions(row);
+      if (!options.length) {
+        showBomConfirm({
+          title: "暂无可查看版本",
+          message: "该 L1 总成尚未形成工作版本或生效版本，请先在 BOM 中创建并提交确认。"
+        });
+        return;
+      }
+      const modal = document.getElementById("bomAssemblyHistoryModal");
+      const title = document.getElementById("bomAssemblyHistoryTitle");
+      const select = document.querySelector("[data-assembly-history-version]");
+      if (title) title.textContent = `${row.name || "L1 BOM"} 历史版本`;
+      if (select) {
+        select.innerHTML = options.map((item) => `<option value="${escapeHtml(item.value)}">${escapeHtml(item.label)}</option>`).join("");
+        select.value = options[0].value;
+      }
+      renderAssemblyHistoryModal();
+      if (modal) modal.hidden = false;
+    }
+
+    function closeAssemblyHistoryModal() {
+      const modal = document.getElementById("bomAssemblyHistoryModal");
+      if (modal) modal.hidden = true;
+    }
+
+    function exportAssemblyHistoryVersion() {
+      const select = document.querySelector("[data-assembly-history-version]");
+      const selectedValue = select?.value || "";
+      const snapshot = selectedAssemblyVersionSnapshot(selectedValue);
+      const rows = snapshot.rows || [];
+      if (!rows.length) {
+        showBomConfirm({ title: "无法导出", message: "当前版本暂无可导出的 BOM 明细。" });
+        return;
+      }
+      const optionMeta = assemblyHistoryOptionMeta(selectedValue);
+      const root = rows.find((row) => Number(row.level) === 1) || optionMeta?.liveRoot;
+      const exportedAt = new Date();
+      const metaRows = [
+        ["项目名称", "EA888 E5 VCT"],
+        ["L1总成", root ? `${root.bwNo || "-"} / ${root.name || "-"}` : "-"],
+        ["BOM版本", snapshot.version || "-"],
+        ["版本状态", optionMeta?.status || snapshot.status || "-"],
+        ["更新时间", optionMeta?.time || snapshot.submittedAt || "-"],
+        ["导出时间", exportedAt.toLocaleString("zh-CN", { hour12: false })]
+      ];
+      const csvRows = [
+        ["字段", "值"],
+        ...metaRows,
+        [],
+        bomExportHeaders(),
+        ...bomExportRows({ ...snapshot, exportRows: rows })
+      ];
+      const csv = csvRows.map((row) => row.map(csvCell).join(",")).join("\n");
+      const rootName = root?.name || snapshot.assemblyName || "L1-BOM";
+      downloadBlob(`\uFEFF${csv}`, `L1-BOM历史版本_${safeFilePart(rootName)}_${safeFilePart(snapshot.version || "未创建")}.csv`, "text/csv;charset=utf-8");
+    }
+
+    function snapshotVersionForAssembly(rowId, assemblyVersion = "") {
+      if (!assemblyVersion) return "";
+      const direct = bomState.histories.find((item) => item.version === assemblyVersion);
+      if (direct) return direct.version;
+      const snapshot = bomState.histories.find((item) => {
+        const root = (item.rows || []).find((row) => row.id === rowId);
+        return root && (root.activeBomVersion === assemblyVersion || root.workingBomVersion === assemblyVersion);
+      });
+      return snapshot?.version || "";
     }
 
     function snapshotByVersionValue(value) {
@@ -18259,7 +19547,7 @@
       primarySupplier: "一供供应商",
       secondarySupplier: "二供供应商",
       apqpPolicy: "是否需要 APQP",
-      blockGate: "是否阻塞项目 Gate",
+      blockGate: "是否影响项目风险提示",
       remark: "备注"
     };
 
@@ -18273,7 +19561,7 @@
       if (field === "name") return "零件名称变化";
       if (field === "primarySupplier" || field === "secondarySupplier" || field === "rawSupplier" || field === "subSupplier") return "供应商变化";
       if (field === "apqpPolicy") return "是否需要 APQP 变化";
-      if (field === "blockGate") return "是否阻塞项目 Gate 变化";
+      if (field === "blockGate") return "项目风险提示变化";
       return "其他字段变化";
     }
 
@@ -18485,12 +19773,15 @@
         row.no, row.application, `L${row.level}`, row.name, row.qty, row.customerNo, row.bwNo, row.drawingRev,
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
         row.sharedPart, row.borrowedProject, normalizeDrawingStatus(row.releaseStatus), row.rawSupplier, row.subSupplier,
-        row.exportSupplyType || row.supplyType, row.changeStatus, row.remark
+        row.remark, row.exportSupplyType || row.supplyType
       ]);
     }
 
     function bomExportHeaders() {
-      return bomHeaders.slice(0, -1).map(([cn, en]) => `${cn} ${en}`);
+      return [
+        ...bomHeaders.filter(([cn]) => !["供应类型", "版本对比", "操作"].includes(cn)),
+        ["供应类型", "Supply Type"]
+      ].map(([cn, en]) => `${cn} ${en}`);
     }
 
     function safeFilePart(value) {
@@ -18586,7 +19877,7 @@
         `Locked At: ${snapshot.status === "locked" ? snapshot.lockedAt || snapshot.submittedAt || "-" : "-"}`,
         `Exported At: ${exportedAt.toLocaleString("zh-CN", { hour12: false })}`
       ];
-      const rows = bomExportRows(snapshot).slice(0, 24).map((row) => `${row[0]}  ${row[1]}  ${row[2]}  ${row[3]}  BW:${row[6]}  Supply:${row[19]}  Change:${row[20]}`);
+      const rows = bomExportRows(snapshot).slice(0, 24).map((row) => `${row[0]}  ${row[1]}  ${row[2]}  ${row[3]}  BW:${row[6]}  Supply:${row[20]}`);
       const lines = [snapshot.status === "locked" ? "CONTROLLED BOM" : "BOM", ...meta, "", "BOM Detail", ...rows];
       downloadBlob(createSimplePdf(lines), `${bomBaseName(snapshot, exportedAt)}.pdf`, "application/pdf");
     }
@@ -18599,31 +19890,41 @@
       return [...new Set(options)];
     }
 
+    function rowsForSelectedAssemblies(snapshot) {
+      const rows = snapshot.rows || [];
+      if (!bomState.selectedAssemblyIds.length) return rows;
+      const selectedIds = new Set(bomState.selectedAssemblyIds);
+      const scopedRows = rows.filter((row) => Number(row.level) === 1 && selectedIds.has(row.id))
+        .flatMap((root) => descendantsOf(root.id, rows));
+      return scopedRows.length ? scopedRows : rows;
+    }
+
     function renderExportConfigHead() {
       const head = document.querySelector("[data-bom-export-config-head]");
       if (!head) return;
-      const editHeaders = bomHeaders.slice(0, -1).map(([cn, en]) => `<th>${escapeHtml(cn)}<span>${escapeHtml(en)}</span></th>`).join("");
-      head.innerHTML = `<tr><th class="center">是否导出<span>Export</span></th>${editHeaders}<th class="fixed-op">本次导出使用<span>Export Plan</span></th></tr>`;
+      const exportHeaders = bomHeaders.filter(([cn]) => !["供应类型", "版本对比", "操作"].includes(cn));
+      const headCells = exportHeaders.map(([cn, en]) => `<th>${escapeHtml(cn)}<span>${escapeHtml(en)}</span></th>`).join("");
+      head.innerHTML = `<tr><th class="center">是否导出<span>Export</span></th>${headCells}<th class="fixed-op">供应类型<span>Supply Type</span></th></tr>`;
     }
 
     function exportConfigRowHtml(row, snapshot, checked, exportSupplyType, options) {
-      const optionSelect = `
-        <select class="select-field" data-export-supply="${escapeHtml(row.id)}">
-          ${options.map((option) => `<option ${option === exportSupplyType ? "selected" : ""}>${escapeHtml(option)}</option>`).join("")}
-        </select>
-      `;
-      const baseRow = bomRowHtml({ ...row, no: row.no || "" }, { context: "export" })
-        .replace(/<tr data-row-id="[^"]*"[^>]*>/, `<tr data-row-id="${escapeHtml(row.id)}">`)
-        .replace(/<td class="fixed-op">[\s\S]*?<\/td><\/tr>$/, `<td class="fixed-op">${optionSelect}</td></tr>`);
-      return baseRow.replace(
-        `<tr data-row-id="${escapeHtml(row.id)}">`,
-        `<tr data-row-id="${escapeHtml(row.id)}"><td class="center"><input type="checkbox" data-export-row="${escapeHtml(row.id)}" ${checked ? "checked" : ""}></td>`
-      );
+      normalizeBomRow(row);
+      const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
+      const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${escapeHtml(row.name)}</span>`;
+      const cells = [
+        row.no || "", row.application, level, partName, row.qty, row.customerNo, bomPartTaskLinkHtml(row), row.drawingRev,
+        row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
+        row.sharedPart, row.borrowedProject, normalizeDrawingStatus(row.releaseStatus), row.rawSupplier, row.subSupplier,
+        row.remark,
+        statusTag(exportSupplyType || row.supplyType || "二供", (exportSupplyType || row.supplyType) === "一供" ? "is-ok" : "is-warn")
+      ];
+      const body = cells.map((cell, index) => `<td class="${index === cells.length - 1 ? "fixed-op" : ""}">${cell}</td>`).join("");
+      return `<tr data-row-id="${escapeHtml(row.id)}"><td class="center"><input type="checkbox" data-export-row="${escapeHtml(row.id)}" ${checked ? "checked" : ""}></td>${body}</tr>`;
     }
 
     function rowsForExportMode(snapshot) {
       const mode = document.querySelector("[data-controlled-bom-export-mode]")?.value || "primary";
-      return (snapshot.rows || []).map((row) => {
+      return rowsForSelectedAssemblies(snapshot).map((row) => {
         const options = exportSupplyOptions(row);
         let checked = true;
         let exportSupplyType = row.supplyType || "二供";
@@ -18653,15 +19954,25 @@
       const rows = rowsForExportMode(snapshot);
       body.innerHTML = rows.length ? rows.map(({ row, checked, exportSupplyType, options }) => `
         ${exportConfigRowHtml(row, snapshot, checked, exportSupplyType, options)}
-      `).join("") : `<tr><td class="bom-empty-tip" colspan="${bomHeaders.length + 1}">当前没有可导出的 BOM 数据</td></tr>`;
+      `).join("") : `<tr><td class="bom-empty-tip" colspan="${bomExportHeaders().length + 1}">当前没有可导出的 BOM 数据</td></tr>`;
       if (recordBox) {
         recordBox.innerHTML = bomState.exportRecords.length ? bomState.exportRecords.slice(0, 4).map((record) => `
           <div class="export-record-item">
             <b>${escapeHtml(record.exportedAt)} · ${escapeHtml(record.modeText)}</b><br>
             BOM版本：${escapeHtml(record.version)}；导出人：${escapeHtml(record.exportedBy)}；零件数：${record.parts.length}
           </div>
-        `).join("") : `<div class="export-record-item">暂无导出记录。混合导出后会保留本次零件和供应类型配置。</div>`;
+        `).join("") : `<div class="export-record-item">暂无导出记录。导出后会保留本次零件和供应类型配置。</div>`;
       }
+    }
+
+    function setExportRowChecked(rowId, checked) {
+      const snapshot = selectedBomSnapshot();
+      const affectedRows = descendantsOf(rowId, snapshot.rows || []);
+      const ids = affectedRows.length ? affectedRows.map((row) => row.id) : [rowId];
+      ids.forEach((id) => {
+        const checkbox = document.querySelector(`[data-export-row="${CSS.escape(id)}"]`);
+        if (checkbox) checkbox.checked = checked;
+      });
     }
 
     function openBomExportModal() {
@@ -18689,8 +20000,8 @@
       const mode = document.querySelector("[data-controlled-bom-export-mode]")?.value || "primary";
       const selectedRows = Array.from(document.querySelectorAll("[data-export-row]:checked")).map((input) => {
         const row = snapshot.rows.find((item) => item.id === input.dataset.exportRow);
-        const supplyType = document.querySelector(`[data-export-supply="${CSS.escape(input.dataset.exportRow)}"]`)?.value || row?.supplyType || "二供";
-        return row ? { ...row, exportSupplyType: supplyType } : null;
+        const modeSupplyType = rowsForExportMode(snapshot).find((item) => item.row.id === input.dataset.exportRow)?.exportSupplyType;
+        return row ? { ...row, exportSupplyType: modeSupplyType || row.supplyType || "二供" } : null;
       }).filter(Boolean);
       if (!selectedRows.length) {
         showBomConfirm({ title: "无法导出BOM", message: "未选择任何导出零件，请至少勾选一条 BOM 行。" });
@@ -18800,6 +20111,7 @@
         application: inlineFieldValue("application"),
         qty: inlineFieldValue("qty"),
         supplyType: inlineFieldValue("supplyType") || "一供",
+        apqpOwner: Number(level) === 1 ? inlineFieldValueOr("apqpOwner", existing.apqpOwner || "AQE") : existing.apqpOwner || "",
         customerNo: inlineFieldValue("customerNo"),
         bwNo: inlineFieldValue("bwNo"),
         drawingRev: inlineFieldValue("drawingRev") || "A",
@@ -18820,7 +20132,7 @@
         startGate: inlineFieldValueOr("startGate", existing.startGate || "Gate1"),
         primarySupplier: inlineFieldValueOr("primarySupplier", existing.primarySupplier || ""),
         primaryStrategy: inlineFieldValueOr("primaryStrategy", existing.primaryStrategy || ""),
-        primaryOwner: inlineFieldValueOr("primaryOwner", existing.primaryOwner || defaultOwnerForLevel(level)),
+        primaryOwner: inlineFieldValueOr("apqpOwner", inlineFieldValueOr("primaryOwner", existing.primaryOwner || defaultOwnerForLevel(level))),
         primaryApqpPolicy: inlineFieldValueOr("primaryApqpPolicy", existing.primaryApqpPolicy || ""),
         primaryBlockGate: inlineFieldValueOr("primaryBlockGate", existing.primaryBlockGate || ""),
         primaryStartGate: inlineFieldValueOr("primaryStartGate", existing.primaryStartGate || ""),
@@ -18830,7 +20142,7 @@
         secondaryApqpPolicy: inlineFieldValueOr("secondaryApqpPolicy", existing.secondaryApqpPolicy || ""),
         secondaryBlockGate: inlineFieldValueOr("secondaryBlockGate", existing.secondaryBlockGate || ""),
         secondaryStartGate: inlineFieldValueOr("secondaryStartGate", existing.secondaryStartGate || ""),
-        changeStatus: inlineFieldValue("changeStatus"),
+        changeStatus: inlineFieldValue("changeStatus") === "新增" ? "新增" : "无变更",
         apqpStatus: inlineFieldValueOr("apqpStatus", existing.apqpStatus || "未创建")
       });
     }
@@ -18841,6 +20153,7 @@
       setInlineFieldValue("application", row?.application || selectedBomRows()[0]?.application || "");
       setInlineFieldValue("qty", row?.qty || "1");
       setInlineFieldValue("supplyType", row?.supplyType || "一供");
+      setInlineFieldValue("apqpOwner", row?.apqpOwner || row?.primaryOwner || (Number(level) === 1 ? "AQE" : defaultOwnerForLevel(level)));
       setInlineFieldValue("customerNo", row?.customerNo === "-" ? "" : row?.customerNo || "");
       setInlineFieldValue("bwNo", row?.bwNo || "");
       setInlineFieldValue("drawingRev", row?.drawingRev || "A");
@@ -18879,7 +20192,9 @@
       setInlineFieldValue("blockGate", normalized.blockGate);
       setInlineFieldValue("startGate", normalized.startGate || "Gate1");
       setInlineFieldValue("apqpStatus", normalized.apqpStatus || "未创建");
-      setInlineFieldValue("changeStatus", row ? normalized.changeStatus : "新增");
+      setInlineFieldValue("changeStatus", row ? versionCompareStatus(normalized) : "新增");
+      const apqpOwnerField = document.querySelector('[data-inline-part-field="apqpOwner"]')?.closest("label");
+      if (apqpOwnerField) apqpOwnerField.hidden = Number(level) !== 1;
       syncAllSupplyPlanFields(false);
     }
 
@@ -19101,20 +20416,30 @@
     }
 
     document.querySelector("[data-bom-create]").addEventListener("click", () => openWorkspace("create"));
-    document.querySelector("[data-bom-scm-edit]").addEventListener("click", () => openWorkspace("scm"));
+    document.querySelector("[data-bom-scm-edit]").addEventListener("click", confirmSelectedAssemblyVersions);
     document.querySelector("[data-generate-secondary-recipe]")?.addEventListener("click", generateSecondaryRecipe);
     document.querySelector("[data-bom-change-trace]")?.addEventListener("click", openChangeTraceModal);
     document.querySelector("[data-add-manual-trace]")?.addEventListener("click", addManualChangeRecord);
     document.querySelector("[data-bom-create-apqp]")?.addEventListener("click", openApqpCreateModal);
     document.querySelector("[data-bom-apqp-tasks]")?.addEventListener("click", openApqpTasksModal);
     document.querySelector("[data-bom-export-template]")?.addEventListener("click", openBomExportModal);
-    document.querySelector("[data-bom-open-detail]").addEventListener("click", () => {
+    document.querySelector("[data-copy-selected-l1-secondary]")?.addEventListener("click", () => {
+      const selectedRootId = bomState.selectedAssemblyIds[0];
+      if (selectedRootId) copyL1Assembly(selectedRootId);
+    });
+    document.querySelector("[data-bom-open-detail]")?.addEventListener("click", () => {
       const selectedSnapshot = selectedBomSnapshot();
       openBomDetail(null, selectedSnapshot.isLatest ? "" : selectedSnapshot.version);
     });
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openBomDetail());
     document.querySelectorAll("[data-close-bom-modal]").forEach((button) => button.addEventListener("click", closeBomModal));
     document.querySelectorAll("[data-close-bom-detail]").forEach((button) => button.addEventListener("click", closeBomDetail));
+    document.querySelector("[data-bom-detail-edit]")?.addEventListener("click", (event) => {
+      const rowId = event.currentTarget.dataset.editRow;
+      if (!rowId) return;
+      closeBomDetail();
+      openWorkspace("create", rowId);
+    });
     document.querySelector("[data-bom-detail-query]")?.addEventListener("click", () => renderBomDetail(bomState.detailRowId, bomState.detailVersion));
     document.querySelector("[data-bom-detail-reset]")?.addEventListener("click", () => {
       document.querySelector("[data-bom-detail-part-no]").value = "";
@@ -19129,11 +20454,19 @@
     document.querySelector("[data-bom-submit]")?.addEventListener("click", submitBom);
     document.querySelector("[data-bom-save-draft]")?.addEventListener("click", saveBomDraft);
     document.querySelector("[data-bom-submit-foot]")?.addEventListener("click", submitBom);
+    bomListBody?.addEventListener("click", handleBomPartTaskClick);
+    bomEditBody?.addEventListener("click", handleBomPartTaskClick);
+    bomDetailBody?.addEventListener("click", handleBomPartTaskClick);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
-    document.querySelector("[data-bom-version-select]")?.addEventListener("change", (event) => {
-      bomState.selectedListVersion = event.target.value || "latest";
-      renderBomList();
+    document.querySelectorAll("[data-bom-l1-no-filter], [data-bom-l1-name-filter], [data-bom-version-filter]").forEach((input) => {
+      input.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          renderBomList();
+        }
+      });
     });
+    document.querySelector("[data-bom-status-filter]")?.addEventListener("change", renderBomList);
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
     document.querySelector("[data-bom-part-search-confirm]")?.addEventListener("click", searchBomPart);
     document.querySelectorAll("[data-bom-part-search-name], [data-bom-part-search-no]").forEach((input) => {
@@ -19155,15 +20488,12 @@
       renderBomList();
     });
     document.querySelector("[data-bom-reset]").addEventListener("click", () => {
-      document.querySelector("[data-bom-search]").value = "";
-      const statusFilter = document.querySelector("[data-bom-status-filter]");
-      if (statusFilter) statusFilter.value = "";
+      document.querySelectorAll("[data-bom-l1-no-filter], [data-bom-l1-name-filter], [data-bom-version-filter], [data-bom-status-filter]").forEach((field) => {
+        field.value = "";
+      });
       bomState.selectedListVersion = "latest";
+      bomState.selectedAssemblyHistoryRowId = "";
       renderBomList();
-    });
-    document.querySelector("[data-bom-open-history]")?.addEventListener("click", () => {
-      const version = document.querySelector("[data-bom-version-select]").value;
-      openBomDetail(null, version === "latest" ? "" : version);
     });
     document.querySelector("[data-row-reset]").addEventListener("click", () => {
       document.querySelector("[data-row-part-no]").value = "";
@@ -19176,12 +20506,7 @@
     document.querySelector("[data-bom-selection-bar]")?.addEventListener("click", (event) => {
       const drawerButton = event.target.closest("[data-bom-drawer-open]");
       const secondaryButton = event.target.closest("[data-create-secondary-recipe]");
-      const copyL1Button = event.target.closest("[data-copy-l1-assembly]");
       if (drawerButton) openBomInlineDrawer(drawerButton.dataset.bomDrawerOpen);
-      if (copyL1Button) {
-        const selectedRoot = selectedBomRows().find((row) => row.level === 1);
-        if (selectedRoot) copyL1Assembly(selectedRoot.id);
-      }
       if (secondaryButton) {
         const selectedRoot = selectedBomRows().find((row) => row.level === 1);
         if (selectedRoot) generateSecondaryRecipe(selectedRoot.id, secondaryButton.dataset.createSecondaryRecipe || "inline");
@@ -19249,6 +20574,11 @@
     document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     document.querySelectorAll("[data-close-bom-apqp-create]").forEach((button) => button.addEventListener("click", closeApqpCreateModal));
     document.querySelector("[data-bom-apqp-create-body]")?.addEventListener("change", (event) => {
+      const ownerSelect = event.target.closest("[data-apqp-owner]");
+      if (ownerSelect) {
+        bomState.apqpOwnerOverrides[ownerSelect.dataset.apqpOwner] = apqpOwnerRole(ownerSelect.value);
+        return;
+      }
       const checkbox = event.target.closest("[data-apqp-select]");
       if (!checkbox) return;
       if (checkbox.checked) {
@@ -19260,6 +20590,10 @@
     });
     document.querySelector("[data-confirm-bom-apqp-create]")?.addEventListener("click", confirmBomApqpCreate);
     document.querySelectorAll("[data-close-bom-apqp-tasks]").forEach((button) => button.addEventListener("click", closeApqpTasksModal));
+    document.querySelector("[data-bom-apqp-task-body]")?.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-open-apqp-task-detail]");
+      if (button) openApqpTaskDetail(button.dataset.openApqpTaskDetail);
+    });
     document.querySelectorAll("[data-close-bom-supply-list]").forEach((button) => button.addEventListener("click", closeSupplyListModal));
     document.querySelectorAll("[data-close-bom-change-trace]").forEach((button) => button.addEventListener("click", closeChangeTraceModal));
     document.querySelector("[data-render-supply-list]")?.addEventListener("click", renderSupplyList);
@@ -19267,6 +20601,9 @@
     document.querySelector("[data-supply-list-l1]")?.addEventListener("change", renderSupplyList);
     document.querySelector("[data-supply-list-type]")?.addEventListener("change", renderSupplyList);
     document.querySelector("[data-supply-list-keyword]")?.addEventListener("input", renderSupplyList);
+    document.querySelector("[data-assembly-history-version]")?.addEventListener("change", renderAssemblyHistoryModal);
+    document.querySelector("[data-export-assembly-history]")?.addEventListener("click", exportAssemblyHistoryVersion);
+    document.querySelectorAll("[data-close-bom-assembly-history]").forEach((button) => button.addEventListener("click", closeAssemblyHistoryModal));
     document.querySelector("[data-render-change-trace]")?.addEventListener("click", renderChangeTrace);
     document.querySelector("[data-trace-version]")?.addEventListener("change", renderChangeTrace);
     document.querySelector("[data-trace-l1]")?.addEventListener("change", renderChangeTrace);
@@ -19276,6 +20613,11 @@
     document.querySelectorAll("[data-close-controlled-bom-export]").forEach((button) => button.addEventListener("click", closeControlledBomExportModal));
     document.querySelector("[data-controlled-bom-export-mode]")?.addEventListener("change", renderExportConfig);
     document.querySelector("[data-confirm-controlled-bom-export]")?.addEventListener("click", confirmControlledBomExport);
+    document.querySelector("[data-bom-export-config-body]")?.addEventListener("change", (event) => {
+      const checkbox = event.target.closest("[data-export-row]");
+      if (!checkbox) return;
+      setExportRowChecked(checkbox.dataset.exportRow, checkbox.checked);
+    });
     document.querySelectorAll("[data-bom-confirm-cancel]").forEach((button) => button.addEventListener("click", () => closeBomConfirm(false)));
     document.querySelector("[data-bom-confirm-ok]")?.addEventListener("click", () => closeBomConfirm(true));
     document.getElementById("bomConfirmModal")?.addEventListener("click", (event) => {
@@ -19289,6 +20631,9 @@
     });
     document.getElementById("bomSupplyListModal")?.addEventListener("click", (event) => {
       if (event.target === document.getElementById("bomSupplyListModal")) closeSupplyListModal();
+    });
+    document.getElementById("bomAssemblyHistoryModal")?.addEventListener("click", (event) => {
+      if (event.target === document.getElementById("bomAssemblyHistoryModal")) closeAssemblyHistoryModal();
     });
     document.getElementById("bomChangeTraceModal")?.addEventListener("click", (event) => {
       if (event.target === document.getElementById("bomChangeTraceModal")) closeChangeTraceModal();
@@ -19335,17 +20680,36 @@
     });
     bomListBody.addEventListener("click", (event) => {
       if (event.target.closest("[data-detail-row]")) {
-        openBomDetail(event.target.closest("[data-detail-row]").dataset.detailRow);
+        const rowId = event.target.closest("[data-detail-row]").dataset.detailRow;
+        const selectedSnapshot = selectedBomSnapshot();
+        if (selectedSnapshot.isLatest) {
+          openWorkspace("create", rowId);
+        } else {
+          openBomDetail(rowId, selectedSnapshot.version);
+        }
       }
-      if (event.target.closest("[data-edit-row]")) {
-        openWorkspace("scm", event.target.closest("[data-edit-row]").dataset.editRow);
+      if (event.target.closest("[data-assembly-history]")) {
+        openAssemblyHistory(event.target.closest("[data-assembly-history]").dataset.assemblyHistory);
       }
+    });
+    bomListBody.addEventListener("change", (event) => {
+      const checkbox = event.target.closest("[data-assembly-check]");
+      if (!checkbox) return;
+      if (checkbox.checked) {
+        if (!bomState.selectedAssemblyIds.includes(checkbox.dataset.assemblyCheck)) {
+          bomState.selectedAssemblyIds.push(checkbox.dataset.assemblyCheck);
+        }
+      } else {
+        bomState.selectedAssemblyIds = bomState.selectedAssemblyIds.filter((id) => id !== checkbox.dataset.assemblyCheck);
+      }
+      renderBomList();
     });
 
     renderBomDatalists();
     renderBomHeads();
     renderBomList();
     renderTeamTable();
+    renderProjectHealth();
     renderProjectStatus();
     updateStageScrollState();
     renderStageTasks(activeStage);
