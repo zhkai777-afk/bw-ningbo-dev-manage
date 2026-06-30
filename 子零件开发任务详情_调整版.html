@@ -13965,7 +13965,7 @@
     document.querySelector("[data-bom-export-template]")?.addEventListener("click", exportBomTemplate);
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelector("[data-open-dr-review]")?.addEventListener("click", () => {
-      window.open("DR设计评审_Open_Issue_List_DEMO.html", "_blank");
+      window.location.href = "DR设计评审_Open_Issue_List_DEMO.html";
     });
     document.querySelector("[data-task-edit]")?.addEventListener("click", () => {
       setProjectEditDrawer(true);
