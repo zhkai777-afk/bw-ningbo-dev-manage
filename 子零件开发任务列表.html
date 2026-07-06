@@ -266,9 +266,17 @@
     .toolbar {
       display: flex;
       align-items: center;
-      justify-content: flex-end;
+      justify-content: space-between;
       gap: 12px;
       margin-bottom: 14px;
+    }
+
+    .toolbar-tags {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .table-shell {
@@ -828,6 +836,10 @@
         flex-direction: column;
       }
 
+      .toolbar-tags {
+        justify-content: flex-start;
+      }
+
       .filter-panel {
         grid-template-columns: 1fr;
       }
@@ -865,10 +877,6 @@
           <div class="page-subtitle">查看项目开发关联的零件开发任务</div>
         </div>
       </div>
-      <button class="btn btn-primary" id="openDrawer" type="button">
-        <span class="add-icon" aria-hidden="true"></span>
-        新建子零件开发任务
-      </button>
     </header>
 
     <section class="filter-panel" aria-label="子零件开发任务筛选">
@@ -919,8 +927,14 @@
     </section>
 
     <div class="toolbar" aria-label="列表操作">
-      <span class="tag tag-blue">子零件开发独立模块</span>
-      <span class="tag tag-orange">风险仅提醒，不阻塞项目 Gate</span>
+      <button class="btn btn-primary" id="openDrawer" type="button">
+        <span class="add-icon" aria-hidden="true"></span>
+        新建子零件开发任务
+      </button>
+      <div class="toolbar-tags" aria-label="模块提示">
+        <span class="tag tag-blue">子零件开发独立模块</span>
+        <span class="tag tag-orange">风险仅提醒，不阻塞项目 Gate</span>
+      </div>
     </div>
 
     <section class="table-shell" aria-label="子零件开发任务列表">

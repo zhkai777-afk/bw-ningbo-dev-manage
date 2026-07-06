@@ -4637,6 +4637,21 @@
       font-weight: 800;
     }
 
+    .library-table th:last-child,
+    .library-table td:last-child {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      box-shadow: -8px 0 14px rgba(15, 23, 42, .06);
+      text-align: center;
+    }
+
+    .library-table th:last-child {
+      z-index: 3;
+      background: #f5f7fa;
+    }
+
     .library-file-name {
       line-height: 1.9;
       word-break: break-word;
@@ -4714,7 +4729,8 @@
       color: #536178;
     }
 
-    .source-badge.task {
+    .source-badge.task,
+    .source-badge.project {
       color: var(--primary);
       background: var(--primary-weak);
     }
@@ -4722,6 +4738,11 @@
     .source-badge.manual {
       color: #0f8f5f;
       background: var(--success-weak);
+    }
+
+    .source-badge.part {
+      color: #9a5b00;
+      background: #fff3d8;
     }
 
     .library-footer {
@@ -4762,6 +4783,21 @@
       text-align: center;
       color: #98a2b3;
       vertical-align: middle;
+    }
+
+    .library-upload-form {
+      padding: 26px 28px 22px;
+      overflow-y: auto;
+    }
+
+    .library-upload-modal {
+      width: min(680px, calc(100vw - 28px));
+    }
+
+    .library-upload-form .issue-select {
+      height: 44px;
+      border-radius: 6px;
+      color: #252a34;
     }
 
     .development-page,
@@ -6179,7 +6215,6 @@
           <button class="tab" type="button" data-tab-target="requirements" aria-selected="false">客户要求</button>
           <button class="tab" type="button" data-tab-target="plan" aria-selected="false">项目计划</button>
           <button class="tab" type="button" data-tab-target="issues" aria-selected="false">问题清单</button>
-          <button class="tab" type="button" data-tab-target="quality" aria-selected="false">质量问题（8D）</button>
           <button class="tab" type="button" data-tab-target="team" aria-selected="false">团队成员</button>
           <button class="tab" type="button" data-tab-target="library" aria-selected="false">资料库</button>
           <button class="tab" type="button" data-tab-target="records" aria-selected="false">项目记录</button>
@@ -6859,56 +6894,71 @@
 
           <div class="library-source-tabs" aria-label="资料来源筛选">
             <button class="active" type="button" data-library-source="all">全部资料</button>
-            <button type="button" data-library-source="task">项目开发任务附件</button>
-            <button type="button" data-library-source="manual">手动上传资料</button>
+            <button type="button" data-library-source="project">项目资料</button>
+            <button type="button" data-library-source="part">子零件开发资料</button>
           </div>
 
           <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
-                <col style="width: 27%">
                 <col style="width: 22%">
-                <col style="width: 15%">
+                <col style="width: 22%">
                 <col style="width: 13%">
                 <col style="width: 12%">
-                <col style="width: 11%">
+                <col style="width: 13%">
+                <col style="width: 10%">
+                <col style="width: 10%">
                 <col style="width: 8%">
               </colgroup>
               <thead>
                 <tr>
-                  <th>Milestone Name</th>
-                  <th>File Name</th>
-                  <th>Label</th>
-                  <th>资料来源</th>
-                  <th>Upload Date</th>
-                  <th>Uploader</th>
+                  <th>任务/里程碑名称</th>
+                  <th>文件名称</th>
+                  <th>资料标签</th>
+                  <th>资料归属</th>
+                  <th>对应任务/零件号</th>
+                  <th>上传日期</th>
+                  <th>上传人</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody id="libraryTableBody">
-                <tr data-source="task">
-                  <td>3.5 CQI special process assessment (e.g. CQI-9, 11, 12 etc.)</td>
-                  <td><div class="library-file-name">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</div></td>
-                  <td><span class="file-label"><span class="file-type-icon">xls</span>CQI 9 热处理</span></td>
-                  <td><span class="source-badge task">项目开发任务附件</span></td>
-                  <td>2025-10-31</td>
-                  <td>Theodore</td>
-                  <td><a class="blue-link" href="#">下载</a></td>
-                </tr>
-                <tr data-source="task">
-                  <td>Gate2 Supplier Readiness Review</td>
+                <tr data-source="project">
+                  <td>Gate2 供应商准备度评审</td>
                   <td><div class="library-file-name">供应商产能爬坡计划与风险清单.xlsx</div></td>
                   <td><span class="file-label"><span class="file-type-icon">xls</span>SCM 评审</span></td>
-                  <td><span class="source-badge task">项目开发任务附件</span></td>
+                  <td><span class="source-badge project">项目资料</span></td>
+                  <td>Gate2 供应商准备度评审</td>
                   <td>2025-10-31</td>
                   <td>Luna</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
-                <tr data-source="manual">
-                  <td>PKO Meeting Minutes</td>
+                <tr data-source="part">
+                  <td>3.5 CQI 特殊过程评审（CQI-9/11/12 等）</td>
+                  <td><div class="library-file-name">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</div></td>
+                  <td><span class="file-label"><span class="file-type-icon">xls</span>CQI 9 热处理</span></td>
+                  <td><span class="source-badge part">子零件开发资料</span></td>
+                  <td><a class="blue-link" href="子零件开发任务详情_调整版.html?partNo=BW-220HC-CHAIN-GUIDE&source=library">BW-220HC-CHAIN-GUIDE</a></td>
+                  <td>2025-10-31</td>
+                  <td>Theodore</td>
+                  <td><a class="blue-link" href="#">下载</a></td>
+                </tr>
+                <tr data-source="part">
+                  <td>Gate2 二供同步开发资料包</td>
+                  <td><div class="library-file-name">二供样件验证计划与供应商开发记录.xlsx</div></td>
+                  <td><span class="file-label"><span class="file-type-icon">xls</span>二供开发</span></td>
+                  <td><span class="source-badge part">子零件开发资料</span></td>
+                  <td><a class="blue-link" href="子零件开发任务详情_调整版.html?partNo=BW-220HC-TENSIONER&source=library">BW-220HC-TENSIONER</a></td>
+                  <td>2025-10-31</td>
+                  <td>SQD</td>
+                  <td><a class="blue-link" href="#">下载</a></td>
+                </tr>
+                <tr data-source="project">
+                  <td>PKO 启动会会议纪要</td>
                   <td><div class="library-file-name">PKO 启动会会议纪要及行动项.docx</div></td>
                   <td><span class="file-label"><span class="file-type-icon doc">doc</span>会议纪要</span></td>
-                  <td><span class="source-badge manual">手动上传资料</span></td>
+                  <td><span class="source-badge project">项目资料</span></td>
+                  <td>PKO 启动会会议纪要</td>
                   <td>2025-10-31</td>
                   <td>Willow</td>
                   <td><a class="blue-link" href="#">下载</a></td>
@@ -6918,7 +6968,7 @@
           </div>
 
           <div class="library-footer">
-            <span id="libraryResultCount">共 3 项数据</span>
+            <span id="libraryResultCount">共 4 项数据</span>
             <div class="library-pager" aria-label="分页">
               <span>‹</span>
               <button type="button">1</button>
@@ -6937,6 +6987,58 @@
       </div>
 
     </main>
+  </div>
+
+  <div class="modal-backdrop" id="libraryUploadModal" hidden>
+    <section class="requirement-modal library-upload-modal" role="dialog" aria-modal="true" aria-labelledby="libraryUploadTitle">
+      <div class="modal-head">
+        <h3 id="libraryUploadTitle">上传资料</h3>
+        <button class="modal-close" type="button" data-close-library-upload aria-label="关闭">×</button>
+      </div>
+      <form id="libraryUploadForm" novalidate>
+        <div class="library-upload-form">
+          <div class="form-row">
+            <label for="libraryUploadSource"><span class="required">*</span>资料归属:</label>
+            <select class="issue-select" id="libraryUploadSource" name="libraryUploadSource">
+              <option value="project">项目资料</option>
+              <option value="part">子零件开发资料</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="libraryUploadTask"><span class="required">*</span>对应任务:</label>
+            <select class="issue-select" id="libraryUploadTask" name="libraryUploadTask"></select>
+          </div>
+          <div class="form-row">
+            <label for="libraryUploadFileName"><span class="required">*</span>文件名称:</label>
+            <input class="field-input" id="libraryUploadFileName" name="libraryUploadFileName" type="text" placeholder="请输入文件名称" autocomplete="off">
+          </div>
+          <div class="form-row">
+            <label for="libraryUploadLabel"><span class="required">*</span>资料标签:</label>
+            <input class="field-input" id="libraryUploadLabel" name="libraryUploadLabel" type="text" placeholder="请输入资料标签" autocomplete="off">
+          </div>
+          <div class="form-row">
+            <label for="libraryUploadFileType">文件类型:</label>
+            <select class="issue-select" id="libraryUploadFileType" name="libraryUploadFileType">
+              <option value="pdf">PDF</option>
+              <option value="doc">Word</option>
+              <option value="xls">Excel</option>
+            </select>
+          </div>
+          <div class="form-row form-upload">
+            <label>上传附件:</label>
+            <div class="upload-stack">
+              <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-upload"></use></svg>选择文件</button>
+              <div class="upload-note">原型演示：选择对应任务后，资料将按项目或子零件开发归档展示。</div>
+            </div>
+          </div>
+          <div class="form-error" id="libraryUploadError" hidden>请完整填写资料归属、对应任务、文件名称和资料标签</div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn" type="button" data-close-library-upload>取消</button>
+          <button class="btn btn-primary" type="submit">确定</button>
+        </div>
+      </form>
+    </section>
   </div>
 
   <div class="modal-backdrop" id="memberModal" hidden>
@@ -13773,6 +13875,14 @@
     const libraryResultCount = document.getElementById("libraryResultCount");
     const librarySourceTabs = Array.from(document.querySelectorAll("[data-library-source]"));
     const libraryUploadButton = document.getElementById("libraryUploadButton");
+    const libraryUploadModal = document.getElementById("libraryUploadModal");
+    const libraryUploadForm = document.getElementById("libraryUploadForm");
+    const libraryUploadSource = document.getElementById("libraryUploadSource");
+    const libraryUploadTask = document.getElementById("libraryUploadTask");
+    const libraryUploadFileName = document.getElementById("libraryUploadFileName");
+    const libraryUploadLabel = document.getElementById("libraryUploadLabel");
+    const libraryUploadFileType = document.getElementById("libraryUploadFileType");
+    const libraryUploadError = document.getElementById("libraryUploadError");
     let activeLibrarySource = "all";
     const memberModal = document.getElementById("memberModal");
     const openMemberModal = document.getElementById("openMemberModal");
@@ -17230,23 +17340,64 @@
       if (!emptyRow) {
         emptyRow = document.createElement("tr");
         emptyRow.className = "library-empty-row";
-        emptyRow.innerHTML = `<td class="library-empty" colspan="7">暂无匹配资料</td>`;
+        emptyRow.innerHTML = `<td class="library-empty" colspan="8">暂无匹配资料</td>`;
         libraryTableBody.appendChild(emptyRow);
       }
       emptyRow.hidden = visibleCount > 0;
       libraryResultCount.textContent = `共 ${visibleCount} 项数据`;
     }
 
+    const libraryRelatedTasks = {
+      project: [
+        { value: "Gate2 供应商准备度评审", label: "Gate2 供应商准备度评审" },
+        { value: "PKO 启动会会议纪要", label: "PKO 启动会会议纪要" },
+        { value: "项目计划关键节点确认", label: "项目计划关键节点确认" },
+        { value: "Gate1 L1 总成 APQP 创建", label: "Gate1 L1 总成 APQP 创建" }
+      ],
+      part: [
+        { value: "BW-220HC-CHAIN-GUIDE", label: "BW-220HC-CHAIN-GUIDE / CQI 特殊过程评审" },
+        { value: "BW-220HC-TENSIONER", label: "BW-220HC-TENSIONER / 二供同步开发" },
+        { value: "BW-220HC-ARM-GUIDE", label: "BW-220HC-ARM-GUIDE / 子零件 APQP" }
+      ]
+    };
+
+    function renderLibraryUploadTasks() {
+      const source = libraryUploadSource.value || "project";
+      const tasks = libraryRelatedTasks[source] || [];
+      libraryUploadTask.innerHTML = `<option value="">请选择对应任务</option>${tasks.map((task) => `<option value="${escapeHtml(task.value)}">${escapeHtml(task.label)}</option>`).join("")}`;
+    }
+
+    function resetLibraryUploadForm() {
+      libraryUploadForm.reset();
+      libraryUploadSource.value = "project";
+      renderLibraryUploadTasks();
+      libraryUploadError.hidden = true;
+    }
+
+    function showLibraryUploadModal() {
+      resetLibraryUploadForm();
+      libraryUploadModal.hidden = false;
+      libraryUploadSource.focus();
+    }
+
+    function hideLibraryUploadModal() {
+      libraryUploadModal.hidden = true;
+    }
+
     function createLibraryRow(payload) {
       const row = document.createElement("tr");
       row.dataset.source = payload.source;
       const iconClass = payload.fileType === "doc" ? "doc" : payload.fileType === "pdf" ? "pdf" : "";
-      const sourceText = payload.source === "manual" ? "手动上传资料" : "项目开发任务附件";
+      const sourceText = payload.source === "part" ? "子零件开发资料" : "项目资料";
+      const partCell = payload.source === "part" && payload.partNo
+        ? `<a class="blue-link" href="子零件开发任务详情_调整版.html?partNo=${encodeURIComponent(payload.partNo)}&source=library">${escapeHtml(payload.partNo)}</a>`
+        : escapeHtml(payload.relatedTask || "项目级资料");
       row.innerHTML = `
         <td></td>
         <td><div class="library-file-name"></div></td>
         <td><span class="file-label"><span class="file-type-icon ${iconClass}"></span><span></span></span></td>
         <td><span class="source-badge ${payload.source}">${sourceText}</span></td>
+        <td>${partCell}</td>
         <td></td>
         <td></td>
         <td><a class="blue-link" href="#">下载</a></td>
@@ -17255,8 +17406,8 @@
       row.children[1].querySelector(".library-file-name").textContent = payload.fileName;
       row.children[2].querySelector(".file-type-icon").textContent = payload.fileType;
       row.children[2].querySelector(".file-label span:last-child").textContent = payload.label;
-      row.children[4].textContent = payload.uploadDate;
-      row.children[5].textContent = payload.uploader;
+      row.children[5].textContent = payload.uploadDate;
+      row.children[6].textContent = payload.uploader;
       return row;
     }
 
@@ -17276,18 +17427,64 @@
       });
     });
 
-    libraryUploadButton.addEventListener("click", () => {
+    libraryUploadSource.addEventListener("change", () => {
+      renderLibraryUploadTasks();
+      libraryUploadError.hidden = true;
+    });
+
+    libraryUploadButton.addEventListener("click", showLibraryUploadModal);
+
+    document.querySelectorAll("[data-close-library-upload]").forEach((button) => {
+      button.addEventListener("click", hideLibraryUploadModal);
+    });
+
+    libraryUploadModal.addEventListener("click", (event) => {
+      if (event.target === libraryUploadModal) {
+        hideLibraryUploadModal();
+      }
+    });
+
+    [libraryUploadTask, libraryUploadFileName, libraryUploadLabel].forEach((input) => {
+      input.addEventListener("input", () => {
+        libraryUploadError.hidden = true;
+      });
+    });
+
+    libraryUploadForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const source = libraryUploadSource.value;
+      const taskValue = libraryUploadTask.value;
+      const fileName = libraryUploadFileName.value.trim();
+      const label = libraryUploadLabel.value.trim();
+      if (!source || !taskValue || !fileName || !label) {
+        libraryUploadError.hidden = false;
+        if (!taskValue) {
+          libraryUploadTask.focus();
+        } else if (!fileName) {
+          libraryUploadFileName.focus();
+        } else {
+          libraryUploadLabel.focus();
+        }
+        return;
+      }
+
       libraryTableBody.insertBefore(createLibraryRow({
-        source: "manual",
-        milestone: "手动上传资料",
-        fileName: "项目开发资料补充说明.pdf",
-        label: "补充资料",
-        fileType: "pdf",
+        source,
+        milestone: source === "part" ? "手动上传子零件开发资料" : "手动上传项目资料",
+        fileName,
+        label,
+        fileType: libraryUploadFileType.value,
+        relatedTask: taskValue,
+        partNo: source === "part" ? taskValue : "",
         uploadDate: getCurrentTime().slice(0, 10),
         uploader: "当前用户"
       }), libraryTableBody.firstElementChild);
+      hideLibraryUploadModal();
       filterLibraryRows();
     });
+
+    renderLibraryUploadTasks();
+    filterLibraryRows();
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape" && !requirementModal.hidden) {
@@ -17295,6 +17492,9 @@
       }
       if (event.key === "Escape" && !issueModal.hidden) {
         hideIssueModal();
+      }
+      if (event.key === "Escape" && !libraryUploadModal.hidden) {
+        hideLibraryUploadModal();
       }
       if (event.key === "Escape" && !memberModal.hidden) {
         hideMemberModal();

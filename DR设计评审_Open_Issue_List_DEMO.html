@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DR 设计评审 - 开放问题清单</title>
+  <title>DFM(Design For Manufacturing) - 开放问题清单</title>
   <style>
     :root {
       --bg: #f4f6f9;
@@ -80,6 +80,10 @@
       text-overflow: ellipsis;
     }
 
+    [hidden] {
+      display: none !important;
+    }
+
     .top-actions {
       display: flex;
       align-items: center;
@@ -133,6 +137,13 @@
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
       box-sizing: border-box;
+    }
+
+    .page[data-detail-view] {
+      width: 100%;
+      margin: 0;
+      padding-left: 10px;
+      padding-right: 10px;
     }
 
     .record-header {
@@ -1301,6 +1312,12 @@
       gap: 16px;
     }
 
+    .bottom-bar[data-detail-only] .bottom-inner {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
     .save-state {
       display: flex;
       align-items: center;
@@ -1339,6 +1356,648 @@
       color: #fff;
     }
 
+    .view-page {
+      display: none;
+    }
+
+    .view-page.active {
+      display: grid;
+    }
+
+    .list-page {
+      width: min(100%, 1760px);
+      margin: 0 auto;
+      padding: 20px 24px 28px;
+      height: calc(100vh - 64px);
+      min-height: 0;
+      overflow: auto;
+      box-sizing: border-box;
+      gap: 16px;
+      grid-template-rows: auto auto minmax(0, 1fr);
+    }
+
+    .list-header {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .list-title {
+      display: grid;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .list-title h2 {
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .list-title p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .list-summary {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(116px, 1fr));
+      gap: 10px;
+    }
+
+    .list-filter-bar {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) 170px 170px 170px auto;
+      gap: 10px;
+      align-items: end;
+      padding: 14px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+    }
+
+    .dfm-list-panel {
+      min-height: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .dfm-list-table-wrap {
+      max-height: none;
+      min-height: 0;
+      overflow: auto;
+      border-top: 0;
+    }
+
+    .dfm-list-table {
+      min-width: 1680px;
+    }
+
+    .dfm-list-table td {
+      padding: 12px 10px;
+      color: #344054;
+      font-weight: 700;
+      vertical-align: middle;
+      overflow-wrap: anywhere;
+    }
+
+    .record-link {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      font-weight: 900;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .table-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .create-dialog {
+      width: min(720px, calc(100vw - 32px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+      padding: 0;
+      color: var(--text);
+    }
+
+    .create-dialog::backdrop {
+      background: rgba(15, 23, 42, .28);
+    }
+
+    .create-dialog-content {
+      display: grid;
+      gap: 14px;
+      padding: 18px;
+      background: #fff;
+    }
+
+    .create-dialog-content h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .create-dialog-content p {
+      margin: 0;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .dialog-field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    body.list-mode {
+      min-width: 1180px;
+      background: var(--bg);
+    }
+
+    body.list-mode .app-shell {
+      height: auto;
+      min-height: 100vh;
+      padding-bottom: 0;
+      overflow: visible;
+    }
+
+    body.list-mode .topbar {
+      display: none;
+    }
+
+    body.list-mode .list-page {
+      width: 100%;
+      max-width: none;
+      min-height: 100vh;
+      height: auto;
+      margin: 0;
+      padding: 20px 20px 30px;
+      overflow: visible;
+      background: #fff;
+      border-top: 1px solid #e7ebf2;
+      display: block;
+    }
+
+    body.list-mode .list-header {
+      margin-bottom: 18px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    body.list-mode .list-title {
+      position: relative;
+      min-width: 280px;
+      padding-left: 16px;
+      display: block;
+    }
+
+    body.list-mode .list-title::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 4px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--primary);
+    }
+
+    body.list-mode .list-title h2 {
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 750;
+    }
+
+    body.list-mode .list-title p {
+      margin-top: 4px;
+      color: #657083;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    body.list-mode .list-summary {
+      display: none;
+    }
+
+    body.list-mode .list-primary-action {
+      display: inline-flex;
+      height: 36px;
+      min-width: 88px;
+      border: 1px solid var(--primary);
+      border-radius: 2px;
+      background: var(--primary);
+      color: #fff;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 0 14px;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: .16s ease;
+      cursor: pointer;
+    }
+
+    body.list-mode .list-primary-action:hover {
+      background: #0f5be6;
+      border-color: #0f5be6;
+    }
+
+    body.list-mode .add-icon {
+      position: relative;
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+    }
+
+    body.list-mode .add-icon::before,
+    body.list-mode .add-icon::after {
+      content: "";
+      position: absolute;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    body.list-mode .add-icon::before {
+      width: 14px;
+      height: 2px;
+      top: 6px;
+      left: 0;
+    }
+
+    body.list-mode .add-icon::after {
+      width: 2px;
+      height: 14px;
+      top: 0;
+      left: 6px;
+    }
+
+    body.list-mode .list-filter-bar {
+      display: grid;
+      grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) minmax(300px, 1fr) 1px auto;
+      gap: 16px 32px;
+      align-items: center;
+      margin-bottom: 22px;
+      padding: 24px 18px;
+      border: 0;
+      border-radius: 0;
+      background: #f3f6fa;
+      box-shadow: none;
+    }
+
+    body.list-mode .list-filter-bar .field {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      color: #4d5868;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    body.list-mode .list-filter-bar .field span {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    body.list-mode .list-filter-bar input,
+    body.list-mode .list-filter-bar select {
+      width: 100%;
+      min-width: 0;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: var(--text);
+      padding: 0 12px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    body.list-mode .list-filter-bar select {
+      appearance: none;
+      padding-right: 34px;
+      background-image:
+        linear-gradient(45deg, transparent 50%, #b8c0cc 50%),
+        linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
+      background-position:
+        calc(100% - 20px) 15px,
+        calc(100% - 14px) 15px;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      color: #6a7484;
+    }
+
+    body.list-mode .list-filter-bar input:focus,
+    body.list-mode .list-filter-bar select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
+    body.list-mode .filter-divider {
+      width: 1px;
+      height: 84px;
+      background: #dde3eb;
+      grid-row: 1 / span 2;
+      grid-column: 4;
+    }
+
+    body.list-mode .filter-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      grid-row: 1 / span 2;
+      grid-column: 5;
+      padding-left: 10px;
+    }
+
+    body.list-mode .filter-actions .btn {
+      height: 36px;
+      min-width: 72px;
+      border-radius: 2px;
+      padding: 0 14px;
+      font-weight: 500;
+    }
+
+    body.list-mode .filter-actions .btn.primary {
+      border-color: #b8d3ff;
+      background: #eef5ff;
+      color: var(--primary);
+    }
+
+    body.list-mode .list-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    body.list-mode .list-toolbar-tags {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    body.list-mode .list-toolbar .tag,
+    body.list-mode .dfm-list-panel .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      border: 1px solid #cfd7e3;
+      background: #fff;
+      color: #4d5868;
+      font-size: 12px;
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    body.list-mode .list-toolbar .tag.blue,
+    body.list-mode .tag.blue {
+      color: #175cd3;
+      border-color: #b8d3ff;
+      background: #eef5ff;
+    }
+
+    body.list-mode .list-toolbar .tag.amber,
+    body.list-mode .tag.amber {
+      color: #b54708;
+      border-color: #fedf89;
+      background: #fff7e6;
+    }
+
+    body.list-mode .tag.red {
+      color: var(--danger);
+      border-color: #fecdca;
+      background: #fff1f0;
+    }
+
+    body.list-mode .tag.green {
+      color: #087a2e;
+      border-color: #b7ebc6;
+      background: #effaf3;
+    }
+
+    body.list-mode .dfm-list-panel {
+      display: block;
+      min-height: 0;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: #fff;
+      box-shadow: none;
+      overflow: auto;
+    }
+
+    body.list-mode .dfm-list-panel .panel-head {
+      display: none;
+    }
+
+    body.list-mode .dfm-list-table-wrap {
+      overflow: auto;
+      border-top: 0;
+    }
+
+    body.list-mode .dfm-list-table {
+      width: 100%;
+      min-width: 1480px;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+
+    body.list-mode .dfm-list-table th,
+    body.list-mode .dfm-list-table td {
+      min-height: 48px;
+      border-bottom: 1px solid #e6ebf1;
+      border-left: 0;
+      padding: 13px 24px;
+      text-align: left;
+      color: #2e333c;
+      vertical-align: middle;
+      white-space: nowrap;
+      font-weight: 400;
+    }
+
+    body.list-mode .dfm-list-table th {
+      height: 48px;
+      position: static;
+      background: #f1f4f8;
+      color: #2b3038;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    body.list-mode .dfm-list-table th:last-child,
+    body.list-mode .dfm-list-table td:last-child {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      width: 132px;
+      min-width: 132px;
+      max-width: 132px;
+      text-align: center;
+      box-shadow: -8px 0 16px rgba(15, 23, 42, .08);
+    }
+
+    body.list-mode .dfm-list-table th:last-child {
+      z-index: 4;
+      background: #f1f4f8;
+    }
+
+    body.list-mode .dfm-list-table td:last-child {
+      background: #fff;
+    }
+
+    body.list-mode .dfm-list-table tbody tr:nth-child(even) td:last-child,
+    body.list-mode .dfm-list-table tr:hover td:last-child {
+      background: #fafcff;
+    }
+
+    body.list-mode .dfm-list-table td:last-child .table-actions {
+      justify-content: center;
+    }
+
+    body.list-mode .dfm-list-table tr:hover td {
+      background: #fafcff;
+    }
+
+    body.list-mode .record-link {
+      border: 0;
+      background: transparent;
+      color: #0066ff;
+      padding: 0;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    body.list-mode .record-link:hover {
+      color: #004bcc;
+    }
+
+    body.list-mode .stage-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 58px;
+      height: 24px;
+      padding: 0 12px;
+      border: 1px solid currentColor;
+      border-radius: 999px;
+      background: #fff;
+      font-size: 13px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    body.list-mode .stage-gate2 { color: #ff4d4f; }
+    body.list-mode .stage-gate3 { color: #9b51d0; }
+
+    body.list-mode .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-weight: 500;
+    }
+
+    body.list-mode .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      flex: 0 0 auto;
+      background: currentColor;
+    }
+
+    body.list-mode .status-blue { color: var(--primary); }
+    body.list-mode .status-orange { color: var(--warning); }
+    body.list-mode .status-red { color: var(--danger); }
+    body.list-mode .status-green { color: var(--success); }
+
+    body.list-mode .mini-btn.primary {
+      min-height: 28px;
+      border-color: #b8d3ff;
+      border-radius: 2px;
+      background: #eef5ff;
+      color: #175cd3;
+      font-weight: 500;
+    }
+
+    body.list-mode .pagination {
+      min-height: 92px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 26px;
+      padding: 20px 0 0;
+      background: #fff;
+    }
+
+    body.list-mode .page-size,
+    body.list-mode .jump-control {
+      height: 32px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      color: #374151;
+      padding: 0 10px;
+    }
+
+    body.list-mode .pager {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #737b88;
+    }
+
+    body.list-mode .page-num,
+    body.list-mode .page-arrow {
+      min-width: 32px;
+      height: 32px;
+      display: inline-grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
+      background: #fff;
+      color: #303642;
+      padding: 0;
+    }
+
+    body.list-mode .page-num.active {
+      color: #fff;
+      border-color: var(--primary);
+      background: var(--primary);
+    }
+
+    body.list-mode .page-arrow {
+      border-color: transparent;
+      background: transparent;
+      color: #1f2329;
+      font-size: 22px;
+    }
+
+    body.list-mode .page-arrow[disabled] {
+      color: #b8c0cc;
+      cursor: not-allowed;
+    }
+
+    body.list-mode .ellipsis {
+      min-width: 28px;
+      text-align: center;
+      color: #a0a7b3;
+    }
+
     @media (max-width: 1180px) and (min-width: 861px) {
       .workspace {
         grid-template-columns: minmax(300px, 34%) minmax(0, 1fr);
@@ -1346,6 +2005,10 @@
 
       .summary-strip {
         grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .list-filter-bar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .field-grid {
@@ -1364,6 +2027,9 @@
       }
       .record-header { grid-template-columns: 1fr; }
       .summary-strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .list-header { grid-template-columns: 1fr; }
+      .list-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .list-filter-bar { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .workspace {
         grid-template-columns: 1fr;
         overflow: visible;
@@ -1380,11 +2046,15 @@
     }
 
     @media (max-width: 760px) {
-      .page { padding: 14px; }
+      .page,
+      .list-page { padding: 14px; }
       h1 { white-space: normal; }
       .summary-strip,
+      .list-summary,
       .field-grid,
       .filter-bar,
+      .list-filter-bar,
+      .dialog-field-grid,
       .state-row { grid-template-columns: 1fr; }
       .drawing-stage { height: 360px; }
       .bottom-inner { align-items: stretch; flex-direction: column; }
@@ -1601,10 +2271,14 @@
   <div class="app-shell">
     <header class="topbar">
       <div class="title-stack">
-        <div class="breadcrumb">项目开发管理 / 设计评审 / DR-2024-001</div>
-        <h1>DR 设计评审 - 开放问题清单</h1>
+        <div class="breadcrumb" data-page-breadcrumb>项目开发管理 / DFM / 列表</div>
+        <h1 data-page-title>DFM(Design For Manufacturing)</h1>
       </div>
-      <div class="top-actions">
+      <div class="top-actions" data-list-actions>
+        <button class="btn primary" type="button" data-open-create-dfm>新建图纸评审任务（关联零件）</button>
+      </div>
+      <div class="top-actions" data-detail-actions hidden>
+        <button class="btn" type="button" data-back-list>返回列表</button>
         <button class="btn" type="button" onclick="window.print()">导出 PDF</button>
         <button class="btn danger" type="button" data-delete-review>删除</button>
         <button class="btn" type="button" data-save-review>保存</button>
@@ -1612,15 +2286,179 @@
       </div>
     </header>
 
-    <main class="page">
-      <section class="record-header" aria-label="评审记录摘要">
+    <main class="list-page view-page active" data-list-view>
+      <section class="list-header" aria-label="DFM 列表摘要">
+        <div class="list-title">
+          <h2>DFM 图纸评审任务</h2>
+          <p>面向多个零件图纸的 DFM 评审任务列表，用于跟踪关联零件、图纸版本、负责人、任务状态和开放问题。</p>
+        </div>
+        <div class="list-summary" aria-label="DFM 列表统计">
+          <div class="metric"><strong data-list-total>4</strong><span>评审任务</span></div>
+          <div class="metric"><strong data-list-open>10</strong><span>开放问题</span></div>
+          <div class="metric"><strong data-list-progress>2</strong><span>进行中</span></div>
+          <div class="metric"><strong data-list-locked>2</strong><span>已锁定</span></div>
+        </div>
+      </section>
+
+      <section class="list-filter-bar" aria-label="DFM 列表筛选">
+        <label class="field">
+          <span>关键词</span>
+          <input data-list-keyword placeholder="搜索任务号、项目、零件编号、零件名称、负责人">
+        </label>
+        <label class="field">
+          <span>所属项目</span>
+          <select data-list-project>
+            <option>全部</option>
+            <option>PRJ-2024-001</option>
+            <option>PRJ-2024-006</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>任务状态</span>
+          <select data-list-status>
+            <option>全部</option>
+            <option>进行中</option>
+            <option>已锁定</option>
+          </select>
+        </label>
+        <div class="filter-divider" aria-hidden="true"></div>
+        <div class="filter-actions">
+          <button class="btn primary" type="button" data-search-list-filter>查询</button>
+          <button class="btn" type="button" data-reset-list-filter>重置</button>
+        </div>
+      </section>
+
+      <div class="list-toolbar" aria-label="列表操作">
+        <button class="list-primary-action" type="button" data-open-create-dfm>
+          <span class="add-icon" aria-hidden="true"></span>
+          新建图纸评审任务
+        </button>
+        <div class="list-toolbar-tags">
+          <span class="tag blue">DFM 图纸评审任务</span>
+          <span class="tag green">状态：进行中 / 已锁定</span>
+        </div>
+      </div>
+
+      <section class="panel dfm-list-panel" aria-label="DFM 图纸评审任务列表">
+        <div class="panel-head">
+          <div class="panel-title">
+            <strong>零件图纸评审任务列表</strong>
+            <span>每条任务关联一个零件及图纸版本，点击任务号或零件编号进入 DFM 详情</span>
+          </div>
+          <span class="tag blue">多零件图纸评审</span>
+        </div>
+        <div class="table-wrap dfm-list-table-wrap">
+          <table class="dfm-list-table" aria-label="DFM 图纸评审任务表格">
+            <colgroup>
+              <col style="width:150px">
+              <col style="width:150px">
+              <col style="width:170px">
+              <col style="width:210px">
+              <col style="width:110px">
+              <col style="width:130px">
+              <col style="width:130px">
+              <col style="width:110px">
+              <col style="width:150px">
+              <col style="width:140px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>评审任务号</th>
+                <th>所属项目</th>
+                <th>零件编号</th>
+                <th>零件名称/描述</th>
+                <th>图纸版本</th>
+                <th>负责人</th>
+                <th>任务状态</th>
+                <th>开放问题</th>
+                <th>最后更新</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody data-dfm-list-body>
+              <tr data-dfm-record data-id="DFM-TASK-2024-001" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-no="TH-2024-001" data-part-name="涡轮增压器壳体" data-drawing="Rev.A" data-owner="Alex Wang" data-open="3" data-infeasible="1" data-unoptimized="2" data-cost="-0.10" data-status="进行中" data-updated="20xx-12-25 14:30">
+                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-001</button></td>
+                <td>PRJ-2024-001</td>
+                <td><button class="record-link" type="button" data-view-detail>TH-2024-001</button></td>
+                <td>涡轮增压器壳体</td>
+                <td>Rev.A</td>
+                <td>Alex Wang</td>
+                <td><span class="status status-orange"><span class="dot"></span>进行中</span></td>
+                <td>3</td>
+                <td>20xx-12-25 14:30</td>
+                <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button></div></td>
+              </tr>
+              <tr data-dfm-record data-id="DFM-TASK-2024-002" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-no="CH-2024-014" data-part-name="正时链轮支架" data-drawing="Rev.B" data-owner="Mia Chen" data-open="2" data-infeasible="0" data-unoptimized="2" data-cost="-0.06" data-status="进行中" data-updated="20xx-12-24 16:10">
+                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-002</button></td>
+                <td>PRJ-2024-001</td>
+                <td><button class="record-link" type="button" data-view-detail>CH-2024-014</button></td>
+                <td>正时链轮支架</td>
+                <td>Rev.B</td>
+                <td>Mia Chen</td>
+                <td><span class="status status-orange"><span class="dot"></span>进行中</span></td>
+                <td>2</td>
+                <td>20xx-12-24 16:10</td>
+                <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button></div></td>
+              </tr>
+              <tr data-dfm-record data-id="DFM-TASK-2024-003" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-no="OP-2024-021" data-part-name="油泵盖板" data-drawing="Rev.A" data-owner="Kevin Liu" data-open="3" data-infeasible="1" data-unoptimized="1" data-cost="0.00" data-status="已锁定" data-updated="20xx-12-20 09:35">
+                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-003</button></td>
+                <td>PRJ-2024-006</td>
+                <td><button class="record-link" type="button" data-view-detail>OP-2024-021</button></td>
+                <td>油泵盖板</td>
+                <td>Rev.A</td>
+                <td>Kevin Liu</td>
+                <td><span class="status status-green"><span class="dot"></span>已锁定</span></td>
+                <td>3</td>
+                <td>20xx-12-20 09:35</td>
+                <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button></div></td>
+              </tr>
+              <tr data-dfm-record data-id="DFM-TASK-2024-004" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-no="CG-2024-032" data-part-name="链条导轨" data-drawing="Rev.C" data-owner="Sophia Zhang" data-open="2" data-infeasible="0" data-unoptimized="1" data-cost="-0.02" data-status="已锁定" data-updated="20xx-12-19 11:20">
+                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-004</button></td>
+                <td>PRJ-2024-006</td>
+                <td><button class="record-link" type="button" data-view-detail>CG-2024-032</button></td>
+                <td>链条导轨</td>
+                <td>Rev.C</td>
+                <td>Sophia Zhang</td>
+                <td><span class="status status-green"><span class="dot"></span>已锁定</span></td>
+                <td>2</td>
+                <td>20xx-12-19 11:20</td>
+                <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="pagination">
+        <select class="page-size" aria-label="每页条数">
+          <option>10条/页</option>
+          <option>20条/页</option>
+          <option>50条/页</option>
+        </select>
+        <nav class="pager" aria-label="分页">
+          <button class="page-arrow" type="button" aria-label="上一页" disabled>‹</button>
+          <button class="page-num active" type="button">1</button>
+          <span class="ellipsis">...</span>
+          <button class="page-num" type="button">2</button>
+          <button class="page-arrow" type="button" aria-label="下一页">›</button>
+        </nav>
+        <div class="pager">
+          <span>跳至</span>
+          <input class="jump-control" type="text" value="1" aria-label="跳转页码" style="width:64px;">
+          <span>/2页</span>
+        </div>
+      </footer>
+    </main>
+
+    <main class="page view-page" data-detail-view>
+      <section class="record-header" aria-label="DFM 图纸评审任务摘要">
         <div class="record-title">
-          <h2>涡轮增压器壳体 / TH-2024-001</h2>
+          <h2 data-detail-record-title>涡轮增压器壳体 / TH-2024-001</h2>
           <div class="meta-line">
-            <span>项目：PRJ-2024-001</span>
-            <span>客户：OEM 客户 A</span>
-            <span>图纸版本：Rev.A</span>
-            <span>最后更新：20xx-12-25 14:30</span>
+            <span data-detail-project-text>项目：PRJ-2024-001</span>
+            <span data-detail-customer-text>客户：OEM 客户 A</span>
+            <span data-detail-drawing-text>图纸版本：Rev.A</span>
+            <span data-detail-updated-text>最后更新：20xx-12-25 14:30</span>
           </div>
         </div>
         <div class="summary-strip" aria-label="问题统计">
@@ -1744,7 +2582,7 @@
                   <text x="120" y="86" class="dwg-text">TH-2024-001</text>
                   <text x="234" y="86" class="dwg-small">版本</text>
                   <text x="282" y="86" class="dwg-text">A</text>
-                  <text x="10" y="116" class="dwg-small">DR 标记</text>
+                  <text x="10" y="116" class="dwg-small">DFM 标记</text>
                   <text x="120" y="116" class="dwg-text">D13 / C4 / A-A</text>
                 </g>
               </svg>
@@ -1764,7 +2602,7 @@
                 <rect x="18" y="18" width="884" height="664" class="dwg-frame"></rect>
                 <rect x="34" y="34" width="852" height="632" class="dwg-thin"></rect>
                 <text x="46" y="58" class="dwg-title">涡轮增压器壳体 - 局部细节与变更标记 / DETAIL SHEET</text>
-                <text x="46" y="77" class="dwg-small">PART NO. TH-2024-001  |  REV. A  |  SHEET 2 OF 2  |  DR OPEN ISSUE VIEW</text>
+                <text x="46" y="77" class="dwg-small">PART NO. TH-2024-001  |  REV. A  |  SHEET 2 OF 2  |  DFM OPEN ISSUE VIEW</text>
 
                 <g transform="translate(72 118)">
                   <text x="0" y="-20" class="dwg-text">D13 孔位能力风险放大图</text>
@@ -1899,15 +2737,16 @@
             <div class="section-body">
               <div class="field-grid">
                 <label class="field">项目名称
-                  <input value="PRJ-2024-001" readonly>
+                  <input value="PRJ-2024-001" readonly data-detail-project-input>
                 </label>
                 <label class="field">客户名称
-                  <input value="OEM 客户 A">
+                  <input value="OEM 客户 A" data-detail-customer-input>
                 </label>
                 <label class="field">图纸版本
-                  <select>
+                  <select data-detail-drawing-input>
                     <option selected>Rev.B</option>
                     <option>Rev.A</option>
+                    <option>Rev.C</option>
                   </select>
                 </label>
                 <label class="field">评审日期
@@ -1915,10 +2754,10 @@
                   <span class="field-error">请选择评审日期</span>
                 </label>
                 <label class="field">零件名称/描述
-                  <input value="涡轮增压器壳体">
+                  <input value="涡轮增压器壳体" data-detail-part-name-input>
                 </label>
                 <label class="field">零件编号
-                  <input value="TH-2024-001" readonly>
+                  <input value="TH-2024-001" readonly data-detail-part-no-input>
                 </label>
               </div>
             </div>
@@ -2163,7 +3002,7 @@ Sophia Zhang / 项目经理</textarea>
       </div>
     </main>
 
-    <footer class="bottom-bar">
+    <footer class="bottom-bar" data-detail-only hidden>
       <div class="bottom-inner">
         <div class="save-state">
           <span class="tag green">已保存</span>
@@ -2177,6 +3016,41 @@ Sophia Zhang / 项目经理</textarea>
       </div>
     </footer>
   </div>
+
+  <dialog class="create-dialog" data-create-dfm-dialog>
+    <form class="create-dialog-content" method="dialog" data-create-dfm-form>
+      <div>
+        <h3>新建图纸评审任务（关联零件）</h3>
+        <p>从项目零件中选择对象后生成 DFM 图纸评审任务，任务号和零件编号将在列表中成为详情入口。</p>
+      </div>
+      <div class="dialog-field-grid">
+        <label class="field">关联零件
+          <select data-create-part>
+            <option value="TH-2024-001" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-name="涡轮增压器壳体" data-drawing="Rev.A">TH-2024-001 / 涡轮增压器壳体</option>
+            <option value="CH-2024-014" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-name="正时链轮支架" data-drawing="Rev.B">CH-2024-014 / 正时链轮支架</option>
+            <option value="OP-2024-021" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-name="油泵盖板" data-drawing="Rev.A">OP-2024-021 / 油泵盖板</option>
+            <option value="CG-2024-032" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-name="链条导轨" data-drawing="Rev.C">CG-2024-032 / 链条导轨</option>
+          </select>
+        </label>
+        <label class="field">负责人
+          <input data-create-owner value="Alex Wang">
+        </label>
+        <label class="field">初始状态
+          <select data-create-status>
+            <option selected>进行中</option>
+            <option>已锁定</option>
+          </select>
+        </label>
+      </div>
+      <label class="field">创建说明
+        <textarea class="comment-box" data-create-note>基于项目 BOM 零件发起图纸 DFM 评审任务，待制造工程、产品工程和质量团队补充开放问题。</textarea>
+      </label>
+      <div class="dialog-actions">
+        <button class="btn" type="button" data-close-create-dfm>取消</button>
+        <button class="btn primary" type="submit">创建并关联</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog class="drawing-viewer-dialog" data-drawing-viewer>
     <div class="drawing-viewer-content">
@@ -2240,6 +3114,41 @@ Sophia Zhang / 项目经理</textarea>
   </dialog>
 
   <script>
+    const listView = document.querySelector('[data-list-view]');
+    const detailView = document.querySelector('[data-detail-view]');
+    const listActions = document.querySelector('[data-list-actions]');
+    const detailActions = document.querySelector('[data-detail-actions]');
+    const detailOnlyElements = Array.from(document.querySelectorAll('[data-detail-only]'));
+    const pageBreadcrumb = document.querySelector('[data-page-breadcrumb]');
+    const pageTitle = document.querySelector('[data-page-title]');
+    const backListButtons = Array.from(document.querySelectorAll('[data-back-list]'));
+    const openCreateDfmButtons = Array.from(document.querySelectorAll('[data-open-create-dfm]'));
+    const createDfmDialog = document.querySelector('[data-create-dfm-dialog]');
+    const createDfmForm = document.querySelector('[data-create-dfm-form]');
+    const closeCreateDfmButton = document.querySelector('[data-close-create-dfm]');
+    const createPartSelect = document.querySelector('[data-create-part]');
+    const createOwnerInput = document.querySelector('[data-create-owner]');
+    const createStatusSelect = document.querySelector('[data-create-status]');
+    const dfmListBody = document.querySelector('[data-dfm-list-body]');
+    const listKeywordInput = document.querySelector('[data-list-keyword]');
+    const listProjectSelect = document.querySelector('[data-list-project]');
+    const listStatusSelect = document.querySelector('[data-list-status]');
+    const searchListFilterButton = document.querySelector('[data-search-list-filter]');
+    const resetListFilterButton = document.querySelector('[data-reset-list-filter]');
+    const listTotalMetric = document.querySelector('[data-list-total]');
+    const listOpenMetric = document.querySelector('[data-list-open]');
+    const listProgressMetric = document.querySelector('[data-list-progress]');
+    const listLockedMetric = document.querySelector('[data-list-locked]');
+    const detailRecordTitle = document.querySelector('[data-detail-record-title]');
+    const detailProjectText = document.querySelector('[data-detail-project-text]');
+    const detailCustomerText = document.querySelector('[data-detail-customer-text]');
+    const detailDrawingText = document.querySelector('[data-detail-drawing-text]');
+    const detailUpdatedText = document.querySelector('[data-detail-updated-text]');
+    const detailProjectInput = document.querySelector('[data-detail-project-input]');
+    const detailCustomerInput = document.querySelector('[data-detail-customer-input]');
+    const detailDrawingInput = document.querySelector('[data-detail-drawing-input]');
+    const detailPartNameInput = document.querySelector('[data-detail-part-name-input]');
+    const detailPartNoInput = document.querySelector('[data-detail-part-no-input]');
     const reviewList = document.querySelector('[data-review-list]');
     const addReviewPointButton = document.querySelector('[data-add-review-point]');
     const issueTbody = document.querySelector('[data-issue-tbody]');
@@ -2297,6 +3206,141 @@ Sophia Zhang / 项目经理</textarea>
     let viewerDragStartY = 0;
     let viewerDragScrollLeft = 0;
     let viewerDragScrollTop = 0;
+
+    function optionData(option) {
+      return {
+        id: option?.dataset.dfmId || '',
+        project: option?.dataset.project || '',
+        customer: option?.dataset.customer || '',
+        partNo: option?.value || option?.dataset.partNo || '',
+        partName: option?.dataset.partName || '',
+        drawing: option?.dataset.drawing || 'Rev.A',
+        owner: createOwnerInput?.value.trim() || 'Alex Wang',
+        open: '0',
+        infeasible: '0',
+        unoptimized: '0',
+        cost: '0.00',
+        status: createStatusSelect?.value || '进行中',
+        updated: '刚刚创建'
+      };
+    }
+
+    function rowData(row) {
+      return {
+        id: row?.dataset.id || '',
+        project: row?.dataset.project || '',
+        customer: row?.dataset.customer || '',
+        partNo: row?.dataset.partNo || '',
+        partName: row?.dataset.partName || '',
+        drawing: row?.dataset.drawing || 'Rev.A',
+        owner: row?.dataset.owner || '',
+        open: row?.dataset.open || '0',
+        infeasible: row?.dataset.infeasible || '0',
+        unoptimized: row?.dataset.unoptimized || '0',
+        cost: row?.dataset.cost || '0.00',
+        status: row?.dataset.status || '进行中',
+        updated: row?.dataset.updated || ''
+      };
+    }
+
+    function statusTag(record) {
+      const className = record.status === '已锁定' ? 'status-green' : 'status-orange';
+      return `<span class="status ${className}"><span class="dot"></span>${record.status}</span>`;
+    }
+
+    function nextDfmId() {
+      const nextNumber = (dfmListBody?.querySelectorAll('[data-dfm-record]').length || 0) + 1;
+      return `DFM-TASK-2024-${String(nextNumber).padStart(3, '0')}`;
+    }
+
+    function renderDfmRow(record) {
+      const row = document.createElement('tr');
+      row.dataset.dfmRecord = '';
+      row.dataset.id = record.id;
+      row.dataset.project = record.project;
+      row.dataset.customer = record.customer;
+      row.dataset.partNo = record.partNo;
+      row.dataset.partName = record.partName;
+      row.dataset.drawing = record.drawing;
+      row.dataset.owner = record.owner;
+      row.dataset.open = record.open;
+      row.dataset.infeasible = record.infeasible;
+      row.dataset.unoptimized = record.unoptimized;
+      row.dataset.cost = record.cost;
+      row.dataset.status = record.status;
+      row.dataset.updated = record.updated;
+      row.innerHTML = `
+        <td><button class="record-link" type="button" data-view-detail>${record.id}</button></td>
+        <td>${record.project}</td>
+        <td><button class="record-link" type="button" data-view-detail>${record.partNo}</button></td>
+        <td>${record.partName}</td>
+        <td>${record.drawing}</td>
+        <td>${record.owner}</td>
+        <td>${statusTag(record)}</td>
+        <td>${record.open}</td>
+        <td>${record.updated}</td>
+        <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button></div></td>
+      `;
+      return row;
+    }
+
+    function setView(viewName, record = null) {
+      const isDetail = viewName === 'detail';
+      document.body.classList.toggle('list-mode', !isDetail);
+      listView?.classList.toggle('active', !isDetail);
+      detailView?.classList.toggle('active', isDetail);
+      if (listActions) listActions.hidden = isDetail;
+      if (detailActions) detailActions.hidden = !isDetail;
+      detailOnlyElements.forEach((element) => {
+        element.hidden = !isDetail;
+      });
+      if (pageBreadcrumb) pageBreadcrumb.textContent = isDetail ? `项目开发管理 / DFM / ${record?.id || '详情'}` : '项目开发管理 / DFM / 列表';
+      if (pageTitle) pageTitle.textContent = isDetail ? 'DFM(Design For Manufacturing) - 开放问题清单' : 'DFM(Design For Manufacturing)';
+      if (isDetail && record) populateDetail(record);
+    }
+
+    function populateDetail(record) {
+      if (detailRecordTitle) detailRecordTitle.textContent = `${record.partName} / ${record.partNo}`;
+      if (detailProjectText) detailProjectText.textContent = `项目：${record.project}`;
+      if (detailCustomerText) detailCustomerText.textContent = `客户：${record.customer}`;
+      if (detailDrawingText) detailDrawingText.textContent = `图纸版本：${record.drawing}`;
+      if (detailUpdatedText) detailUpdatedText.textContent = `最后更新：${record.updated}`;
+      if (detailProjectInput) detailProjectInput.value = record.project;
+      if (detailCustomerInput) detailCustomerInput.value = record.customer;
+      if (detailDrawingInput) detailDrawingInput.value = record.drawing;
+      if (detailPartNameInput) detailPartNameInput.value = record.partName;
+      if (detailPartNoInput) detailPartNoInput.value = record.partNo;
+      if (openCountMetric) openCountMetric.textContent = record.open;
+      if (infeasibleCountMetric) infeasibleCountMetric.textContent = record.infeasible;
+      if (unoptimizedCountMetric) unoptimizedCountMetric.textContent = record.unoptimized;
+      if (costTotalMetric) costTotalMetric.textContent = Number(record.cost).toFixed(2);
+    }
+
+    function updateListSummary() {
+      const rows = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || []);
+      const visibleRows = rows.filter((row) => row.style.display !== 'none');
+      const openTotal = visibleRows.reduce((total, row) => total + Number(row.dataset.open || 0), 0);
+      const progressTotal = visibleRows.filter((row) => row.dataset.status === '进行中').length;
+      const lockedTotal = visibleRows.filter((row) => row.dataset.status === '已锁定').length;
+      if (listTotalMetric) listTotalMetric.textContent = String(visibleRows.length);
+      if (listOpenMetric) listOpenMetric.textContent = String(openTotal);
+      if (listProgressMetric) listProgressMetric.textContent = String(progressTotal);
+      if (listLockedMetric) listLockedMetric.textContent = String(lockedTotal);
+    }
+
+    function applyListFilter() {
+      const keyword = (listKeywordInput?.value || '').trim().toLowerCase();
+      const project = listProjectSelect?.value || '全部';
+      const status = listStatusSelect?.value || '全部';
+      Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || []).forEach((row) => {
+        const text = `${row.dataset.id} ${row.dataset.project} ${row.dataset.customer} ${row.dataset.partNo} ${row.dataset.partName} ${row.dataset.owner}`.toLowerCase();
+        const matchesKeyword = !keyword || text.includes(keyword);
+        const matchesProject = project === '全部' || row.dataset.project === project;
+        const matchesStatus = status === '全部' || row.dataset.status === status;
+        row.style.display = matchesKeyword && matchesProject && matchesStatus ? '' : 'none';
+      });
+      updateListSummary();
+    }
 
     function openAppDialog({ title, message, confirmText = '确认', cancelText = '取消', danger = false, onConfirm = null, hideCancel = false }) {
       if (!appDialog || !dialogTitle || !dialogMessage || !dialogConfirm || !dialogCancel) return;
@@ -2907,11 +3951,73 @@ Sophia Zhang / 项目经理</textarea>
       if (event.target === appDialog) closeAppDialog(false);
     });
 
+    openCreateDfmButtons.forEach((button) => {
+      button.addEventListener('click', () => createDfmDialog?.showModal());
+    });
+
+    closeCreateDfmButton?.addEventListener('click', () => {
+      createDfmDialog?.close();
+    });
+
+    createDfmDialog?.addEventListener('click', (event) => {
+      if (event.target === createDfmDialog) createDfmDialog.close();
+    });
+
+    createDfmForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const selectedOption = createPartSelect?.selectedOptions?.[0];
+      const record = optionData(selectedOption);
+      record.id = nextDfmId();
+      record.updated = '刚刚创建';
+      record.status = createStatusSelect?.value || '进行中';
+      const row = renderDfmRow(record);
+      dfmListBody?.prepend(row);
+      applyListFilter();
+      createDfmDialog?.close();
+      openAppDialog({
+        title: '图纸评审任务已创建',
+        message: `${record.id} 已关联零件 ${record.partNo} / ${record.partName}，可进入详情补充图纸、关注点和开放问题。`,
+        confirmText: '查看详情',
+        onConfirm: () => setView('detail', record)
+      });
+      if (createOwnerInput) createOwnerInput.value = createOwnerInput.value.trim() || 'Alex Wang';
+    });
+
+    dfmListBody?.addEventListener('click', (event) => {
+      const viewButton = event.target.closest('[data-view-detail]');
+      if (!viewButton) return;
+      const row = viewButton.closest('[data-dfm-record]');
+      if (row) setView('detail', rowData(row));
+    });
+
+    backListButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        setView('list');
+        applyListFilter();
+      });
+    });
+
+    [listKeywordInput, listProjectSelect, listStatusSelect].forEach((control) => {
+      control?.addEventListener('input', applyListFilter);
+      control?.addEventListener('change', applyListFilter);
+    });
+
+    searchListFilterButton?.addEventListener('click', applyListFilter);
+
+    resetListFilterButton?.addEventListener('click', () => {
+      if (listKeywordInput) listKeywordInput.value = '';
+      if (listProjectSelect) listProjectSelect.value = '全部';
+      if (listStatusSelect) listStatusSelect.value = '全部';
+      applyListFilter();
+    });
+
     syncDrawingPage();
     syncDrawingZoom();
     syncAllStatusColors();
     refreshLockButton();
     refreshIssueSummary();
+    applyListFilter();
+    setView('list');
   </script>
 </body>
 </html>

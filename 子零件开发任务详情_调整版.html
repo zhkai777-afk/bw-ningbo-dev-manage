@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>子零件开发任务详情 - 调整版</title>
+  <title>子零件开发任务详情 - 报价后调整</title>
   <style>
     :root {
       --page-max: 1670px;
@@ -4158,6 +4158,14 @@
       cursor: pointer;
     }
 
+    .dr-status-cell {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+    }
+
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -5015,7 +5023,6 @@
           <aside class="project-side">
             <div class="project-actions">
               <button class="btn btn-outline-danger" type="button" data-task-delete><svg class="icon"><use href="#i-trash"></use></svg>删除任务</button>
-              <button class="btn" type="button" data-open-dr-review><svg class="icon"><use href="#i-eye"></use></svg>DR设计评审</button>
               <button class="btn" type="button" data-task-edit><svg class="icon"><use href="#i-edit"></use></svg>编辑信息</button>
               <span class="project-status-actions" data-project-status-actions></span>
             </div>
@@ -5057,7 +5064,6 @@
           <button class="tab" type="button" data-tab-target="bom" aria-selected="false">生产BOM</button>
           <button class="tab" type="button" data-tab-target="requirements" aria-selected="false">客户要求</button>
           <button class="tab" type="button" data-tab-target="issues" aria-selected="false">问题清单</button>
-          <button class="tab" type="button" data-tab-target="quality" aria-selected="false">质量问题（8D）</button>
           <button class="tab" type="button" data-tab-target="team" aria-selected="false">团队成员</button>
           <button class="tab" type="button" data-tab-target="library" aria-selected="false">资料库</button>
           <button class="tab" type="button" data-tab-target="records" aria-selected="false">项目记录</button>
@@ -5255,7 +5261,7 @@
                 <col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px">
                 <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
                 <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px">
-                <col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px">
+                <col style="width:100px"><col style="width:100px"><col style="width:150px">
                 <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px">
                 <col style="width:140px"><col style="width:200px">
               </colgroup>
@@ -5273,9 +5279,6 @@
               <div class="bom-title-row">
                 <h2 class="section-title">客户要求</h2>
               </div>
-            </div>
-            <div class="bom-actions">
-              <button class="btn btn-primary" type="button" id="openRequirementModal"><svg class="icon"><use href="#i-plus"></use></svg>添加客户需求</button>
             </div>
           </div>
           <div class="bom-table-wrap requirement-table-wrap">
@@ -5299,19 +5302,19 @@
                   <td>核心性能要求</td>
                   <td>-</td>
                   <td class="time-cell">2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+                  <td><div class="actions"><button class="link-button" type="button">详情</button></div></td>
                 </tr>
                 <tr>
                   <td>适配与兼容要求</td>
                   <td>-</td>
                   <td class="time-cell">2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+                  <td><div class="actions"><button class="link-button" type="button">详情</button></div></td>
                 </tr>
                 <tr>
                   <td>交付与文档要求</td>
                   <td>-</td>
                   <td class="time-cell">2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+                  <td><div class="actions"><button class="link-button" type="button">详情</button></div></td>
                 </tr>
               </tbody>
             </table>
@@ -5432,142 +5435,6 @@
         </section>
       </div>
 
-      <div class="tab-panel" data-tab-panel="quality" hidden>
-        <section class="bom-panel quality-page">
-          <header class="bom-top quality-head">
-            <div>
-              <div class="bom-title-row">
-                <h2 class="section-title">质量问题管控--8D（3）</h2>
-              </div>
-            </div>
-          </header>
-
-          <form class="bom-filter quality-search" id="qualitySearchForm" role="search">
-            <label>关键信息
-              <input class="field" id="qualitySearchInput" type="search" placeholder="可输入关键字进行查询" aria-label="质量问题关键字查询">
-            </label>
-            <button class="btn btn-primary" type="submit">查询</button>
-            <button class="btn" type="reset">重置</button>
-          </form>
-
-          <div class="bom-table-wrap quality-table-wrap">
-            <table class="quality-table" aria-label="质量问题8D列表">
-              <colgroup>
-                <col style="width: 170px">
-                <col style="width: 120px">
-                <col style="width: 120px">
-                <col style="width: 110px">
-                <col style="width: 150px">
-                <col style="width: 160px">
-                <col style="width: 110px">
-                <col style="width: 120px">
-                <col style="width: 120px">
-                <col style="width: 160px">
-                <col style="width: 130px">
-                <col style="width: 100px">
-                <col style="width: 120px">
-                <col style="width: 100px">
-                <col style="width: 90px">
-                <col style="width: 90px">
-              </colgroup>
-              <thead>
-                <tr>
-                  <th>问题编号</th>
-                  <th>创建日期</th>
-                  <th>问题负责人</th>
-                  <th>牵头团队</th>
-                  <th>零件编号</th>
-                  <th>零件名称</th>
-                  <th>生产线</th>
-                  <th>产品层级</th>
-                  <th>产品</th>
-                  <th>缺陷类型</th>
-                  <th>ICA</th>
-                  <th>疑似数量</th>
-                  <th>质量成本</th>
-                  <th>创建人</th>
-                  <th>状态</th>
-                  <th>操作</th>
-                </tr>
-              </thead>
-              <tbody id="qualityTableBody">
-                <tr>
-                  <td><span class="quality-no">PQ-20250707-001</span></td>
-                  <td>2025-08-20</td>
-                  <td>Zack</td>
-                  <td>PQ</td>
-                  <td>RM-C03-08Z-400</td>
-                  <td>Center bolt</td>
-                  <td>CB</td>
-                  <td>OTS</td>
-                  <td>ETS</td>
-                  <td>Sub - Component</td>
-                  <td>Containment</td>
-                  <td>12</td>
-                  <td>¥8,600</td>
-                  <td>Zack</td>
-                  <td><span class="quality-state">D3</span></td>
-                  <td><button class="link-button" type="button">详情</button></td>
-                </tr>
-                <tr>
-                  <td><span class="quality-no">PQ-20250707-002</span></td>
-                  <td>2025-08-20</td>
-                  <td>Zack</td>
-                  <td>PQ</td>
-                  <td>RM-C03-08Z-400</td>
-                  <td>Center bolt</td>
-                  <td>CB</td>
-                  <td>OTS</td>
-                  <td>ETS</td>
-                  <td>Sub - Component</td>
-                  <td>Sorting</td>
-                  <td>8</td>
-                  <td>¥5,200</td>
-                  <td>Zack</td>
-                  <td><span class="quality-state">D3</span></td>
-                  <td><button class="link-button" type="button">详情</button></td>
-                </tr>
-                <tr>
-                  <td><span class="quality-no">PQ-20250707-003</span></td>
-                  <td>2025-08-20</td>
-                  <td>Zack</td>
-                  <td>PQ</td>
-                  <td>RM-C03-08Z-400</td>
-                  <td>Center bolt</td>
-                  <td>CB</td>
-                  <td>OTS</td>
-                  <td>ETS</td>
-                  <td>Sub - Component</td>
-                  <td>Rework</td>
-                  <td>20</td>
-                  <td>¥12,400</td>
-                  <td>Zack</td>
-                  <td><span class="quality-state">D3</span></td>
-                  <td><button class="link-button" type="button">管理</button></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="quality-footer">
-            <span id="qualityResultCount">共 3 项数据</span>
-            <div class="quality-pager" aria-label="分页">
-              <span>‹</span>
-              <button type="button">1</button>
-              <span>...</span>
-              <button type="button">50</button>
-              <button type="button">51</button>
-              <button class="active" type="button">52</button>
-              <button type="button">53</button>
-              <button type="button">54</button>
-              <span>...</span>
-              <button type="button">90</button>
-              <span>›</span>
-            </div>
-          </div>
-        </section>
-      </div>
-
       <div class="tab-panel" data-tab-panel="team" hidden>
         <section class="bom-panel team-page">
           <header class="bom-top team-head">
@@ -5644,9 +5511,6 @@
                 <h2 class="section-title">项目资料库</h2>
               </div>
             </div>
-            <div class="bom-actions">
-              <button class="btn btn-primary" type="button" id="libraryUploadButton"><svg class="icon"><use href="#i-upload"></use></svg>上传附件</button>
-            </div>
           </header>
 
           <form class="bom-filter library-search" id="librarySearchForm" role="search">
@@ -5676,12 +5540,12 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>Milestone Name</th>
-                  <th>File Name</th>
-                  <th>Label</th>
+                  <th>任务节点</th>
+                  <th>文件名称</th>
+                  <th>标签</th>
                   <th>资料来源</th>
-                  <th>Upload Date</th>
-                  <th>Uploader</th>
+                  <th>上传日期</th>
+                  <th>上传人</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -5832,13 +5696,13 @@
           <div class="bom-selection-actions"><button class="btn btn-primary" type="button" data-bom-drawer-open="library">从零件库添加</button><button class="btn" type="button" data-bom-drawer-open="manual">手动添加</button><button class="btn" type="button" data-bom-copy-selection>复制</button><button class="btn" type="button" data-bom-drawer-open="edit">编辑</button><button class="btn btn-outline-danger" type="button" data-bom-delete-selection>删除</button></div>
         </div>
         <div class="bom-workspace-layout" data-bom-workspace-layout>
-          <div class="bom-table-wrap"><table class="bom-table bom-edit-table" aria-label="BOM编辑明细"><colgroup><col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px"><col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px"><col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px"><col style="width:100px"><col style="width:120px"><col style="width:100px"><col style="width:150px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px"><col style="width:140px"><col style="width:200px"></colgroup><thead data-bom-edit-head></thead><tbody data-bom-edit-body></tbody></table></div>
+          <div class="bom-table-wrap"><table class="bom-table bom-edit-table" aria-label="BOM编辑明细"><colgroup><col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px"><col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px"><col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px"><col style="width:100px"><col style="width:100px"><col style="width:150px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px"><col style="width:140px"><col style="width:200px"></colgroup><thead data-bom-edit-head></thead><tbody data-bom-edit-body></tbody></table></div>
           <aside class="bom-inline-drawer" data-bom-inline-drawer hidden>
             <header class="bom-drawer-head"><div><h3 data-bom-drawer-title>添加子项</h3><p data-bom-drawer-context>请选择 BOM 行后进行操作。</p></div><button class="close-btn" type="button" data-bom-drawer-close aria-label="关闭"><svg class="icon"><use href="#i-stop"></use></svg></button></header>
             <div class="bom-drawer-body"><div class="bom-drawer-mode" data-bom-drawer-mode><button type="button" data-bom-drawer-tab="library">零件库</button><button type="button" data-bom-drawer-tab="manual">手动录入</button></div><section class="bom-drawer-section" data-bom-drawer-section="library"><label>搜索零件库<input class="field" type="search" placeholder="输入零件号或名称" data-bom-library-search></label><div class="bom-library-results" data-bom-library-results></div></section><section class="bom-drawer-section" data-bom-drawer-section="manual">
               <div class="bom-drawer-group"><h4>关键信息</h4><div class="bom-drawer-grid"><label>级数<input class="field" data-inline-part-field="level" readonly></label><label>数量<input class="field" data-inline-part-field="qty" value="1"></label><label>供应类型<select class="select-field" data-inline-part-field="supplyType"><option>一供</option><option>二供</option></select></label><label>APQP负责人<input class="field" data-inline-part-field="apqpOwner" placeholder="默认 SQD / Zack"></label><label class="span-2">零件 / 材料名称 *<input class="field" data-inline-part-field="name" placeholder="输入零件名称"></label><label class="span-2">产品应用<input class="field" data-inline-part-field="application" placeholder="如 Chain / Phaser"></label></div></div>
               <div class="bom-drawer-group"><h4>编码信息</h4><div class="bom-drawer-grid"><label class="span-2">客户零件号<input class="field" data-inline-part-field="customerNo" placeholder="可选"></label><label>BW 零件号<input class="field" data-inline-part-field="bwNo" placeholder="BW号"></label><label>图纸版本<input class="field" data-inline-part-field="drawingRev" value="A" placeholder="如 A / B / C"></label><label class="span-2">样件 SAP 零件号<input class="field" data-inline-part-field="sampleSapNo" placeholder="输入样件 SAP 号"></label><label class="span-2">量产 SAP 零件号<input class="field" data-inline-part-field="massSapNo" placeholder="输入量产 SAP 号"></label></div></div>
-              <div class="bom-drawer-group"><h4>材料、重量与图纸</h4><div class="bom-drawer-grid"><label>原材料零件号<input class="field" data-inline-part-field="rawNo" placeholder="可选"></label><label>原材料<input class="field" data-inline-part-field="rawMaterial" placeholder="可选"></label><label>重量 Piece(g)<input class="field" data-inline-part-field="weightPiece" placeholder="单件重量"></label><label>重量 Assembly(g)<input class="field" data-inline-part-field="weightAssembly" placeholder="总成重量"></label><label>共用零件<select class="select-field" data-inline-part-field="sharedPart"><option>否</option><option>是</option></select></label><label>借用项目<input class="field" data-inline-part-field="borrowedProject" placeholder="可选"></label><label>图纸状态<select class="select-field" data-inline-part-field="releaseStatus"><option>已释放</option><option>评审中</option><option>待释放</option></select></label><label>原材料供应商名称<input class="field" data-inline-part-field="rawSupplier" placeholder="供应商名称"></label><label>分供方名称<input class="field" data-inline-part-field="subSupplier" placeholder="分供方名称"></label><label class="span-2">备注<input class="field" data-inline-part-field="remark" placeholder="填写备注"></label></div></div>
+              <div class="bom-drawer-group"><h4>材料、重量与图纸</h4><div class="bom-drawer-grid"><label>原材料零件号<input class="field" data-inline-part-field="rawNo" placeholder="可选"></label><label>原材料<input class="field" data-inline-part-field="rawMaterial" placeholder="可选"></label><label>重量 Piece(g)<input class="field" data-inline-part-field="weightPiece" placeholder="单件重量"></label><label>共用零件<select class="select-field" data-inline-part-field="sharedPart"><option>否</option><option>是</option></select></label><label>借用项目<input class="field" data-inline-part-field="borrowedProject" placeholder="可选"></label><label>图纸状态<select class="select-field" data-inline-part-field="releaseStatus"><option>已释放</option><option>评审中</option><option>待释放</option></select></label><label>原材料供应商名称<input class="field" data-inline-part-field="rawSupplier" placeholder="供应商名称"></label><label>分供方名称<input class="field" data-inline-part-field="subSupplier" placeholder="分供方名称"></label><label class="span-2">备注<input class="field" data-inline-part-field="remark" placeholder="填写备注"></label></div></div>
               <div class="bom-drawer-group"><h4>版本对比</h4><div class="bom-drawer-grid"><label>版本对比<select class="select-field" data-inline-part-field="changeStatus"><option>新增</option><option>无变更</option><option>复现新增</option></select></label></div></div>
             </section></div><footer class="bom-drawer-foot"><button class="btn" type="button" data-bom-drawer-close>取消</button><button class="btn btn-primary" type="button" data-bom-drawer-save>保存</button></footer>
           </aside>
@@ -5918,9 +5782,6 @@
             <label>重量 Piece(g)
               <input class="field" data-part-field="weightPiece" value="42.5">
             </label>
-            <label>重量 Assembly(g)
-              <input class="field" data-part-field="weightAssembly" value="42.5">
-            </label>
             <label>共用零件
               <select class="select-field" data-part-field="sharedPart">
                 <option>否</option>
@@ -5953,67 +5814,6 @@
         <button class="btn" type="button" data-close-part-modal>取消</button>
         <button class="btn btn-primary" type="button" data-add-part-confirm>确认提交</button>
       </footer>
-    </section>
-  </div>
-
-  <div class="modal-backdrop" id="requirementModal" hidden>
-    <section class="requirement-modal" role="dialog" aria-modal="true" aria-labelledby="requirementModalTitle">
-      <div class="modal-head">
-        <h3 id="requirementModalTitle">添加客户需求</h3>
-        <button class="modal-close" type="button" data-close-requirement aria-label="关闭">×</button>
-      </div>
-      <form id="requirementForm">
-        <div class="requirement-form">
-          <div class="form-row">
-            <label for="requirementTitle"><span class="required">*</span>需求标题:</label>
-            <input class="field-input" id="requirementTitle" name="requirementTitle" type="text" placeholder="请输入问题名称" autocomplete="off">
-          </div>
-          <div class="form-row">
-            <label for="requirementOwner">需求发起人:</label>
-            <input class="field-input" id="requirementOwner" name="requirementOwner" type="text" placeholder="请输入需求发起人" autocomplete="off">
-          </div>
-          <div class="form-row form-upload">
-            <label>上传附件:</label>
-            <div class="upload-stack">
-              <button class="btn btn-primary" type="button">＋ 上传文件</button>
-              <div class="upload-note">支持扩展名：.doc .docx .pdf .jpg...</div>
-              <div class="mock-file" id="mockFile">⌘ <span>文档.docx</span><button class="file-remove" type="button" aria-label="移除附件">×</button></div>
-            </div>
-          </div>
-          <div class="form-row form-editor">
-            <label for="requirementDescription">需求描述:</label>
-            <div class="editor-shell">
-              <div class="editor-toolbar" aria-label="需求描述工具栏">
-                <button class="editor-tool" type="button">A</button>
-                <button class="editor-tool" type="button"><b>B</b></button>
-                <button class="editor-tool" type="button"><i>I</i></button>
-                <button class="editor-tool" type="button"><u>U</u></button>
-                <button class="editor-tool" type="button">H</button>
-                <button class="editor-tool" type="button">≡</button>
-                <button class="editor-tool" type="button">▤</button>
-                <button class="editor-tool" type="button">≔</button>
-                <button class="editor-tool" type="button">≓</button>
-                <button class="editor-tool" type="button">T↕</button>
-                <button class="editor-tool" type="button">↔</button>
-                <button class="editor-tool" type="button">▻</button>
-                <button class="editor-tool" type="button">◅</button>
-                <button class="editor-tool" type="button">↕</button>
-                <button class="editor-tool" type="button">⊞</button>
-                <button class="editor-tool" type="button">☷</button>
-                <button class="editor-tool" type="button">☰</button>
-                <button class="editor-tool" type="button">⟳</button>
-                <button class="editor-tool" type="button">↶</button>
-              </div>
-              <div class="editor-body" id="requirementDescription" contenteditable="true" aria-label="需求描述"></div>
-            </div>
-          </div>
-          <div class="form-error" id="requirementError" hidden>请输入需求标题</div>
-        </div>
-        <div class="modal-foot">
-          <button class="btn" type="button" data-close-requirement>取消</button>
-          <button class="btn btn-primary" type="submit">确定</button>
-        </div>
-      </form>
     </section>
   </div>
 
@@ -10553,15 +10353,6 @@
     const progressText = document.getElementById("progressText");
     const progressPercent = document.getElementById("progressPercent");
     const progressBar = document.getElementById("progressBar");
-    const requirementModal = document.getElementById("requirementModal");
-    const openRequirementModal = document.getElementById("openRequirementModal");
-    const requirementForm = document.getElementById("requirementForm");
-    const requirementTitle = document.getElementById("requirementTitle");
-    const requirementOwner = document.getElementById("requirementOwner");
-    const requirementDescription = document.getElementById("requirementDescription");
-    const requirementError = document.getElementById("requirementError");
-    const requirementTableBody = document.getElementById("requirementTableBody");
-    const mockFile = document.getElementById("mockFile");
     const issueModal = document.getElementById("issueModal");
     const openIssueModal = document.getElementById("openIssueModal");
     const issueForm = document.getElementById("issueForm");
@@ -10583,10 +10374,6 @@
     const issueMockFile = document.getElementById("issueMockFile");
     const issueStatusTabs = Array.from(document.querySelectorAll("[data-issue-status]"));
     let activeIssueStatus = "all";
-    const qualitySearchForm = document.getElementById("qualitySearchForm");
-    const qualitySearchInput = document.getElementById("qualitySearchInput");
-    const qualityTableBody = document.getElementById("qualityTableBody");
-    const qualityResultCount = document.getElementById("qualityResultCount");
     const teamTableBody = document.getElementById("teamTableBody");
     const teamMemberCount = document.getElementById("teamMemberCount");
     const teamResultCount = document.getElementById("teamResultCount");
@@ -10597,7 +10384,6 @@
     const libraryTableBody = document.getElementById("libraryTableBody");
     const libraryResultCount = document.getElementById("libraryResultCount");
     const librarySourceTabs = Array.from(document.querySelectorAll("[data-library-source]"));
-    const libraryUploadButton = document.getElementById("libraryUploadButton");
     let activeLibrarySource = "all";
     const memberModal = document.getElementById("memberModal");
     const openMemberModal = document.getElementById("openMemberModal");
@@ -12323,77 +12109,6 @@
       return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
     }
 
-    function resetRequirementForm() {
-      requirementForm.reset();
-      requirementDescription.textContent = "";
-      requirementError.hidden = true;
-      mockFile.hidden = false;
-    }
-
-    function showRequirementModal() {
-      resetRequirementForm();
-      requirementModal.hidden = false;
-      requirementTitle.focus();
-    }
-
-    function hideRequirementModal() {
-      requirementModal.hidden = true;
-    }
-
-    function createRequirementRow(title, owner) {
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td></td>
-        <td></td>
-        <td class="time-cell"></td>
-        <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
-      `;
-      row.children[0].textContent = title;
-      row.children[1].textContent = owner || "-";
-      row.children[2].textContent = getCurrentTime();
-      return row;
-    }
-
-    openRequirementModal.addEventListener("click", showRequirementModal);
-
-    document.querySelectorAll("[data-close-requirement]").forEach((button) => {
-      button.addEventListener("click", hideRequirementModal);
-    });
-
-    requirementModal.addEventListener("click", (event) => {
-      if (event.target === requirementModal) {
-        hideRequirementModal();
-      }
-    });
-
-    requirementForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const title = requirementTitle.value.trim();
-      if (!title) {
-        requirementError.hidden = false;
-        requirementTitle.focus();
-        return;
-      }
-
-      requirementTableBody.appendChild(createRequirementRow(title, requirementOwner.value.trim()));
-      hideRequirementModal();
-    });
-
-    requirementTitle.addEventListener("input", () => {
-      requirementError.hidden = Boolean(requirementTitle.value.trim());
-    });
-
-    mockFile.querySelector(".file-remove").addEventListener("click", () => {
-      mockFile.hidden = true;
-    });
-
-    requirementTableBody.addEventListener("click", (event) => {
-      const deleteButton = event.target.closest("[data-delete-row]");
-      if (deleteButton) {
-        deleteButton.closest("tr").remove();
-      }
-    });
-
     function resetIssueForm() {
       issueForm.reset();
       issueError.hidden = true;
@@ -12521,28 +12236,6 @@
         deleteButton.closest("tr").remove();
       }
     });
-
-    function filterQualityRows() {
-      const keyword = qualitySearchInput.value.trim().toLowerCase();
-      let visibleCount = 0;
-      Array.from(qualityTableBody.querySelectorAll("tr")).forEach((row) => {
-        const rowText = row.textContent.toLowerCase();
-        const matched = !keyword || rowText.includes(keyword);
-        row.hidden = !matched;
-        if (matched) {
-          visibleCount += 1;
-        }
-      });
-      qualityResultCount.textContent = `共 ${visibleCount} 项数据`;
-    }
-
-    qualitySearchForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      filterQualityRows();
-    });
-
-    qualitySearchInput.addEventListener("input", filterQualityRows);
-    qualitySearchInput.addEventListener("search", filterQualityRows);
 
     const memberCatalog = [
       {
@@ -12979,23 +12672,7 @@
       });
     });
 
-    libraryUploadButton.addEventListener("click", () => {
-      libraryTableBody.insertBefore(createLibraryRow({
-        source: "manual",
-        milestone: "手动上传资料",
-        fileName: "项目开发资料补充说明.pdf",
-        label: "补充资料",
-        fileType: "pdf",
-        uploadDate: getCurrentTime().slice(0, 10),
-        uploader: "当前用户"
-      }), libraryTableBody.firstElementChild);
-      filterLibraryRows();
-    });
-
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !requirementModal.hidden) {
-        hideRequirementModal();
-      }
       if (event.key === "Escape" && !issueModal.hidden) {
         hideIssueModal();
       }
@@ -13018,7 +12695,6 @@
       ["原材料零件号", "SAP"],
       ["原材料", "Raw Material"],
       ["重量", "Weight Piece(g)"],
-      ["重量", "Weight Assembly(g)"],
       ["共用零件", "Common"],
       ["借用项目", "Borrowed Project"],
       ["图纸状态", "DRW Status"],
@@ -13599,6 +13275,30 @@
       openPartDevelopmentTask(button.dataset.openPartTask);
     }
 
+    function openDrReview(rowId = "") {
+      const target = new URL("DR设计评审_Open_Issue_List_DEMO.html", window.location.href);
+      if (rowId) {
+        const row = bomState.rows.find((item) => item.id === rowId);
+        target.searchParams.set("bomRowId", rowId);
+        if (row?.bwNo) target.searchParams.set("partNo", row.bwNo);
+        if (row?.name) target.searchParams.set("partName", row.name);
+      }
+      window.location.href = target.toString();
+    }
+
+    function handleBomDrReviewClick(event) {
+      const button = event.target.closest("[data-open-dr-review-row]");
+      if (!button) return false;
+      event.preventDefault();
+      event.stopPropagation();
+      openDrReview(button.dataset.openDrReviewRow);
+      return true;
+    }
+
+    function drReviewStatusHtml(row) {
+      return `<span class="dr-status-cell"><span>${escapeHtml(row.releaseStatus || "-")}</span><button class="link-button" type="button" data-open-dr-review-row="${escapeHtml(row.id)}">DFM</button></span>`;
+    }
+
     function bomRowHtml(row, selectable) {
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
       const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
@@ -13606,8 +13306,8 @@
       const partNo = bomPartTaskLinkHtml(row);
       const cells = [
         row.no, row.application, level, partName, row.qty, row.customerNo, partNo, row.drawingRev,
-        row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
-        row.sharedPart, row.borrowedProject, row.releaseStatus, row.rawSupplier, row.subSupplier,
+        row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece,
+        row.sharedPart, row.borrowedProject, drReviewStatusHtml(row), row.rawSupplier, row.subSupplier,
         supplyType, row.changeStatus || "无变更", row.remark
       ];
       const body = cells.map((cell) => `<td>${cell}</td>`).join("");
@@ -13790,11 +13490,11 @@
     function inlineField(name) { return document.querySelector('[data-inline-part-field="' + name + '"]'); }
     function inlineFieldValue(name) { return inlineField(name)?.value.trim() || "-"; }
     function setInlineFieldValue(name, value) { const field = inlineField(name); if (field) field.value = value ?? ""; }
-    function fillInlineDrawer(row, mode) { const data = { level: row ? String(mode === "edit" ? row.level : childLevelFor(row)) : "1", qty: mode === "edit" ? row.qty : "1", supplyType: supplyTypeText(row || {}) === "二供" ? "二供" : "一供", apqpOwner: row?.apqpOwner || "SQD / Zack", name: mode === "edit" ? row.name : "", application: row?.application || "VCT", customerNo: mode === "edit" ? row.customerNo : "-", bwNo: mode === "edit" ? row.bwNo : "", drawingRev: mode === "edit" ? row.drawingRev : "A", sampleSapNo: mode === "edit" ? row.sampleSapNo : "", massSapNo: mode === "edit" ? row.massSapNo : "", rawNo: mode === "edit" ? row.rawNo : "", rawMaterial: mode === "edit" ? row.rawMaterial : "", weightPiece: mode === "edit" ? row.weightPiece : "", weightAssembly: mode === "edit" ? row.weightAssembly : "", sharedPart: mode === "edit" ? row.sharedPart : "否", borrowedProject: mode === "edit" ? row.borrowedProject : "-", releaseStatus: mode === "edit" ? row.releaseStatus : "评审中", rawSupplier: mode === "edit" ? row.rawSupplier : "", subSupplier: mode === "edit" ? row.subSupplier : "", remark: mode === "edit" ? row.remark : "手动添加", changeStatus: mode === "edit" ? row.changeStatus : "新增" }; Object.entries(data).forEach(([k,v]) => setInlineFieldValue(k,v)); }
+    function fillInlineDrawer(row, mode) { const data = { level: row ? String(mode === "edit" ? row.level : childLevelFor(row)) : "1", qty: mode === "edit" ? row.qty : "1", supplyType: supplyTypeText(row || {}) === "二供" ? "二供" : "一供", apqpOwner: row?.apqpOwner || "SQD / Zack", name: mode === "edit" ? row.name : "", application: row?.application || "VCT", customerNo: mode === "edit" ? row.customerNo : "-", bwNo: mode === "edit" ? row.bwNo : "", drawingRev: mode === "edit" ? row.drawingRev : "A", sampleSapNo: mode === "edit" ? row.sampleSapNo : "", massSapNo: mode === "edit" ? row.massSapNo : "", rawNo: mode === "edit" ? row.rawNo : "", rawMaterial: mode === "edit" ? row.rawMaterial : "", weightPiece: mode === "edit" ? row.weightPiece : "", sharedPart: mode === "edit" ? row.sharedPart : "否", borrowedProject: mode === "edit" ? row.borrowedProject : "-", releaseStatus: mode === "edit" ? row.releaseStatus : "评审中", rawSupplier: mode === "edit" ? row.rawSupplier : "", subSupplier: mode === "edit" ? row.subSupplier : "", remark: mode === "edit" ? row.remark : "手动添加", changeStatus: mode === "edit" ? row.changeStatus : "新增" }; Object.entries(data).forEach(([k,v]) => setInlineFieldValue(k,v)); }
     function renderBomLibraryResults() { const box = document.querySelector("[data-bom-library-results]"); if (!box) return; const kw = document.querySelector("[data-bom-library-search]")?.value.trim().toLowerCase() || ""; const rows = bomProductCatalog.filter((p) => !kw || [p.name,p.root,p.key].join(" ").toLowerCase().includes(kw)).slice(0,6); box.innerHTML = rows.map((p) => '<div class="bom-library-result"><div><b>' + escapeHtml(p.root) + '</b><span>' + escapeHtml(p.name) + ' · BW ' + escapeHtml(partNo(p.seed,0)) + '</span></div><button class="bom-add-link" type="button" data-bom-library-add="' + escapeHtml(p.key) + '">添加</button></div>').join("") || '<div class="bom-empty-tip">未找到匹配零件</div>'; }
     function openBomInlineDrawer(mode) { const selected = selectedBomRows(); if (!selected.length) return; const row = selected[0]; const drawer = document.querySelector("[data-bom-inline-drawer]"); const layout = document.querySelector("[data-bom-workspace-layout]"); if (!drawer || !layout) return; bomState.drawerParentId = row.id; bomState.drawerEditId = mode === "edit" ? row.id : null; drawer.hidden = false; layout.classList.add("has-drawer"); document.querySelector("[data-bom-drawer-title]").textContent = mode === "edit" ? "编辑BOM项" : "添加 L" + childLevelFor(row) + " 子项"; document.querySelector("[data-bom-drawer-context]").textContent = mode === "edit" ? "正在编辑：" + row.name : "将添加为：" + row.name + " 下的 L" + childLevelFor(row) + " 子项"; document.querySelector("[data-bom-drawer-mode]").hidden = mode === "edit"; fillInlineDrawer(row, mode); setBomDrawerMode(mode === "library" ? "library" : "manual"); renderBomLibraryResults(); }
     function closeBomInlineDrawer() { document.querySelector("[data-bom-inline-drawer]")?.setAttribute("hidden", ""); document.querySelector("[data-bom-workspace-layout]")?.classList.remove("has-drawer"); bomState.drawerParentId = null; bomState.drawerEditId = null; }
-    function saveInlineDrawer() { const target = bomState.rows.find((row) => row.id === bomState.drawerEditId); const parent = bomState.rows.find((row) => row.id === bomState.drawerParentId); const payload = { level: Number(inlineFieldValue("level")), name: inlineFieldValue("name"), application: inlineFieldValue("application"), qty: inlineFieldValue("qty"), customerNo: inlineFieldValue("customerNo"), bwNo: inlineFieldValue("bwNo"), drawingRev: inlineFieldValue("drawingRev"), sampleSapNo: inlineFieldValue("sampleSapNo"), massSapNo: inlineFieldValue("massSapNo"), rawNo: inlineFieldValue("rawNo"), rawMaterial: inlineFieldValue("rawMaterial"), weightPiece: inlineFieldValue("weightPiece"), weightAssembly: inlineFieldValue("weightAssembly"), sharedPart: inlineFieldValue("sharedPart"), borrowedProject: inlineFieldValue("borrowedProject"), releaseStatus: inlineFieldValue("releaseStatus"), rawSupplier: inlineFieldValue("rawSupplier"), subSupplier: inlineFieldValue("subSupplier"), supplyPlan: inlineFieldValue("supplyType") + " · 手动维护", apqpOwner: inlineFieldValue("apqpOwner"), changeStatus: inlineFieldValue("changeStatus"), remark: inlineFieldValue("remark") }; if (!payload.name || payload.name === "-") { showMessage("无法保存", "<p>请填写零件 / 材料名称。</p>"); return; } bomState.undoStack.push(cloneRows(bomState.rows)); if (target) Object.assign(target, payload); else if (parent) bomState.rows.splice(bomState.rows.findIndex((row) => row.id === parent.id) + 1, 0, { id: "inline-" + Date.now(), no: bomState.rows.length + 1, productKey: parent.productKey, needApqp: "是", createTask: "是", startGate: "Gate1", blockGate: "是", impactAction: "手动维护新增", ...payload }); bomState.status = "draft"; renumberRows(); closeBomInlineDrawer(); renderBomEditor(); renderBomList(); }
+    function saveInlineDrawer() { const target = bomState.rows.find((row) => row.id === bomState.drawerEditId); const parent = bomState.rows.find((row) => row.id === bomState.drawerParentId); const payload = { level: Number(inlineFieldValue("level")), name: inlineFieldValue("name"), application: inlineFieldValue("application"), qty: inlineFieldValue("qty"), customerNo: inlineFieldValue("customerNo"), bwNo: inlineFieldValue("bwNo"), drawingRev: inlineFieldValue("drawingRev"), sampleSapNo: inlineFieldValue("sampleSapNo"), massSapNo: inlineFieldValue("massSapNo"), rawNo: inlineFieldValue("rawNo"), rawMaterial: inlineFieldValue("rawMaterial"), weightPiece: inlineFieldValue("weightPiece"), sharedPart: inlineFieldValue("sharedPart"), borrowedProject: inlineFieldValue("borrowedProject"), releaseStatus: inlineFieldValue("releaseStatus"), rawSupplier: inlineFieldValue("rawSupplier"), subSupplier: inlineFieldValue("subSupplier"), supplyPlan: inlineFieldValue("supplyType") + " · 手动维护", apqpOwner: inlineFieldValue("apqpOwner"), changeStatus: inlineFieldValue("changeStatus"), remark: inlineFieldValue("remark") }; if (!payload.name || payload.name === "-") { showMessage("无法保存", "<p>请填写零件 / 材料名称。</p>"); return; } bomState.undoStack.push(cloneRows(bomState.rows)); if (target) Object.assign(target, payload); else if (parent) bomState.rows.splice(bomState.rows.findIndex((row) => row.id === parent.id) + 1, 0, { id: "inline-" + Date.now(), no: bomState.rows.length + 1, productKey: parent.productKey, needApqp: "是", createTask: "是", startGate: "Gate1", blockGate: "是", impactAction: "手动维护新增", ...payload }); bomState.status = "draft"; renumberRows(); closeBomInlineDrawer(); renderBomEditor(); renderBomList(); }
     function saveBomDraft() { bomState.status = "draft"; renderBomEditor(); renderBomList(); showMessage("保存草稿", "<p>BOM 草稿已保存，当前包含 " + bomState.rows.length + " 条零件数据。</p>"); }
 
     function fieldValue(name) {
@@ -13810,7 +13510,7 @@
           level: String(row.level), name: row.name, application: row.application, qty: row.qty,
           customerNo: row.customerNo, bwNo: row.bwNo, drawingRev: row.drawingRev,
           sampleSapNo: row.sampleSapNo, massSapNo: row.massSapNo, rawNo: row.rawNo,
-          rawMaterial: row.rawMaterial, weightPiece: row.weightPiece, weightAssembly: row.weightAssembly,
+          rawMaterial: row.rawMaterial, weightPiece: row.weightPiece,
           sharedPart: row.sharedPart, borrowedProject: row.borrowedProject, releaseStatus: row.releaseStatus,
           rawSupplier: row.rawSupplier, subSupplier: row.subSupplier, remark: row.remark
         }).forEach(([key, value]) => {
@@ -13843,7 +13543,6 @@
         rawNo: fieldValue("rawNo"),
         rawMaterial: fieldValue("rawMaterial"),
         weightPiece: fieldValue("weightPiece"),
-        weightAssembly: fieldValue("weightAssembly"),
         sharedPart: fieldValue("sharedPart"),
         borrowedProject: fieldValue("borrowedProject"),
         releaseStatus: fieldValue("releaseStatus"),
@@ -13964,9 +13663,6 @@
     document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", confirmBom);
     document.querySelector("[data-bom-export-template]")?.addEventListener("click", exportBomTemplate);
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
-    document.querySelector("[data-open-dr-review]")?.addEventListener("click", () => {
-      window.location.href = "DR设计评审_Open_Issue_List_DEMO.html";
-    });
     document.querySelector("[data-task-edit]")?.addEventListener("click", () => {
       setProjectEditDrawer(true);
     });
@@ -14093,6 +13789,9 @@
         input.checked = checkAll.checked;
       });
     });
+    bomListBody?.addEventListener("click", handleBomDrReviewClick);
+    bomListBody?.addEventListener("click", handleBomPartTaskClick);
+    bomEditBody?.addEventListener("click", handleBomDrReviewClick);
     bomEditBody?.addEventListener("click", handleBomPartTaskClick);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
@@ -14144,6 +13843,7 @@
     document.querySelector("[data-undo-delete]")?.addEventListener("click", undoDelete);
     document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     bomEditBody.addEventListener("click", (event) => {
+      if (event.target.closest("[data-open-dr-review-row]")) return;
       if (event.target.closest("[data-open-part-task]")) return;
       const checkbox = event.target.closest("[data-row-check]");
       if (checkbox) {
