@@ -850,6 +850,20 @@
       padding: 10px;
     }
 
+    .upload-cell:focus-within,
+    .upload-cell:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 2px rgba(31, 95, 191, .28);
+      background: #f8fbff;
+    }
+
+    .paste-hint {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
     .upload-text {
       min-height: 68px;
       resize: vertical;
@@ -934,6 +948,7 @@
       object-fit: contain;
       background: #f8fafc;
       border-bottom: 1px solid var(--line);
+      cursor: zoom-in;
     }
 
     .image-preview span {
@@ -942,6 +957,62 @@
       font-weight: 800;
       padding: 6px 8px;
       overflow-wrap: anywhere;
+    }
+
+    .image-viewer-dialog {
+      width: min(980px, calc(100vw - 48px));
+      max-height: min(820px, calc(100vh - 48px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 24px 70px rgba(15, 23, 42, .28);
+      padding: 0;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .image-viewer-dialog::backdrop {
+      background: rgba(15, 23, 42, .42);
+    }
+
+    .image-viewer-content {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      background: #fff;
+      max-height: min(820px, calc(100vh - 48px));
+    }
+
+    .image-viewer-head {
+      min-height: 52px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .image-viewer-head strong {
+      font-size: 14px;
+      font-weight: 900;
+    }
+
+    .image-viewer-body {
+      min-height: 0;
+      padding: 16px;
+      overflow: auto;
+      background: #f8fafc;
+      display: grid;
+      place-items: center;
+    }
+
+    .image-viewer-body img {
+      max-width: 100%;
+      max-height: calc(100vh - 150px);
+      object-fit: contain;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
     }
 
     .add-issue-row {
@@ -1288,6 +1359,55 @@
     .reviewer-textarea {
       min-height: 120px;
       resize: vertical;
+    }
+
+    .reviewer-department-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reviewer-department-row {
+      display: grid;
+      grid-template-columns: minmax(150px, .34fr) minmax(0, 1fr) auto;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      padding: 10px;
+    }
+
+    .reviewer-department-row select,
+    .reviewer-department-row input {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      color: #1f2937;
+      padding: 8px 10px;
+      outline: none;
+      transition: .16s ease;
+    }
+
+    .reviewer-department-row select,
+    .reviewer-department-row input {
+      height: 38px;
+    }
+
+    .reviewer-department-row select:focus,
+    .reviewer-department-row input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 95, 191, .12);
+    }
+
+    .reviewer-row-action {
+      padding-top: 4px;
+    }
+
+    .reviewer-section-actions {
+      margin-top: 12px;
+      display: flex;
+      justify-content: flex-start;
     }
 
     .bottom-bar {
@@ -2966,16 +3086,87 @@
             <div class="panel-head">
               <div class="panel-title">
                 <strong>评审人员</strong>
-                <span>手动录入参与评审人员、角色和说明</span>
+                <span>部门为固定选项，可添加部门；人员由用户手动录入</span>
               </div>
             </div>
             <div class="section-body">
-              <label class="field">评审人员
-                <textarea class="comment-box reviewer-textarea">Alex Wang / 制造工程师
-Mia Chen / 产品工程师
-Kevin Liu / 质量工程师
-Sophia Zhang / 项目经理</textarea>
-              </label>
+              <div class="reviewer-department-list" data-reviewer-department-list>
+                <div class="reviewer-department-row">
+                  <label class="field">部门
+                    <select data-reviewer-department>
+                      <option selected>制造工程部</option>
+                      <option>产品工程部</option>
+                      <option>质量工程部</option>
+                      <option>项目管理部</option>
+                      <option>供应链管理部</option>
+                      <option>供应商质量开发部</option>
+                    </select>
+                  </label>
+                  <label class="field">评审人员
+                    <input data-reviewer-people value="Alex Wang" placeholder="手动录入人员姓名">
+                  </label>
+                  <div class="reviewer-row-action">
+                    <button class="mini-btn" type="button" data-remove-reviewer-department>删除</button>
+                  </div>
+                </div>
+                <div class="reviewer-department-row">
+                  <label class="field">部门
+                    <select data-reviewer-department>
+                      <option>制造工程部</option>
+                      <option selected>产品工程部</option>
+                      <option>质量工程部</option>
+                      <option>项目管理部</option>
+                      <option>供应链管理部</option>
+                      <option>供应商质量开发部</option>
+                    </select>
+                  </label>
+                  <label class="field">评审人员
+                    <input data-reviewer-people value="Mia Chen" placeholder="手动录入人员姓名">
+                  </label>
+                  <div class="reviewer-row-action">
+                    <button class="mini-btn" type="button" data-remove-reviewer-department>删除</button>
+                  </div>
+                </div>
+                <div class="reviewer-department-row">
+                  <label class="field">部门
+                    <select data-reviewer-department>
+                      <option>制造工程部</option>
+                      <option>产品工程部</option>
+                      <option selected>质量工程部</option>
+                      <option>项目管理部</option>
+                      <option>供应链管理部</option>
+                      <option>供应商质量开发部</option>
+                    </select>
+                  </label>
+                  <label class="field">评审人员
+                    <input data-reviewer-people value="Kevin Liu" placeholder="手动录入人员姓名">
+                  </label>
+                  <div class="reviewer-row-action">
+                    <button class="mini-btn" type="button" data-remove-reviewer-department>删除</button>
+                  </div>
+                </div>
+                <div class="reviewer-department-row">
+                  <label class="field">部门
+                    <select data-reviewer-department>
+                      <option>制造工程部</option>
+                      <option>产品工程部</option>
+                      <option>质量工程部</option>
+                      <option selected>项目管理部</option>
+                      <option>供应链管理部</option>
+                      <option>供应商质量开发部</option>
+                    </select>
+                  </label>
+                  <label class="field">评审人员
+                    <input data-reviewer-people value="Sophia Zhang" placeholder="手动录入人员姓名">
+                  </label>
+                  <div class="reviewer-row-action">
+                    <button class="mini-btn" type="button" data-remove-reviewer-department>删除</button>
+                  </div>
+                </div>
+              </div>
+              <div class="reviewer-section-actions">
+                <button class="mini-btn primary" type="button" data-add-reviewer-department>新增部门</button>
+              </div>
             </div>
           </section>
 
@@ -3102,6 +3293,18 @@ Sophia Zhang / 项目经理</textarea>
     </div>
   </dialog>
 
+  <dialog class="image-viewer-dialog" data-image-viewer-dialog>
+    <div class="image-viewer-content">
+      <div class="image-viewer-head">
+        <strong data-image-viewer-title>图片查看</strong>
+        <button class="icon-btn" type="button" title="关闭" aria-label="关闭图片查看" data-image-viewer-close>×</button>
+      </div>
+      <div class="image-viewer-body">
+        <img alt="问题图片大图预览" data-image-viewer-img>
+      </div>
+    </div>
+  </dialog>
+
   <dialog class="app-dialog" data-app-dialog>
     <div class="app-dialog-content">
       <h3 data-dialog-title>提示</h3>
@@ -3151,6 +3354,8 @@ Sophia Zhang / 项目经理</textarea>
     const detailPartNoInput = document.querySelector('[data-detail-part-no-input]');
     const reviewList = document.querySelector('[data-review-list]');
     const addReviewPointButton = document.querySelector('[data-add-review-point]');
+    const reviewerDepartmentList = document.querySelector('[data-reviewer-department-list]');
+    const addReviewerDepartmentButton = document.querySelector('[data-add-reviewer-department]');
     const issueTbody = document.querySelector('[data-issue-tbody]');
     const addIssueRowButton = document.querySelector('[data-add-issue-row]');
     const drawingPanel = document.querySelector('.drawing-panel');
@@ -3187,6 +3392,10 @@ Sophia Zhang / 项目经理</textarea>
     const statusHelpButton = document.querySelector('[data-status-help]');
     const statusDialog = document.querySelector('[data-status-dialog]');
     const statusCloseButton = document.querySelector('[data-status-close]');
+    const imageViewerDialog = document.querySelector('[data-image-viewer-dialog]');
+    const imageViewerImage = document.querySelector('[data-image-viewer-img]');
+    const imageViewerTitle = document.querySelector('[data-image-viewer-title]');
+    const imageViewerCloseButton = document.querySelector('[data-image-viewer-close]');
     const appDialog = document.querySelector('[data-app-dialog]');
     const dialogTitle = document.querySelector('[data-dialog-title]');
     const dialogMessage = document.querySelector('[data-dialog-message]');
@@ -3378,6 +3587,89 @@ Sophia Zhang / 项目经理</textarea>
         <button class="issue-delete-btn" type="button" title="删除问题行" aria-label="删除问题行" data-delete-issue-row>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
         </button>
+      `;
+    }
+
+    function prepareUploadCell(uploadCell) {
+      if (!uploadCell || uploadCell.dataset.pasteReady === 'true') return;
+      uploadCell.tabIndex = 0;
+      uploadCell.dataset.pasteReady = 'true';
+      const uploadActions = uploadCell.querySelector('.upload-actions');
+      if (uploadActions && !uploadCell.querySelector('.paste-hint')) {
+        const hint = document.createElement('div');
+        hint.className = 'paste-hint';
+        hint.textContent = '可保留文字说明，也可截图后直接粘贴到此处';
+        uploadCell.insertBefore(hint, uploadActions);
+      }
+    }
+
+    function prepareAllUploadCells(root = document) {
+      root.querySelectorAll('.upload-cell').forEach(prepareUploadCell);
+    }
+
+    function setUploadImage(uploadCell, imageSrc, fileNameText = '粘贴截图') {
+      if (!uploadCell || !imageSrc) return;
+      const preview = uploadCell.querySelector('.image-preview');
+      const image = preview?.querySelector('img');
+      const fileName = preview?.querySelector('span');
+      const uploadButton = uploadCell.querySelector('.upload-btn');
+      if (image) image.src = imageSrc;
+      if (fileName) fileName.textContent = fileNameText;
+      uploadCell.classList.add('has-image');
+      if (uploadButton) uploadButton.textContent = '更换图片';
+    }
+
+    function readImageFileToUploadCell(file, uploadCell, fileNameText = file?.name || '粘贴截图') {
+      if (!file || !uploadCell) return;
+      if (!file.type.startsWith('image/')) {
+        openAppDialog({
+          title: '图片格式不支持',
+          message: '请上传或粘贴 PNG、JPG、WEBP、GIF 或 TIFF 图片。',
+          confirmText: '知道了',
+          hideCancel: true
+        });
+        return;
+      }
+      const reader = new FileReader();
+      reader.addEventListener('load', () => {
+        setUploadImage(uploadCell, reader.result, fileNameText);
+      });
+      reader.readAsDataURL(file);
+    }
+
+    function openIssueImageViewer(image) {
+      if (!imageViewerDialog || !imageViewerImage || !image?.src) return;
+      imageViewerImage.src = image.src;
+      if (imageViewerTitle) {
+        const fileName = image.closest('.image-preview')?.querySelector('span')?.textContent.trim();
+        imageViewerTitle.textContent = fileName ? `图片查看 - ${fileName}` : '图片查看';
+      }
+      imageViewerDialog.showModal();
+    }
+
+    function closeIssueImageViewer() {
+      imageViewerDialog?.close();
+      if (imageViewerImage) imageViewerImage.removeAttribute('src');
+    }
+
+    function reviewerDepartmentOptions(selectedDepartment = '制造工程部') {
+      const departments = ['制造工程部', '产品工程部', '质量工程部', '项目管理部', '供应链管理部', '供应商质量开发部'];
+      return departments.map((department) => `<option${department === selectedDepartment ? ' selected' : ''}>${department}</option>`).join('');
+    }
+
+    function reviewerDepartmentRowTemplate(selectedDepartment = '制造工程部', people = '') {
+      return `
+        <div class="reviewer-department-row">
+          <label class="field">部门
+            <select data-reviewer-department>${reviewerDepartmentOptions(selectedDepartment)}</select>
+          </label>
+          <label class="field">评审人员
+            <input data-reviewer-people value="${people}" placeholder="手动录入人员姓名">
+          </label>
+          <div class="reviewer-row-action">
+            <button class="mini-btn" type="button" data-remove-reviewer-department>删除</button>
+          </div>
+        </div>
       `;
     }
 
@@ -3698,6 +3990,30 @@ Sophia Zhang / 项目经理</textarea>
       }
     });
 
+    addReviewerDepartmentButton?.addEventListener('click', () => {
+      const wrapper = document.createElement('div');
+      wrapper.innerHTML = reviewerDepartmentRowTemplate('制造工程部', '');
+      const row = wrapper.firstElementChild;
+      reviewerDepartmentList?.appendChild(row);
+      row?.querySelector('[data-reviewer-department]')?.focus();
+    });
+
+    reviewerDepartmentList?.addEventListener('click', (event) => {
+      const removeButton = event.target.closest('[data-remove-reviewer-department]');
+      if (!removeButton) return;
+      const rows = Array.from(reviewerDepartmentList.querySelectorAll('.reviewer-department-row'));
+      if (rows.length <= 1) {
+        openAppDialog({
+          title: '至少保留一个部门',
+          message: '评审人员需要至少保留一个部门，可修改部门和人员内容。',
+          confirmText: '知道了',
+          hideCancel: true
+        });
+        return;
+      }
+      removeButton.closest('.reviewer-department-row')?.remove();
+    });
+
     function issueRowTemplate(index) {
       return `
         <td class="center"><strong>${index}</strong></td>
@@ -3788,6 +4104,7 @@ Sophia Zhang / 项目经理</textarea>
       const row = document.createElement('tr');
       row.innerHTML = issueRowTemplate((issueTbody?.children.length || 0) + 1);
       issueTbody?.appendChild(row);
+      prepareAllUploadCells(row);
       refreshIssueIndexes();
       syncAllStatusColors();
       refreshLockButton();
@@ -3810,25 +4127,13 @@ Sophia Zhang / 项目经理</textarea>
           input.value = '';
           openAppDialog({
             title: '图片格式不支持',
-            message: '请上传 PNG、JPG、WEBP、GIF 或 TIFF 图片。',
+            message: '请上传或粘贴 PNG、JPG、WEBP、GIF 或 TIFF 图片。',
             confirmText: '知道了',
             hideCancel: true
           });
           return;
         }
-
-        const reader = new FileReader();
-        reader.addEventListener('load', () => {
-          const preview = uploadCell.querySelector('.image-preview');
-          const image = preview?.querySelector('img');
-          const fileName = preview?.querySelector('span');
-          const uploadButton = uploadCell.querySelector('.upload-btn');
-          if (image) image.src = reader.result;
-          if (fileName) fileName.textContent = file.name;
-          uploadCell.classList.add('has-image');
-          if (uploadButton) uploadButton.textContent = '更换图片';
-        });
-        reader.readAsDataURL(file);
+        readImageFileToUploadCell(file, uploadCell, file.name);
       }
       refreshLockButton();
       refreshIssueSummary();
@@ -3838,6 +4143,18 @@ Sophia Zhang / 项目经理</textarea>
       if (event.target.matches('.cost-field input')) {
         refreshIssueSummary();
       }
+    });
+
+    issueTbody?.addEventListener('paste', (event) => {
+      const uploadCell = event.target.closest('.upload-cell');
+      if (!uploadCell) return;
+      const imageItem = Array.from(event.clipboardData?.items || []).find((item) => item.type.startsWith('image/'));
+      if (!imageItem) return;
+      event.preventDefault();
+      const file = imageItem.getAsFile();
+      const timestamp = new Date().toLocaleString('zh-CN', { hour12: false });
+      readImageFileToUploadCell(file, uploadCell, `粘贴截图 ${timestamp}`);
+      if (saveMessage) saveMessage.textContent = '已粘贴截图，请保存';
     });
 
     issueTbody?.addEventListener('click', (event) => {
@@ -3879,6 +4196,12 @@ Sophia Zhang / 项目经理</textarea>
         if (fileName) fileName.textContent = '';
         if (uploadButton) uploadButton.textContent = '上传图片';
         uploadCell?.classList.remove('has-image');
+        return;
+      }
+
+      const previewImage = event.target.closest('.image-preview img');
+      if (previewImage?.getAttribute('src')) {
+        openIssueImageViewer(previewImage);
       }
     });
 
@@ -3943,6 +4266,11 @@ Sophia Zhang / 项目经理</textarea>
 
     statusDialog?.addEventListener('click', (event) => {
       if (event.target === statusDialog) statusDialog.close();
+    });
+
+    imageViewerCloseButton?.addEventListener('click', closeIssueImageViewer);
+    imageViewerDialog?.addEventListener('click', (event) => {
+      if (event.target === imageViewerDialog) closeIssueImageViewer();
     });
 
     dialogCancel?.addEventListener('click', () => closeAppDialog(false));
@@ -4014,6 +4342,7 @@ Sophia Zhang / 项目经理</textarea>
     syncDrawingPage();
     syncDrawingZoom();
     syncAllStatusColors();
+    prepareAllUploadCells();
     refreshLockButton();
     refreshIssueSummary();
     applyListFilter();
