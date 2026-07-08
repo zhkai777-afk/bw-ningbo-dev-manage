@@ -1975,7 +1975,7 @@
     }
 
     .bom-table {
-      min-width: 2460px;
+      min-width: 2620px;
       margin-top: 0;
     }
 
@@ -4364,6 +4364,86 @@
       justify-content: center;
     }
 
+    .dfm-form {
+      padding: 22px;
+      display: grid;
+      gap: 18px;
+      overflow-y: auto;
+    }
+
+    .dfm-form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 16px;
+    }
+
+    .dfm-form-grid label,
+    .dfm-form label {
+      display: grid;
+      gap: 7px;
+      color: #344054;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .dfm-form .span-2 {
+      grid-column: 1 / -1;
+    }
+
+    .dfm-form .field,
+    .dfm-form textarea {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .dfm-form textarea {
+      min-height: 86px;
+      resize: vertical;
+      padding-top: 9px;
+    }
+
+    .dfm-selected-parts {
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 4px;
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .dfm-selected-parts h4 {
+      margin: 0;
+      color: #1f2937;
+      font-size: 13px;
+      font-weight: 900;
+    }
+
+    .dfm-chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dfm-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 4px 9px;
+      border: 1px solid #bcd3ff;
+      border-radius: 4px;
+      background: #eef5ff;
+      color: #175cd3;
+      font-size: 12px;
+      font-weight: 900;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .dfm-error {
+      color: var(--danger);
+      font-weight: 800;
+    }
+
     .form-error {
       color: var(--danger);
       font-weight: 700;
@@ -4652,7 +4732,7 @@
     }
 
     #messageModal .bom-table {
-      min-width: 2460px;
+      min-width: 2620px;
     }
 
     .confirm-body p {
@@ -5228,6 +5308,7 @@
               </div>
             </div>
             <div class="bom-actions">
+              <button class="btn btn-primary" type="button" data-create-dfm><svg class="icon"><use href="#i-edit"></use></svg>创建DFM</button>
               <button class="btn" type="button" data-bom-export-template><svg class="icon"><use href="#i-download"></use></svg>导出BOM</button>
               <button class="btn btn-primary" type="button" data-bom-create><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM</button>
               <button class="btn btn-primary" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-lock"></use></svg>确认BOM</button>
@@ -5260,7 +5341,7 @@
               <colgroup>
                 <col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px">
                 <col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px">
-                <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px">
+                <col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px"><col style="width:150px">
                 <col style="width:100px"><col style="width:100px"><col style="width:150px">
                 <col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px">
                 <col style="width:140px"><col style="width:200px">
@@ -5696,7 +5777,7 @@
           <div class="bom-selection-actions"><button class="btn btn-primary" type="button" data-bom-drawer-open="library">从零件库添加</button><button class="btn" type="button" data-bom-drawer-open="manual">手动添加</button><button class="btn" type="button" data-bom-copy-selection>复制</button><button class="btn" type="button" data-bom-drawer-open="edit">编辑</button><button class="btn btn-outline-danger" type="button" data-bom-delete-selection>删除</button></div>
         </div>
         <div class="bom-workspace-layout" data-bom-workspace-layout>
-          <div class="bom-table-wrap"><table class="bom-table bom-edit-table" aria-label="BOM编辑明细"><colgroup><col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px"><col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px"><col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px"><col style="width:100px"><col style="width:100px"><col style="width:150px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px"><col style="width:140px"><col style="width:200px"></colgroup><thead data-bom-edit-head></thead><tbody data-bom-edit-body></tbody></table></div>
+          <div class="bom-table-wrap"><table class="bom-table bom-edit-table" aria-label="BOM编辑明细"><colgroup><col style="width:48px"><col style="width:70px"><col style="width:150px"><col style="width:70px"><col style="width:260px"><col style="width:90px"><col style="width:150px"><col style="width:130px"><col style="width:110px"><col style="width:150px"><col style="width:150px"><col style="width:140px"><col style="width:150px"><col style="width:150px"><col style="width:100px"><col style="width:100px"><col style="width:150px"><col style="width:130px"><col style="width:160px"><col style="width:160px"><col style="width:180px"><col style="width:140px"><col style="width:200px"></colgroup><thead data-bom-edit-head></thead><tbody data-bom-edit-body></tbody></table></div>
           <aside class="bom-inline-drawer" data-bom-inline-drawer hidden>
             <header class="bom-drawer-head"><div><h3 data-bom-drawer-title>添加子项</h3><p data-bom-drawer-context>请选择 BOM 行后进行操作。</p></div><button class="close-btn" type="button" data-bom-drawer-close aria-label="关闭"><svg class="icon"><use href="#i-stop"></use></svg></button></header>
             <div class="bom-drawer-body"><div class="bom-drawer-mode" data-bom-drawer-mode><button type="button" data-bom-drawer-tab="library">零件库</button><button type="button" data-bom-drawer-tab="manual">手动录入</button></div><section class="bom-drawer-section" data-bom-drawer-section="library"><label>搜索零件库<input class="field" type="search" placeholder="输入零件号或名称" data-bom-library-search></label><div class="bom-library-results" data-bom-library-results></div></section><section class="bom-drawer-section" data-bom-drawer-section="manual">
@@ -5709,6 +5790,46 @@
         </div>
       </div>
       <footer class="bom-modal-foot"><button class="btn" type="button" data-close-bom-modal>关闭</button><button class="btn" type="button" data-bom-save-draft>保存草稿</button><button class="btn btn-primary" type="button" data-bom-submit-foot>提交至SCM</button></footer>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="dfmModal" hidden>
+    <section class="issue-modal" role="dialog" aria-modal="true" aria-labelledby="dfmModalTitle">
+      <header class="modal-head">
+        <h3 id="dfmModalTitle">创建DFM</h3>
+        <button class="modal-close" type="button" data-close-dfm aria-label="关闭">×</button>
+      </header>
+      <form class="dfm-form" id="dfmForm" novalidate>
+        <div class="dfm-selected-parts">
+          <h4>已选择零件</h4>
+          <div class="dfm-chip-list" data-dfm-selected-parts></div>
+        </div>
+        <div class="dfm-form-grid">
+          <label>DFM编号 *
+            <input class="field" name="dfmNo" data-dfm-field="dfmNo">
+          </label>
+          <label>版本号 *
+            <input class="field" name="dfmVersion" data-dfm-field="dfmVersion" placeholder="如 DFM_V1.0">
+          </label>
+          <label>DFM名称 *
+            <input class="field" name="dfmName" data-dfm-field="dfmName" placeholder="如 PHASER INSERT DFM">
+          </label>
+          <label>负责人
+            <input class="field" name="dfmOwner" data-dfm-field="dfmOwner" value="SQD / Zack">
+          </label>
+          <label class="span-2">上传图纸 *
+            <input class="field" type="file" name="drawingFile" data-dfm-field="drawingFile" accept=".pdf,.dwg,.dxf,.step,.stp,.zip,.jpg,.png">
+          </label>
+          <label class="span-2">基础信息
+            <textarea class="field" name="dfmBasicInfo" data-dfm-field="dfmBasicInfo" placeholder="填写材料、工艺、供应商、评审范围等基础信息"></textarea>
+          </label>
+        </div>
+        <div class="dfm-error" data-dfm-error hidden></div>
+      </form>
+      <footer class="modal-foot">
+        <button class="btn" type="button" data-close-dfm>取消</button>
+        <button class="btn btn-primary" type="button" data-save-dfm>保存</button>
+      </footer>
     </section>
   </div>
 
@@ -12679,6 +12800,9 @@
       if (event.key === "Escape" && !memberModal.hidden) {
         hideMemberModal();
       }
+      if (event.key === "Escape" && !document.getElementById("dfmModal")?.hidden) {
+        closeDfmModal();
+      }
     });
 
     const bomHeaders = [
@@ -12690,6 +12814,7 @@
       ["客户零件号", "customer Part NO."],
       ["BW 零件号", "BW Part NO."],
       ["图纸版本", "DRW Rev."],
+      ["DFM编号", "DFM No."],
       ["样件 SAP 零件号", "SAP_Proto"],
       ["量产 SAP 零件号", "SAP_SOP"],
       ["原材料零件号", "SAP"],
@@ -12730,9 +12855,10 @@
       drawerParentId: null,
       drawerEditId: null,
       searchMatches: [],
+      dfmRecords: [],
       histories: [],
       rows: [
-        { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 双供同步开发", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", childTaskDone: true, remark: "当前开发零件" },
+        { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", dfmNo: "DFM-20250520-001", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 双供同步开发", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", childTaskDone: true, remark: "当前开发零件" },
         { id: "phaser-insert-2", no: 2, level: 2, name: "INSERT BODY", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070001", drawingRev: "R1", sampleSapNo: "SAP-P-9001-01", massSapNo: "SAP-S-9001-01", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "6.2", weightAssembly: "6.2", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 单一供应", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", remark: "注塑主体" },
         { id: "phaser-insert-3", no: 3, level: 2, name: "WEAR PAD", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070002", drawingRev: "A", sampleSapNo: "SAP-P-9001-02", massSapNo: "SAP-S-9001-02", rawNo: "RM-PA46", rawMaterial: "PA46", weightPiece: "1.8", weightAssembly: "1.8", sharedPart: "否", borrowedProject: "-", releaseStatus: "评审中", rawSupplier: "Ningbo Polymer", subSupplier: "B-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Rita Zhou", supplyPlan: "二供 · 后续导入", startGate: "Gate3", blockGate: "否", changeStatus: "新增", impactAction: "项目端确认新增二供后同步", remark: "摩擦片" },
         { id: "phaser-insert-4", no: 4, level: 3, name: "STEEL PIN", application: "VCT", qty: "2", customerNo: "-", bwNo: "5070003", drawingRev: "A", sampleSapNo: "SAP-P-9001-03", massSapNo: "SAP-S-9001-03", rawNo: "RM-SUS304", rawMaterial: "SUS304", weightPiece: "0.35", weightAssembly: "0.7", sharedPart: "是", borrowedProject: "EA888 E5", releaseStatus: "已释放", rawSupplier: "Ningbo Steel", subSupplier: "C-Supplier", needApqp: "否", createTask: "否", apqpOwner: "-", supplyPlan: "共用件 · 备案", startGate: "-", blockGate: "否", changeStatus: "无变更", impactAction: "共用件不生成开发任务", remark: "定位销" }
@@ -13275,28 +13401,36 @@
       openPartDevelopmentTask(button.dataset.openPartTask);
     }
 
-    function openDrReview(rowId = "") {
-      const target = new URL("DR设计评审_Open_Issue_List_DEMO.html", window.location.href);
+    function openDfmDetail(rowId = "") {
+      const target = new URL("DFM图纸评审任务_评审状态_DEMO.html", window.location.href);
       if (rowId) {
         const row = bomState.rows.find((item) => item.id === rowId);
+        target.searchParams.set("source", "bom");
         target.searchParams.set("bomRowId", rowId);
+        if (row?.dfmNo) target.searchParams.set("dfmNo", row.dfmNo);
         if (row?.bwNo) target.searchParams.set("partNo", row.bwNo);
         if (row?.name) target.searchParams.set("partName", row.name);
+        if (row?.drawingRev) target.searchParams.set("drawingRev", row.drawingRev);
+        target.searchParams.set("projectCode", document.querySelector("[data-source-project-text]")?.textContent?.replace(/^来源项目：/, "").trim() || "");
       }
       window.location.href = target.toString();
     }
 
-    function handleBomDrReviewClick(event) {
-      const button = event.target.closest("[data-open-dr-review-row]");
+    function handleBomDfmDetailClick(event) {
+      const button = event.target.closest("[data-open-dfm-detail]");
       if (!button) return false;
       event.preventDefault();
       event.stopPropagation();
-      openDrReview(button.dataset.openDrReviewRow);
+      openDfmDetail(button.dataset.openDfmDetail);
       return true;
     }
 
     function drReviewStatusHtml(row) {
-      return `<span class="dr-status-cell"><span>${escapeHtml(row.releaseStatus || "-")}</span><button class="link-button" type="button" data-open-dr-review-row="${escapeHtml(row.id)}">DFM</button></span>`;
+      return escapeHtml(row.releaseStatus || "-");
+    }
+
+    function dfmNoHtml(row) {
+      return row.dfmNo ? `<button class="blue-link" type="button" data-open-dfm-detail="${escapeHtml(row.id)}" title="进入DFM详情">${escapeHtml(row.dfmNo)}</button>` : "-";
     }
 
     function bomRowHtml(row, selectable) {
@@ -13305,7 +13439,7 @@
       const supplyType = supplyTypeTagHtml(row);
       const partNo = bomPartTaskLinkHtml(row);
       const cells = [
-        row.no, row.application, level, partName, row.qty, row.customerNo, partNo, row.drawingRev,
+        row.no, row.application, level, partName, row.qty, row.customerNo, partNo, row.drawingRev, dfmNoHtml(row),
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece,
         row.sharedPart, row.borrowedProject, drReviewStatusHtml(row), row.rawSupplier, row.subSupplier,
         supplyType, row.changeStatus || "无变更", row.remark
@@ -13626,14 +13760,100 @@
       return checkedIds.length ? rows.filter((row) => checkedIds.includes(row.id)) : rows;
     }
 
+    function checkedBomListRows() {
+      const checkedIds = Array.from(document.querySelectorAll("[data-bom-list-check]:checked")).map((input) => input.dataset.bomListCheck);
+      const rows = currentBomListRows();
+      return checkedIds.map((id) => rows.find((row) => row.id === id)).filter(Boolean);
+    }
+
+    function nextDfmNo() {
+      const next = (bomState.dfmRecords.length + 1).toString().padStart(3, "0");
+      return `DFM-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, "0")}${String(new Date().getDate()).padStart(2, "0")}-${next}`;
+    }
+
+    function dfmField(name) {
+      return document.querySelector(`[data-dfm-field="${name}"]`);
+    }
+
+    function closeDfmModal() {
+      document.getElementById("dfmModal")?.setAttribute("hidden", "");
+    }
+
+    function openDfmModal() {
+      const rows = checkedBomListRows();
+      if (!rows.length) {
+        showMessage("无法创建DFM", "<p>请先在生产 BOM 列表中勾选需要纳入同一个 DFM 的零件。</p>");
+        return;
+      }
+      const modal = document.getElementById("dfmModal");
+      const form = document.getElementById("dfmForm");
+      const selectedBox = document.querySelector("[data-dfm-selected-parts]");
+      const error = document.querySelector("[data-dfm-error]");
+      form?.reset();
+      if (error) error.hidden = true;
+      if (selectedBox) {
+        selectedBox.innerHTML = rows.map((row) => `<span class="dfm-chip">${escapeHtml(row.name)} / ${escapeHtml(row.bwNo || row.sampleSapNo || "-")}</span>`).join("");
+      }
+      const defaultName = rows.length === 1 ? `${rows[0].name} DFM` : `${rows[0].name} 等 ${rows.length} 项 DFM`;
+      dfmField("dfmNo").value = nextDfmNo();
+      dfmField("dfmVersion").value = "DFM_V1.0";
+      dfmField("dfmName").value = defaultName;
+      dfmField("dfmOwner").value = "SQD / Zack";
+      dfmField("dfmBasicInfo").value = rows.map((row) => `${row.name} / ${row.bwNo || row.sampleSapNo || "-"} / ${row.subSupplier || row.rawSupplier || "-"}`).join("\n");
+      modal.hidden = false;
+      dfmField("dfmName")?.focus();
+    }
+
+    function saveDfm() {
+      const rows = checkedBomListRows();
+      const error = document.querySelector("[data-dfm-error]");
+      const payload = {
+        dfmNo: dfmField("dfmNo")?.value.trim() || "",
+        dfmVersion: dfmField("dfmVersion")?.value.trim() || "",
+        dfmName: dfmField("dfmName")?.value.trim() || "",
+        dfmOwner: dfmField("dfmOwner")?.value.trim() || "",
+        dfmBasicInfo: dfmField("dfmBasicInfo")?.value.trim() || "",
+        drawingFile: dfmField("drawingFile")?.files?.[0]?.name || ""
+      };
+      const messages = [];
+      if (!rows.length) messages.push("请选择需要创建 DFM 的 BOM 零件。");
+      if (!payload.dfmNo) messages.push("请填写 DFM 编号。");
+      if (!payload.dfmVersion) messages.push("请填写版本号。");
+      if (!payload.dfmName) messages.push("请填写 DFM 名称。");
+      if (!payload.drawingFile) messages.push("请上传图纸文件。");
+      if (messages.length) {
+        if (error) {
+          error.textContent = messages.join(" ");
+          error.hidden = false;
+        }
+        return;
+      }
+      bomState.dfmRecords.push({
+        ...payload,
+        createdAt: getCurrentTime(),
+        partIds: rows.map((row) => row.id)
+      });
+      rows.forEach((row) => {
+        const target = bomState.rows.find((item) => item.id === row.id);
+        if (!target) return;
+        target.dfmNo = payload.dfmNo;
+        target.dfmVersion = payload.dfmVersion;
+        target.dfmDrawingFile = payload.drawingFile;
+      });
+      closeDfmModal();
+      renderBomList();
+      renderBomEditor();
+      showMessage("DFM创建成功", `<p>${escapeHtml(payload.dfmNo)} 已关联 ${rows.length} 个 BOM 零件，版本号为 ${escapeHtml(payload.dfmVersion)}，图纸文件：${escapeHtml(payload.drawingFile)}。</p>`);
+    }
+
     function exportBomTemplate() {
       const rows = selectedBomListRows();
       if (!rows.length) {
         showMessage("无法导出BOM", "<p>当前没有可导出的 BOM 数据，请先调整查询条件。</p>");
         return;
       }
-      const headers = ["序号", "产品应用", "层级", "零件/材料名称", "数量", "客户零件号", "BW零件号", "图纸版本", "样件SAP零件号", "量产SAP零件号", "原材料零件号", "原材料", "原材料供应商", "子供应商", "备注"];
-      const csvRows = [headers, ...rows.map((row) => [row.no, row.application, `L${row.level}`, row.name, row.qty, row.customerNo, row.bwNo, row.drawingRev, row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.rawSupplier, row.subSupplier, row.remark])];
+      const headers = ["序号", "产品应用", "层级", "零件/材料名称", "数量", "客户零件号", "BW零件号", "图纸版本", "DFM编号", "样件SAP零件号", "量产SAP零件号", "原材料零件号", "原材料", "原材料供应商", "子供应商", "备注"];
+      const csvRows = [headers, ...rows.map((row) => [row.no, row.application, `L${row.level}`, row.name, row.qty, row.customerNo, row.bwNo, row.drawingRev, row.dfmNo || "-", row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.rawSupplier, row.subSupplier, row.remark])];
       const csv = csvRows.map((row) => row.map((value) => `"${String(value ?? "-").replace(/"/g, '""')}"`).join(",")).join("\n");
       const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
       const link = document.createElement("a");
@@ -13662,6 +13882,14 @@
     document.querySelector("[data-bom-create]")?.addEventListener("click", () => openWorkspace("edit"));
     document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", confirmBom);
     document.querySelector("[data-bom-export-template]")?.addEventListener("click", exportBomTemplate);
+    document.querySelector("[data-create-dfm]")?.addEventListener("click", openDfmModal);
+    document.querySelector("[data-save-dfm]")?.addEventListener("click", saveDfm);
+    document.querySelectorAll("[data-close-dfm]").forEach((button) => button.addEventListener("click", closeDfmModal));
+    document.getElementById("dfmModal")?.addEventListener("click", (event) => {
+      if (event.target === event.currentTarget) {
+        closeDfmModal();
+      }
+    });
     document.querySelector("[data-bom-view-detail]")?.addEventListener("click", () => openWorkspace("detail"));
     document.querySelector("[data-task-edit]")?.addEventListener("click", () => {
       setProjectEditDrawer(true);
@@ -13789,9 +14017,9 @@
         input.checked = checkAll.checked;
       });
     });
-    bomListBody?.addEventListener("click", handleBomDrReviewClick);
+    bomListBody?.addEventListener("click", handleBomDfmDetailClick);
     bomListBody?.addEventListener("click", handleBomPartTaskClick);
-    bomEditBody?.addEventListener("click", handleBomDrReviewClick);
+    bomEditBody?.addEventListener("click", handleBomDfmDetailClick);
     bomEditBody?.addEventListener("click", handleBomPartTaskClick);
     document.querySelector("[data-bom-query]").addEventListener("click", renderBomList);
     document.querySelector("[data-row-query]").addEventListener("click", renderBomEditor);
@@ -13843,7 +14071,7 @@
     document.querySelector("[data-undo-delete]")?.addEventListener("click", undoDelete);
     document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     bomEditBody.addEventListener("click", (event) => {
-      if (event.target.closest("[data-open-dr-review-row]")) return;
+      if (event.target.closest("[data-open-dfm-detail]")) return;
       if (event.target.closest("[data-open-part-task]")) return;
       const checkbox = event.target.closest("[data-row-check]");
       if (checkbox) {
