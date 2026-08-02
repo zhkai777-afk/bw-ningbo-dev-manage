@@ -874,9 +874,9 @@
         stage: "Gate1",
         trigger: "L1 总成 APQP 已创建，请按 BOM 拆解需要开发的子零件 APQP。",
         mode: "detail",
-        blocked: true,
+        blocked: false,
         detail: detailPages.project,
-        note: "子零件 APQP 默认负责人为 SQD，可按零件和供应商方案分别生成。"
+        note: "子零件 APQP 默认负责人为 SQD，可按零件和供应商方案分别生成；其创建和完成情况不阻塞项目 Gate。"
       },
       {
         id: "sqd-supplier-node",
@@ -888,9 +888,9 @@
         stage: "Gate2",
         trigger: "已收到子零件 APQP 任务，请同步供应商开发节点和当前完成状态。",
         mode: "detail",
-        blocked: true,
+        blocked: false,
         detail: detailPages.part,
-        note: "当前 Gate 下阻塞型子零件任务未完成时，项目不能提交 Gate 审核。"
+        note: "子零件任务进度仅作为风险提醒和协同参考，不限制项目 Gate 提交与审核。"
       },
       {
         id: "owner-submit",
@@ -932,7 +932,7 @@
         mode: "modal",
         blocked: true,
         modalType: "gateLaunch",
-        note: "存在 BOM 变更或阻塞型子零件任务时，需先处理后才能发起审核。"
+        note: "项目级 BOM 阻塞变更需先处理；子零件开发情况仅作为风险提醒，不限制发起审核。"
       },
       {
         id: "gate-review",
@@ -1205,11 +1205,11 @@
                 </div>
                 <a class="btn btn-primary btn-sm" href="${detailPages.project}">处理 BOM</a>
               </div>
-              <div class="check-card risk">
+              <div class="check-card warn">
                 <span class="check-dot"></span>
                 <div>
-                  <div class="cell-main">阻塞型子零件 APQP 未完成</div>
-                  <div class="cell-sub">叶轮总成 · 二供同步开发任务仍为进行中。</div>
+                  <div class="cell-main">子零件开发风险提醒</div>
+                  <div class="cell-sub">叶轮总成 · 二供同步开发任务仍在进行中，仅供风险评估和协同参考，不限制项目 Gate 提交。</div>
                 </div>
                 <a class="btn btn-primary btn-sm" href="${detailPages.part}">查看任务</a>
               </div>

@@ -1,0 +1,269 @@
+{"kind":"deck","id":"pr/vjrq02","name":"Deck"}
+{"kind":"layout","layoutId":"ae1a13ea-9e73-4098-9a06-f8c76c0b97d7","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"5ad4905d-af56-4b07-9c1b-8138a4302598","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/72vako","slide":1,"title":"制造业新产品开发","textShapes":5}
+{"kind":"textbox","id":"sh/obm9wfqd","slide":1,"text":"制造业新产品开发","textPreview":"制造业新产品开发","textChars":8,"textLines":1,"bbox":[42,38,600,32]}
+{"kind":"textbox","id":"sh/nadsna9s","slide":1,"text":"项目开发管理系统","textPreview":"项目开发管理系统","textChars":8,"textLines":1,"bbox":[42,180,980,92]}
+{"kind":"textbox","id":"sh/294ru587","slide":1,"text":"从项目创建、BOM与APQP，到Gate审批与项目交接","textPreview":"从项目创建、BOM与APQP，到Gate审批与项目交接","textChars":27,"textLines":1,"bbox":[42,292,980,58]}
+{"kind":"shape","id":"sh/18val0rm","slide":1,"bbox":[42,510,740,8]}
+{"kind":"textbox","id":"sh/g7m9svqh","slide":1,"text":"讲解视频配套演示文稿","textPreview":"讲解视频配套演示文稿","textChars":10,"textLines":1,"bbox":[42,548,420,34]}
+{"kind":"textbox","id":"sh/f6dsjq9w","slide":1,"text":"2026","textPreview":"2026","textChars":4,"textLines":1,"bbox":[1140,650,98,26]}
+{"kind":"notes","id":"nt/72vako","slide":1,"text":"开场先说明：今天不逐页介绍功能，而是沿着一个项目的生命周期理解整套系统。\n核心问题有两个：项目如何按Gate推进；子零件开发如何与项目协同。"}
+{"kind":"slide","id":"sl/j84nhn","slide":2,"title":"项目开发全生命周期管理","textShapes":10}
+{"kind":"textbox","id":"sh/87apsvqp","slide":2,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/n618jq94","slide":2,"text":"一条项目主线，连接两个独立管理模块","textPreview":"一条项目主线，连接两个独立管理模块","textChars":17,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/m5s7q58z","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/xcjqpkrm","slide":2,"bbox":[333,333,614,0]}
+{"kind":"shape","id":"sh/wbapwfq1","slide":2,"bbox":[70,205,360,290]}
+{"kind":"shape","id":"sh/va18na9g","slide":2,"bbox":[850,205,360,290]}
+{"kind":"shape","id":"sh/a9s7u58v","slide":2,"bbox":[588,279,104,104]}
+{"kind":"textbox","id":"sh/dgz6dgr2","slide":2,"text":"项目开发","textPreview":"项目开发","textChars":4,"textLines":1,"bbox":[105,245,290,45]}
+{"kind":"textbox","id":"sh/cfqpkbqh","slide":2,"text":"Gate流转\n项目级任务\nL1总成APQP\n审批与交接","textPreview":"Gate流转 | 项目级任务 | L1总成APQP | 审批与交接","textChars":27,"textLines":4,"bbox":[105,315,280,150]}
+{"kind":"textbox","id":"sh/mp43qlof","slide":2,"text":"子零件开发","textPreview":"子零件开发","textChars":5,"textLines":1,"bbox":[885,245,290,45]}
+{"kind":"textbox","id":"sh/nqd4j650","slide":2,"text":"零件开发任务\n供应商开发\n子零件APQP\n资料与问题追溯","textPreview":"零件开发任务 | 供应商开发 | 子零件APQP | 资料与问题追溯","textChars":28,"textLines":4,"bbox":[885,315,280,150]}
+{"kind":"textbox","id":"sh/8rmlsb6l","slide":2,"text":"关联","textPreview":"关联","textChars":2,"textLines":1,"bbox":[607,309,66,40]}
+{"kind":"textbox","id":"sh/9svmlgn6","slide":2,"text":"协同、提醒、追溯","textPreview":"协同、提醒、追溯","textChars":8,"textLines":1,"bbox":[485,419,310,36]}
+{"kind":"textbox","id":"sh/at43ulor","slide":2,"text":"子零件风险可被看见，但不作为项目Gate的系统硬阻塞","textPreview":"子零件风险可被看见，但不作为项目Gate的系统硬阻塞","textChars":26,"textLines":1,"bbox":[190,548,900,54]}
+{"kind":"notes","id":"nt/j84nhn","slide":2,"text":"这一页先建立全局认知：系统不是把所有事情混在一个流程里。\n左边负责项目主流程，右边负责零件和供应商的开发过程。\n两边通过项目、BOM行、供应方案和任务号关联，但项目Gate有自己的准入逻辑。"}
+{"kind":"slide","id":"sl/kpeqdx","slide":3,"title":"项目开发全生命周期管理","textShapes":18}
+{"kind":"textbox","id":"sh/54nmdsvu","slide":3,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/i1wnidc3","slide":3,"text":"项目沿着 CKO—PKO—Gate—交接持续推进","textPreview":"项目沿着 CKO—PKO—Gate—交接持续推进","textChars":24,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/j254bido","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/s7e5onu5","slide":3,"bbox":[115,315,985,0]}
+{"kind":"shape","id":"sh/ts7mhsbq","slide":3,"bbox":[108,298,34,34]}
+{"kind":"shape","id":"sh/65wnmxcz","slide":3,"bbox":[272,298,34,34]}
+{"kind":"shape","id":"sh/r654fitk","slide":3,"bbox":[436,298,34,34]}
+{"kind":"shape","id":"sh/8bulc3u1","slide":3,"bbox":[600,298,34,34]}
+{"kind":"shape","id":"sh/9w3m58vm","slide":3,"bbox":[764,298,34,34]}
+{"kind":"shape","id":"sh/hsvatc7a","slide":3,"bbox":[928,298,34,34]}
+{"kind":"shape","id":"sh/grm90rqp","slide":3,"bbox":[1092,298,34,34]}
+{"kind":"textbox","id":"sh/fqdsrmp4","slide":3,"text":"CKO","textPreview":"CKO","textChars":3,"textLines":1,"bbox":[66,214,118,42]}
+{"kind":"textbox","id":"sh/up4ryh8z","slide":3,"text":"创建项目\n完成启动前任务","textPreview":"创建项目 | 完成启动前任务","textChars":12,"textLines":2,"bbox":[60,364,130,80]}
+{"kind":"textbox","id":"sh/pgfaxw7m","slide":3,"text":"PKO","textPreview":"PKO","textChars":3,"textLines":1,"bbox":[230,214,118,42]}
+{"kind":"textbox","id":"sh/4f6t4rq1","slide":3,"text":"启动会\n节点与团队配置","textPreview":"启动会 | 节点与团队配置","textChars":11,"textLines":2,"bbox":[224,364,130,80]}
+{"kind":"textbox","id":"sh/3uxsvmpg","slide":3,"text":"Gate1","textPreview":"Gate1","textChars":5,"textLines":1,"bbox":[394,214,118,42]}
+{"kind":"textbox","id":"sh/2t4r2h8v","slide":3,"text":"BOM确认\n创建L1 APQP","textPreview":"BOM确认 | 创建L1 APQP","textChars":15,"textLines":2,"bbox":[388,364,130,80]}
+{"kind":"textbox","id":"sh/dkfa1w7i","slide":3,"text":"Gate2","textPreview":"Gate2","textChars":5,"textLines":1,"bbox":[558,214,118,42]}
+{"kind":"textbox","id":"sh/cj6t8b6x","slide":3,"text":"开发任务\n阶段审批","textPreview":"开发任务 | 阶段审批","textChars":9,"textLines":2,"bbox":[552,364,130,80]}
+{"kind":"textbox","id":"sh/wzylkzil","slide":3,"text":"Gate3","textPreview":"Gate3","textChars":5,"textLines":1,"bbox":[722,214,118,42]}
+{"kind":"textbox","id":"sh/x07mt4jq","slide":3,"text":"简化流程\n可在此结束","textPreview":"简化流程 | 可在此结束","textChars":10,"textLines":2,"bbox":[716,364,130,80]}
+{"kind":"textbox","id":"sh/axg3i90f","slide":3,"text":"Gate4–6","textPreview":"Gate4–6","textChars":7,"textLines":1,"bbox":[886,214,118,42]}
+{"kind":"textbox","id":"sh/byp4re10","slide":3,"text":"OTS / PPAP / SOP\n持续门径管控","textPreview":"OTS / PPAP / SOP | 持续门径管控","textChars":23,"textLines":2,"bbox":[880,364,130,80]}
+{"kind":"textbox","id":"sh/k3ilojih","slide":3,"text":"Hand Over","textPreview":"Hand Over","textChars":9,"textLines":1,"bbox":[1050,214,118,42]}
+{"kind":"textbox","id":"sh/l4rmxoj2","slide":3,"text":"登记交接\n项目闭环","textPreview":"登记交接 | 项目闭环","textChars":9,"textLines":2,"bbox":[1044,364,130,80]}
+{"kind":"shape","id":"sh/y1g3m90b","slide":3,"bbox":[226,510,828,72]}
+{"kind":"textbox","id":"sh/j2p4ve1w","slide":3,"text":"标准流程：Gate1–Gate6   ｜   简化流程：Gate1–Gate3","textPreview":"标准流程：Gate1–Gate6   ｜   简化流程：Gate1–Gate3","textChars":39,"textLines":1,"bbox":[265,527,750,40]}
+{"kind":"notes","id":"nt/kpeqdx","slide":3,"text":"用一条时间线讲清生命周期，不需要在这里展开每个阶段的全部任务。\n强调标准流程覆盖Gate1到Gate6，简化流程到Gate3。\nBW内部OTS、PPAP、SOP分别对应Gate4、Gate5、Gate6。"}
+{"kind":"slide","id":"sl/eytff0","slide":4,"title":"项目开发全生命周期管理","textShapes":22}
+{"kind":"textbox","id":"sh/k3yxkjmt","slide":4,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/j2pgbe58","slide":4,"text":"每个角色只抓住自己的关键交付物","textPreview":"每个角色只抓住自己的关键交付物","textChars":15,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/i1gfi94n","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/x07y94n2","slide":4,"bbox":[168,346,98,0]}
+{"kind":"shape","id":"sh/wzyxgzmh","slide":4,"bbox":[369,346,98,0]}
+{"kind":"shape","id":"sh/vepw7u5w","slide":4,"bbox":[570,346,98,0]}
+{"kind":"shape","id":"sh/adgfep4r","slide":4,"bbox":[771,346,98,0]}
+{"kind":"shape","id":"sh/1wbyl8nm","slide":4,"bbox":[972,346,98,0]}
+{"kind":"shape","id":"sh/gvixs3m1","slide":4,"bbox":[42,230,166,238]}
+{"kind":"textbox","id":"sh/a98fehkr","slide":4,"text":"01","textPreview":"01","textChars":2,"textLines":1,"bbox":[60,250,48,30]}
+{"kind":"textbox","id":"sh/vahwnm1c","slide":4,"text":"销售","textPreview":"销售","textChars":2,"textLines":1,"bbox":[60,297,130,45]}
+{"kind":"textbox","id":"sh/wbqxgr2h","slide":4,"text":"创建项目\n完成CKO","textPreview":"创建项目 | 完成CKO","textChars":10,"textLines":2,"bbox":[60,365,130,74]}
+{"kind":"shape","id":"sh/xczepwj2","slide":4,"bbox":[243,230,166,238]}
+{"kind":"textbox","id":"sh/m5ofaxkf","slide":4,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[261,250,48,30]}
+{"kind":"textbox","id":"sh/n6hwj2l0","slide":4,"text":"PM","textPreview":"PM","textChars":2,"textLines":1,"bbox":[261,297,130,45]}
+{"kind":"textbox","id":"sh/87qxc72l","slide":4,"text":"组织PKO\n推动Gate与审批","textPreview":"组织PKO | 推动Gate与审批","textChars":15,"textLines":2,"bbox":[261,365,130,74]}
+{"kind":"shape","id":"sh/98zelc36","slide":4,"bbox":[444,230,166,238]}
+{"kind":"textbox","id":"sh/61sfm1kz","slide":4,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[462,250,48,30]}
+{"kind":"textbox","id":"sh/721gv61k","slide":4,"text":"AE","textPreview":"AE","textChars":2,"textLines":1,"bbox":[462,297,130,45]}
+{"kind":"textbox","id":"sh/3mtcny1w","slide":4,"text":"创建并维护\nL1 BOM","textPreview":"创建并维护 | L1 BOM","textChars":12,"textLines":2,"bbox":[462,365,130,74]}
+{"kind":"shape","id":"sh/2lkbet0b","slide":4,"bbox":[645,230,166,238]}
+{"kind":"textbox","id":"sh/povup8jm","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[663,250,48,30]}
+{"kind":"textbox","id":"sh/onmtg3ih","slide":4,"text":"SCM","textPreview":"SCM","textChars":3,"textLines":1,"bbox":[663,297,130,45]}
+{"kind":"textbox","id":"sh/bqdcry1s","slide":4,"text":"确认BOM\n维护供应方案","textPreview":"确认BOM | 维护供应方案","textChars":12,"textLines":2,"bbox":[663,365,130,74]}
+{"kind":"shape","id":"sh/qp4bit07","slide":4,"bbox":[846,230,166,238]}
+{"kind":"textbox","id":"sh/dcvut8zy","slide":4,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[864,250,48,30]}
+{"kind":"textbox","id":"sh/cbmtk3id","slide":4,"text":"AQE","textPreview":"AQE","textChars":3,"textLines":1,"bbox":[864,297,130,45]}
+{"kind":"textbox","id":"sh/zexcvih4","slide":4,"text":"负责L1 APQP\n识别零件需求","textPreview":"负责L1 APQP | 识别零件需求","textChars":16,"textLines":2,"bbox":[864,365,130,74]}
+{"kind":"shape","id":"sh/yd4vmd0j","slide":4,"bbox":[1047,230,166,238]}
+{"kind":"textbox","id":"sh/wj6tcnyh","slide":4,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1065,250,48,30]}
+{"kind":"textbox","id":"sh/xkfalsf2","slide":4,"text":"SQD","textPreview":"SQD","textChars":3,"textLines":1,"bbox":[1065,297,130,45]}
+{"kind":"textbox","id":"sh/ahobadgr","slide":4,"text":"推进零件与\n供应商开发","textPreview":"推进零件与 | 供应商开发","textChars":11,"textLines":2,"bbox":[1065,365,130,74]}
+{"kind":"textbox","id":"sh/vixsjixw","slide":4,"text":"讲页面时始终回答三个问题：谁来做？什么时候做？做完产生什么结果？","textPreview":"讲页面时始终回答三个问题：谁来做？什么时候做？做完产生什么结果？","textChars":32,"textLines":1,"bbox":[165,548,950,44]}
+{"kind":"notes","id":"nt/eytff0","slide":4,"text":"角色介绍要短，只讲关键交付物。\n销售把项目送入流程；PM负责组织和推进；AE与SCM围绕BOM协同；AQE与SQD分别负责L1和子零件开发。"}
+{"kind":"slide","id":"sl/ngbdtw","slide":5,"title":"项目开发全生命周期管理","textShapes":9}
+{"kind":"textbox","id":"sh/qhcvuxcb","slide":5,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/dk3epcv2","slide":5,"text":"CKO建立项目，PKO把目标、团队和计划对齐","textPreview":"CKO建立项目，PKO把目标、团队和计划对齐","textChars":22,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/cjudw7uh","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/z65wr2d8","slide":5,"bbox":[640,185,0,380]}
+{"kind":"shape","id":"sh/e5cvyxcn","slide":5,"bbox":[66,180,8,36]}
+{"kind":"textbox","id":"sh/18netcvy","slide":5,"text":"CKO｜项目启动前","textPreview":"CKO｜项目启动前","textChars":9,"textLines":1,"bbox":[84,179,360,40]}
+{"kind":"textbox","id":"sh/07ed07ud","slide":5,"text":"销售创建项目","textPreview":"销售创建项目","textChars":6,"textLines":1,"bbox":[66,255,470,48]}
+{"kind":"textbox","id":"sh/fa1cfido","slide":5,"text":"• 填写项目基础信息\n• 完成系统默认CKO任务\n• 提交后进入PKO","textPreview":"• 填写项目基础信息 | • 完成系统默认CKO任务 | • 提交后进入PKO","textChars":35,"textLines":3,"bbox":[66,330,460,150]}
+{"kind":"shape","id":"sh/u9svmdc3","slide":5,"bbox":[700,180,8,36]}
+{"kind":"textbox","id":"sh/k3q54b6h","slide":5,"text":"PKO｜项目正式启动","textPreview":"PKO｜项目正式启动","textChars":10,"textLines":1,"bbox":[718,179,360,40]}
+{"kind":"textbox","id":"sh/l4z6dgnm","slide":5,"text":"PM组织跨职能启动会","textPreview":"PM组织跨职能启动会","textChars":10,"textLines":1,"bbox":[700,255,480,48]}
+{"kind":"textbox","id":"sh/y1on2lob","slide":5,"text":"• 配置客户与BW关键节点\n• 选择标准或简化流程\n• 配置团队并分配任务\n• 推动AE创建、SCM确认BOM","textPreview":"• 配置客户与BW关键节点 | • 选择标准或简化流程 | • 配置团队并分配任务 | • 推动AE创建、SCM确认BOM","textChars":55,"textLines":4,"bbox":[700,330,480,190]}
+{"kind":"notes","id":"nt/ngbdtw","slide":5,"text":"CKO的重点是项目能不能被正式启动。\nPKO的重点是把关键节点、流程分支、团队和任务安排确定下来。\nPKO结束前，AE与SCM需要完成BOM从创建到确认的协同。"}
+{"kind":"slide","id":"sl/ymktrr","slide":6,"title":"项目开发全生命周期管理","textShapes":12}
+{"kind":"textbox","id":"sh/x0net0zm","slide":6,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/adcvyl0v","slide":6,"text":"Gate1的核心，是用已生效BOM建立L1总成APQP","textPreview":"Gate1的核心，是用已生效BOM建立L1总成APQP","textChars":27,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/be5wrqhg","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/k3ed4vid","slide":6,"bbox":[220,322,840,0]}
+{"kind":"shape","id":"sh/l4nex0zi","slide":6,"bbox":[80,232,220,184]}
+{"kind":"textbox","id":"sh/y1wv2l07","slide":6,"text":"AE","textPreview":"AE","textChars":2,"textLines":1,"bbox":[102,254,176,42]}
+{"kind":"textbox","id":"sh/z25wvqhs","slide":6,"text":"提交L1 BOM\n工作版本","textPreview":"提交L1 BOM | 工作版本","textChars":13,"textLines":2,"bbox":[102,320,176,66]}
+{"kind":"shape","id":"sh/07udsbit","slide":6,"bbox":[350,232,220,184]}
+{"kind":"textbox","id":"sh/183ulwze","slide":6,"text":"SCM","textPreview":"SCM","textChars":3,"textLines":1,"bbox":[372,254,176,42]}
+{"kind":"textbox","id":"sh/ponepkja","slide":6,"text":"确认并锁定\n生效版本","textPreview":"确认并锁定 | 生效版本","textChars":10,"textLines":2,"bbox":[372,320,176,66]}
+{"kind":"shape","id":"sh/onudwfip","slide":6,"bbox":[620,232,220,184]}
+{"kind":"textbox","id":"sh/nmlwna14","slide":6,"text":"PM","textPreview":"PM","textChars":2,"textLines":1,"bbox":[642,254,176,42]}
+{"kind":"textbox","id":"sh/2lcvup0j","slide":6,"text":"创建L1\n总成APQP","textPreview":"创建L1 | 总成APQP","textChars":11,"textLines":2,"bbox":[642,320,176,66]}
+{"kind":"shape","id":"sh/xsnet4j6","slide":6,"bbox":[890,232,220,184]}
+{"kind":"textbox","id":"sh/cred0zil","slide":6,"text":"AQE","textPreview":"AQE","textChars":3,"textLines":1,"bbox":[912,254,176,42]}
+{"kind":"textbox","id":"sh/bq5wru10","slide":6,"text":"接收计划并\n识别零件需求","textPreview":"接收计划并 | 识别零件需求","textChars":12,"textLines":2,"bbox":[912,320,176,66]}
+{"kind":"shape","id":"sh/apwvyp0f","slide":6,"bbox":[145,510,990,80]}
+{"kind":"textbox","id":"sh/lg7ex4j2","slide":6,"text":"项目进入Gate2，不要求所有子零件任务已经创建或完成分配","textPreview":"项目进入Gate2，不要求所有子零件任务已经创建或完成分配","textChars":29,"textLines":1,"bbox":[184,530,910,42]}
+{"kind":"notes","id":"nt/ymktrr","slide":6,"text":"Gate1必须讲清楚BOM确认与L1 APQP之间的先后关系。\nL1 APQP关联到具体L1 BOM生效版本，默认负责人是AQE。\nAQE可以继续拆解子零件需求，但这不是项目进入Gate2的硬前置条件。"}
+{"kind":"slide","id":"sl/vfvqzk","slide":7,"title":"项目开发全生命周期管理","textShapes":19}
+{"kind":"textbox","id":"sh/4z2pon2l","slide":7,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/3ytovil0","slide":7,"text":"Gate2–6重复同一套管理闭环，PM主导推进","textPreview":"Gate2–6重复同一套管理闭环，PM主导推进","textChars":23,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/2xk7mxkf","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/hwb6ts3u","slide":7,"bbox":[282,284,716,0]}
+{"kind":"shape","id":"sh/gv2pkn2p","slide":7,"bbox":[998,284,0,210]}
+{"kind":"shape","id":"sh/futoril4","slide":7,"bbox":[282,494,716,0]}
+{"kind":"shape","id":"sh/utk7idkj","slide":7,"bbox":[282,284,0,210]}
+{"kind":"shape","id":"sh/tsr6p83y","slide":7,"bbox":[165,210,230,150]}
+{"kind":"textbox","id":"sh/sripg32d","slide":7,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[183,228,30,30]}
+{"kind":"textbox","id":"sh/qlgred8z","slide":7,"text":"分配任务","textPreview":"分配任务","textChars":4,"textLines":1,"bbox":[219,227,154,34]}
+{"kind":"textbox","id":"sh/bmps7ypk","slide":7,"text":"PM明确当前Gate交付物","textPreview":"PM明确当前Gate交付物","textChars":13,"textLines":1,"bbox":[189,290,182,50]}
+{"kind":"shape","id":"sh/c7y9g3q5","slide":7,"bbox":[485,210,230,150]}
+{"kind":"textbox","id":"sh/d87a987q","slide":7,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[503,228,30,30]}
+{"kind":"textbox","id":"sh/2hgrat83","slide":7,"text":"职能执行","textPreview":"职能执行","textChars":4,"textLines":1,"bbox":[539,227,154,34]}
+{"kind":"textbox","id":"sh/3ips3y9o","slide":7,"text":"团队反馈完成情况","textPreview":"团队反馈完成情况","textChars":8,"textLines":1,"bbox":[509,290,182,50]}
+{"kind":"shape","id":"sh/ojy9c3qt","slide":7,"bbox":[805,210,230,150]}
+{"kind":"textbox","id":"sh/pk7a58re","slide":7,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[823,228,30,30]}
+{"kind":"textbox","id":"sh/edwr6t8r","slide":7,"text":"准入检查","textPreview":"准入检查","textChars":4,"textLines":1,"bbox":[859,227,154,34]}
+{"kind":"textbox","id":"sh/fe5sze9c","slide":7,"text":"检查项目级条件","textPreview":"检查项目级条件","textChars":7,"textLines":1,"bbox":[829,290,182,50]}
+{"kind":"shape","id":"sh/jilo7up4","slide":7,"bbox":[805,420,230,150]}
+{"kind":"textbox","id":"sh/ihs7epoj","slide":7,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[823,438,30,30]}
+{"kind":"textbox","id":"sh/5k369k7a","slide":7,"text":"Gate审批","textPreview":"Gate审批","textChars":6,"textLines":1,"bbox":[859,437,154,34]}
+{"kind":"textbox","id":"sh/kjupgf6p","slide":7,"text":"通过／驳回／条件通过","textPreview":"通过／驳回／条件通过","textChars":10,"textLines":1,"bbox":[829,500,182,50]}
+{"kind":"shape","id":"sh/7mlobupg","slide":7,"bbox":[165,420,230,150]}
+{"kind":"textbox","id":"sh/6lc7ipov","slide":7,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[183,438,30,30]}
+{"kind":"textbox","id":"sh/to3qd4n6","slide":7,"text":"进入下一阶段","textPreview":"进入下一阶段","textChars":6,"textLines":1,"bbox":[219,437,154,34]}
+{"kind":"textbox","id":"sh/snupkz6l","slide":7,"text":"继续执行，直至交接","textPreview":"继续执行，直至交接","textChars":9,"textLines":1,"bbox":[189,500,182,50]}
+{"kind":"textbox","id":"sh/nqhozapw","slide":7,"text":"未闭环的项目任务和项目级审批事项会阻塞；子零件风险只做提醒","textPreview":"未闭环的项目任务和项目级审批事项会阻塞；子零件风险只做提醒","textChars":29,"textLines":1,"bbox":[225,600,830,38]}
+{"kind":"notes","id":"nt/vfvqzk","slide":7,"text":"Gate2到Gate6不是六套完全不同的逻辑，而是重复同一个管理闭环。\n真正阻塞的是项目自身任务、必需输入、L1 APQP和项目审批状态。\n子零件风险可以显示在审批前，但由项目团队人工判断。"}
+{"kind":"slide","id":"sl/1ffr65","slide":8,"title":"项目开发全生命周期管理","textShapes":8}
+{"kind":"textbox","id":"sh/k3mpg7id","slide":8,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/j2do721s","slide":8,"text":"关联不等于合并：两个模块各自管理、各自推进","textPreview":"关联不等于合并：两个模块各自管理、各自推进","textChars":21,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/i147ex07","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/tsf6dwju","slide":8,"bbox":[42,185,574,345]}
+{"kind":"shape","id":"sh/sr6pkri9","slide":8,"bbox":[664,185,574,345]}
+{"kind":"textbox","id":"sh/7qxobm1o","slide":8,"text":"项目开发模块","textPreview":"项目开发模块","textChars":6,"textLines":1,"bbox":[78,220,500,46]}
+{"kind":"textbox","id":"sh/6po7ih03","slide":8,"text":"• 项目Gate与审批\n• 项目级任务和必需输入\n• 项目级BOM与L1总成APQP\n• Hand Over交接","textPreview":"• 项目Gate与审批 | • 项目级任务和必需输入 | • 项目级BOM与L1总成APQP | • Hand Over交接","textChars":56,"textLines":4,"bbox":[78,300,480,170]}
+{"kind":"textbox","id":"sh/9wb61sjq","slide":8,"text":"子零件开发模块","textPreview":"子零件开发模块","textChars":7,"textLines":1,"bbox":[700,220,500,46]}
+{"kind":"textbox","id":"sh/8v258ni5","slide":8,"text":"• 零件＋供应商开发任务\n• 子零件APQP和自身阶段\n• 供应商过程、资料与问题\n• 支持BOM创建或手动新增","textPreview":"• 零件＋供应商开发任务 | • 子零件APQP和自身阶段 | • 供应商过程、资料与问题 | • 支持BOM创建或手动新增","textChars":56,"textLines":4,"bbox":[700,300,480,170]}
+{"kind":"shape","id":"sh/a5k3etcn","slide":8,"bbox":[245,565,790,65]}
+{"kind":"textbox","id":"sh/b6tknyt8","slide":8,"text":"风险可以跨模块展示，项目Gate仍按项目级条件判断","textPreview":"风险可以跨模块展示，项目Gate仍按项目级条件判断","textChars":25,"textLines":1,"bbox":[276,578,728,36]}
+{"kind":"notes","id":"nt/1ffr65","slide":8,"text":"这是全套系统最容易被误解的地方。\n子零件开发任务可以手动创建，不要求全部来自项目BOM。\n项目页面可以显示子零件任务号并跳转，但不能把子零件未完成写成项目Gate阻塞原因。"}
+{"kind":"slide","id":"sl/vekrfl","slide":9,"title":"项目开发全生命周期管理","textShapes":17}
+{"kind":"textbox","id":"sh/832lw3e5","slide":9,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/72t43ydk","slide":9,"text":"BOM按L1总成独立升版，历史版本始终保留","textPreview":"BOM按L1总成独立升版，历史版本始终保留","textChars":21,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/m1k3utwz","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/l0bm1ove","slide":9,"bbox":[180,350,920,0]}
+{"kind":"shape","id":"sh/kzilsje9","slide":9,"bbox":[75,248,215,200]}
+{"kind":"textbox","id":"sh/zy94zedo","slide":9,"text":"PKO_V1.0","textPreview":"PKO_V1.0","textChars":8,"textLines":1,"bbox":[93,282,179,38]}
+{"kind":"textbox","id":"sh/yx03q9w3","slide":9,"text":"已锁定生效","textPreview":"已锁定生效","textChars":5,"textLines":1,"bbox":[93,350,179,64]}
+{"kind":"textbox","id":"sh/xwrmxofi","slide":9,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[92,264,30,20]}
+{"kind":"shape","id":"sh/cvilojex","slide":9,"bbox":[335,248,215,200]}
+{"kind":"textbox","id":"sh/qpgnip0f","slide":9,"text":"PKO_V2.0","textPreview":"PKO_V2.0","textChars":8,"textLines":1,"bbox":[353,282,179,38]}
+{"kind":"textbox","id":"sh/rap4ruh0","slide":9,"text":"复制形成工作版本","textPreview":"复制形成工作版本","textChars":8,"textLines":1,"bbox":[353,350,179,64]}
+{"kind":"textbox","id":"sh/cby5kzil","slide":9,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[352,264,30,20]}
+{"kind":"shape","id":"sh/dcrmt4z6","slide":9,"bbox":[595,248,215,200]}
+{"kind":"textbox","id":"sh/2lgne50j","slide":9,"text":"PKO_V2.0","textPreview":"PKO_V2.0","textChars":8,"textLines":1,"bbox":[613,282,179,38]}
+{"kind":"textbox","id":"sh/3mp4nah4","slide":9,"text":"AE提交，待SCM确认","textPreview":"AE提交，待SCM确认","textChars":11,"textLines":1,"bbox":[613,350,179,64]}
+{"kind":"textbox","id":"sh/4ny5gfip","slide":9,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[612,264,30,20]}
+{"kind":"shape","id":"sh/po7mpkzu","slide":9,"bbox":[855,248,215,200]}
+{"kind":"textbox","id":"sh/uhw3a507","slide":9,"text":"PKO_V2.0","textPreview":"PKO_V2.0","textChars":8,"textLines":1,"bbox":[873,282,179,38]}
+{"kind":"textbox","id":"sh/fi54jahs","slide":9,"text":"确认后成为当前生效","textPreview":"确认后成为当前生效","textChars":9,"textLines":1,"bbox":[873,350,179,64]}
+{"kind":"textbox","id":"sh/jmlkr6xk","slide":9,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[872,264,30,20]}
+{"kind":"textbox","id":"sh/ilcji1gz","slide":9,"text":"A总成变化，只给A生成新版本；B总成不随之升版","textPreview":"A总成变化，只给A生成新版本；B总成不随之升版","textChars":23,"textLines":1,"bbox":[230,520,820,44]}
+{"kind":"textbox","id":"sh/5o32tgfq","slide":9,"text":"项目BOM只是容器，不承载统一的项目级正式版本号","textPreview":"项目BOM只是容器，不承载统一的项目级正式版本号","textChars":24,"textLines":1,"bbox":[300,575,680,32]}
+{"kind":"notes","id":"nt/vekrfl","slide":9,"text":"用一个L1版本链解释BOM规则。\n第一次创建时只有工作版本，SCM确认后才成为生效版本。\n再次编辑从当前生效版本复制，不覆盖历史；每个L1独立提交、确认和生效。"}
+{"kind":"slide","id":"sl/emu2sd","slide":10,"title":"项目开发全生命周期管理","textShapes":11}
+{"kind":"textbox","id":"sh/knalsfqp","slide":10,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/jm14ja94","slide":10,"text":"子零件任务按“零件＋供应商方案”生成","textPreview":"子零件任务按“零件＋供应商方案”生成","textChars":18,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/yls3q58j","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"textbox","id":"sh/tc3mpkr6","slide":10,"text":"示例：零件 P1 配置两家供应商","textPreview":"示例：零件 P1 配置两家供应商","textChars":16,"textLines":1,"bbox":[42,150,600,38]}
+{"kind":"shape","id":"sh/8bulwfql","slide":10,"bbox":[42,220,370,270]}
+{"kind":"shape","id":"sh/7ql4na90","slide":10,"bbox":[455,220,370,270]}
+{"kind":"shape","id":"sh/6pc3up8v","slide":10,"bbox":[868,220,370,270]}
+{"kind":"textbox","id":"sh/9gz2d0r2","slide":10,"text":"一供｜供应商A","textPreview":"一供｜供应商A","textChars":7,"textLines":1,"bbox":[72,255,310,42]}
+{"kind":"textbox","id":"sh/ovqlkvqh","slide":10,"text":"策略：需要开发\n结果：创建 P1-A 任务","textPreview":"策略：需要开发 | 结果：创建 P1-A 任务","textChars":21,"textLines":2,"bbox":[72,335,310,84]}
+{"kind":"textbox","id":"sh/mhcfyp4b","slide":10,"text":"二供｜供应商B","textPreview":"二供｜供应商B","textChars":7,"textLines":1,"bbox":[485,255,310,42]}
+{"kind":"textbox","id":"sh/7ilg7ulg","slide":10,"text":"策略：仅备案\n结果：不创建 P1-B 任务","textPreview":"策略：仅备案 | 结果：不创建 P1-B 任务","textChars":21,"textLines":2,"bbox":[485,335,310,84]}
+{"kind":"textbox","id":"sh/8jux0z21","slide":10,"text":"策略发生变化","textPreview":"策略发生变化","textChars":6,"textLines":1,"bbox":[898,255,310,42]}
+{"kind":"textbox","id":"sh/9k3y943m","slide":10,"text":"改为“双供同步开发”\n结果：创建 P1-B 任务","textPreview":"改为“双供同步开发” | 结果：创建 P1-B 任务","textChars":24,"textLines":2,"bbox":[898,335,310,84]}
+{"kind":"shape","id":"sh/ulcf29k7","slide":10,"bbox":[192,548,896,65]}
+{"kind":"textbox","id":"sh/vm5gbels","slide":10,"text":"同一个零件可能对应多条独立的供应商开发任务","textPreview":"同一个零件可能对应多条独立的供应商开发任务","textChars":21,"textLines":1,"bbox":[230,561,820,38]}
+{"kind":"notes","id":"nt/emu2sd","slide":10,"text":"这一页用案例代替抽象规则。\n单一供应默认只生成一供任务；二供仅备案时不生成任务；双供同步开发时两家都生成。\n任务记录来源BOM版本、BOM行和供应方案，手动新增任务则允许没有这些来源。"}
+{"kind":"slide","id":"sl/c7go47","slide":11,"title":"项目开发全生命周期管理","textShapes":12}
+{"kind":"textbox","id":"sh/p4zu5of2","slide":11,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/218bu9gb","slide":11,"text":"BOM变更先做影响分析，再决定任务如何同步","textPreview":"BOM变更先做影响分析，再决定任务如何同步","textChars":21,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/32hc3exw","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/gzqtsjyl","slide":11,"bbox":[42,175,570,150]}
+{"kind":"textbox","id":"sh/10zu1of6","slide":11,"text":"新增零件","textPreview":"新增零件","textChars":4,"textLines":1,"bbox":[70,201,190,38]}
+{"kind":"textbox","id":"sh/exobq9gf","slide":11,"text":"判断是否新建任务","textPreview":"判断是否新建任务","textChars":8,"textLines":1,"bbox":[277,206,300,70]}
+{"kind":"shape","id":"sh/fyhczex0","slide":11,"bbox":[654,175,570,150]}
+{"kind":"textbox","id":"sh/0vad43yp","slide":11,"text":"删除零件","textPreview":"删除零件","textChars":4,"textLines":1,"bbox":[682,201,190,38]}
+{"kind":"textbox","id":"sh/lwjud8fa","slide":11,"text":"关闭或取消，保留历史","textPreview":"关闭或取消，保留历史","textChars":10,"textLines":1,"bbox":[889,206,300,70]}
+{"kind":"shape","id":"sh/ls3yh0jy","slide":11,"bbox":[42,365,570,150]}
+{"kind":"textbox","id":"sh/0ruxovid","slide":11,"text":"替换零件","textPreview":"替换零件","textChars":4,"textLines":1,"bbox":[70,391,190,38]}
+{"kind":"textbox","id":"sh/zqlgfq1s","slide":11,"text":"继承、部分重做或重建","textPreview":"继承、部分重做或重建","textChars":10,"textLines":1,"bbox":[277,396,300,70]}
+{"kind":"shape","id":"sh/ypcfml07","slide":11,"bbox":[654,365,570,150]}
+{"kind":"textbox","id":"sh/do3ydgjm","slide":11,"text":"供应商变化","textPreview":"供应商变化","textChars":5,"textLines":1,"bbox":[682,391,190,38]}
+{"kind":"textbox","id":"sh/cnuxkbi1","slide":11,"text":"重评供应商开发任务","textPreview":"重评供应商开发任务","textChars":9,"textLines":1,"bbox":[889,396,300,70]}
+{"kind":"textbox","id":"sh/bm1wbq1g","slide":11,"text":"变更不能直接破坏已生成任务，也不能物理覆盖历史记录","textPreview":"变更不能直接破坏已生成任务，也不能物理覆盖历史记录","textChars":25,"textLines":1,"bbox":[225,590,830,38]}
+{"kind":"notes","id":"nt/c7go47","slide":11,"text":"BOM变化不是直接改当前任务，而是先生成版本差异，再进行影响分析。\n删除任务不能物理删除；替换要记录旧件与新件关系；供应商变化通常需要重评。"}
+{"kind":"slide","id":"sl/3wqhu6","slide":12,"title":"项目开发全生命周期管理","textShapes":8}
+{"kind":"textbox","id":"sh/qd4fa5cz","slide":12,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/d0vel0ba","slide":12,"text":"项目Gate由项目级条件管控，零件问题仅提示风险","textPreview":"项目Gate由项目级条件管控，零件问题仅提示风险","textChars":24,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/czmxcfup","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/3atwfqt8","slide":12,"bbox":[42,165,574,420]}
+{"kind":"shape","id":"sh/29kf6lcn","slide":12,"bbox":[664,165,574,420]}
+{"kind":"textbox","id":"sh/pcbeh0be","slide":12,"text":"会阻塞项目Gate","textPreview":"会阻塞项目Gate","textChars":9,"textLines":1,"bbox":[78,205,500,42]}
+{"kind":"textbox","id":"sh/4b2x8vut","slide":12,"text":"• 当前Gate项目任务未完成\n• 项目级必需输入缺失\n• L1总成APQP不满足审批要求\n• 项目级审批或整改未闭环\n• 影响当前审批依据的L1 BOM未确认","textPreview":"• 当前Gate项目任务未完成 | • 项目级必需输入缺失 | • L1总成APQP不满足审批要求 | • 项目级审批或整改未闭环 | • 影响当前审批依据的L1 BOM未确认","textChars":80,"textLines":5,"bbox":[78,280,490,240]}
+{"kind":"textbox","id":"sh/f6twbqtc","slide":12,"text":"默认不阻塞，仅提示风险","textPreview":"默认不阻塞，仅提示风险","textChars":11,"textLines":1,"bbox":[700,205,500,42]}
+{"kind":"textbox","id":"sh/u5kv2lcr","slide":12,"text":"• 子零件任务未创建或未完成\n• 子零件APQP进行中或未关闭\n• 供应商开发任务未完成\n• 二供同步开发尚未启动\n• 仅影响零件任务的BOM变更","textPreview":"• 子零件任务未创建或未完成 | • 子零件APQP进行中或未关闭 | • 供应商开发任务未完成 | • 二供同步开发尚未启动 | • 仅影响零件任务的BOM变更","textChars":73,"textLines":5,"bbox":[700,280,490,240]}
+{"kind":"textbox","id":"sh/cnytcbq5","slide":12,"text":"最终是否继续推进，由项目团队结合风险、承诺和审批意见人工判断","textPreview":"最终是否继续推进，由项目团队结合风险、承诺和审批意见人工判断","textChars":30,"textLines":1,"bbox":[150,625,980,36]}
+{"kind":"notes","id":"nt/3wqhu6","slide":12,"text":"这一页是Gate准入规则的结论页。\n左边是系统硬条件；右边是跨模块风险信息。\n只有当BOM变化影响项目级审批依据、L1 APQP、项目范围或交付承诺时，才可能阻塞项目Gate。"}
+{"kind":"slide","id":"sl/iin6vs","slide":13,"title":"项目开发全生命周期管理","textShapes":19}
+{"kind":"textbox","id":"sh/dofqp8ri","slide":13,"text":"项目开发全生命周期管理","textPreview":"项目开发全生命周期管理","textChars":11,"textLines":1,"bbox":[42,28,700,26]}
+{"kind":"textbox","id":"sh/q1o7ut8r","slide":13,"text":"用一次完整操作，把前面的规则串成闭环","textPreview":"用一次完整操作，把前面的规则串成闭环","textChars":18,"textLines":1,"bbox":[42,61,1160,68]}
+{"kind":"textbox","id":"sh/rmx8ny9c","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1180,667,58,20]}
+{"kind":"shape","id":"sh/0r6p03qt","slide":13,"bbox":[90,340,1090,0]}
+{"kind":"shape","id":"sh/1szqt8re","slide":13,"bbox":[99,322,36,36]}
+{"kind":"textbox","id":"sh/epo7yd83","slide":13,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[99,328,36,22]}
+{"kind":"textbox","id":"sh/zqx8ri98","slide":13,"text":"销售\n创建项目","textPreview":"销售 | 创建项目","textChars":7,"textLines":2,"bbox":[45,220,145,70]}
+{"kind":"shape","id":"sh/gvmpojqp","slide":13,"bbox":[273,322,36,36]}
+{"kind":"textbox","id":"sh/hwvqhora","slide":13,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[273,328,36,22]}
+{"kind":"textbox","id":"sh/l0za9kfi","slide":13,"text":"PM\n完成PKO","textPreview":"PM | 完成PKO","textChars":8,"textLines":2,"bbox":[219,220,145,70]}
+{"kind":"shape","id":"sh/kz6t0fex","slide":13,"bbox":[447,322,36,36]}
+{"kind":"textbox","id":"sh/jexs7uxc","slide":13,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[447,328,36,22]}
+{"kind":"textbox","id":"sh/ydobypw7","slide":13,"text":"AE / SCM\n确认BOM","textPreview":"AE / SCM | 确认BOM","textChars":14,"textLines":2,"bbox":[393,220,145,70]}
+{"kind":"shape","id":"sh/t4zad4fu","slide":13,"bbox":[621,322,36,36]}
+{"kind":"textbox","id":"sh/83qt4ze9","slide":13,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[621,328,36,22]}
+{"kind":"textbox","id":"sh/72hsbuxo","slide":13,"text":"PM\n创建L1 APQP","textPreview":"PM | 创建L1 APQP","textChars":12,"textLines":2,"bbox":[567,220,145,70]}
+{"kind":"shape","id":"sh/618b2pw3","slide":13,"bbox":[795,322,36,36]}
+{"kind":"textbox","id":"sh/h8jah4fq","slide":13,"text":"5","textPreview":"5","textChars":1,"textLines":1,"bbox":[795,328,36,22]}
+{"kind":"textbox","id":"sh/g7qt8je5","slide":13,"text":"AQE / SQD\n关联零件任务","textPreview":"AQE / SQD | 关联零件任务","textChars":16,"textLines":2,"bbox":[741,220,145,70]}
+{"kind":"shape","id":"sh/0nil07qt","slide":13,"bbox":[969,322,36,36]}
+{"kind":"textbox","id":"sh/1ormtc7y","slide":13,"text":"6","textPreview":"6","textChars":1,"textLines":1,"bbox":[969,328,36,22]}
+{"kind":"textbox","id":"sh/el03yh8n","slide":13,"text":"PM\n提交Gate","textPreview":"PM | 提交Gate","textChars":9,"textLines":2,"bbox":[915,220,145,70]}
+{"kind":"shape","id":"sh/fm94r298","slide":13,"bbox":[1143,322,36,36]}
+{"kind":"textbox","id":"sh/or2l4rqp","slide":13,"text":"7","textPreview":"7","textChars":1,"textLines":1,"bbox":[1143,328,36,22]}
+{"kind":"textbox","id":"sh/9sbmxw7a","slide":13,"text":"团队\n审批与交接","textPreview":"团队 | 审批与交接","textChars":8,"textLines":2,"bbox":[1089,220,145,70]}
+{"kind":"shape","id":"sh/mpk32h8j","slide":13,"bbox":[185,470,910,110]}
+{"kind":"textbox","id":"sh/nqt4vmp4","slide":13,"text":"主线按Gate推进｜BOM按L1独立版本｜L1 APQP管项目准入｜子零件风险不硬阻塞","textPreview":"主线按Gate推进｜BOM按L1独立版本｜L1 APQP管项目准入｜子零件风险不硬阻塞","textChars":43,"textLines":1,"bbox":[222,490,836,70]}
+{"kind":"textbox","id":"sh/4vylsnql","slide":13,"text":"讲解结束后，听众应能回答：项目在哪里？下一步谁来做？什么会影响Gate？","textPreview":"讲解结束后，听众应能回答：项目在哪里？下一步谁来做？什么会影响Gate？","textChars":36,"textLines":1,"bbox":[170,625,940,34]}
+{"kind":"notes","id":"nt/iin6vs","slide":13,"text":"结尾用一次操作路径回顾，不再逐条复述所有规则。\n建议实际录屏时按这七步演示一个项目，重点展示BOM确认、L1 APQP、风险提醒和Gate提交。\n最后用三问收束：项目在哪个阶段；下一步谁来做；什么条件会影响Gate。"}

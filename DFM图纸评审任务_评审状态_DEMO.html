@@ -2145,6 +2145,368 @@
       gap: 10px;
     }
 
+    .owner-picker-trigger {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      color: #1f2937;
+      padding: 5px 10px;
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .owner-picker-trigger:hover,
+    .owner-picker-trigger:focus-visible {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 95, 191, .12);
+      outline: none;
+    }
+
+    .owner-trigger-avatar,
+    .owner-avatar {
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .owner-trigger-avatar {
+      width: 26px;
+      height: 26px;
+      font-size: 10px;
+    }
+
+    .owner-trigger-name {
+      min-width: 0;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .owner-trigger-arrow {
+      color: #98a2b3;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .owner-picker-dialog {
+      width: min(980px, calc(100vw - 28px));
+      max-height: calc(100vh - 28px);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 24px 54px rgba(15, 23, 42, .24);
+      padding: 0;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .owner-picker-dialog::backdrop {
+      background: rgba(15, 23, 42, .34);
+    }
+
+    .owner-picker-head {
+      min-height: 74px;
+      padding: 16px 22px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .owner-picker-head h3 {
+      margin: 0 0 3px;
+      font-size: 17px;
+    }
+
+    .owner-picker-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .owner-picker-close {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: #667085;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .owner-picker-close:hover,
+    .owner-picker-close:focus-visible {
+      background: #f2f4f7;
+      color: var(--primary);
+      outline: 2px solid rgba(31, 95, 191, .2);
+    }
+
+    .owner-picker-body {
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(280px, .7fr);
+      gap: 18px;
+      background: #fff;
+    }
+
+    .owner-picker-column {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .owner-picker-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1f2937;
+      font-weight: 900;
+    }
+
+    .owner-picker-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .owner-picker-dot.green { background: #009a66; }
+
+    .owner-picker-count {
+      min-width: 26px;
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 4px;
+      display: inline-grid;
+      place-items: center;
+      background: #eef0f2;
+      color: #475467;
+      font-size: 12px;
+    }
+
+    .owner-picker-panel {
+      height: 410px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .owner-picker-column.selected .owner-picker-panel {
+      border-color: #b7e7d3;
+      background: linear-gradient(180deg, #fff 0%, #f7fffb 100%);
+    }
+
+    .owner-picker-search {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .owner-picker-search input {
+      width: 100%;
+      height: 36px;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      padding: 0 12px;
+      outline: none;
+    }
+
+    .owner-picker-search input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(31, 95, 191, .12);
+    }
+
+    .owner-org-list {
+      height: 349px;
+      overflow: auto;
+      padding: 8px;
+    }
+
+    .owner-team + .owner-team { margin-top: 6px; }
+
+    .owner-team-title {
+      min-height: 34px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border-radius: 5px;
+      background: #f8fafc;
+      color: #344054;
+      font-weight: 900;
+    }
+
+    .owner-team-title span:last-child {
+      color: #98a2b3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .owner-option {
+      min-height: 54px;
+      margin-top: 4px;
+      padding: 6px 10px;
+      display: grid;
+      grid-template-columns: 18px 32px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .owner-option:hover { background: #f8fbff; }
+
+    .owner-option.is-selected {
+      border-color: #9fc1f2;
+      background: var(--primary-soft);
+    }
+
+    .owner-option input { accent-color: var(--primary); }
+
+    .owner-avatar {
+      width: 32px;
+      height: 32px;
+      font-size: 11px;
+    }
+
+    .owner-person-main {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .owner-person-name {
+      font-weight: 900;
+      color: #1f2937;
+    }
+
+    .owner-person-meta {
+      margin-left: 6px;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .owner-person-mail {
+      display: block;
+      margin-top: 2px;
+      color: #98a2b3;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .owner-selected-wrap {
+      height: 100%;
+      padding: 14px;
+    }
+
+    .owner-selected-card {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 38px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #cfe0f7;
+      border-radius: 8px;
+      background: #f3f8ff;
+    }
+
+    .owner-selected-card .owner-avatar {
+      width: 38px;
+      height: 38px;
+      background: #009a66;
+    }
+
+    .owner-empty {
+      height: 100%;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: 8px;
+      color: #667085;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .owner-picker-foot {
+      min-height: 64px;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-top: 1px solid var(--line);
+      background: #f8fafc;
+      color: #667085;
+      font-weight: 800;
+    }
+
+    .owner-picker-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .issue-owner-picker {
+      width: 100%;
+      min-height: 38px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: transparent;
+      color: #1f2937;
+      padding: 6px 8px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 6px;
+      text-align: left;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .issue-owner-picker:hover,
+    .issue-owner-picker:focus-visible {
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 1px var(--primary);
+      outline: none;
+    }
+
+    .issue-owner-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font-weight: 800;
+    }
+
+    .issue-owner-arrow {
+      color: var(--primary);
+      font-size: 17px;
+      line-height: 1;
+    }
+
+    .issue-owner-picker:disabled {
+      cursor: not-allowed;
+      background: var(--readonly);
+      color: #667085;
+    }
+
     body.list-mode {
       min-width: 1180px;
       background: var(--bg);
@@ -2370,20 +2732,11 @@
     body.list-mode .list-toolbar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: 12px;
       margin-bottom: 14px;
     }
 
-    body.list-mode .list-toolbar-tags {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    body.list-mode .list-toolbar .tag,
     body.list-mode .dfm-list-panel .tag {
       display: inline-flex;
       align-items: center;
@@ -2398,14 +2751,12 @@
       white-space: nowrap;
     }
 
-    body.list-mode .list-toolbar .tag.blue,
     body.list-mode .tag.blue {
       color: #175cd3;
       border-color: #b8d3ff;
       background: #eef5ff;
     }
 
-    body.list-mode .list-toolbar .tag.amber,
     body.list-mode .tag.amber {
       color: #b54708;
       border-color: #fedf89;
@@ -2982,7 +3333,11 @@
       .list-filter-bar,
       .drawing-list-filter,
       .dialog-field-grid,
+      .owner-picker-body,
       .state-row { grid-template-columns: 1fr; }
+      .owner-picker-panel { height: 300px; }
+      .owner-org-list { height: 239px; }
+      .owner-picker-dialog { overflow: auto; }
       .drawing-stage { height: 360px; }
       .bottom-inner { align-items: stretch; flex-direction: column; }
       .bottom-actions .btn { flex: 1; }
@@ -3239,7 +3594,8 @@
       .issue-section .issue-input,
       .issue-section .issue-select,
       .issue-section .issue-textarea,
-      .issue-section .upload-text {
+      .issue-section .upload-text,
+      .issue-section .issue-owner-picker {
         min-height: auto;
         height: auto;
         border: 0;
@@ -3247,6 +3603,10 @@
         background: transparent !important;
         box-shadow: none;
         resize: none;
+      }
+
+      .issue-section .issue-owner-arrow {
+        display: none;
       }
 
       .issue-section .upload-cell {
@@ -3406,10 +3766,6 @@
           <span class="add-icon" aria-hidden="true"></span>
           新建图纸评审任务
         </button>
-        <div class="list-toolbar-tags">
-          <span class="tag blue">DFM 图纸评审任务</span>
-          <span class="tag green">状态：进行中 / 已锁定</span>
-        </div>
       </div>
 
       <section class="panel dfm-list-panel" aria-label="DFM 图纸评审任务列表">
@@ -4247,7 +4603,12 @@
           </select>
         </label>
         <label class="field">负责人
-          <input data-create-owner value="Alex Wang">
+          <input type="hidden" data-create-owner value="Alex Wang" data-owner-id="alex-wang">
+          <button class="owner-picker-trigger" type="button" data-open-owner-picker aria-haspopup="dialog">
+            <span class="owner-trigger-avatar" data-owner-trigger-avatar>AW</span>
+            <span class="owner-trigger-name" data-owner-trigger-name>Alex Wang · 制造工程部</span>
+            <span class="owner-trigger-arrow" aria-hidden="true">›</span>
+          </button>
         </label>
         <label class="field">初始状态
           <select data-create-status>
@@ -4264,6 +4625,50 @@
         <button class="btn primary" type="submit">创建并关联</button>
       </div>
     </form>
+  </dialog>
+
+  <dialog class="owner-picker-dialog" data-owner-picker-dialog aria-labelledby="ownerPickerTitle">
+    <div>
+      <header class="owner-picker-head">
+        <div>
+          <h3 id="ownerPickerTitle" data-owner-picker-title>选择负责人</h3>
+          <p data-owner-picker-subtitle>从组织架构中选择 1 名成员作为 DFM 图纸评审任务负责人。</p>
+        </div>
+        <button class="owner-picker-close" type="button" data-close-owner-picker aria-label="关闭负责人选择">×</button>
+      </header>
+      <div class="owner-picker-body">
+        <section class="owner-picker-column" aria-label="可选组织成员">
+          <div class="owner-picker-label">
+            <span class="owner-picker-dot"></span>
+            <span>可选组织成员</span>
+            <span class="owner-picker-count" data-owner-available-count>9</span>
+          </div>
+          <div class="owner-picker-panel">
+            <div class="owner-picker-search">
+              <input type="search" data-owner-search placeholder="搜索姓名、部门、角色或邮箱..." aria-label="搜索组织成员">
+            </div>
+            <div class="owner-org-list" data-owner-org-list></div>
+          </div>
+        </section>
+        <section class="owner-picker-column selected" aria-label="当前选中的负责人">
+          <div class="owner-picker-label">
+            <span class="owner-picker-dot green"></span>
+            <span>已选负责人</span>
+            <span class="owner-picker-count">1</span>
+          </div>
+          <div class="owner-picker-panel">
+            <div class="owner-selected-wrap" data-owner-selected></div>
+          </div>
+        </section>
+      </div>
+      <footer class="owner-picker-foot">
+        <span data-owner-selection-summary>已选择 1 名负责人</span>
+        <div class="owner-picker-actions">
+          <button class="btn" type="button" data-close-owner-picker>取消</button>
+          <button class="btn primary" type="button" data-confirm-owner>确认选择</button>
+        </div>
+      </footer>
+    </div>
   </dialog>
 
   <dialog class="drawing-list-dialog" data-drawing-list-dialog>
@@ -4446,6 +4851,19 @@
     const drawingListExportButton = document.querySelector('[data-drawing-list-export]');
     const createPartSelect = document.querySelector('[data-create-part]');
     const createOwnerInput = document.querySelector('[data-create-owner]');
+    const openOwnerPickerButton = document.querySelector('[data-open-owner-picker]');
+    const ownerPickerDialog = document.querySelector('[data-owner-picker-dialog]');
+    const closeOwnerPickerButtons = Array.from(document.querySelectorAll('[data-close-owner-picker]'));
+    const confirmOwnerButton = document.querySelector('[data-confirm-owner]');
+    const ownerSearchInput = document.querySelector('[data-owner-search]');
+    const ownerOrgList = document.querySelector('[data-owner-org-list]');
+    const ownerSelected = document.querySelector('[data-owner-selected]');
+    const ownerAvailableCount = document.querySelector('[data-owner-available-count]');
+    const ownerSelectionSummary = document.querySelector('[data-owner-selection-summary]');
+    const ownerTriggerAvatar = document.querySelector('[data-owner-trigger-avatar]');
+    const ownerTriggerName = document.querySelector('[data-owner-trigger-name]');
+    const ownerPickerTitle = document.querySelector('[data-owner-picker-title]');
+    const ownerPickerSubtitle = document.querySelector('[data-owner-picker-subtitle]');
     const createStatusSelect = document.querySelector('[data-create-status]');
     const dfmListBody = document.querySelector('[data-dfm-list-body]');
     const listKeywordInput = document.querySelector('[data-list-keyword]');
@@ -4566,6 +4984,45 @@
     let currentDrawingListRows = [];
     let currentDrawingListRecord = null;
     let currentDetailRecord = null;
+    const ownerCatalog = [
+      {
+        id: 'manufacturing',
+        name: '制造工程部（ME）',
+        members: [
+          { id: 'alex-wang', name: 'Alex Wang', initials: 'AW', department: '制造工程部', role: 'ME', email: 'alex.wang@example.com' },
+          { id: 'mia-chen', name: 'Mia Chen', initials: 'MC', department: '制造工程部', role: '制造工程师', email: 'mia.chen@example.com' },
+          { id: 'kevin-liu', name: 'Kevin Liu', initials: 'KL', department: '制造工程部', role: '工艺工程师', email: 'kevin.liu@example.com' }
+        ]
+      },
+      {
+        id: 'product-engineering',
+        name: '产品工程部（AE）',
+        members: [
+          { id: 'sophia-zhang', name: 'Sophia Zhang', initials: 'SZ', department: '产品工程部', role: 'AE', email: 'sophia.zhang@example.com' },
+          { id: 'peter-zhou', name: 'Peter Zhou', initials: 'PZ', department: '产品工程部', role: '产品工程师', email: 'peter.zhou@example.com' }
+        ]
+      },
+      {
+        id: 'quality',
+        name: '质量团队（QA）',
+        members: [
+          { id: 'grace-huang', name: 'Grace Huang', initials: 'GH', department: '质量部', role: 'AQE', email: 'grace.huang@example.com' },
+          { id: 'leo-shen', name: 'Leo Shen', initials: 'LS', department: '供应商质量', role: 'SQD', email: 'leo.shen@example.com' }
+        ]
+      },
+      {
+        id: 'project-management',
+        name: '项目管理部（PM）',
+        members: [
+          { id: 'alice-chen', name: 'Alice Chen', initials: 'AC', department: '项目管理部', role: 'PM', email: 'alice.chen@example.com' },
+          { id: 'bob-wang', name: 'Bob Wang', initials: 'BW', department: '项目管理部', role: '项目协调员', email: 'bob.wang@example.com' }
+        ]
+      }
+    ];
+    const ownerMap = new Map(ownerCatalog.flatMap((team) => team.members.map((member) => [member.id, { ...member, teamName: team.name }])));
+    let draftOwnerId = createOwnerInput?.dataset.ownerId || 'alex-wang';
+    let ownerPickerContext = 'create';
+    let issueOwnerTargetInput = null;
     const currentReviewerName = 'Alex Wang';
     const drawingFiles = [
       {
@@ -4604,6 +5061,104 @@
         status: createStatusSelect?.value || '进行中',
         updated: '刚刚创建'
       };
+    }
+
+    function escapeOwnerHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+      })[char]);
+    }
+
+    function ownerSearchText(member) {
+      return [member.name, member.department, member.role, member.email, member.teamName].join(' ').toLowerCase();
+    }
+
+    function renderOwnerPicker() {
+      if (!ownerOrgList || !ownerSelected) return;
+      const keyword = (ownerSearchInput?.value || '').trim().toLowerCase();
+      let visibleCount = 0;
+      ownerOrgList.innerHTML = ownerCatalog.map((team) => {
+        const members = team.members
+          .map((member) => ({ ...member, teamName: team.name }))
+          .filter((member) => !keyword || ownerSearchText(member).includes(keyword));
+        visibleCount += members.length;
+        if (!members.length) return '';
+        return `
+          <section class="owner-team">
+            <div class="owner-team-title"><span>${escapeOwnerHtml(team.name)}</span><span>${members.length} 人</span></div>
+            ${members.map((member) => `
+              <label class="owner-option ${member.id === draftOwnerId ? 'is-selected' : ''}" data-owner-option="${escapeOwnerHtml(member.id)}">
+                <input type="radio" name="dfm-owner" value="${escapeOwnerHtml(member.id)}" ${member.id === draftOwnerId ? 'checked' : ''}>
+                <span class="owner-avatar">${escapeOwnerHtml(member.initials)}</span>
+                <span class="owner-person-main">
+                  <span class="owner-person-name">${escapeOwnerHtml(member.name)}<span class="owner-person-meta">${escapeOwnerHtml(member.role)} · ${escapeOwnerHtml(member.department)}</span></span>
+                  <span class="owner-person-mail">${escapeOwnerHtml(member.email)}</span>
+                </span>
+              </label>
+            `).join('')}
+          </section>
+        `;
+      }).join('') || '<div class="owner-empty"><strong>未找到匹配成员</strong><span>请调整搜索关键词后重试</span></div>';
+      if (ownerAvailableCount) ownerAvailableCount.textContent = String(visibleCount);
+
+      const member = ownerMap.get(draftOwnerId);
+      ownerSelected.innerHTML = member ? `
+        <div class="owner-selected-card">
+          <span class="owner-avatar">${escapeOwnerHtml(member.initials)}</span>
+          <span class="owner-person-main">
+            <span class="owner-person-name">${escapeOwnerHtml(member.name)}</span>
+            <span class="owner-person-mail">${escapeOwnerHtml(member.role)} · ${escapeOwnerHtml(member.department)}</span>
+            <span class="owner-person-mail">${escapeOwnerHtml(member.email)}</span>
+          </span>
+        </div>
+      ` : '<div class="owner-empty"><strong>请选择负责人</strong><span>每个任务仅可指定 1 名负责人</span></div>';
+      if (ownerSelectionSummary) ownerSelectionSummary.textContent = member ? `已选择 ${member.name}（${member.department}）` : '尚未选择负责人';
+      if (confirmOwnerButton) confirmOwnerButton.disabled = !member;
+    }
+
+    function openOwnerPicker(context = 'create', targetInput = null) {
+      ownerPickerContext = context;
+      issueOwnerTargetInput = context === 'issue' ? targetInput : null;
+      const storedOwnerId = context === 'issue'
+        ? issueOwnerTargetInput?.dataset.ownerId
+        : createOwnerInput?.dataset.ownerId;
+      draftOwnerId = storedOwnerId && ownerMap.has(storedOwnerId) ? storedOwnerId : 'alex-wang';
+      if (ownerPickerTitle) ownerPickerTitle.textContent = context === 'issue' ? '选择问题责任人' : '选择负责人';
+      if (ownerPickerSubtitle) {
+        ownerPickerSubtitle.textContent = context === 'issue'
+          ? '从组织架构中选择 1 名成员负责当前开放问题的跟踪与闭环。'
+          : '从组织架构中选择 1 名成员作为 DFM 图纸评审任务负责人。';
+      }
+      if (ownerSearchInput) ownerSearchInput.value = '';
+      renderOwnerPicker();
+      ownerPickerDialog?.showModal();
+      ownerSearchInput?.focus();
+    }
+
+    function confirmOwnerSelection() {
+      const member = ownerMap.get(draftOwnerId);
+      if (!member) return;
+      if (ownerPickerContext === 'issue' && issueOwnerTargetInput) {
+        issueOwnerTargetInput.value = member.name;
+        issueOwnerTargetInput.dataset.ownerId = member.id;
+        const issueOwnerButton = issueOwnerTargetInput.closest('td')?.querySelector('[data-open-issue-owner-picker]');
+        const issueOwnerName = issueOwnerButton?.querySelector('[data-issue-owner-name]');
+        if (issueOwnerName) issueOwnerName.textContent = member.name;
+        if (issueOwnerButton) issueOwnerButton.setAttribute('aria-label', `从组织结构中选择责任人，当前为 ${member.name}`);
+        if (saveMessage) saveMessage.textContent = `问题责任人已改为 ${member.name}，请保存`;
+      } else if (createOwnerInput) {
+        createOwnerInput.value = member.name;
+        createOwnerInput.dataset.ownerId = member.id;
+        if (ownerTriggerAvatar) ownerTriggerAvatar.textContent = member.initials;
+        if (ownerTriggerName) ownerTriggerName.textContent = `${member.name} · ${member.department}`;
+      }
+      ownerPickerDialog?.close();
+      issueOwnerTargetInput = null;
+      ownerPickerContext = 'create';
     }
 
     function rowData(row) {
@@ -5025,7 +5580,7 @@
         index: index + 1,
         drawingId: row.querySelector('[data-issue-drawing]')?.value || '',
         registrant: controlText(row, 'td:nth-child(2) input'),
-        owner: controlText(row, 'td:nth-child(4) input'),
+        owner: controlText(row, '[data-issue-owner]'),
         dueDate: controlText(row, 'td:nth-child(5) input'),
         ownerFeedback: controlText(row, 'td:nth-child(6) textarea'),
         description: controlText(row, 'td:nth-child(9) textarea'),
@@ -5939,14 +6494,21 @@
       const sourceTag = isReviewer ? '<span class="tag amber" data-issue-source="reviewer">评审人员</span>' : '<span class="tag blue" data-issue-source="ae">AE</span>';
       const registrant = isReviewer ? reviewer.name : 'AE / Alex Wang';
       const department = isReviewer ? reviewer.department : '应用工程部';
-      const owner = isReviewer ? 'AE / Alex Wang' : 'Mia Chen';
+      const ownerId = isReviewer ? 'alex-wang' : 'mia-chen';
+      const owner = ownerMap.get(ownerId)?.name || (isReviewer ? 'Alex Wang' : 'Mia Chen');
       const defaultStatus = isReviewer ? 'Y' : 'G';
       const drawingId = currentDrawingInfo()?.status === '已锁定' ? firstUnlockedDrawingId() : currentDrawingInfo()?.id;
       return `
         <td class="center"><strong>${index}</strong></td>
         <td><input class="issue-input" value="${registrant}" data-ae-field></td>
         <td><input class="issue-input" value="${department}" data-ae-field></td>
-        <td><input class="issue-input" value="${owner}" placeholder="请选择或输入责任人"></td>
+        <td>
+          <input type="hidden" value="${owner}" data-issue-owner data-owner-id="${ownerId}">
+          <button class="issue-owner-picker" type="button" data-open-issue-owner-picker aria-haspopup="dialog" aria-label="从组织结构中选择责任人，当前为 ${owner}">
+            <span class="issue-owner-name" data-issue-owner-name>${owner}</span>
+            <span class="issue-owner-arrow" aria-hidden="true">›</span>
+          </button>
+        </td>
         <td><input class="issue-input" type="date" value="2024-12-30"></td>
         <td><textarea class="issue-textarea" placeholder="请输入责任人反馈"></textarea></td>
         <td>
@@ -6117,6 +6679,13 @@
     });
 
     issueTbody?.addEventListener('click', (event) => {
+      const issueOwnerButton = event.target.closest('[data-open-issue-owner-picker]');
+      if (issueOwnerButton) {
+        const ownerInput = issueOwnerButton.closest('td')?.querySelector('[data-issue-owner]');
+        if (ownerInput) openOwnerPicker('issue', ownerInput);
+        return;
+      }
+
       const deleteIssueButton = event.target.closest('[data-delete-issue-row]');
       if (deleteIssueButton) {
         const row = deleteIssueButton.closest('tr');
@@ -6290,6 +6859,27 @@
     createDfmDialog?.addEventListener('click', (event) => {
       if (event.target === createDfmDialog) createDfmDialog.close();
     });
+
+    openOwnerPickerButton?.addEventListener('click', () => openOwnerPicker('create'));
+
+    closeOwnerPickerButtons.forEach((button) => {
+      button.addEventListener('click', () => ownerPickerDialog?.close());
+    });
+
+    ownerPickerDialog?.addEventListener('click', (event) => {
+      if (event.target === ownerPickerDialog) ownerPickerDialog.close();
+    });
+
+    ownerSearchInput?.addEventListener('input', renderOwnerPicker);
+
+    ownerOrgList?.addEventListener('change', (event) => {
+      const radio = event.target.closest('input[name="dfm-owner"]');
+      if (!radio) return;
+      draftOwnerId = radio.value;
+      renderOwnerPicker();
+    });
+
+    confirmOwnerButton?.addEventListener('click', confirmOwnerSelection);
 
     drawingListCloseButtons.forEach((button) => {
       button.addEventListener('click', () => drawingListDialog?.close());

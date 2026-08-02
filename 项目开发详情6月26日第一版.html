@@ -6,7 +6,6 @@
   <title>项目开发详情6月26日第一版</title>
   <style>
     :root {
-      --page-max: 1670px;
       --bg: #f5f7fb;
       --surface: #ffffff;
       --surface-muted: #f7f9fc;
@@ -53,8 +52,8 @@
     }
 
     .app {
-      width: min(100%, var(--page-max));
-      margin: 0 auto;
+      width: 100%;
+      margin: 0;
       background: var(--bg);
       min-height: 100vh;
     }
@@ -769,6 +768,10 @@
       font-size: 14px;
     }
 
+    .record-event-main h4 {
+      margin-bottom: 0;
+    }
+
     .record-alert-main p,
     .record-event-main p {
       margin: 0;
@@ -812,6 +815,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 12px;
+      margin-bottom: 14px;
       flex-wrap: wrap;
     }
 
@@ -840,28 +844,70 @@
 
     .record-event {
       display: grid;
-      grid-template-columns: 150px 92px minmax(0, 1fr);
-      gap: 12px;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--line);
+      grid-template-columns: 150px 28px minmax(0, 1fr);
+      gap: 16px;
+      align-items: stretch;
+      padding: 0 0 22px;
     }
 
-    .record-event:last-child {
-      border-bottom: 0;
+    .record-timeline {
+      gap: 0;
     }
 
     .record-event-time {
+      padding-top: 9px;
       color: #667085;
       font-size: 12px;
       font-weight: 900;
       line-height: 1.5;
+      text-align: right;
     }
 
-    .record-event-meta {
-      margin-top: 6px;
+    .record-event-axis {
+      position: relative;
       display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
+      justify-content: center;
+      min-height: 72px;
+    }
+
+    .record-event-axis::before {
+      content: "";
+      position: absolute;
+      top: 16px;
+      bottom: -22px;
+      width: 2px;
+      background: #d9e5f7;
+    }
+
+    .record-event-axis::after {
+      content: "";
+      position: relative;
+      z-index: 1;
+      width: 12px;
+      height: 12px;
+      margin-top: 11px;
+      border: 3px solid var(--primary);
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 0 4px #eaf2ff;
+    }
+
+    .record-event:last-child .record-event-axis::before {
+      display: none;
+    }
+
+    .record-event-main {
+      min-height: 64px;
+      padding: 13px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(16, 24, 40, .04);
+    }
+
+    .record-event-main h4 {
+      margin-top: 8px;
+      line-height: 1.5;
     }
 
     .record-empty {
@@ -877,9 +923,13 @@
         grid-template-columns: 1fr;
       }
 
-      .record-alert,
-      .record-event {
+      .record-alert {
         grid-template-columns: 1fr;
+      }
+
+      .record-event {
+        grid-template-columns: 104px 24px minmax(0, 1fr);
+        gap: 10px;
       }
     }
 
@@ -964,10 +1014,11 @@
 
     .stage-card {
       flex: 0 0 clamp(198px, 15.6vw, 232px);
-      min-height: 112px;
+      min-height: 88px;
       background: #eef2f7;
       border: 1px solid transparent;
-      padding: 14px 12px 13px;
+      border-radius: 8px;
+      padding: 10px 12px 9px;
       position: relative;
       color: #9aa3af;
       text-align: left;
@@ -997,6 +1048,7 @@
       bottom: 0;
       height: 4px;
       background: var(--primary);
+      border-radius: 0 0 7px 7px;
     }
 
     .stage-card:focus-visible {
@@ -1012,7 +1064,7 @@
       color: #4a4f59;
       font-size: 17px;
       font-weight: 900;
-      margin-bottom: 10px;
+      margin-bottom: 5px;
     }
 
     .stage-card.active .stage-title {
@@ -1022,7 +1074,7 @@
     .stage-meta {
       justify-content: space-between;
       gap: 10px;
-      margin-top: 9px;
+      margin-top: 4px;
       color: #9aa3af;
     }
 
@@ -1380,6 +1432,14 @@
       padding: 0 10px;
     }
 
+    .handover-readonly {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      color: #344054;
+      font-weight: 800;
+    }
+
     .handover-textarea {
       min-height: 70px;
       resize: vertical;
@@ -1720,6 +1780,17 @@
       display: flex;
     }
 
+    .task-upload-file a {
+      min-width: 0;
+      color: var(--primary);
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .task-upload-file a:hover {
+      text-decoration: underline;
+    }
+
     .task-upload-file button {
       border: 0;
       background: transparent;
@@ -1731,6 +1802,10 @@
 
     .task-fill-modal.is-view-mode .task-upload-zone,
     .task-fill-modal.is-view-mode .task-upload-tip {
+      display: none;
+    }
+
+    .task-fill-modal.is-view-mode .task-upload-file button {
       display: none;
     }
 
@@ -3062,7 +3137,7 @@
       position: sticky;
       right: 0;
       z-index: 4;
-      min-width: 130px;
+      min-width: 190px;
       background: #fff;
       box-shadow: -10px 0 18px rgba(16, 24, 40, .1);
       border-left: 1px solid #d7dee8;
@@ -3078,9 +3153,15 @@
       background: #f2f7ff;
     }
 
+    .apqp-owner-fields {
+      display: grid;
+      gap: 7px;
+      min-width: 166px;
+    }
+
     .apqp-create-table td:nth-child(25) .select-field {
-      min-width: 104px;
-      width: 104px;
+      min-width: 166px;
+      width: 166px;
       padding-right: 26px;
     }
 
@@ -4618,7 +4699,7 @@
     }
 
     .library-table {
-      min-width: 1400px;
+      min-width: 900px;
       table-layout: fixed;
     }
 
@@ -4786,18 +4867,62 @@
     }
 
     .library-upload-form {
-      padding: 26px 28px 22px;
+      padding: 30px 34px 28px;
       overflow-y: auto;
     }
 
     .library-upload-modal {
-      width: min(680px, calc(100vw - 28px));
+      width: min(720px, calc(100vw - 28px));
     }
 
-    .library-upload-form .issue-select {
-      height: 44px;
-      border-radius: 6px;
-      color: #252a34;
+    .library-upload-form .form-row {
+      grid-template-columns: 108px minmax(0, 1fr);
+      align-items: start;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .library-upload-form .form-row > label {
+      padding: 9px 0 0;
+      color: #344054;
+      text-align: right;
+      line-height: 1.5;
+      white-space: nowrap;
+    }
+
+    .library-upload-form .upload-stack {
+      width: 100%;
+      min-height: 76px;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      justify-items: start;
+      gap: 12px;
+      padding: 16px;
+      border: 1px dashed #b8c7dc;
+      border-radius: 8px;
+      background: #f8faff;
+    }
+
+    .library-upload-form .upload-note {
+      min-width: 0;
+      color: #667085;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .library-upload-form .issue-textarea {
+      min-height: 126px;
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .library-upload-form .issue-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
+    .library-upload-form .form-error {
+      margin-left: 124px;
     }
 
     .development-page,
@@ -6090,6 +6215,28 @@
         gap: 8px;
       }
 
+      .library-upload-form {
+        padding: 22px 18px 24px;
+      }
+
+      .library-upload-form .form-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .library-upload-form .form-row > label {
+        padding-top: 0;
+        text-align: left;
+      }
+
+      .library-upload-form .upload-stack {
+        grid-template-columns: 1fr;
+      }
+
+      .library-upload-form .form-error {
+        margin-left: 0;
+      }
+
       .stage-carousel {
         grid-template-columns: 32px minmax(0, 1fr) 32px;
         gap: 8px;
@@ -6162,7 +6309,6 @@
             <div class="info-grid">
               <div class="info-item"><b>销售责任单元：</b>宁波</div>
               <div class="info-item"><b>客户品牌：</b>Volkswagen</div>
-              <div class="info-item"><b>产品类别：</b>VT</div>
               <div class="info-item"><b>产品：</b>VCT</div>
               <div class="info-item"><b>系统：</b>VVT系统</div>
               <div class="info-item"><b>LRP Type：</b>LRPV1</div>
@@ -6200,7 +6346,7 @@
                 </div>
               </div>
               <div>
-                <div class="stat-label">Status</div>
+                <div class="stat-label">状态</div>
                 <span class="status-pill status-running" data-project-status-pill>进行中</span>
               </div>
             </div>
@@ -6248,47 +6394,38 @@
             <div class="stage-strip" data-stage-strip>
               <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="销售发起开发项目并完成默认 CKO 任务，提交后项目进入 PKO 阶段。">
                 <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
-                <div class="stage-meta"><span>Sales</span><b>Zack</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card active" type="button" data-stage-id="PKO" data-stage-note="作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。">
                 <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
                 <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate1">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate2" data-stage-note="PM 分配 Gate2 阶段任务，各职能部门按计划推进并反馈完成情况，待评审通过后进入下一 Gate。">
                 <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate2">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate3" data-stage-note="Gate3 聚焦阶段任务闭环和跨职能问题清理，确保开发活动满足进入后续样件或节点验证的条件。">
                 <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate3">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate4" data-stage-note="Gate4 对应 BW 内部 OTS 节点，团队确认样件、质量、供应和工程任务达到 OTS 准入要求。">
                 <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate4">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate5" data-stage-note="Gate5 对应 BW 内部 PPAP 节点，围绕 PPAP 准备、供应商质量和量产验证进行门径审批。">
                 <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate6" data-stage-note="Gate6 对应 BW 内部 SOP 节点，PM 组织完成 SOP 前最终评审，确认所有 Gate 任务闭环。">
                 <div class="stage-title">Gate6 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="HandOver" data-stage-note="PM 完成交接信息登记，沉淀项目资料、关键问题和最终交付包，完成项目开发交接闭环。">
                 <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>PM</span><b>张工(工程部)</b></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
             </div>
@@ -6893,72 +7030,53 @@
           </form>
 
           <div class="library-source-tabs" aria-label="资料来源筛选">
-            <button class="active" type="button" data-library-source="all">全部资料</button>
-            <button type="button" data-library-source="project">项目资料</button>
-            <button type="button" data-library-source="part">子零件开发资料</button>
+            <button class="active" type="button" data-library-source="task">项目开发任务附件</button>
+            <button type="button" data-library-source="manual">手动上传资料</button>
           </div>
 
           <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
-                <col style="width: 22%">
-                <col style="width: 22%">
-                <col style="width: 13%">
+                <col style="width: 28%">
+                <col style="width: 38%">
+                <col style="width: 14%">
                 <col style="width: 12%">
-                <col style="width: 13%">
-                <col style="width: 10%">
-                <col style="width: 10%">
                 <col style="width: 8%">
               </colgroup>
               <thead>
                 <tr>
                   <th>任务/里程碑名称</th>
                   <th>文件名称</th>
-                  <th>资料标签</th>
-                  <th>资料归属</th>
-                  <th>对应任务/零件号</th>
                   <th>上传日期</th>
                   <th>上传人</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody id="libraryTableBody">
-                <tr data-source="project">
+                <tr data-source="task">
                   <td>Gate2 供应商准备度评审</td>
                   <td><div class="library-file-name">供应商产能爬坡计划与风险清单.xlsx</div></td>
-                  <td><span class="file-label"><span class="file-type-icon">xls</span>SCM 评审</span></td>
-                  <td><span class="source-badge project">项目资料</span></td>
-                  <td>Gate2 供应商准备度评审</td>
                   <td>2025-10-31</td>
                   <td>Luna</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
-                <tr data-source="part">
+                <tr data-source="task">
                   <td>3.5 CQI 特殊过程评审（CQI-9/11/12 等）</td>
                   <td><div class="library-file-name">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</div></td>
-                  <td><span class="file-label"><span class="file-type-icon">xls</span>CQI 9 热处理</span></td>
-                  <td><span class="source-badge part">子零件开发资料</span></td>
-                  <td><a class="blue-link" href="子零件开发任务详情_调整版.html?partNo=BW-220HC-CHAIN-GUIDE&source=library">BW-220HC-CHAIN-GUIDE</a></td>
                   <td>2025-10-31</td>
                   <td>Theodore</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
-                <tr data-source="part">
+                <tr data-source="task">
                   <td>Gate2 二供同步开发资料包</td>
                   <td><div class="library-file-name">二供样件验证计划与供应商开发记录.xlsx</div></td>
-                  <td><span class="file-label"><span class="file-type-icon">xls</span>二供开发</span></td>
-                  <td><span class="source-badge part">子零件开发资料</span></td>
-                  <td><a class="blue-link" href="子零件开发任务详情_调整版.html?partNo=BW-220HC-TENSIONER&source=library">BW-220HC-TENSIONER</a></td>
                   <td>2025-10-31</td>
                   <td>SQD</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
-                <tr data-source="project">
+                <tr data-source="task">
                   <td>PKO 启动会会议纪要</td>
                   <td><div class="library-file-name">PKO 启动会会议纪要及行动项.docx</div></td>
-                  <td><span class="file-label"><span class="file-type-icon doc">doc</span>会议纪要</span></td>
-                  <td><span class="source-badge project">项目资料</span></td>
-                  <td>PKO 启动会会议纪要</td>
                   <td>2025-10-31</td>
                   <td>Willow</td>
                   <td><a class="blue-link" href="#">下载</a></td>
@@ -6997,41 +7115,19 @@
       </div>
       <form id="libraryUploadForm" novalidate>
         <div class="library-upload-form">
-          <div class="form-row">
-            <label for="libraryUploadSource"><span class="required">*</span>资料归属:</label>
-            <select class="issue-select" id="libraryUploadSource" name="libraryUploadSource">
-              <option value="project">项目资料</option>
-              <option value="part">子零件开发资料</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="libraryUploadTask"><span class="required">*</span>对应任务:</label>
-            <select class="issue-select" id="libraryUploadTask" name="libraryUploadTask"></select>
-          </div>
-          <div class="form-row">
-            <label for="libraryUploadFileName"><span class="required">*</span>文件名称:</label>
-            <input class="field-input" id="libraryUploadFileName" name="libraryUploadFileName" type="text" placeholder="请输入文件名称" autocomplete="off">
-          </div>
-          <div class="form-row">
-            <label for="libraryUploadLabel"><span class="required">*</span>资料标签:</label>
-            <input class="field-input" id="libraryUploadLabel" name="libraryUploadLabel" type="text" placeholder="请输入资料标签" autocomplete="off">
-          </div>
-          <div class="form-row">
-            <label for="libraryUploadFileType">文件类型:</label>
-            <select class="issue-select" id="libraryUploadFileType" name="libraryUploadFileType">
-              <option value="pdf">PDF</option>
-              <option value="doc">Word</option>
-              <option value="xls">Excel</option>
-            </select>
-          </div>
           <div class="form-row form-upload">
-            <label>上传附件:</label>
+            <label for="libraryUploadFile"><span class="required">*</span>选择文件：</label>
             <div class="upload-stack">
-              <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-upload"></use></svg>选择文件</button>
-              <div class="upload-note">原型演示：选择对应任务后，资料将按项目或子零件开发归档展示。</div>
+              <input id="libraryUploadFile" name="libraryUploadFile" type="file" hidden>
+              <button class="btn btn-primary" id="libraryUploadChooseFile" type="button"><svg class="icon"><use href="#i-upload"></use></svg>选择文件</button>
+              <div class="upload-note" id="libraryUploadSelectedFile">未选择文件</div>
             </div>
           </div>
-          <div class="form-error" id="libraryUploadError" hidden>请完整填写资料归属、对应任务、文件名称和资料标签</div>
+          <div class="form-row">
+            <label for="libraryUploadNote"><span class="required">*</span>备注信息：</label>
+            <textarea class="issue-textarea" id="libraryUploadNote" name="libraryUploadNote" maxlength="500" placeholder="请输入资料说明或用途"></textarea>
+          </div>
+          <div class="form-error" id="libraryUploadError" hidden>请选择文件并填写备注信息</div>
         </div>
         <div class="modal-foot">
           <button class="btn" type="button" data-close-library-upload>取消</button>
@@ -7676,17 +7772,9 @@
           </div>
           <h2 class="task-fill-title" id="taskFillTitle">Customer Requirements (Volumes, Key dates, others)</h2>
           <div class="task-fill-grid">
-            <div class="task-fill-label">Status Icons:</div>
-            <div class="task-fill-value">V2</div>
-            <div class="task-fill-label">Function:</div>
-            <div class="task-fill-value" id="taskFillFunction">Customer</div>
-            <div class="task-fill-label">Document or<br>Evidence:</div>
-            <div class="task-fill-value">Document or Evidence</div>
-            <div class="task-fill-label">Responsible:</div>
-            <div class="task-fill-value" id="taskFillResponsible">Sales</div>
-            <div class="task-fill-label">负责部门:</div>
+            <div class="task-fill-label">负责部门：</div>
             <div class="task-fill-value" id="taskFillDepartment">部门A</div>
-            <div class="task-fill-label">起止时间:</div>
+            <div class="task-fill-label">起止时间：</div>
             <div class="task-fill-value" id="taskFillDate">2025-05-12 ~ 2025-05-18</div>
           </div>
           <div class="task-fill-desc">
@@ -7700,7 +7788,7 @@
           </div>
           <div class="task-upload-tip">支持扩展名：.doc .docx .pdf .excel...</div>
           <div class="task-upload-file" id="taskUploadFile">
-            <span id="taskUploadFileName"></span>
+            <a id="taskUploadFileName" href="#">下载附件</a>
             <button type="button" id="taskUploadRemove" aria-label="移除上传文件">×</button>
           </div>
           <h4 class="task-fill-note-title">说明</h4>
@@ -7708,6 +7796,7 @@
         </div>
         <div class="modal-foot">
           <button class="btn" type="button" data-close-task-fill id="taskFillCancelButton">取消</button>
+          <button class="btn btn-outline-danger" type="button" id="taskFillRejectButton" hidden>拒绝</button>
           <button class="btn btn-primary" type="submit" id="taskFillSubmitButton">确定</button>
         </div>
       </form>
@@ -7786,19 +7875,6 @@
           </div>
           <div class="submit-form-group" id="submitConfirmMessage">确认发起当前阶段审核，提交后将通知审核人员处理。</div>
           <div class="gate4-ppap-form" id="gate4PpapForm" hidden>
-            <label>审批类型
-              <select class="review-status-select" id="gate4ApprovalType">
-                <option value="standard">标准审批</option>
-                <option value="temporary">临时审批</option>
-              </select>
-            </label>
-            <label data-gate4-temp-field>临批有效期
-              <select class="review-status-select" id="gate4TempDuration">
-                <option value="1">1 个月</option>
-                <option value="2">2 个月</option>
-                <option value="3">3 个月（不超过 3 个月）</option>
-              </select>
-            </label>
             <label data-gate4-temp-field>到期日期
               <input class="field" id="gate4ExpireDate" type="date">
             </label>
@@ -8163,7 +8239,7 @@
                 <th>版本对比</th>
                 <th>备注</th>
                 <th>建议创建</th>
-                <th>默认负责人</th>
+                <th>负责人（部门 / 成员）</th>
                 <th>起始Gate</th>
                 <th>状态 / 原因</th>
               </tr>
@@ -13877,13 +13953,12 @@
     const libraryUploadButton = document.getElementById("libraryUploadButton");
     const libraryUploadModal = document.getElementById("libraryUploadModal");
     const libraryUploadForm = document.getElementById("libraryUploadForm");
-    const libraryUploadSource = document.getElementById("libraryUploadSource");
-    const libraryUploadTask = document.getElementById("libraryUploadTask");
-    const libraryUploadFileName = document.getElementById("libraryUploadFileName");
-    const libraryUploadLabel = document.getElementById("libraryUploadLabel");
-    const libraryUploadFileType = document.getElementById("libraryUploadFileType");
+    const libraryUploadFile = document.getElementById("libraryUploadFile");
+    const libraryUploadChooseFile = document.getElementById("libraryUploadChooseFile");
+    const libraryUploadSelectedFile = document.getElementById("libraryUploadSelectedFile");
+    const libraryUploadNote = document.getElementById("libraryUploadNote");
     const libraryUploadError = document.getElementById("libraryUploadError");
-    let activeLibrarySource = "all";
+    let activeLibrarySource = "task";
     const memberModal = document.getElementById("memberModal");
     const openMemberModal = document.getElementById("openMemberModal");
     const availableGroupList = document.getElementById("availableGroupList");
@@ -13970,8 +14045,6 @@
     const projectEditMessageTitle = document.getElementById("projectEditMessageTitle");
     const projectEditMessageBody = document.getElementById("projectEditMessageBody");
     const gate4PpapForm = document.getElementById("gate4PpapForm");
-    const gate4ApprovalType = document.getElementById("gate4ApprovalType");
-    const gate4TempDuration = document.getElementById("gate4TempDuration");
     const gate4ExpireDate = document.getElementById("gate4ExpireDate");
     const gate4TempReason = document.getElementById("gate4TempReason");
     const gate4RiskNote = document.getElementById("gate4RiskNote");
@@ -13989,8 +14062,6 @@
     const taskFillKpac = document.getElementById("taskFillKpac");
     const taskFillType = document.getElementById("taskFillType");
     const taskFillTitle = document.getElementById("taskFillTitle");
-    const taskFillFunction = document.getElementById("taskFillFunction");
-    const taskFillResponsible = document.getElementById("taskFillResponsible");
     const taskFillDepartment = document.getElementById("taskFillDepartment");
     const taskFillDate = document.getElementById("taskFillDate");
     const taskFillDescription = document.getElementById("taskFillDescription");
@@ -13998,6 +14069,7 @@
     const taskFillDialog = taskFillModal?.querySelector(".task-fill-modal");
     const taskFillModalTitle = document.getElementById("taskFillModalTitle");
     const taskFillCancelButton = document.getElementById("taskFillCancelButton");
+    const taskFillRejectButton = document.getElementById("taskFillRejectButton");
     const taskFillSubmitButton = document.getElementById("taskFillSubmitButton");
     const taskUploadZone = document.getElementById("taskUploadZone");
     const taskUploadInput = document.getElementById("taskUploadInput");
@@ -14005,6 +14077,7 @@
     const taskUploadFile = document.getElementById("taskUploadFile");
     const taskUploadFileName = document.getElementById("taskUploadFileName");
     const taskUploadRemove = document.getElementById("taskUploadRemove");
+    let taskUploadObjectUrl = "";
     const stageTaskTooltip = document.createElement("div");
     stageTaskTooltip.className = "stage-task-tooltip";
     stageTaskTooltip.hidden = true;
@@ -14012,6 +14085,7 @@
     let activeStage = "PKO";
     let activeStageStatusFilter = "all";
     let activeFillTaskId = "";
+    let activeTaskFillMode = "fill";
     let projectStatus = "inProgress";
     let projectHealth = "green";
     let pendingProjectStatus = "";
@@ -14129,9 +14203,7 @@
             level: "risk",
             title: "完成 PKO 阶段任务并提交",
             description: `PM 需完成 PKO 阶段下的 ${pendingTasks} 项待办任务，提交后项目进入 Gate1 阶段。`,
-            roles: ["PM"],
-            action: "查看任务",
-            tab: "development"
+            roles: ["PM"]
           }
         );
       }
@@ -14186,9 +14258,7 @@
           level: "risk",
           title: `${activeStage} 仍有 ${pendingTasks} 项任务待完成`,
           description: "PM 需关注阶段任务闭环；任务负责人需完成对应 K-PAC 任务。",
-          roles: ["PM", "ALL"],
-          action: "查看任务",
-          tab: "development"
+          roles: ["PM", "ALL"]
         });
       }
       if (projectStatus === "pending" || projectStatus === "cancel") {
@@ -14258,14 +14328,10 @@
       recordTimeline.innerHTML = filtered.length ? filtered.map((event) => `
         <article class="record-event">
           <div class="record-event-time">${escapeHtml(event.time || "-")}<br>${escapeHtml(event.actor || "-")} · ${escapeHtml(event.role || "-")}</div>
-          <span class="record-event-type">${escapeHtml(event.type || eventTypeLabel(event.category))}</span>
+          <div class="record-event-axis" aria-hidden="true"></div>
           <div class="record-event-main">
+            <span class="record-event-type">${escapeHtml(event.type || eventTypeLabel(event.category))}</span>
             <h4>${escapeHtml(event.title)}</h4>
-            <p>${escapeHtml(event.description)}</p>
-            <div class="record-event-meta">
-              <span class="tag tag-gray">${escapeHtml(event.scope || "-")}</span>
-              <span class="tag tag-blue">${escapeHtml(eventTypeLabel(event.category))}</span>
-            </div>
           </div>
         </article>
       `).join("") : `<div class="record-empty">当前筛选下暂无项目动态。</div>`;
@@ -14276,8 +14342,6 @@
       renderRecordAlerts();
       renderRecordTimeline();
     }
-    const handoverSourceTeamOptions = ["AQE", "AE", "AP / OP PM", "ME", "PM", "SCM", "SQD", "Sales"];
-    const handoverTeamOptions = ["CQE", "PPE", "物流", "维护&生产", "AQE", "AE", "ME", "PM"];
     const handoverRows = [
       {
         id: "aqe-cqe",
@@ -14417,12 +14481,7 @@
 
     function operationHtml(task) {
       if (task.status === "approval") {
-        return `
-          <span class="inline-actions">
-            <button class="blue-link" type="button" data-approve-task="${escapeHtml(task.id)}">通过</button>
-            <button class="blue-link" type="button" data-reject-task="${escapeHtml(task.id)}">拒绝</button>
-          </span>
-        `;
+        return `<span class="inline-actions"><button class="blue-link" type="button" data-review-task="${escapeHtml(task.id)}">审核</button></span>`;
       }
       if (task.status === "approved" || task.status === "done") {
         return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
@@ -14586,17 +14645,6 @@
       }).join("");
     }
 
-    function teamOptions(selectedTeam) {
-      return handoverTeamOptions.map((team) => `<option value="${escapeHtml(team)}" ${team === selectedTeam ? "selected" : ""}>${escapeHtml(team)}</option>`).join("");
-    }
-
-    function sourceTeamOptions(selectedTeam) {
-      const options = handoverSourceTeamOptions.includes(selectedTeam)
-        ? handoverSourceTeamOptions
-        : [selectedTeam, ...handoverSourceTeamOptions];
-      return options.map((team) => `<option value="${escapeHtml(team)}" ${team === selectedTeam ? "selected" : ""}>${escapeHtml(team)}</option>`).join("");
-    }
-
     function renderHandoverPanel() {
       if (!stageTaskTables) {
         return;
@@ -14612,14 +14660,14 @@
               <button class="btn btn-primary" type="button" data-add-handover-row>添加交出团队</button>
             </div>
           </div>
-          <p class="handover-intro">PM 在 HandOver 阶段登记跨职能交接信息，确认交出团队、接收团队、交接人、交接说明和交接文件。</p>
+          <p class="handover-intro">PM 在 HandOver 阶段登记跨职能交接信息，先选择交接人，系统自动带出不可修改的接收团队。</p>
           <div class="table-wrap">
             <table class="handover-table" aria-label="HandOver交接信息">
               <colgroup>
                 <col style="width:120px">
                 <col style="width:230px">
-                <col style="width:150px">
                 <col style="width:230px">
+                <col style="width:150px">
                 <col style="width:330px">
                 <col style="width:220px">
                 <col style="width:90px">
@@ -14628,8 +14676,8 @@
                 <tr>
                   <th>交出团队</th>
                   <th>项目团队人员</th>
-                  <th>接收团队</th>
                   <th>交接人</th>
+                  <th>接收团队</th>
                   <th>交接说明</th>
                   <th>交接文件</th>
                   <th>操作</th>
@@ -14638,21 +14686,13 @@
               <tbody>
                 ${handoverRows.map((row) => `
                   <tr data-handover-row="${escapeHtml(row.id)}">
-                    <td>
-                      <select class="handover-select" data-handover-source-team="${escapeHtml(row.id)}">
-                        ${sourceTeamOptions(row.sourceTeam)}
-                      </select>
-                    </td>
+                    <td><span class="handover-readonly">${escapeHtml(row.sourceTeam)}</span></td>
                     <td><div class="handover-members">${memberChips(row.sourceMembers)}</div></td>
-                    <td>
-                      <select class="handover-select" data-handover-team="${escapeHtml(row.id)}">
-                        ${teamOptions(row.targetTeam)}
-                      </select>
-                    </td>
                     <td>
                       <div class="handover-members">${memberChips(row.targetMembers)}</div>
                       <button class="blue-link" type="button" data-select-handover-members="${escapeHtml(row.id)}">选择交接人</button>
                     </td>
+                    <td><span class="handover-readonly">${escapeHtml(row.targetTeam || "选择交接人后自动带出")}</span></td>
                     <td><textarea class="handover-textarea" data-handover-note="${escapeHtml(row.id)}" placeholder="请输入交接说明">${escapeHtml(row.note)}</textarea></td>
                     <td>
                       <input type="file" multiple data-handover-files="${escapeHtml(row.id)}">
@@ -14710,6 +14750,18 @@
       }
       const sizeText = file.size ? ` · ${formatFileSize(file.size)}` : "";
       taskUploadFileName.textContent = `${file.name}${sizeText}`;
+      if (taskUploadObjectUrl) {
+        URL.revokeObjectURL(taskUploadObjectUrl);
+        taskUploadObjectUrl = "";
+      }
+      const downloadableFile = file instanceof Blob ? file : file.blob instanceof Blob ? file.blob : null;
+      if (downloadableFile) {
+        taskUploadObjectUrl = URL.createObjectURL(downloadableFile);
+        taskUploadFileName.href = taskUploadObjectUrl;
+      } else {
+        taskUploadFileName.href = "data:application/octet-stream;base64,";
+      }
+      taskUploadFileName.download = file.name || "任务附件";
       taskUploadFile.classList.add("is-visible");
     }
 
@@ -14719,6 +14771,12 @@
       }
       if (taskUploadFileName) {
         taskUploadFileName.textContent = "";
+        taskUploadFileName.removeAttribute("download");
+        taskUploadFileName.href = "#";
+      }
+      if (taskUploadObjectUrl) {
+        URL.revokeObjectURL(taskUploadObjectUrl);
+        taskUploadObjectUrl = "";
       }
       if (taskUploadFile) {
         taskUploadFile.classList.remove("is-visible");
@@ -14841,37 +14899,71 @@
       hideStageTaskTooltip();
     }
 
+    function translateTaskBusinessText(value) {
+      const translations = {
+        "Customer": "客户",
+        "Sales": "销售",
+        "PM": "项目经理",
+        "AE": "应用工程",
+        "AQE": "项目质量",
+        "SQD": "供应商质量开发",
+        "SCM": "供应链管理",
+        "Purchasing": "采购",
+        "Quality": "质量",
+        "Finance": "财务",
+        "Production": "生产",
+        "Logistic": "物流",
+        "Maintenance": "设备维护",
+        "CI": "持续改进",
+        "Mfg Engineering": "制造工程",
+        "Plan and Define": "计划与定义",
+        "Product Design and Development": "产品设计与开发",
+        "Process Design and Development": "过程设计与开发",
+        "Production and Logistic": "生产与物流"
+      };
+      const text = String(value || "").trim();
+      if (translations[text]) {
+        return translations[text];
+      }
+      return text.split(",").map((item) => translations[item.trim()] || item.trim()).join("、");
+    }
+
     function openTaskFillModal(taskId, mode = "fill") {
       const task = findStageTask(taskId);
       if (!task || !taskFillModal) {
         return;
       }
       const isViewMode = mode === "view";
+      const isApproveMode = mode === "approve";
+      const isReadOnlyMode = isViewMode || isApproveMode;
       activeFillTaskId = taskId;
+      activeTaskFillMode = mode;
       taskFillForm.reset();
       clearTaskUploadFile();
-      taskFillDialog?.classList.toggle("is-view-mode", isViewMode);
+      taskFillDialog?.classList.toggle("is-view-mode", isReadOnlyMode);
       if (taskFillModalTitle) {
-        taskFillModalTitle.textContent = isViewMode ? "任务详情" : "任务填报";
+        taskFillModalTitle.textContent = isApproveMode ? "任务审批" : isViewMode ? "任务详情" : "任务填报";
       }
       if (taskFillCancelButton) {
         taskFillCancelButton.textContent = isViewMode ? "关闭" : "取消";
       }
       if (taskFillSubmitButton) {
         taskFillSubmitButton.hidden = isViewMode;
+        taskFillSubmitButton.textContent = isApproveMode ? "确认通过" : "确定";
+      }
+      if (taskFillRejectButton) {
+        taskFillRejectButton.hidden = !isApproveMode;
       }
       taskFillKpac.textContent = task.kpac;
       taskFillType.textContent = task.type;
       taskFillType.className = `tag ${task.typeClass}`;
       taskFillTitle.textContent = task.title;
-      taskFillFunction.textContent = task.functionName;
-      taskFillResponsible.textContent = task.owner;
-      taskFillDepartment.textContent = task.department;
+      taskFillDepartment.textContent = translateTaskBusinessText(task.department);
       taskFillDate.textContent = task.dateRange;
       taskFillDescription.innerHTML = task.description.split("\n").map((line) => `<div>${escapeHtml(line)}</div>`).join("");
-      taskFillNote.value = isViewMode ? (task.note || "") : "";
-      taskFillNote.readOnly = isViewMode;
-      if (isViewMode) {
+      taskFillNote.value = isReadOnlyMode ? (task.note || "") : "";
+      taskFillNote.readOnly = isReadOnlyMode;
+      if (isReadOnlyMode) {
         showTaskUploadFile(task.uploadFile || { name: "设计验证计划文档.pdf", size: 0 });
       }
       taskFillModal.hidden = false;
@@ -14881,6 +14973,7 @@
     function closeTaskFillModal() {
       taskFillModal.hidden = true;
       activeFillTaskId = "";
+      activeTaskFillMode = "fill";
       taskFillDialog?.classList.remove("is-view-mode");
       taskFillNote.readOnly = false;
     }
@@ -15310,12 +15403,14 @@
     }
 
     function updateGate4ApprovalTypeFields() {
-      const isTemporary = gate4ApprovalType?.value === "temporary";
+      const isTemporary = pendingSubmitStage === "Gate4" && submitReviewType?.value === "temporary";
       gate4TempFields.forEach((field) => {
         field.hidden = !isTemporary;
       });
-      if (isTemporary) {
-        updateGate4ExpireDate();
+      if (!isTemporary && pendingSubmitStage === "Gate4") {
+        gate4ExpireDate.value = "";
+        gate4TempReason.value = "";
+        gate4RiskNote.value = "";
       }
       if (gate4PpapError) {
         gate4PpapError.hidden = true;
@@ -15325,7 +15420,7 @@
 
     function validateGate4PpapForm() {
       if (!gate4PpapForm || gate4PpapForm.hidden) return true;
-      const approvalType = gate4ApprovalType.value;
+      const approvalType = submitReviewType.value;
       const reason = gate4TempReason.value.trim();
       const expireDateValue = gate4ExpireDate.value;
       const errors = [];
@@ -15337,7 +15432,7 @@
           const now = new Date();
           const expireDate = new Date(`${expireDateValue}T00:00:00`);
           if (expireDate <= now) errors.push("到期日期必须晚于今天。");
-          if (monthDiff(now, expireDate) > 3) errors.push("临批有效期不能超过 3 个月。");
+          if (monthDiff(now, expireDate) > 3) errors.push("到期日期不能超过当前日期后 3 个月。");
         }
       }
       gate4PpapError.hidden = errors.length === 0;
@@ -15347,10 +15442,9 @@
 
     function submitGate4Stage() {
       if (!validateGate4PpapForm()) return false;
-      const approvalType = gate4ApprovalType.value;
+      const approvalType = submitReviewType.value;
       gate4ApprovalPayload = {
         type: approvalType,
-        duration: gate4TempDuration.value,
         reason: gate4TempReason.value.trim(),
         risk: gate4RiskNote.value.trim(),
         basis: gate4CustomerBasis.value.trim(),
@@ -15399,22 +15493,6 @@
     function formatDateOnly(date) {
       const pad = (value) => String(value).padStart(2, "0");
       return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-    }
-
-    function addMonths(date, months) {
-      const target = new Date(date);
-      const originalDay = target.getDate();
-      target.setDate(1);
-      target.setMonth(target.getMonth() + months);
-      const lastDayOfTargetMonth = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
-      target.setDate(Math.min(originalDay, lastDayOfTargetMonth));
-      return target;
-    }
-
-    function updateGate4ExpireDate() {
-      if (!gate4ExpireDate || !gate4TempDuration) return;
-      const months = Number(gate4TempDuration.value || 1);
-      gate4ExpireDate.value = formatDateOnly(addMonths(new Date(), months));
     }
 
     function stageSubmitDueDate(stage) {
@@ -15479,7 +15557,9 @@
       if (submitDueDate) submitDueDate.textContent = stageSubmitDueDate(stage);
       if (submitTaskStatus) submitTaskStatus.textContent = "待处理";
       if (submitReviewType) {
-        submitReviewType.innerHTML = `<option value="gate">阶段完成审核 (Gate Review)</option>`;
+        submitReviewType.innerHTML = stage === "Gate4"
+          ? `<option value="standard">标准审批 (Gate Review)</option><option value="temporary">临时审批</option>`
+          : `<option value="gate">阶段完成审核 (Gate Review)</option>`;
       }
       renderSubmitReviewers();
       updateSubmitReviewProgress(stage);
@@ -16141,8 +16221,7 @@
       renderSubmitReviewers();
     });
 
-    gate4ApprovalType?.addEventListener("change", updateGate4ApprovalTypeFields);
-    gate4TempDuration?.addEventListener("change", updateGate4ExpireDate);
+    submitReviewType?.addEventListener("change", updateGate4ApprovalTypeFields);
 
     if (submitConfirmModal) {
       document.querySelectorAll("[data-close-submit-confirm]").forEach((button) => {
@@ -16309,8 +16388,7 @@
         const handoverMemberButton = event.target.closest("[data-select-handover-members]");
         const completeButton = event.target.closest("[data-complete-stage-task]");
         const viewButton = event.target.closest("[data-view-task]");
-        const approveButton = event.target.closest("[data-approve-task]");
-        const rejectButton = event.target.closest("[data-reject-task]");
+        const reviewButton = event.target.closest("[data-review-task]");
         const rejectReasonButton = event.target.closest("[data-view-reject]");
 
         if (addHandoverRowButton) {
@@ -16318,7 +16396,7 @@
             id: `handover-${Date.now()}`,
             sourceTeam: "PM",
             sourceMembers: ["danny-fang"],
-            targetTeam: "CQE",
+            targetTeam: "",
             targetMembers: [],
             note: ""
           });
@@ -16350,22 +16428,8 @@
           return;
         }
 
-        if (approveButton) {
-          const task = findStageTask(approveButton.dataset.approveTask);
-          if (task) {
-            task.status = "approved";
-            renderStageTasks(activeStage);
-          }
-          return;
-        }
-
-        if (rejectButton) {
-          const task = findStageTask(rejectButton.dataset.rejectTask);
-          if (task) {
-            task.status = "rejected";
-            task.rejectReason = "职能主管驳回：上传资料缺少设计验证计划签核页，请补充后重新提交。";
-            renderStageTasks(activeStage);
-          }
+        if (reviewButton) {
+          openTaskFillModal(reviewButton.dataset.reviewTask, "approve");
           return;
         }
 
@@ -16376,25 +16440,7 @@
       });
 
       stageTaskTables.addEventListener("change", (event) => {
-        const sourceTeamSelect = event.target.closest("[data-handover-source-team]");
-        const teamSelect = event.target.closest("[data-handover-team]");
         const fileInput = event.target.closest("[data-handover-files]");
-
-        if (sourceTeamSelect) {
-          const row = handoverRows.find((item) => item.id === sourceTeamSelect.dataset.handoverSourceTeam);
-          if (row) {
-            row.sourceTeam = sourceTeamSelect.value;
-          }
-          return;
-        }
-
-        if (teamSelect) {
-          const row = handoverRows.find((item) => item.id === teamSelect.dataset.handoverTeam);
-          if (row) {
-            row.targetTeam = teamSelect.value;
-          }
-          return;
-        }
 
         if (fileInput) {
           const list = stageTaskTables.querySelector(`[data-handover-file-list="${fileInput.dataset.handoverFiles}"]`);
@@ -16450,9 +16496,25 @@
         event.preventDefault();
         const task = findStageTask(activeFillTaskId);
         if (task) {
+          if (activeTaskFillMode === "approve") {
+            const taskStage = Object.entries(stageTasks).find(([, rows]) => rows.some((row) => row.id === task.id))?.[0];
+            task.status = "approved";
+            task.operator = currentOperatorName;
+            addProjectEvent({
+              category: "approval",
+              type: "审批",
+              title: `${taskStage || activeStage} 任务审批通过`,
+              description: `${task.kpac} · ${task.title}${task.uploadFile?.name ? `；附件：${task.uploadFile.name}` : ""}`,
+              actor: currentOperatorName,
+              role: "职能主管",
+              scope: taskStage || activeStage
+            });
+            renderStageTasks(activeStage);
+            closeTaskFillModal();
+            return;
+          }
           if (taskUploadInput?.files?.[0]) {
-            const { name, size } = taskUploadInput.files[0];
-            task.uploadFile = { name, size };
+            task.uploadFile = taskUploadInput.files[0];
           } else if (!task.uploadFile) {
             task.uploadFile = { name: "设计验证计划文档.pdf", size: 0 };
           }
@@ -16471,6 +16533,28 @@
           });
           renderStageTasks(activeStage);
         }
+        closeTaskFillModal();
+      });
+
+      taskFillRejectButton?.addEventListener("click", () => {
+        const task = findStageTask(activeFillTaskId);
+        if (!task || activeTaskFillMode !== "approve") {
+          return;
+        }
+        const taskStage = Object.entries(stageTasks).find(([, rows]) => rows.some((row) => row.id === task.id))?.[0];
+        task.status = "rejected";
+        task.rejectReason = "职能主管审核拒绝：请根据审核意见补充或修正任务资料后重新提交。";
+        task.operator = currentOperatorName;
+        addProjectEvent({
+          category: "approval",
+          type: "审批",
+          title: `${taskStage || activeStage} 任务审核拒绝`,
+          description: `${task.kpac} · ${task.title}${task.uploadFile?.name ? `；附件：${task.uploadFile.name}` : ""}`,
+          actor: currentOperatorName,
+          role: "职能主管",
+          scope: taskStage || activeStage
+        });
+        renderStageTasks(activeStage);
         closeTaskFillModal();
       });
     }
@@ -17141,7 +17225,7 @@
         : new Set();
       availableMemberSearch.value = "";
       selectedMemberSearch.value = "";
-      document.getElementById("memberModalTitle").textContent = mode === "handover" ? "选择交接团队及交接人" : mode === "review" ? "选择审核人员" : "选择变更委员会团队及成员";
+      document.getElementById("memberModalTitle").textContent = mode === "handover" ? "选择交接人" : mode === "review" ? "选择审核人员" : "选择变更委员会团队及成员";
       memberModal.hidden = false;
       renderMemberPicker();
       availableMemberSearch.focus();
@@ -17285,9 +17369,7 @@
         if (row) {
           row.targetMembers = Array.from(draftSelectedMemberIds);
           const firstMember = memberMap.get(row.targetMembers[0]);
-          if (firstMember?.teamName) {
-            row.targetTeam = firstMember.teamName;
-          }
+          row.targetTeam = firstMember?.teamName || "";
         }
         hideMemberModal();
         renderHandoverPanel();
@@ -17328,7 +17410,7 @@
         if (row.classList.contains("library-empty-row")) {
           return;
         }
-        const matchesSource = activeLibrarySource === "all" || row.dataset.source === activeLibrarySource;
+        const matchesSource = row.dataset.source === activeLibrarySource;
         const matchesKeyword = !keyword || row.textContent.toLowerCase().includes(keyword);
         row.hidden = !(matchesSource && matchesKeyword);
         if (!row.hidden) {
@@ -17340,44 +17422,23 @@
       if (!emptyRow) {
         emptyRow = document.createElement("tr");
         emptyRow.className = "library-empty-row";
-        emptyRow.innerHTML = `<td class="library-empty" colspan="8">暂无匹配资料</td>`;
+        emptyRow.innerHTML = `<td class="library-empty" colspan="5">暂无匹配资料</td>`;
         libraryTableBody.appendChild(emptyRow);
       }
       emptyRow.hidden = visibleCount > 0;
       libraryResultCount.textContent = `共 ${visibleCount} 项数据`;
     }
 
-    const libraryRelatedTasks = {
-      project: [
-        { value: "Gate2 供应商准备度评审", label: "Gate2 供应商准备度评审" },
-        { value: "PKO 启动会会议纪要", label: "PKO 启动会会议纪要" },
-        { value: "项目计划关键节点确认", label: "项目计划关键节点确认" },
-        { value: "Gate1 L1 总成 APQP 创建", label: "Gate1 L1 总成 APQP 创建" }
-      ],
-      part: [
-        { value: "BW-220HC-CHAIN-GUIDE", label: "BW-220HC-CHAIN-GUIDE / CQI 特殊过程评审" },
-        { value: "BW-220HC-TENSIONER", label: "BW-220HC-TENSIONER / 二供同步开发" },
-        { value: "BW-220HC-ARM-GUIDE", label: "BW-220HC-ARM-GUIDE / 子零件 APQP" }
-      ]
-    };
-
-    function renderLibraryUploadTasks() {
-      const source = libraryUploadSource.value || "project";
-      const tasks = libraryRelatedTasks[source] || [];
-      libraryUploadTask.innerHTML = `<option value="">请选择对应任务</option>${tasks.map((task) => `<option value="${escapeHtml(task.value)}">${escapeHtml(task.label)}</option>`).join("")}`;
-    }
-
     function resetLibraryUploadForm() {
       libraryUploadForm.reset();
-      libraryUploadSource.value = "project";
-      renderLibraryUploadTasks();
+      libraryUploadSelectedFile.textContent = "未选择文件";
       libraryUploadError.hidden = true;
     }
 
     function showLibraryUploadModal() {
       resetLibraryUploadForm();
       libraryUploadModal.hidden = false;
-      libraryUploadSource.focus();
+      libraryUploadChooseFile.focus();
     }
 
     function hideLibraryUploadModal() {
@@ -17386,28 +17447,23 @@
 
     function createLibraryRow(payload) {
       const row = document.createElement("tr");
-      row.dataset.source = payload.source;
-      const iconClass = payload.fileType === "doc" ? "doc" : payload.fileType === "pdf" ? "pdf" : "";
-      const sourceText = payload.source === "part" ? "子零件开发资料" : "项目资料";
-      const partCell = payload.source === "part" && payload.partNo
-        ? `<a class="blue-link" href="子零件开发任务详情_调整版.html?partNo=${encodeURIComponent(payload.partNo)}&source=library">${escapeHtml(payload.partNo)}</a>`
-        : escapeHtml(payload.relatedTask || "项目级资料");
+      row.dataset.source = "manual";
       row.innerHTML = `
         <td></td>
         <td><div class="library-file-name"></div></td>
-        <td><span class="file-label"><span class="file-type-icon ${iconClass}"></span><span></span></span></td>
-        <td><span class="source-badge ${payload.source}">${sourceText}</span></td>
-        <td>${partCell}</td>
         <td></td>
         <td></td>
         <td><a class="blue-link" href="#">下载</a></td>
       `;
       row.children[0].textContent = payload.milestone;
       row.children[1].querySelector(".library-file-name").textContent = payload.fileName;
-      row.children[2].querySelector(".file-type-icon").textContent = payload.fileType;
-      row.children[2].querySelector(".file-label span:last-child").textContent = payload.label;
-      row.children[5].textContent = payload.uploadDate;
-      row.children[6].textContent = payload.uploader;
+      row.children[2].textContent = payload.uploadDate;
+      row.children[3].textContent = payload.uploader;
+      if (payload.fileUrl) {
+        const downloadLink = row.querySelector(".blue-link");
+        downloadLink.href = payload.fileUrl;
+        downloadLink.download = payload.fileName;
+      }
       return row;
     }
 
@@ -17427,11 +17483,6 @@
       });
     });
 
-    libraryUploadSource.addEventListener("change", () => {
-      renderLibraryUploadTasks();
-      libraryUploadError.hidden = true;
-    });
-
     libraryUploadButton.addEventListener("click", showLibraryUploadModal);
 
     document.querySelectorAll("[data-close-library-upload]").forEach((button) => {
@@ -17444,46 +17495,47 @@
       }
     });
 
-    [libraryUploadTask, libraryUploadFileName, libraryUploadLabel].forEach((input) => {
-      input.addEventListener("input", () => {
-        libraryUploadError.hidden = true;
-      });
+    libraryUploadChooseFile.addEventListener("click", () => {
+      libraryUploadFile.click();
+    });
+
+    libraryUploadFile.addEventListener("change", () => {
+      const file = libraryUploadFile.files[0];
+      libraryUploadSelectedFile.textContent = file ? file.name : "未选择文件";
+      libraryUploadError.hidden = true;
+    });
+
+    libraryUploadNote.addEventListener("input", () => {
+      libraryUploadError.hidden = true;
     });
 
     libraryUploadForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      const source = libraryUploadSource.value;
-      const taskValue = libraryUploadTask.value;
-      const fileName = libraryUploadFileName.value.trim();
-      const label = libraryUploadLabel.value.trim();
-      if (!source || !taskValue || !fileName || !label) {
+      const file = libraryUploadFile.files[0];
+      const note = libraryUploadNote.value.trim();
+      if (!file || !note) {
         libraryUploadError.hidden = false;
-        if (!taskValue) {
-          libraryUploadTask.focus();
-        } else if (!fileName) {
-          libraryUploadFileName.focus();
+        if (!file) {
+          libraryUploadChooseFile.focus();
         } else {
-          libraryUploadLabel.focus();
+          libraryUploadNote.focus();
         }
         return;
       }
 
       libraryTableBody.insertBefore(createLibraryRow({
-        source,
-        milestone: source === "part" ? "手动上传子零件开发资料" : "手动上传项目资料",
-        fileName,
-        label,
-        fileType: libraryUploadFileType.value,
-        relatedTask: taskValue,
-        partNo: source === "part" ? taskValue : "",
+        milestone: `手动上传：${note}`,
+        fileName: file.name,
+        fileUrl: URL.createObjectURL(file),
         uploadDate: getCurrentTime().slice(0, 10),
         uploader: "当前用户"
       }), libraryTableBody.firstElementChild);
       hideLibraryUploadModal();
+      activeLibrarySource = "manual";
+      librarySourceTabs.forEach((button) => button.classList.toggle("active", button.dataset.librarySource === "manual"));
       filterLibraryRows();
     });
 
-    renderLibraryUploadTasks();
     filterLibraryRows();
 
     document.addEventListener("keydown", (event) => {
@@ -17575,6 +17627,7 @@
       apqpTasks: [],
       apqpSelection: new Set(),
       apqpOwnerOverrides: {},
+      apqpOwnerMemberOverrides: {},
       exportRecords: [],
       changeRecords: [],
       undoStack: [],
@@ -17944,12 +17997,39 @@
       return Array.from(new Set([apqpOwnerRole(defaultOwner), "AQE", "SQD", "AE", "SCM", "PM", "CQE", "ME"]));
     }
 
+    function apqpProjectMembers(role) {
+      return projectMembersByRole(role);
+    }
+
+    function apqpOwnerMemberOptionsHtml(role, selectedMemberId = "") {
+      const members = apqpProjectMembers(role);
+      const placeholder = members.length ? `请选择 ${role} 成员` : `项目团队暂无 ${role} 成员`;
+      return `
+        <option value="">${escapeHtml(placeholder)}</option>
+        ${members.map((member) => `<option value="${escapeHtml(member.id)}" ${member.id === selectedMemberId ? "selected" : ""}>${escapeHtml(member.name)} · ${escapeHtml(member.department)}</option>`).join("")}
+      `;
+    }
+
+    function selectedApqpOwnerMember(candidate, role = "") {
+      const selectedRole = role || apqpOwnerRole(bomState.apqpOwnerOverrides[candidate.sourceKey] || candidate.owner || "");
+      const memberId = bomState.apqpOwnerMemberOverrides[candidate.sourceKey] || "";
+      const member = memberMap.get(memberId);
+      return member && member.role === selectedRole && teamMembers.some((item) => item.id === memberId) ? member : null;
+    }
+
     function apqpOwnerSelectHtml(candidate) {
       const selectedOwner = apqpOwnerRole(bomState.apqpOwnerOverrides[candidate.sourceKey] || candidate.owner || "");
+      const selectedMember = selectedApqpOwnerMember(candidate, selectedOwner);
+      const members = apqpProjectMembers(selectedOwner);
       return `
-        <select class="select-field" data-apqp-owner="${escapeHtml(candidate.sourceKey)}" ${candidate.disabled ? "disabled" : ""} aria-label="选择默认负责人">
-          ${Array.from(new Set([selectedOwner, ...apqpOwnerOptions(candidate.owner)].filter(Boolean))).map((owner) => `<option value="${escapeHtml(owner)}" ${owner === selectedOwner ? "selected" : ""}>${escapeHtml(owner)}</option>`).join("")}
-        </select>
+        <div class="apqp-owner-fields" data-apqp-owner-fields="${escapeHtml(candidate.sourceKey)}">
+          <select class="select-field" data-apqp-owner-role="${escapeHtml(candidate.sourceKey)}" ${candidate.disabled ? "disabled" : ""} aria-label="选择负责人部门">
+            ${Array.from(new Set([selectedOwner, ...apqpOwnerOptions(candidate.owner)].filter(Boolean))).map((owner) => `<option value="${escapeHtml(owner)}" ${owner === selectedOwner ? "selected" : ""}>${escapeHtml(owner)}</option>`).join("")}
+          </select>
+          <select class="select-field" data-apqp-owner-member="${escapeHtml(candidate.sourceKey)}" ${(candidate.disabled || !members.length) ? "disabled" : ""} aria-label="选择具体负责人">
+            ${apqpOwnerMemberOptionsHtml(selectedOwner, selectedMember?.id || "")}
+          </select>
+        </div>
       `;
     }
 
@@ -19311,7 +19391,7 @@
         tip.textContent = bomState.status !== "locked" || bomState.workflowStatus !== "confirmed"
           ? "对应 L1 总成 BOM 必须经 SCM 确认并锁定后，才能生成正式 APQP / 子零件开发任务。"
           : candidates.length
-          ? `以下 ${candidates.length} 条候选任务可按 L1 BOM 行选择创建；已创建过的 BOM 行会被锁定并显示原因。`
+          ? `以下 ${candidates.length} 条候选任务可按 L1 BOM 行选择创建；请先选择负责人部门，再从当前项目团队中选择一名对应职能成员。`
           : "当前 L1 BOM 集合没有符合条件的供应方案，可能已全部创建、为共用件或二供仅备案。";
       }
       const selectable = candidates.filter((candidate) => !candidate.disabled && candidate.recommended);
@@ -19361,16 +19441,32 @@
     }
 
     function confirmBomApqpCreate() {
-      const candidates = apqpCandidates()
-        .filter((candidate) => !candidate.disabled && bomState.apqpSelection.has(candidate.sourceKey))
-        .map((candidate) => ({
-          ...candidate,
-          owner: apqpOwnerRole(bomState.apqpOwnerOverrides[candidate.sourceKey] || candidate.owner)
-        }));
-      if (!candidates.length) {
+      const selectedCandidates = apqpCandidates()
+        .filter((candidate) => !candidate.disabled && bomState.apqpSelection.has(candidate.sourceKey));
+      if (!selectedCandidates.length) {
         showBomConfirm({ title: "无法创建APQP", message: "请至少选择一条可创建 APQP 的 BOM 行。" });
         return;
       }
+      const missingOwner = selectedCandidates.find((candidate) => !selectedApqpOwnerMember(candidate));
+      if (missingOwner) {
+        const role = apqpOwnerRole(bomState.apqpOwnerOverrides[missingOwner.sourceKey] || missingOwner.owner);
+        showBomConfirm({
+          title: "请选择具体负责人",
+          message: `${missingOwner.row.name || "所选零件"} 尚未指定具体负责人。请从当前项目团队的 ${role} 成员中选择一人。`
+        });
+        return;
+      }
+      const candidates = selectedCandidates.map((candidate) => {
+        const ownerRole = apqpOwnerRole(bomState.apqpOwnerOverrides[candidate.sourceKey] || candidate.owner);
+        const ownerMember = selectedApqpOwnerMember(candidate, ownerRole);
+        return {
+          ...candidate,
+          owner: `${ownerMember.name} · ${ownerRole}`,
+          ownerRole,
+          ownerMemberId: ownerMember.id,
+          ownerName: ownerMember.name
+        };
+      });
       const createdAt = getCurrentTime();
       candidates.forEach((candidate) => {
         const row = candidate.row;
@@ -19378,6 +19474,8 @@
         row.apqpStatus = "已创建";
         row.apqpNo = taskNo;
         row.apqpOwner = candidate.owner;
+        row.apqpOwnerRole = candidate.ownerRole;
+        row.apqpOwnerMemberId = candidate.ownerMemberId;
         bomState.apqpTasks.push({
           id: taskNo,
           rowId: row.id,
@@ -19389,6 +19487,9 @@
           recipeType: candidate.recipeType || recipeLabel(recipeRootFor(row) || row),
           supplyType: candidate.supplyType,
           owner: candidate.owner,
+          ownerRole: candidate.ownerRole,
+          ownerMemberId: candidate.ownerMemberId,
+          ownerName: candidate.ownerName,
           type: candidate.taskType,
           sourceBomVersion: candidate.bomVersion,
           startGate: candidate.startGate,
@@ -20774,9 +20875,28 @@
     document.querySelector("[data-bom-restore]")?.addEventListener("click", restoreBom);
     document.querySelectorAll("[data-close-bom-apqp-create]").forEach((button) => button.addEventListener("click", closeApqpCreateModal));
     document.querySelector("[data-bom-apqp-create-body]")?.addEventListener("change", (event) => {
-      const ownerSelect = event.target.closest("[data-apqp-owner]");
-      if (ownerSelect) {
-        bomState.apqpOwnerOverrides[ownerSelect.dataset.apqpOwner] = apqpOwnerRole(ownerSelect.value);
+      const ownerRoleSelect = event.target.closest("[data-apqp-owner-role]");
+      if (ownerRoleSelect) {
+        const sourceKey = ownerRoleSelect.dataset.apqpOwnerRole;
+        const role = apqpOwnerRole(ownerRoleSelect.value);
+        bomState.apqpOwnerOverrides[sourceKey] = role;
+        delete bomState.apqpOwnerMemberOverrides[sourceKey];
+        const memberSelect = ownerRoleSelect.closest("[data-apqp-owner-fields]")?.querySelector("[data-apqp-owner-member]");
+        if (memberSelect) {
+          const members = apqpProjectMembers(role);
+          memberSelect.innerHTML = apqpOwnerMemberOptionsHtml(role);
+          memberSelect.disabled = members.length === 0;
+        }
+        return;
+      }
+      const ownerMemberSelect = event.target.closest("[data-apqp-owner-member]");
+      if (ownerMemberSelect) {
+        const sourceKey = ownerMemberSelect.dataset.apqpOwnerMember;
+        if (ownerMemberSelect.value) {
+          bomState.apqpOwnerMemberOverrides[sourceKey] = ownerMemberSelect.value;
+        } else {
+          delete bomState.apqpOwnerMemberOverrides[sourceKey];
+        }
         return;
       }
       const checkbox = event.target.closest("[data-apqp-select]");

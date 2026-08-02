@@ -233,8 +233,27 @@
     .toolbar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      gap: 18px;
       margin-bottom: 18px;
+    }
+
+    .related-project-filter {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #3f4857;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .related-project-filter:hover {
+      color: var(--primary);
+    }
+
+    .related-project-filter .check {
+      cursor: pointer;
     }
 
     .add-icon {
@@ -1430,6 +1449,10 @@
         <span class="add-icon" aria-hidden="true"></span>
         新增项目
       </button>
+      <label class="related-project-filter" for="relatedProjectsOnly" title="当前登录人：Danny Fang">
+        <input class="check" id="relatedProjectsOnly" type="checkbox" checked>
+        <span>仅查看与我相关的</span>
+      </label>
     </div>
 
     <section class="table-shell" aria-label="项目列表">
@@ -1459,7 +1482,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-code="DMSNIN25001" data-name="EA888 E5 VCT" data-brand="Volkswagen" data-status="进行中" data-health="绿色">
+          <tr data-code="DMSNIN25001" data-name="EA888 E5 VCT" data-brand="Volkswagen" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25001"></td>
             <td class="sticky-left sticky-code">DMSNIN25001</td>
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
@@ -1485,7 +1508,7 @@
             </td>
             <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
           </tr>
-          <tr data-code="DMSNIN25002" data-name="EA211 Evo 1.5l CN7" data-brand="Volkswagen" data-status="审批中" data-health="黄色">
+          <tr data-code="DMSNIN25002" data-name="EA211 Evo 1.5l CN7" data-brand="Volkswagen" data-status="审批中" data-health="黄色" data-members="Michael Wang|Lisa Li">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25002"></td>
             <td class="sticky-left sticky-code">DMSNIN25002</td>
             <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
@@ -1629,13 +1652,7 @@
           </div>
           <div class="form-field">
             <label class="required" for="customerBrand">客户<span class="en">Customer Brand</span></label>
-            <select class="select" id="customerBrand">
-              <option>请选择</option>
-              <option>Volkswagen</option>
-              <option>BMW</option>
-              <option>Mercedes-Benz</option>
-              <option>Geely</option>
-            </select>
+            <input class="field" id="customerBrand" placeholder="请输入客户品牌" maxlength="100">
           </div>
           <div class="form-field">
             <label class="required" for="program">项目<span class="en">Program</span></label>
@@ -1672,10 +1689,10 @@
             <label class="required" for="projectManager">项目经理<span class="en">Project Manager</span></label>
             <select class="select" id="projectManager">
               <option>请选择项目经理</option>
-              <option>王浩</option>
-              <option>李敏</option>
-              <option>陈杰</option>
-              <option>赵琳</option>
+              <option value="Danny Fang">Danny Fang</option>
+              <option value="Alice Chen">Alice Chen</option>
+              <option value="Michael Wang">Michael Wang</option>
+              <option value="Lisa Li">Lisa Li</option>
             </select>
           </div>
         </div>
@@ -2011,11 +2028,13 @@
     const tableBody = document.querySelector(".table-shell tbody");
     const queryProjects = document.querySelector("#queryProjects");
     const resetProjects = document.querySelector("#resetProjects");
+    const relatedProjectsOnly = document.querySelector("#relatedProjectsOnly");
     const systemValue = document.querySelector("#systemValue");
     const productMulti = document.querySelector("#productMulti");
     const productTrigger = productMulti.querySelector(".multi-trigger");
     const productValues = productMulti.querySelector(".multi-values");
     const productOptions = Array.from(productMulti.querySelectorAll(".multi-option"));
+    const currentUserName = "Danny Fang";
     let projectSequence = 25003;
     let latestCreatedProject = null;
     let activeFillTaskId = "";
@@ -2329,10 +2348,11 @@
         name: fieldValue("#program", "未命名项目"),
         stage: status === "草稿" ? "草稿" : "CKO",
         sellingRu: fieldValue("#sellingRu"),
-        customer: selectValue("#customerBrand"),
+        customer: fieldValue("#customerBrand"),
         system: systems.length ? systems.join("、") : "-",
         products: products.length ? products.join(", ") : "-",
         pm: selectValue("#projectManager"),
+        members: [...new Set([currentUserName, selectValue("#projectManager", "")].filter(Boolean))],
         rank: selectValue("#rank"),
         lrpType: selectValue("#lrpType"),
         peakVolume: fieldValue("#peakVolume"),
@@ -2353,6 +2373,7 @@
       row.dataset.brand = project.customer;
       row.dataset.status = project.status;
       row.dataset.health = project.health;
+      row.dataset.members = (project.members || []).join("|");
       row.innerHTML = `
         <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 ${escapeHtml(project.code)}"></td>
         <td class="sticky-left sticky-code">${escapeHtml(project.code)}</td>
@@ -2395,16 +2416,19 @@
         name: normalizeFilterValue("#projectName").toLowerCase(),
         brand: normalizeFilterValue("#brand").toLowerCase(),
         status: normalizeFilterValue("#status"),
-        health: normalizeFilterValue("#projectHealth")
+        health: normalizeFilterValue("#projectHealth"),
+        relatedOnly: relatedProjectsOnly.checked
       };
 
       tableBody.querySelectorAll("tr:not(.empty-row)").forEach((row) => {
+        const members = (row.dataset.members || "").split("|").filter(Boolean);
         const matches =
           (!filters.code || row.dataset.code.toLowerCase().includes(filters.code)) &&
           (!filters.name || row.dataset.name.toLowerCase().includes(filters.name)) &&
           (!filters.brand || row.dataset.brand.toLowerCase().includes(filters.brand)) &&
           (!filters.status || row.dataset.status === filters.status) &&
-          (!filters.health || row.dataset.health === filters.health);
+          (!filters.health || row.dataset.health === filters.health) &&
+          (!filters.relatedOnly || members.includes(currentUserName));
         row.hidden = !matches;
       });
     }
@@ -2415,9 +2439,8 @@
       });
       document.querySelector("#status").selectedIndex = 0;
       document.querySelector("#projectHealth").selectedIndex = 0;
-      tableBody.querySelectorAll("tr:not(.empty-row)").forEach((row) => {
-        row.hidden = false;
-      });
+      relatedProjectsOnly.checked = true;
+      filterProjectRows();
     }
 
     function renderCkoTasks() {
@@ -2507,6 +2530,8 @@
     confirmProject.addEventListener("click", () => submitProject("进行中"));
     queryProjects.addEventListener("click", filterProjectRows);
     resetProjects.addEventListener("click", resetProjectFilters);
+    relatedProjectsOnly.addEventListener("change", filterProjectRows);
+    filterProjectRows();
     fillCkoLater.addEventListener("click", () => setModal(createSuccessModal, false));
     fillCkoNow.addEventListener("click", () => {
       setModal(createSuccessModal, false);
