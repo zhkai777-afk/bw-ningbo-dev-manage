@@ -2749,7 +2749,7 @@
     .library-head {
       min-height: 56px;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: space-between;
       gap: 18px;
       border-bottom: 1px solid var(--line);
@@ -3019,12 +3019,17 @@
       padding: 0 18px;
       font-weight: 900;
       cursor: pointer;
-      box-shadow: 0 0 0 2px #ffb000;
+      border: 0;
     }
 
     .library-file-button .icon {
       width: 16px;
       height: 16px;
+    }
+
+    .library-file-button:focus-visible {
+      outline: 3px solid rgba(23, 105, 255, .24);
+      outline-offset: 2px;
     }
 
     .library-file-name-text {
@@ -3083,7 +3088,7 @@
       margin-bottom: 16px;
       padding-bottom: 0;
       border-bottom: 0;
-      align-items: flex-start;
+      align-items: center;
     }
 
     .part-bom-filter.bom-filter,
@@ -5232,10 +5237,10 @@
       <section class="panel project-card">
         <div class="project-top">
           <div>
-            <div class="project-code">SCA220HCM2506281</div>
+            <div class="project-code">APQP-260803-011</div>
             <h1 class="project-title">PHASER INSERT</h1>
             <div class="info-grid project-ref-grid">
-              <div class="info-item"><b>关联开发项目编号：</b><button class="project-code-link" type="button" data-open-project="SCA220HCM2506281">SCA220HCM2506281</button><span class="empty-value" data-project-code-empty hidden>-</span></div>
+              <div class="info-item"><b>关联开发项目编号：</b><button class="project-code-link" type="button" data-open-project="PRJ-260803-001">PRJ-260803-001</button><span class="empty-value" data-project-code-empty hidden>-</span></div>
             </div>
           </div>
           <aside class="project-side">
@@ -5426,7 +5431,7 @@
                 <h2 class="section-title">关联生产BOM</h2>
               </div>
               <div class="bom-meta">
-                <span data-source-project-text>来源项目：SCA220HCM2506281 / EA888 E5 VCT</span>
+                <span data-source-project-text>来源项目：PRJ-260803-001 / EA888 E5 VCT</span>
                 <span data-current-part-text>当前零件：PHASER INSERT</span>
                 <span>负责人：SQD / Zack</span>
               </div>
@@ -5716,6 +5721,7 @@
                 <h2 class="section-title">项目资料库</h2>
               </div>
             </div>
+            <button class="btn btn-primary" type="button" data-open-library-upload><svg class="icon"><use href="#i-upload"></use></svg>上传附件</button>
           </header>
 
           <form class="bom-filter library-search" id="librarySearchForm" role="search">
@@ -5734,16 +5740,16 @@
           <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
-                <col style="width: 34%">
-                <col style="width: 34%">
-                <col style="width: 14%">
-                <col style="width: 10%">
+                <col style="width: 42%">
+                <col style="width: 26%">
+                <col style="width: 12%">
+                <col style="width: 12%">
                 <col style="width: 8%">
               </colgroup>
               <thead>
                 <tr>
-                  <th>任务节点</th>
                   <th>文件名称</th>
+                  <th>备注</th>
                   <th>上传日期</th>
                   <th>上传人</th>
                   <th>操作</th>
@@ -5751,22 +5757,29 @@
               </thead>
               <tbody id="libraryTableBody">
                 <tr data-source="task">
-                  <td>3.5 CQI special process assessment (e.g. CQI-9, 11, 12 etc.)</td>
+                  <td><div class="library-file-name">供应商产能爬坡计划与风险清单.xlsx</div></td>
+                  <td>供应商准备度评审</td>
+                  <td>2025-10-31</td>
+                  <td>Luna</td>
+                  <td><a class="blue-link" href="#">下载</a></td>
+                </tr>
+                <tr data-source="task">
                   <td><div class="library-file-name">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</div></td>
+                  <td>3.5 CQI 特殊过程评审（CQI-9/11/12 等）</td>
                   <td>2025-10-31</td>
                   <td>Theodore</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td>Gate2 Supplier Readiness Review</td>
-                  <td><div class="library-file-name">供应商产能爬坡计划与风险清单.xlsx</div></td>
+                  <td><div class="library-file-name">二供样件验证计划与供应商开发记录.xlsx</div></td>
+                  <td>二供同步开发资料包</td>
                   <td>2025-10-31</td>
-                  <td>Luna</td>
+                  <td>SQD</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
-                <tr data-source="manual">
-                  <td>PKO Meeting Minutes</td>
+                <tr data-source="task">
                   <td><div class="library-file-name">PKO 启动会会议纪要及行动项.docx</div></td>
+                  <td>启动会会议纪要</td>
                   <td>2025-10-31</td>
                   <td>Willow</td>
                   <td><a class="blue-link" href="#">下载</a></td>
@@ -5776,7 +5789,7 @@
           </div>
 
           <div class="library-footer">
-            <span id="libraryResultCount">共 3 项数据</span>
+            <span id="libraryResultCount">共 4 项数据</span>
             <div class="library-pager" aria-label="分页">
               <span>‹</span>
               <button type="button">1</button>
@@ -6357,7 +6370,7 @@
         <div class="project-edit-grid">
           <div class="project-edit-field">
             <label class="required" for="editTaskNo">任务编号</label>
-            <input class="field" id="editTaskNo" value="QEP-2025-05-011" placeholder="请输入任务编号">
+            <input class="field" id="editTaskNo" value="APQP-260803-011" placeholder="请输入任务编号">
           </div>
           <div class="project-edit-field">
             <label class="required" for="editPartName">零件名称</label>
@@ -6365,7 +6378,7 @@
           </div>
           <div class="project-edit-field">
             <label for="editProjectName">所属项目</label>
-            <input class="field" id="editProjectName" value="SCA220HCM2506281 / EA888 E5 VCT" placeholder="请输入所属项目">
+            <input class="field" id="editProjectName" value="PRJ-260803-001 / EA888 E5 VCT" placeholder="请输入所属项目">
           </div>
           <div class="project-edit-field">
             <label class="required" for="editQualityProcess">产品质量流程</label>
@@ -6554,6 +6567,53 @@
       <div class="confirm-body" id="messageModalBody"></div>
       <div class="modal-foot">
         <button class="btn btn-primary" type="button" data-close-message>知道了</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="teamMemberConfirmModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="teamMemberConfirmTitle">
+      <div class="modal-head">
+        <h3 id="teamMemberConfirmTitle">确认移除团队成员</h3>
+        <button class="modal-close" type="button" data-close-team-member-confirm aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p id="teamMemberConfirmMessage">确认移除该团队成员吗？</p>
+        <div class="gate-blocker-list" id="teamMemberConfirmDetail"></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-team-member-confirm>取消</button>
+        <button class="btn btn-danger" type="button" id="confirmTeamMemberRemove">确认移除</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="teamMemberRemovalModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="teamMemberRemovalTitle">
+      <div class="modal-head">
+        <h3 id="teamMemberRemovalTitle">处理成员关联任务</h3>
+        <button class="modal-close" type="button" data-close-team-member-removal aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p id="teamMemberRemovalMessage">请确认关联任务的处理方式。</p>
+        <div class="gate-blocker-list">
+          <label class="gate-blocker-item" style="display:grid;gap:8px">
+            <span><span class="required">*</span>处理方式</span>
+            <select class="field-input" id="teamMemberRemovalAction">
+              <option value="reassign">重新指定负责人</option>
+              <option value="cancel">取消关联任务（保留记录）</option>
+            </select>
+          </label>
+          <label class="gate-blocker-item" id="teamMemberReplacementField" style="display:grid;gap:8px">
+            <span><span class="required">*</span>新的负责人</span>
+            <select class="field-input" id="teamMemberReplacement"></select>
+          </label>
+        </div>
+        <p class="form-error" id="teamMemberRemovalError" hidden style="margin:10px 0 0"></p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-team-member-removal>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmTeamMemberRemoval">确认处理并移除</button>
       </div>
     </section>
   </div>
@@ -10725,6 +10785,17 @@
     const removeAllMembers = document.getElementById("removeAllMembers");
     const clearSelectedMembers = document.getElementById("clearSelectedMembers");
     const confirmMembers = document.getElementById("confirmMembers");
+    const teamMemberConfirmModal = document.getElementById("teamMemberConfirmModal");
+    const teamMemberConfirmMessage = document.getElementById("teamMemberConfirmMessage");
+    const teamMemberConfirmDetail = document.getElementById("teamMemberConfirmDetail");
+    const confirmTeamMemberRemove = document.getElementById("confirmTeamMemberRemove");
+    const teamMemberRemovalModal = document.getElementById("teamMemberRemovalModal");
+    const teamMemberRemovalMessage = document.getElementById("teamMemberRemovalMessage");
+    const teamMemberRemovalAction = document.getElementById("teamMemberRemovalAction");
+    const teamMemberReplacementField = document.getElementById("teamMemberReplacementField");
+    const teamMemberReplacement = document.getElementById("teamMemberReplacement");
+    const teamMemberRemovalError = document.getElementById("teamMemberRemovalError");
+    const confirmTeamMemberRemoval = document.getElementById("confirmTeamMemberRemoval");
     const planInputs = Array.from(document.querySelectorAll("[data-plan-field]"));
     const planAlert = document.getElementById("planAlert");
     const savePlanButton = document.getElementById("savePlan");
@@ -11290,6 +11361,9 @@
       if (status === "done") {
         return `<span class="status-dot done-dot">已完成</span>`;
       }
+      if (status === "cancelled") {
+        return `<span class="status-dot reject-dot">已取消</span>`;
+      }
       if (status === "rejected") {
         return `<span class="status-dot reject-dot">审批拒绝</span>`;
       }
@@ -11299,6 +11373,9 @@
     function operationHtml(task) {
       if (task.status === "done") {
         return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
+      }
+      if (task.status === "cancelled") {
+        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-reject="${escapeHtml(task.id)}">查看原因</button></span>`;
       }
       if (task.status === "rejected") {
         return `
@@ -11534,8 +11611,8 @@
       const sourceParts = bomState.rows.filter((row) => row.level > 1);
       return sourceParts.map((part, index) => ({
         no: index + 1,
-        apqpNo: `APQP-SUB-${String(index + 1).padStart(3, "0")}`,
-        projectNo: "SCA220HCM2506281",
+        apqpNo: `APQP-260803-${String(index + 12).padStart(3, "0")}`,
+        projectNo: "PRJ-260803-001",
         parentApqp: "APQP-L1-001 / PHASER INSERT",
         partNo: part.bwNo || "-",
         partName: part.name,
@@ -12307,7 +12384,8 @@
 
         if (rejectReasonButton) {
           const task = findStageTask(rejectReasonButton.dataset.viewReject);
-          showMessage("驳回原因", `<p>${escapeHtml(task?.rejectReason || "暂无驳回原因")}</p>`);
+          const isCancelled = task?.status === "cancelled";
+          showMessage(isCancelled ? "取消原因" : "驳回原因", `<p>${escapeHtml(isCancelled ? task?.cancelReason || "暂无取消原因" : task?.rejectReason || "暂无驳回原因")}</p>`);
         }
       });
 
@@ -12687,6 +12765,8 @@
     ];
     let draftSelectedMemberIds = new Set();
     let draftReviewerIds = new Set();
+    let pendingTeamMemberConfirm = null;
+    let pendingTeamMemberRemoval = null;
     const collapsedTeams = new Set(["l-l", "me", "pm", "operation", "qa"]);
 
     function escapeHtml(value) {
@@ -12705,6 +12785,152 @@
 
     function currentTeamMemberIds() {
       return new Set(teamMembers.map((member) => member.id));
+    }
+
+    function memberTaskKeywords(member) {
+      return [member?.role, member?.department, member?.teamName]
+        .filter(Boolean)
+        .map((value) => String(value).trim().toLowerCase());
+    }
+
+    function isTaskAssignedToMember(task, member) {
+      if (!task || !member) return false;
+      if (task.assignedMemberId) return task.assignedMemberId === member.id;
+      const taskDepartments = `${task.department || ""},${task.owner || ""}`
+        .split(",")
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean);
+      return memberTaskKeywords(member).some((keyword) => taskDepartments.includes(keyword));
+    }
+
+    function stageTasksAssignedToMember(member) {
+      return Object.entries(stageTasks).flatMap(([stage, rows]) => rows
+        .filter((task) => task.status !== "cancelled" && isTaskAssignedToMember(task, member))
+        .map((task) => ({ stage, task })));
+    }
+
+    function removeTeamMember(memberId) {
+      const index = teamMembers.findIndex((member) => member.id === memberId);
+      if (index < 0) return false;
+      teamMembers.splice(index, 1);
+      renderTeamTable();
+      return true;
+    }
+
+    function setStageTaskOwner(task, member) {
+      task.assignedMemberId = member.id;
+      task.assignedMemberName = member.name;
+      task.assignedMemberRole = member.role;
+      task.owner = member.role;
+      task.department = member.department;
+      task.operator = member.name;
+    }
+
+    function cancelStageTask(task, member) {
+      task.status = "cancelled";
+      task.cancelReason = `团队成员 ${member.name} 已移除，关联任务未重新指定负责人。`;
+      task.operator = "-";
+    }
+
+    function replacementCandidates(member) {
+      return Array.from(memberMap.values()).filter((candidate) => candidate.id !== member.id && (
+        candidate.department === member.department || candidate.role === member.role
+      ));
+    }
+
+    function closeTeamMemberConfirm() {
+      if (teamMemberConfirmModal) teamMemberConfirmModal.hidden = true;
+      pendingTeamMemberConfirm = null;
+    }
+
+    function closeTeamMemberRemovalModal() {
+      if (teamMemberRemovalModal) teamMemberRemovalModal.hidden = true;
+      pendingTeamMemberRemoval = null;
+    }
+
+    function refreshTeamMemberRemovalFields() {
+      const isReassign = teamMemberRemovalAction?.value === "reassign";
+      if (teamMemberReplacementField) teamMemberReplacementField.hidden = !isReassign;
+      if (teamMemberRemovalError) teamMemberRemovalError.hidden = true;
+    }
+
+    function openTeamMemberRemovalModal(context) {
+      const { member, tasks } = context;
+      const candidates = replacementCandidates(member);
+      pendingTeamMemberRemoval = context;
+      if (teamMemberRemovalMessage) {
+        teamMemberRemovalMessage.textContent = `${member.name} 是当前子零件开发团队中唯一的 ${member.department} 成员，仍关联 ${tasks.length} 项子零件开发任务。请重新指定承接人，或取消关联任务并保留取消记录。`;
+      }
+      if (teamMemberReplacement) {
+        teamMemberReplacement.innerHTML = candidates.length
+          ? `<option value="">请选择负责人</option>${candidates.map((candidate) => `<option value="${escapeHtml(candidate.id)}">${escapeHtml(candidate.name)}（${escapeHtml(candidate.role)} · ${escapeHtml(candidate.department)}）</option>`).join("")}`
+          : `<option value="">暂无可指定的同部门成员</option>`;
+      }
+      if (teamMemberRemovalAction) {
+        const reassignOption = teamMemberRemovalAction.querySelector('option[value="reassign"]');
+        if (reassignOption) reassignOption.disabled = !candidates.length;
+        teamMemberRemovalAction.value = candidates.length ? "reassign" : "cancel";
+      }
+      refreshTeamMemberRemovalFields();
+      if (teamMemberRemovalModal) teamMemberRemovalModal.hidden = false;
+    }
+
+    function requestTeamMemberRemoval(memberId) {
+      const member = memberMap.get(memberId);
+      if (!member || !teamMembers.some((item) => item.id === memberId)) return;
+      const tasks = stageTasksAssignedToMember(member);
+      const sameDepartmentMembers = teamMembers
+        .map((item) => memberMap.get(item.id))
+        .filter((candidate) => candidate && candidate.id !== member.id && candidate.department === member.department);
+      pendingTeamMemberConfirm = { member, tasks, sameDepartmentMembers };
+      if (teamMemberConfirmMessage) teamMemberConfirmMessage.textContent = `确认从子零件开发团队移除 ${member.name} 吗？`;
+      if (teamMemberConfirmDetail) {
+        const details = [
+          { title: "子零件开发任务", description: `关联 ${tasks.length} 项` },
+          ...(sameDepartmentMembers.length
+            ? [{ title: "部门成员", description: `移除后该部门仍有 ${sameDepartmentMembers.length} 名成员，关联任务将自动交接。` }]
+            : [{ title: "部门成员", description: "该成员是当前团队中该部门的最后一人；如有关联任务，需继续处理。" }])
+        ];
+        teamMemberConfirmDetail.innerHTML = details.map((item) => `<div class="gate-blocker-item"><b>${escapeHtml(item.title)}</b><span>${escapeHtml(item.description)}</span></div>`).join("");
+      }
+      if (teamMemberConfirmModal) teamMemberConfirmModal.hidden = false;
+    }
+
+    function confirmTeamMemberRemovalRequest() {
+      const context = pendingTeamMemberConfirm;
+      if (!context) return;
+      const { member, tasks, sameDepartmentMembers } = context;
+      closeTeamMemberConfirm();
+      if (!tasks.length) {
+        removeTeamMember(member.id);
+        addPartEvent({
+          category: "task",
+          type: "成员",
+          title: "移除子零件开发团队成员",
+          description: `已移除 ${member.name}，该成员无关联的子零件开发任务。`,
+          actor: "当前用户",
+          role: currentRecordRole,
+          scope: "团队成员"
+        });
+        return;
+      }
+      if (!sameDepartmentMembers.length) {
+        openTeamMemberRemovalModal({ member, tasks });
+        return;
+      }
+      const replacement = sameDepartmentMembers[0];
+      tasks.forEach(({ task }) => setStageTaskOwner(task, replacement));
+      removeTeamMember(member.id);
+      renderStageTasks(activeStage);
+      addPartEvent({
+        category: "task",
+        type: "成员",
+        title: "移除子零件开发团队成员并转交任务",
+        description: `已移除 ${member.name}；${tasks.length} 项子零件开发任务已转交 ${replacement.name}。`,
+        actor: "当前用户",
+        role: currentRecordRole,
+        scope: "团队成员"
+      });
     }
 
     function updateTeamSummary(visibleCount) {
@@ -12961,12 +13187,67 @@
     teamTableBody.addEventListener("click", (event) => {
       const removeButton = event.target.closest("[data-remove-team-member]");
       if (removeButton) {
-        const index = teamMembers.findIndex((member) => member.id === removeButton.dataset.removeTeamMember);
-        if (index >= 0) {
-          teamMembers.splice(index, 1);
-          renderTeamTable();
-        }
+        requestTeamMemberRemoval(removeButton.dataset.removeTeamMember);
       }
+    });
+
+    document.querySelectorAll("[data-close-team-member-confirm]").forEach((button) => {
+      button.addEventListener("click", closeTeamMemberConfirm);
+    });
+    teamMemberConfirmModal?.addEventListener("click", (event) => {
+      if (event.target === teamMemberConfirmModal) closeTeamMemberConfirm();
+    });
+    confirmTeamMemberRemove?.addEventListener("click", confirmTeamMemberRemovalRequest);
+
+    document.querySelectorAll("[data-close-team-member-removal]").forEach((button) => {
+      button.addEventListener("click", closeTeamMemberRemovalModal);
+    });
+    teamMemberRemovalModal?.addEventListener("click", (event) => {
+      if (event.target === teamMemberRemovalModal) closeTeamMemberRemovalModal();
+    });
+    teamMemberRemovalAction?.addEventListener("change", refreshTeamMemberRemovalFields);
+    confirmTeamMemberRemoval?.addEventListener("click", () => {
+      const context = pendingTeamMemberRemoval;
+      if (!context) return;
+      const { member, tasks } = context;
+      if (teamMemberRemovalAction?.value === "reassign") {
+        const replacement = memberMap.get(teamMemberReplacement?.value || "");
+        if (!replacement || replacement.id === member.id) {
+          if (teamMemberRemovalError) {
+            teamMemberRemovalError.textContent = "请选择新的负责人。";
+            teamMemberRemovalError.hidden = false;
+          }
+          teamMemberReplacement?.focus();
+          return;
+        }
+        if (!teamMembers.some((item) => item.id === replacement.id)) {
+          teamMembers.push({ id: replacement.id, reviewer: false });
+        }
+        tasks.forEach(({ task }) => setStageTaskOwner(task, replacement));
+        addPartEvent({
+          category: "task",
+          type: "成员",
+          title: "移除子零件开发团队成员并重新指定任务负责人",
+          description: `已移除 ${member.name}；${tasks.length} 项子零件开发任务已转交 ${replacement.name}。`,
+          actor: "当前用户",
+          role: currentRecordRole,
+          scope: "团队成员"
+        });
+      } else {
+        tasks.forEach(({ task }) => cancelStageTask(task, member));
+        addPartEvent({
+          category: "task",
+          type: "成员",
+          title: "移除子零件开发团队成员并取消关联任务",
+          description: `已移除 ${member.name}；${tasks.length} 项子零件开发任务已取消并保留追溯记录。`,
+          actor: "当前用户",
+          role: currentRecordRole,
+          scope: "团队成员"
+        });
+      }
+      removeTeamMember(member.id);
+      renderStageTasks(activeStage);
+      closeTeamMemberRemovalModal();
     });
 
     function filterLibraryRows() {
@@ -13033,14 +13314,14 @@
       const row = document.createElement("tr");
       row.dataset.source = payload.source;
       row.innerHTML = `
-        <td></td>
         <td><div class="library-file-name"></div></td>
+        <td></td>
         <td></td>
         <td></td>
         <td><a class="blue-link" href="#">下载</a></td>
       `;
-      row.children[0].textContent = payload.milestone;
-      row.children[1].querySelector(".library-file-name").textContent = payload.fileName;
+      row.children[0].querySelector(".library-file-name").textContent = payload.fileName;
+      row.children[1].textContent = payload.remark || payload.milestone || "-";
       row.children[2].textContent = payload.uploadDate;
       row.children[3].textContent = payload.uploader;
       const downloadLink = row.children[4].querySelector("a");
@@ -13065,7 +13346,7 @@
       const emptyRow = libraryTableBody.querySelector(".library-empty-row");
       const row = createLibraryRow({
         source: "manual",
-        milestone: remark,
+        remark,
         fileName: file.name,
         uploadDate,
         uploader: "当前用户",
@@ -13092,6 +13373,7 @@
     librarySearchInput.addEventListener("input", filterLibraryRows);
     librarySearchInput.addEventListener("search", filterLibraryRows);
     libraryUploadFile?.addEventListener("change", renderLibraryUploadSelection);
+    document.querySelector("[data-open-library-upload]")?.addEventListener("click", showLibraryUploadModal);
     document.querySelector("[data-choose-library-file]")?.addEventListener("click", () => {
       libraryUploadFile?.click();
     });
@@ -13105,9 +13387,6 @@
         activeLibrarySource = button.dataset.librarySource;
         librarySourceTabs.forEach((item) => item.classList.toggle("active", item === button));
         filterLibraryRows();
-        if (activeLibrarySource === "manual") {
-          showLibraryUploadModal();
-        }
       });
     });
 
@@ -13117,6 +13396,12 @@
       }
       if (event.key === "Escape" && !memberModal.hidden) {
         hideMemberModal();
+      }
+      if (event.key === "Escape" && teamMemberConfirmModal && !teamMemberConfirmModal.hidden) {
+        closeTeamMemberConfirm();
+      }
+      if (event.key === "Escape" && teamMemberRemovalModal && !teamMemberRemovalModal.hidden) {
+        closeTeamMemberRemovalModal();
       }
       if (event.key === "Escape" && libraryUploadModal && !libraryUploadModal.hidden) {
         hideLibraryUploadModal();
@@ -13179,7 +13464,7 @@
       dfmRecords: [],
       histories: [],
       rows: [
-        { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", dfmNo: "DFM-20250520-001", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 双供同步开发", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", childTaskDone: true, remark: "当前开发零件" },
+        { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", dfmNo: "DFM-260803-001", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 双供同步开发", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", childTaskDone: true, remark: "当前开发零件" },
         { id: "phaser-insert-2", no: 2, level: 2, name: "INSERT BODY", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070001", drawingRev: "R1", sampleSapNo: "SAP-P-9001-01", massSapNo: "SAP-S-9001-01", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "6.2", weightAssembly: "6.2", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 单一供应", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", remark: "注塑主体" },
         { id: "phaser-insert-3", no: 3, level: 2, name: "WEAR PAD", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070002", drawingRev: "A", sampleSapNo: "SAP-P-9001-02", massSapNo: "SAP-S-9001-02", rawNo: "RM-PA46", rawMaterial: "PA46", weightPiece: "1.8", weightAssembly: "1.8", sharedPart: "否", borrowedProject: "-", releaseStatus: "评审中", rawSupplier: "Ningbo Polymer", subSupplier: "B-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Rita Zhou", supplyPlan: "二供 · 后续导入", startGate: "Gate3", blockGate: "否", changeStatus: "新增", impactAction: "项目端确认新增二供后同步", remark: "摩擦片" },
         { id: "phaser-insert-4", no: 4, level: 3, name: "STEEL PIN", application: "VCT", qty: "2", customerNo: "-", bwNo: "5070003", drawingRev: "A", sampleSapNo: "SAP-P-9001-03", massSapNo: "SAP-S-9001-03", rawNo: "RM-SUS304", rawMaterial: "SUS304", weightPiece: "0.35", weightAssembly: "0.7", sharedPart: "是", borrowedProject: "EA888 E5", releaseStatus: "已释放", rawSupplier: "Ningbo Steel", subSupplier: "C-Supplier", needApqp: "否", createTask: "否", apqpOwner: "-", supplyPlan: "共用件 · 备案", startGate: "-", blockGate: "否", changeStatus: "无变更", impactAction: "共用件不生成开发任务", remark: "定位销" }
@@ -13205,7 +13490,8 @@
     function applyIncomingBomTaskContext() {
       const params = new URLSearchParams(window.location.search);
       const source = params.get("source") || "";
-      if (!["bom", "apqp", "manual"].includes(source)) return;
+      const taskId = params.get("taskId") || "";
+      if (!["bom", "apqp", "manual"].includes(source) && !taskId) return;
       const partNo = params.get("partNo") || "";
       const partName = params.get("partName") || "";
       const projectCode = params.get("projectCode") || "";
@@ -13219,7 +13505,12 @@
       const status = params.get("status") || "";
       const displayName = partName || document.querySelector(".project-title")?.textContent?.trim() || "子零件开发任务";
       if (partName) document.querySelector(".project-title").textContent = displayName;
-      if (partNo) document.querySelector(".project-code").textContent = partNo;
+      const displayTaskNo = taskId || partTaskNo || apqpId;
+      if (displayTaskNo) {
+        document.querySelector(".project-code").textContent = displayTaskNo;
+        const editTaskNo = document.querySelector("#editTaskNo");
+        if (editTaskNo) editTaskNo.value = displayTaskNo;
+      }
       const projectButton = document.querySelector("[data-open-project]");
       const projectCodeEmpty = document.querySelector("[data-project-code-empty]");
       if (projectButton) {
@@ -14086,8 +14377,13 @@
     }
 
     function nextDfmNo() {
-      const next = (bomState.dfmRecords.length + 1).toString().padStart(3, "0");
-      return `DFM-${new Date().getFullYear()}${String(new Date().getMonth() + 1).padStart(2, "0")}${String(new Date().getDate()).padStart(2, "0")}-${next}`;
+      const now = new Date();
+      const prefix = `DFM-${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}-`;
+      const dailyMax = bomState.dfmRecords
+        .map((record) => record.dfmNo || "")
+        .filter((id) => id.startsWith(prefix))
+        .reduce((max, id) => Math.max(max, Number(id.slice(prefix.length)) || 0), 0);
+      return `${prefix}${String(dailyMax + 1).padStart(3, "0")}`;
     }
 
     function dfmField(name) {

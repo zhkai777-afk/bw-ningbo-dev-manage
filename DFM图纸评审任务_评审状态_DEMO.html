@@ -2638,8 +2638,8 @@
 
     body.list-mode .list-filter-bar {
       display: grid;
-      grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr) minmax(300px, 1fr) 1px auto;
-      gap: 16px 32px;
+      grid-template-columns: repeat(4, minmax(205px, 1fr)) 1px auto;
+      gap: 16px 24px;
       align-items: center;
       margin-bottom: 22px;
       padding: 24px 18px;
@@ -2651,7 +2651,7 @@
 
     body.list-mode .list-filter-bar .field {
       display: grid;
-      grid-template-columns: 120px minmax(0, 1fr);
+      grid-template-columns: 100px minmax(0, 1fr);
       align-items: center;
       gap: 10px;
       color: #4d5868;
@@ -2700,19 +2700,15 @@
 
     body.list-mode .filter-divider {
       width: 1px;
-      height: 84px;
+      height: 36px;
       background: #dde3eb;
-      grid-row: 1 / span 2;
-      grid-column: 4;
     }
 
     body.list-mode .filter-actions {
       display: flex;
       gap: 12px;
       align-items: center;
-      grid-row: 1 / span 2;
-      grid-column: 5;
-      padding-left: 10px;
+      padding-left: 0;
     }
 
     body.list-mode .filter-actions .btn {
@@ -2735,6 +2731,37 @@
       justify-content: flex-start;
       gap: 12px;
       margin-bottom: 14px;
+    }
+
+    body.list-mode .related-filter {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0 2px;
+      border: 0;
+      background: transparent;
+      color: #344054;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    body.list-mode .related-filter:hover {
+      color: var(--primary);
+    }
+
+    body.list-mode .related-filter input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    body.list-mode .related-filter:has(input:focus-visible) {
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
     }
 
     body.list-mode .dfm-list-panel .tag {
@@ -3742,9 +3769,13 @@
           <span>所属项目</span>
           <select data-list-project>
             <option>全部</option>
-            <option>PRJ-2024-001</option>
-            <option>PRJ-2024-006</option>
+            <option>PRJ-260803-001</option>
+            <option>PRJ-260803-002</option>
           </select>
+        </label>
+        <label class="field">
+          <span>零件编号</span>
+          <input data-list-part-no placeholder="输入零件编号">
         </label>
         <label class="field">
           <span>任务状态</span>
@@ -3766,6 +3797,10 @@
           <span class="add-icon" aria-hidden="true"></span>
           新建图纸评审任务
         </button>
+        <label class="related-filter">
+          <input type="checkbox" data-list-related aria-label="仅查看与我相关的任务">
+          <span>仅查看与我相关的</span>
+        </label>
       </div>
 
       <section class="panel dfm-list-panel" aria-label="DFM 图纸评审任务列表">
@@ -3805,9 +3840,9 @@
               </tr>
             </thead>
             <tbody data-dfm-list-body>
-              <tr data-dfm-record data-id="DFM-TASK-2024-001" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-no="TH-2024-001" data-part-name="涡轮增压器壳体" data-drawing="Rev.A" data-owner="Alex Wang" data-open="3" data-infeasible="1" data-unoptimized="2" data-cost="-0.10" data-status="进行中" data-updated="20xx-12-25 14:30">
-                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-001</button></td>
-                <td>PRJ-2024-001</td>
+              <tr data-dfm-record data-id="DFM-260803-001" data-project="PRJ-260803-001" data-customer="OEM 客户 A" data-part-no="TH-2024-001" data-part-name="涡轮增压器壳体" data-drawing="Rev.A" data-owner="Alex Wang" data-open="3" data-infeasible="1" data-unoptimized="2" data-cost="-0.10" data-status="进行中" data-updated="20xx-12-25 14:30">
+                <td><button class="record-link" type="button" data-view-detail>DFM-260803-001</button></td>
+                <td>PRJ-260803-001</td>
                 <td><button class="record-link" type="button" data-view-detail>TH-2024-001</button></td>
                 <td>涡轮增压器壳体</td>
                 <td>Rev.A</td>
@@ -3817,9 +3852,9 @@
                 <td>20xx-12-25 14:30</td>
                 <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button><button class="mini-btn" type="button" data-open-drawing-list>图纸清单</button></div></td>
               </tr>
-              <tr data-dfm-record data-id="DFM-TASK-2024-002" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-no="CH-2024-014" data-part-name="正时链轮支架" data-drawing="Rev.B" data-owner="Mia Chen" data-open="2" data-infeasible="0" data-unoptimized="2" data-cost="-0.06" data-status="进行中" data-updated="20xx-12-24 16:10">
-                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-002</button></td>
-                <td>PRJ-2024-001</td>
+              <tr data-dfm-record data-id="DFM-260803-002" data-project="PRJ-260803-001" data-customer="OEM 客户 A" data-part-no="CH-2024-014" data-part-name="正时链轮支架" data-drawing="Rev.B" data-owner="Mia Chen" data-open="2" data-infeasible="0" data-unoptimized="2" data-cost="-0.06" data-status="进行中" data-updated="20xx-12-24 16:10">
+                <td><button class="record-link" type="button" data-view-detail>DFM-260803-002</button></td>
+                <td>PRJ-260803-001</td>
                 <td><button class="record-link" type="button" data-view-detail>CH-2024-014</button></td>
                 <td>正时链轮支架</td>
                 <td>Rev.B</td>
@@ -3829,9 +3864,9 @@
                 <td>20xx-12-24 16:10</td>
                 <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button><button class="mini-btn" type="button" data-open-drawing-list>图纸清单</button></div></td>
               </tr>
-              <tr data-dfm-record data-id="DFM-TASK-2024-003" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-no="OP-2024-021" data-part-name="油泵盖板" data-drawing="Rev.A" data-owner="Kevin Liu" data-open="3" data-infeasible="1" data-unoptimized="1" data-cost="0.00" data-status="已锁定" data-updated="20xx-12-20 09:35">
-                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-003</button></td>
-                <td>PRJ-2024-006</td>
+              <tr data-dfm-record data-id="DFM-260803-003" data-project="PRJ-260803-002" data-customer="OEM 客户 B" data-part-no="OP-2024-021" data-part-name="油泵盖板" data-drawing="Rev.A" data-owner="Kevin Liu" data-open="3" data-infeasible="1" data-unoptimized="1" data-cost="0.00" data-status="已锁定" data-updated="20xx-12-20 09:35">
+                <td><button class="record-link" type="button" data-view-detail>DFM-260803-003</button></td>
+                <td>PRJ-260803-002</td>
                 <td><button class="record-link" type="button" data-view-detail>OP-2024-021</button></td>
                 <td>油泵盖板</td>
                 <td>Rev.A</td>
@@ -3841,9 +3876,9 @@
                 <td>20xx-12-20 09:35</td>
                 <td><div class="table-actions"><button class="mini-btn primary" type="button" data-view-detail>查看详情</button><button class="mini-btn" type="button" data-open-drawing-list>图纸清单</button></div></td>
               </tr>
-              <tr data-dfm-record data-id="DFM-TASK-2024-004" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-no="CG-2024-032" data-part-name="链条导轨" data-drawing="Rev.C" data-owner="Sophia Zhang" data-open="2" data-infeasible="0" data-unoptimized="1" data-cost="-0.02" data-status="已锁定" data-updated="20xx-12-19 11:20">
-                <td><button class="record-link" type="button" data-view-detail>DFM-TASK-2024-004</button></td>
-                <td>PRJ-2024-006</td>
+              <tr data-dfm-record data-id="DFM-260803-004" data-project="PRJ-260803-002" data-customer="OEM 客户 B" data-part-no="CG-2024-032" data-part-name="链条导轨" data-drawing="Rev.C" data-owner="Sophia Zhang" data-open="2" data-infeasible="0" data-unoptimized="1" data-cost="-0.02" data-status="已锁定" data-updated="20xx-12-19 11:20">
+                <td><button class="record-link" type="button" data-view-detail>DFM-260803-004</button></td>
+                <td>PRJ-260803-002</td>
                 <td><button class="record-link" type="button" data-view-detail>CG-2024-032</button></td>
                 <td>链条导轨</td>
                 <td>Rev.C</td>
@@ -3887,7 +3922,7 @@
             <span>Design For Manufacturing Review Report</span>
           </div>
           <div class="print-report-meta">
-            <span data-print-report-no>报告编号：DFM-TASK-2024-001</span>
+            <span data-print-report-no>报告编号：DFM-260803-001</span>
             <span data-print-cover-date>导出时间：-</span>
           </div>
         </div>
@@ -3909,7 +3944,7 @@
             <tbody>
               <tr>
                 <th>项目</th>
-                <td data-print-cover-project>PRJ-2024-001</td>
+                <td data-print-cover-project>PRJ-260803-001</td>
                 <th>客户</th>
                 <td data-print-cover-customer>OEM 客户 A</td>
                 <th>评审日期</th>
@@ -3996,7 +4031,7 @@
         <div class="record-title">
           <h2 data-detail-record-title>涡轮增压器壳体 / TH-2024-001</h2>
           <div class="meta-line">
-            <span data-detail-project-text>项目：PRJ-2024-001</span>
+            <span data-detail-project-text>项目：PRJ-260803-001</span>
             <span data-detail-customer-text>客户：OEM 客户 A</span>
             <span data-detail-drawing-text>图纸版本：Rev.A</span>
             <span data-detail-updated-text>最后更新：20xx-12-25 14:30</span>
@@ -4127,7 +4162,7 @@
                   <rect x="0" y="0" width="330" height="126" class="dwg-frame"></rect>
                   <path d="M0 34 H330 M0 68 H330 M0 94 H330 M110 0 V126 M224 34 V126" class="dwg-thin"></path>
                   <text x="10" y="23" class="dwg-small">项目</text>
-                  <text x="120" y="23" class="dwg-text">PRJ-2024-001</text>
+                  <text x="120" y="23" class="dwg-text">PRJ-260803-001</text>
                   <text x="10" y="56" class="dwg-small">零件名称</text>
                   <text x="120" y="56" class="dwg-text">涡轮增压器壳体</text>
                   <text x="10" y="86" class="dwg-small">图号</text>
@@ -4297,7 +4332,7 @@
             <div class="section-body">
               <div class="field-grid">
                 <label class="field">项目名称
-                  <input value="PRJ-2024-001" readonly data-detail-project-input>
+                  <input value="PRJ-260803-001" readonly data-detail-project-input>
                 </label>
                 <label class="field">客户名称
                   <input value="OEM 客户 A" data-detail-customer-input>
@@ -4596,10 +4631,10 @@
       <div class="dialog-field-grid">
         <label class="field">关联零件
           <select data-create-part>
-            <option value="TH-2024-001" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-name="涡轮增压器壳体" data-drawing="Rev.A">TH-2024-001 / 涡轮增压器壳体</option>
-            <option value="CH-2024-014" data-project="PRJ-2024-001" data-customer="OEM 客户 A" data-part-name="正时链轮支架" data-drawing="Rev.B">CH-2024-014 / 正时链轮支架</option>
-            <option value="OP-2024-021" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-name="油泵盖板" data-drawing="Rev.A">OP-2024-021 / 油泵盖板</option>
-            <option value="CG-2024-032" data-project="PRJ-2024-006" data-customer="OEM 客户 B" data-part-name="链条导轨" data-drawing="Rev.C">CG-2024-032 / 链条导轨</option>
+            <option value="TH-2024-001" data-project="PRJ-260803-001" data-customer="OEM 客户 A" data-part-name="涡轮增压器壳体" data-drawing="Rev.A">TH-2024-001 / 涡轮增压器壳体</option>
+            <option value="CH-2024-014" data-project="PRJ-260803-001" data-customer="OEM 客户 A" data-part-name="正时链轮支架" data-drawing="Rev.B">CH-2024-014 / 正时链轮支架</option>
+            <option value="OP-2024-021" data-project="PRJ-260803-002" data-customer="OEM 客户 B" data-part-name="油泵盖板" data-drawing="Rev.A">OP-2024-021 / 油泵盖板</option>
+            <option value="CG-2024-032" data-project="PRJ-260803-002" data-customer="OEM 客户 B" data-part-name="链条导轨" data-drawing="Rev.C">CG-2024-032 / 链条导轨</option>
           </select>
         </label>
         <label class="field">负责人
@@ -4868,7 +4903,9 @@
     const dfmListBody = document.querySelector('[data-dfm-list-body]');
     const listKeywordInput = document.querySelector('[data-list-keyword]');
     const listProjectSelect = document.querySelector('[data-list-project]');
+    const listPartNoInput = document.querySelector('[data-list-part-no]');
     const listStatusSelect = document.querySelector('[data-list-status]');
+    const listRelatedCheckbox = document.querySelector('[data-list-related]');
     const searchListFilterButton = document.querySelector('[data-search-list-filter]');
     const resetListFilterButton = document.querySelector('[data-reset-list-filter]');
     const listTotalMetric = document.querySelector('[data-list-total]');
@@ -5320,8 +5357,14 @@
     }
 
     function nextDfmId() {
-      const nextNumber = (dfmListBody?.querySelectorAll('[data-dfm-record]').length || 0) + 1;
-      return `DFM-TASK-2024-${String(nextNumber).padStart(3, '0')}`;
+      const now = new Date();
+      const dateCode = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`;
+      const prefix = `DFM-${dateCode}-`;
+      const dailyMax = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || [])
+        .map((row) => row.dataset.id || '')
+        .filter((id) => id.startsWith(prefix))
+        .reduce((max, id) => Math.max(max, Number(id.slice(prefix.length)) || 0), 0);
+      return `${prefix}${String(dailyMax + 1).padStart(3, '0')}`;
     }
 
     function renderDfmRow(record) {
@@ -5437,13 +5480,17 @@
     function applyListFilter() {
       const keyword = (listKeywordInput?.value || '').trim().toLowerCase();
       const project = listProjectSelect?.value || '全部';
+      const partNo = (listPartNoInput?.value || '').trim().toLowerCase();
       const status = listStatusSelect?.value || '全部';
+      const relatedOnly = Boolean(listRelatedCheckbox?.checked);
       Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || []).forEach((row) => {
         const text = `${row.dataset.id} ${row.dataset.project} ${row.dataset.customer} ${row.dataset.partNo} ${row.dataset.partName} ${row.dataset.owner}`.toLowerCase();
         const matchesKeyword = !keyword || text.includes(keyword);
         const matchesProject = project === '全部' || row.dataset.project === project;
+        const matchesPartNo = !partNo || row.dataset.partNo.toLowerCase().includes(partNo);
         const matchesStatus = status === '全部' || row.dataset.status === status;
-        row.style.display = matchesKeyword && matchesProject && matchesStatus ? '' : 'none';
+        const matchesRelated = !relatedOnly || row.dataset.owner === currentReviewerName;
+        row.style.display = matchesKeyword && matchesProject && matchesPartNo && matchesStatus && matchesRelated ? '' : 'none';
       });
       updateListSummary();
     }
@@ -5678,7 +5725,7 @@
 
     function refreshPrintCover() {
       const exportedAt = new Date().toLocaleString('zh-CN', { hour12: false });
-      if (printReportNo) printReportNo.textContent = `报告编号：${currentDetailRecord?.id || 'DFM-TASK-2024-001'}`;
+      if (printReportNo) printReportNo.textContent = `报告编号：${currentDetailRecord?.id || 'DFM-260803-001'}`;
       if (printCoverProject) printCoverProject.textContent = detailProjectInput?.value || (detailProjectText?.textContent || '').replace('项目：', '') || '-';
       if (printCoverCustomer) printCoverCustomer.textContent = detailCustomerInput?.value || (detailCustomerText?.textContent || '').replace('客户：', '') || '-';
       if (printCoverReviewDate) printCoverReviewDate.textContent = document.querySelector('section[aria-label="项目信息"] input[type="date"]')?.value || '-';
@@ -6950,7 +6997,7 @@
       const existingRow = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || [])
         .find((row) => row.dataset.id === dfmNo || row.dataset.partNo === partNo);
       const record = existingRow ? rowData(existingRow) : {
-        id: dfmNo || 'DFM-TASK-BOM',
+        id: dfmNo || nextDfmId(),
         project: projectCode || '来源项目',
         customer: 'BOM 关联',
         partNo: partNo || '-',
@@ -6981,7 +7028,7 @@
 
     window.addEventListener('beforeprint', refreshPrintCover);
 
-    [listKeywordInput, listProjectSelect, listStatusSelect].forEach((control) => {
+    [listKeywordInput, listProjectSelect, listPartNoInput, listStatusSelect, listRelatedCheckbox].forEach((control) => {
       control?.addEventListener('input', applyListFilter);
       control?.addEventListener('change', applyListFilter);
     });
@@ -6991,7 +7038,9 @@
     resetListFilterButton?.addEventListener('click', () => {
       if (listKeywordInput) listKeywordInput.value = '';
       if (listProjectSelect) listProjectSelect.value = '全部';
+      if (listPartNoInput) listPartNoInput.value = '';
       if (listStatusSelect) listStatusSelect.value = '全部';
+      if (listRelatedCheckbox) listRelatedCheckbox.checked = false;
       applyListFilter();
     });
 

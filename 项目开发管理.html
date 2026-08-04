@@ -1482,9 +1482,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-code="DMSNIN25001" data-name="EA888 E5 VCT" data-brand="Volkswagen" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
-            <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25001"></td>
-            <td class="sticky-left sticky-code">DMSNIN25001</td>
+          <tr data-code="PRJ-260803-001" data-name="EA888 E5 VCT" data-brand="Volkswagen" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
+            <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 PRJ-260803-001"></td>
+            <td class="sticky-left sticky-code">PRJ-260803-001</td>
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
             <td>NINGBO VT</td>
             <td>Volkswagen</td>
@@ -1508,9 +1508,9 @@
             </td>
             <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
           </tr>
-          <tr data-code="DMSNIN25002" data-name="EA211 Evo 1.5l CN7" data-brand="Volkswagen" data-status="审批中" data-health="黄色" data-members="Michael Wang|Lisa Li">
-            <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 DMSNIN25002"></td>
-            <td class="sticky-left sticky-code">DMSNIN25002</td>
+          <tr data-code="PRJ-260803-002" data-name="EA211 Evo 1.5l CN7" data-brand="Volkswagen" data-status="审批中" data-health="黄色" data-members="Michael Wang|Lisa Li">
+            <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 PRJ-260803-002"></td>
+            <td class="sticky-left sticky-code">PRJ-260803-002</td>
             <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
             <td>NINGBO TD</td>
             <td>Volkswagen</td>
@@ -2035,7 +2035,18 @@
     const productValues = productMulti.querySelector(".multi-values");
     const productOptions = Array.from(productMulti.querySelectorAll(".multi-option"));
     const currentUserName = "Danny Fang";
-    let projectSequence = 25003;
+    function compactTaskDate(date = new Date()) {
+      return `${String(date.getFullYear()).slice(-2)}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+    }
+
+    function nextProjectTaskNo() {
+      const prefix = `PRJ-${compactTaskDate()}-`;
+      const dailyMax = Array.from(tableBody.querySelectorAll("tr[data-code]"))
+        .map((row) => row.dataset.code || "")
+        .filter((code) => code.startsWith(prefix))
+        .reduce((max, code) => Math.max(max, Number(code.slice(prefix.length)) || 0), 0);
+      return `${prefix}${String(dailyMax + 1).padStart(3, "0")}`;
+    }
     let latestCreatedProject = null;
     let activeFillTaskId = "";
     const ckoTasks = [
@@ -2344,7 +2355,7 @@
         .map((option) => option.dataset.system)
         .filter(Boolean))];
       return {
-        code: `DMSNIN${projectSequence++}`,
+        code: nextProjectTaskNo(),
         name: fieldValue("#program", "未命名项目"),
         stage: status === "草稿" ? "草稿" : "CKO",
         sellingRu: fieldValue("#sellingRu"),

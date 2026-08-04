@@ -266,17 +266,26 @@
     .toolbar {
       display: flex;
       align-items: center;
-      justify-content: space-between;
       gap: 12px;
       margin-bottom: 14px;
     }
 
-    .toolbar-tags {
+    .related-filter {
       display: inline-flex;
       align-items: center;
-      justify-content: flex-end;
-      gap: 12px;
-      flex-wrap: wrap;
+      gap: 8px;
+      color: #344054;
+      font-weight: 500;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .related-filter input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--primary);
+      cursor: pointer;
     }
 
     .table-shell {
@@ -836,10 +845,6 @@
         flex-direction: column;
       }
 
-      .toolbar-tags {
-        justify-content: flex-start;
-      }
-
       .filter-panel {
         grid-template-columns: 1fr;
       }
@@ -873,7 +878,7 @@
     <header class="page-title">
       <div class="page-heading">
         <div>
-          <h1>零件开发项目管理</h1>
+          <h1>零件APQP</h1>
           <div class="page-subtitle">查看项目开发关联的零件开发任务</div>
         </div>
       </div>
@@ -929,12 +934,12 @@
     <div class="toolbar" aria-label="列表操作">
       <button class="btn btn-primary" id="openDrawer" type="button">
         <span class="add-icon" aria-hidden="true"></span>
-        新建子零件开发任务
+        新建零件APQP
       </button>
-      <div class="toolbar-tags" aria-label="模块提示">
-        <span class="tag tag-blue">子零件开发独立模块</span>
-        <span class="tag tag-orange">风险仅提醒，不阻塞项目 Gate</span>
-      </div>
+      <label class="related-filter" for="relatedOnlyFilter">
+        <input id="relatedOnlyFilter" type="checkbox" checked>
+        仅查看与我相关的
+      </label>
     </div>
 
     <section class="table-shell" aria-label="子零件开发任务列表">
@@ -1002,7 +1007,7 @@
           <div class="form-grid">
             <div class="form-field">
               <label class="required" for="taskNo">任务编号</label>
-              <input class="field" id="taskNo" name="taskNo" value="QEP-2025-05-011" data-required="任务编号">
+              <input class="field" id="taskNo" name="taskNo" value="APQP-260803-011" data-required="任务编号">
               <div class="error-text" data-error-for="taskNo"></div>
             </div>
             <div class="form-field full">
@@ -1217,17 +1222,19 @@
 
   <script>
     const detailUrl = "子零件开发任务详情_调整版.html";
+    // 演示环境中的当前登录人；接入登录后由登录态中的用户信息替换。
+    const currentUser = "Li Ming";
     const tasks = [
-      ["QEP-2025-05-001", "D20-TSC/5050607/SINTEX-BAPL", "AC Busbar Assembly0.8", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate1", "进行中"],
-      ["QEP-2025-05-002", "D20-TSC/5050607/SINTEX-BAPL", "FACE GUIDE", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate1", "进行中"],
-      ["QEP-2025-05-003", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "GUIDE SECONDARY", "Full APQP process", "Xu Lulu", "DMS China-547", "Shanghai Supplier C", "BOM 创建", "Gate1", "进行中"],
-      ["QEP-2025-05-004", "D20-TSC/5050607/SINTEX-BAPL", "Radiator", "Full APQP process", "Zhang Nan", "DMS China-547", "Suzhou Supplier D", "手动新增", "Gate1", "进行中"],
-      ["QEP-2025-05-005", "D20-TSC/5050607/SINTEX-BAPL", "AC Busbar Assembly0.8", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate2", "进行中"],
-      ["QEP-2025-05-006", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Fuel Injector", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate2", "进行中"],
-      ["QEP-2025-05-007", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Catalytic Converter", "Full APQP process", "Xu Lulu", "DMS China-547", "Shanghai Supplier C", "BOM 创建", "Gate3", "进行中"],
-      ["QEP-2025-05-008", "D20-TSC/5050607/SINTEX-BAPL", "Shock Absorber", "Full APQP process", "Zhang Nan", "DMS China-547", "Suzhou Supplier D", "手动新增", "Gate4", "进行中"],
-      ["QEP-2025-05-009", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Transmission", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate5", "进行中"],
-      ["QEP-2025-05-010", "D20-TSC/5050607/SINTEX-BAPL", "Bumper", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate6", "进行中"]
+      ["APQP-260803-001", "D20-TSC/5050607/SINTEX-BAPL", "AC Busbar Assembly0.8", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate1", "进行中"],
+      ["APQP-260803-002", "D20-TSC/5050607/SINTEX-BAPL", "FACE GUIDE", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate1", "进行中"],
+      ["APQP-260803-003", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "GUIDE SECONDARY", "Full APQP process", "Xu Lulu", "DMS China-547", "Shanghai Supplier C", "BOM 创建", "Gate1", "进行中"],
+      ["APQP-260803-004", "D20-TSC/5050607/SINTEX-BAPL", "Radiator", "Full APQP process", "Zhang Nan", "DMS China-547", "Suzhou Supplier D", "手动新增", "Gate1", "进行中"],
+      ["APQP-260803-005", "D20-TSC/5050607/SINTEX-BAPL", "AC Busbar Assembly0.8", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate2", "进行中"],
+      ["APQP-260803-006", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Fuel Injector", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate2", "进行中"],
+      ["APQP-260803-007", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Catalytic Converter", "Full APQP process", "Xu Lulu", "DMS China-547", "Shanghai Supplier C", "BOM 创建", "Gate3", "进行中"],
+      ["APQP-260803-008", "D20-TSC/5050607/SINTEX-BAPL", "Shock Absorber", "Full APQP process", "Zhang Nan", "DMS China-547", "Suzhou Supplier D", "手动新增", "Gate4", "进行中"],
+      ["APQP-260803-009", "TATA3.3L-TSC/5054770/SINTEX-BAPL", "Transmission", "Full APQP process", "Li Ming", "DMS China-547", "Ningbo Supplier A", "BOM 创建", "Gate5", "进行中"],
+      ["APQP-260803-010", "D20-TSC/5050607/SINTEX-BAPL", "Bumper", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate6", "进行中"]
     ].map(([id, partName, project, quality, owner, department, supplier, source, gate, status]) => ({
       id,
       partName,
@@ -1242,6 +1249,7 @@
     }));
 
     const taskTableBody = document.querySelector("#taskTableBody");
+    const relatedOnlyFilter = document.querySelector("#relatedOnlyFilter");
     const drawerMask = document.querySelector("#drawerMask");
     const taskForm = document.querySelector("#taskForm");
     const toast = document.querySelector("#toast");
@@ -1457,7 +1465,14 @@
 
     function resetForm() {
       taskForm.reset();
-      document.querySelector("#taskNo").value = "QEP-2025-05-011";
+      const now = new Date();
+      const dateCode = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
+      const prefix = `APQP-${dateCode}-`;
+      const dailyMax = tasks
+        .map((task) => task.id || "")
+        .filter((id) => id.startsWith(prefix))
+        .reduce((max, id) => Math.max(max, Number(id.slice(prefix.length)) || 0), 0);
+      document.querySelector("#taskNo").value = `${prefix}${String(dailyMax + 1).padStart(3, "0")}`;
       document.querySelector("#qualityProcess").value = "Full APQP process";
       document.querySelector("#department").value = "DMS China-547";
       document.querySelector("#taskStatus").value = "进行中";
@@ -1500,7 +1515,8 @@
           && (!project || task.project.toLowerCase().includes(project))
           && (!quality || task.quality === quality)
           && (!gate || task.gate === gate)
-          && (!status || task.status === status);
+          && (!status || task.status === status)
+          && (!relatedOnlyFilter.checked || task.owner === currentUser);
       });
       renderTasks(filtered);
     }
@@ -1555,13 +1571,15 @@
       submitTask();
     });
     document.querySelector("#searchButton").addEventListener("click", applyFilter);
+    relatedOnlyFilter.addEventListener("change", applyFilter);
     document.querySelector("#resetButton").addEventListener("click", () => {
       document.querySelector("#partNameFilter").value = "";
       document.querySelector("#projectFilter").value = "";
       document.querySelector("#qualityFilter").value = "";
       document.querySelector("#gateFilter").value = "";
       document.querySelector("#statusFilter").value = "";
-      renderTasks();
+      relatedOnlyFilter.checked = true;
+      applyFilter();
     });
     taskTableBody.addEventListener("click", (event) => {
       const detailButton = event.target.closest("[data-detail]");
@@ -1575,7 +1593,7 @@
       }
     });
 
-    renderTasks();
+    applyFilter();
     syncPartSourceMode();
     renderBomRows();
   </script>

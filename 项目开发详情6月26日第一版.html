@@ -222,11 +222,11 @@
 
     .stat-grid {
       display: grid;
-      grid-template-columns: repeat(5, max-content);
+      grid-template-columns: 42px 76px minmax(130px, 160px) 86px 76px;
       justify-content: end;
       align-items: start;
       text-align: center;
-      gap: 18px;
+      gap: 12px;
     }
 
     .stat-label {
@@ -239,6 +239,16 @@
       font-size: 22px;
       line-height: 1;
       font-weight: 800;
+    }
+
+    .stat-grid > div:nth-child(3) {
+      min-width: 0;
+    }
+
+    .stat-grid > div:nth-child(3) .stat-value {
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+      word-break: break-word;
     }
 
     .status-pill {
@@ -1014,7 +1024,7 @@
 
     .stage-card {
       flex: 0 0 clamp(198px, 15.6vw, 232px);
-      min-height: 88px;
+      min-height: 106px;
       background: #eef2f7;
       border: 1px solid transparent;
       border-radius: 8px;
@@ -1059,12 +1069,17 @@
     .stage-title {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       color: #4a4f59;
-      font-size: 17px;
+      font-size: 15px;
+      line-height: 1.28;
       font-weight: 900;
       margin-bottom: 5px;
+    }
+
+    .stage-title .status-pill {
+      flex: 0 0 auto;
     }
 
     .stage-card.active .stage-title {
@@ -1356,7 +1371,7 @@
     }
 
     .stage-review-alert {
-      margin-top: 12px;
+      margin: 12px 0 14px;
       padding: 12px 14px;
       border: 1px solid #fecdca;
       border-radius: var(--radius-sm);
@@ -1364,6 +1379,10 @@
       color: #b42318;
       font-weight: 800;
       line-height: 1.6;
+    }
+
+    .stage-review-alert[hidden] {
+      display: none;
     }
 
     .stage-review-alert.is-conditional {
@@ -3374,6 +3393,36 @@
     .bom-impact-item .blue-link {
       justify-self: start;
       margin-top: 2px;
+    }
+
+    #bomConfirmModal.is-member-removal .confirm-body {
+      padding: 26px 24px 30px;
+    }
+
+    #bomConfirmModal.is-member-removal .bom-impact-list {
+      margin-top: 12px;
+      gap: 8px;
+    }
+
+    #bomConfirmModal.is-member-removal .bom-impact-item {
+      gap: 4px;
+      padding: 9px 11px;
+      border-color: #f6c56d;
+      border-radius: 5px;
+      background: #fff8ed;
+    }
+
+    #bomConfirmModal.is-member-removal .bom-impact-item b,
+    #bomConfirmModal.is-member-removal .bom-impact-item span {
+      color: #a64b08;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    #bomConfirmModal.is-member-removal [data-bom-confirm-ok] {
+      min-width: 88px;
+      justify-content: center;
     }
 
     .bom-table-wrap {
@@ -6304,7 +6353,7 @@
       <section class="panel project-card">
         <div class="project-top">
           <div>
-            <div class="project-code">SCA220HCM2506281</div>
+            <div class="project-code">PRJ-260803-001</div>
             <h1 class="project-title">EA888 E5 VCT</h1>
             <div class="info-grid">
               <div class="info-item"><b>销售责任单元：</b>宁波</div>
@@ -6333,7 +6382,7 @@
               </div>
               <div>
                 <div class="stat-label">阶段</div>
-                <div class="stat-value" data-current-stage-label>PKO</div>
+                <div class="stat-value" data-current-stage-label>Quote Ready</div>
               </div>
               <div>
                 <div class="stat-label">项目健康度</div>
@@ -6392,40 +6441,40 @@
           <section class="stage-carousel" aria-label="项目阶段">
             <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
             <div class="stage-strip" data-stage-strip>
-              <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="销售发起开发项目并完成默认 CKO 任务，提交后项目进入 PKO 阶段。">
-                <div class="stage-title">CKO <span class="status-pill status-done">已完成</span></div>
+              <button class="stage-card active" type="button" data-stage-id="QuoteReady" data-stage-note="Quote Ready 是项目报价准备阶段。销售完成报价准备任务并提交后，项目进入 Commercial Kick Off。">
+                <div class="stage-title">Quote Ready <span class="status-pill status-running">进行中</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
-              <button class="stage-card active" type="button" data-stage-id="PKO" data-stage-note="作为 APQP 项目的正式启动节点，对齐客户与内部需求，明确项目目标、范围与资源配置，制定阶段计划与控制方案，组织跨职能评审并授权项目进入设计开发阶段。">
-                <div class="stage-title">PKO <span class="status-pill status-running">进行中</span></div>
+              <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="Commercial Kick Off 阶段由销售完成商业启动任务，提交后项目进入 Program Kick Off。">
+                <div class="stage-title">Commercial Kick Off <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
+              </button>
+              <button class="stage-card" type="button" data-stage-id="PKO" data-stage-note="Program Kick Off 对齐客户与内部需求，明确项目目标、范围与资源配置，并组织跨职能评审。">
+                <div class="stage-title">Program Kick Off <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
-                <div class="stage-title">Gate1 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">AR Submission Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate1">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate2" data-stage-note="PM 分配 Gate2 阶段任务，各职能部门按计划推进并反馈完成情况，待评审通过后进入下一 Gate。">
-                <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Investment Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate2">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate3" data-stage-note="Gate3 聚焦阶段任务闭环和跨职能问题清理，确保开发活动满足进入后续样件或节点验证的条件。">
-                <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Off Tool Sample Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate3">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate4" data-stage-note="Gate4 对应 BW 内部 OTS 节点，团队确认样件、质量、供应和工程任务达到 OTS 准入要求。">
-                <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Launch Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate4">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate5" data-stage-note="Gate5 对应 BW 内部 PPAP 节点，围绕 PPAP 准备、供应商质量和量产验证进行门径审批。">
-                <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Launch Completion &amp; Handoff Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate6" data-stage-note="Gate6 对应 BW 内部 SOP 节点，PM 组织完成 SOP 前最终评审，确认所有 Gate 任务闭环。">
-                <div class="stage-title">Gate6 <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
-              </button>
-              <button class="stage-card" type="button" data-stage-id="HandOver" data-stage-note="PM 完成交接信息登记，沉淀项目资料、关键问题和最终交付包，完成项目开发交接闭环。">
-                <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Handover <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
             </div>
@@ -7037,16 +7086,16 @@
           <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
-                <col style="width: 28%">
                 <col style="width: 38%">
+                <col style="width: 30%">
                 <col style="width: 14%">
                 <col style="width: 12%">
-                <col style="width: 8%">
+                <col style="width: 6%">
               </colgroup>
               <thead>
                 <tr>
-                  <th>任务/里程碑名称</th>
                   <th>文件名称</th>
+                  <th>备注信息</th>
                   <th>上传日期</th>
                   <th>上传人</th>
                   <th>操作</th>
@@ -7054,29 +7103,29 @@
               </thead>
               <tbody id="libraryTableBody">
                 <tr data-source="task">
-                  <td>Gate2 供应商准备度评审</td>
                   <td><div class="library-file-name">供应商产能爬坡计划与风险清单.xlsx</div></td>
+                  <td>供应商准备度评审任务附件</td>
                   <td>2025-10-31</td>
                   <td>Luna</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td>3.5 CQI 特殊过程评审（CQI-9/11/12 等）</td>
                   <td><div class="library-file-name">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</div></td>
+                  <td>3.5 CQI 特殊过程评审任务附件</td>
                   <td>2025-10-31</td>
                   <td>Theodore</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td>Gate2 二供同步开发资料包</td>
                   <td><div class="library-file-name">二供样件验证计划与供应商开发记录.xlsx</div></td>
+                  <td>二供同步开发资料包</td>
                   <td>2025-10-31</td>
                   <td>SQD</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td>PKO 启动会会议纪要</td>
                   <td><div class="library-file-name">PKO 启动会会议纪要及行动项.docx</div></td>
+                  <td>项目启动会会议纪要</td>
                   <td>2025-10-31</td>
                   <td>Willow</td>
                   <td><a class="blue-link" href="#">下载</a></td>
@@ -8496,6 +8545,36 @@
       <div class="modal-foot">
         <button class="btn" type="button" data-bom-confirm-cancel>取消</button>
         <button class="btn btn-primary" type="button" data-bom-confirm-ok>确认</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="teamMemberRemovalModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="teamMemberRemovalTitle">
+      <div class="modal-head">
+        <h3 id="teamMemberRemovalTitle">处理成员关联任务</h3>
+        <button class="modal-close" type="button" data-close-team-member-removal aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p id="teamMemberRemovalMessage">请确认关联任务的处理方式。</p>
+        <div class="project-status-form">
+          <label class="project-status-field">
+            <span><span class="required">*</span>处理方式</span>
+            <select class="field" id="teamMemberRemovalAction">
+              <option value="reassign">重新指定负责人</option>
+              <option value="cancel">取消关联任务（保留记录）</option>
+            </select>
+          </label>
+          <label class="project-status-field" id="teamMemberReplacementField">
+            <span><span class="required">*</span>新的负责人</span>
+            <select class="field" id="teamMemberReplacement"></select>
+          </label>
+          <p class="project-status-error" id="teamMemberRemovalError" hidden></p>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-team-member-removal>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmTeamMemberRemoval">确认处理并移除</button>
       </div>
     </section>
   </div>
@@ -13976,6 +14055,13 @@
     const removeAllMembers = document.getElementById("removeAllMembers");
     const clearSelectedMembers = document.getElementById("clearSelectedMembers");
     const confirmMembers = document.getElementById("confirmMembers");
+    const teamMemberRemovalModal = document.getElementById("teamMemberRemovalModal");
+    const teamMemberRemovalMessage = document.getElementById("teamMemberRemovalMessage");
+    const teamMemberRemovalAction = document.getElementById("teamMemberRemovalAction");
+    const teamMemberReplacementField = document.getElementById("teamMemberReplacementField");
+    const teamMemberReplacement = document.getElementById("teamMemberReplacement");
+    const teamMemberRemovalError = document.getElementById("teamMemberRemovalError");
+    const confirmTeamMemberRemoval = document.getElementById("confirmTeamMemberRemoval");
     const planPage = document.querySelector(".plan-page");
     const planInputs = Array.from(document.querySelectorAll("[data-plan-field]"));
     const planAlert = document.getElementById("planAlert");
@@ -14082,7 +14168,7 @@
     stageTaskTooltip.className = "stage-task-tooltip";
     stageTaskTooltip.hidden = true;
     document.body.appendChild(stageTaskTooltip);
-    let activeStage = "PKO";
+    let activeStage = "QuoteReady";
     let activeStageStatusFilter = "all";
     let activeFillTaskId = "";
     let activeTaskFillMode = "fill";
@@ -14097,6 +14183,7 @@
     let handoverSubmitted = false;
     let memberModalMode = "team";
     let handoverSelectionId = "";
+    let pendingTeamMemberRemoval = null;
     const standardGateStages = ["Gate2", "Gate3", "Gate5", "Gate6"];
     const projectStatusRecords = [];
     const projectHealthRecords = [];
@@ -14115,11 +14202,11 @@
         time: "2025-05-12 09:00",
         category: "stage",
         type: "阶段",
-        title: "项目完成 CKO 并进入 PKO",
-        description: "销售完成 CKO 默认任务，项目正式进入 PKO 阶段。",
+        title: "项目进入 Quote Ready 阶段",
+        description: "销售正在完成报价准备任务，完成并提交后项目将进入 Commercial Kick Off。",
         actor: "Zack",
         role: "Sales",
-        scope: "CKO / PKO"
+        scope: "Quote Ready"
       },
       {
         id: "evt-plan",
@@ -14178,6 +14265,26 @@
       const activeRows = allStageRows(activeStage);
       const pendingTasks = activeRows.filter((task) => task.status === "todo" || task.status === "approval" || task.status === "rejected").length;
 
+      if (activeStage === "QuoteReady") {
+        alerts.push({
+          kind: "任务",
+          level: "risk",
+          title: `完成 Quote Ready 阶段任务并提交`,
+          description: `销售需完成 Quote Ready 阶段下的 ${pendingTasks} 项待办任务；提交后项目进入 Commercial Kick Off。`,
+          roles: ["Sales"]
+        });
+      }
+
+      if (activeStage === "CKO") {
+        alerts.push({
+          kind: "任务",
+          level: "risk",
+          title: "完成 Commercial Kick Off 阶段任务并提交",
+          description: `销售需完成 Commercial Kick Off 阶段下的 ${pendingTasks} 项待办任务；提交后项目进入 Program Kick Off。`,
+          roles: ["Sales"]
+        });
+      }
+
       if (activeStage === "PKO") {
         alerts.push(
           {
@@ -14201,8 +14308,8 @@
           {
             kind: "任务",
             level: "risk",
-            title: "完成 PKO 阶段任务并提交",
-            description: `PM 需完成 PKO 阶段下的 ${pendingTasks} 项待办任务，提交后项目进入 Gate1 阶段。`,
+            title: "完成 Program Kick Off 阶段任务并提交",
+            description: `PM 需完成 Program Kick Off 阶段下的 ${pendingTasks} 项待办任务，提交后项目进入 AR Submission Ready 阶段。`,
             roles: ["PM"]
           }
         );
@@ -14252,11 +14359,11 @@
           tab: "bom"
         });
       }
-      if (pendingTasks > 0 && activeStage !== "PKO") {
+      if (pendingTasks > 0 && !["QuoteReady", "CKO", "PKO"].includes(activeStage)) {
         alerts.push({
           kind: "任务",
           level: "risk",
-          title: `${activeStage} 仍有 ${pendingTasks} 项任务待完成`,
+          title: `${stageDisplayName(activeStage)} 仍有 ${pendingTasks} 项任务待完成`,
           description: "PM 需关注阶段任务闭环；任务负责人需完成对应 K-PAC 任务。",
           roles: ["PM", "ALL"]
         });
@@ -14306,7 +14413,7 @@
     }
 
     function renderRecordSummary() {
-      if (recordSummaryStage) recordSummaryStage.textContent = activeStage;
+      if (recordSummaryStage) recordSummaryStage.textContent = stageDisplayName(activeStage);
       if (recordSummaryStatus) {
         const config = projectStatusConfig[projectStatus] || projectStatusConfig.inProgress;
         recordSummaryStatus.textContent = config.label;
@@ -14401,7 +14508,44 @@
       }
     ];
     const stageTasks = JSON.parse(document.getElementById("stageTasksData").textContent);
+    stageTasks.QuoteReady = [
+      {
+        group: "Customer",
+        id: "quote-ready-1",
+        no: 1,
+        kpac: "GPM_QR-1",
+        title: "Quote Preparation Complete",
+        description: "Confirm quotation scope, commercial assumptions and customer submission readiness.",
+        owner: "Sales",
+        department: "Sales",
+        functionName: "Customer",
+        documentOrEvidence: "Quotation package",
+        type: "关键任务",
+        typeClass: "tag-orange",
+        dateRange: "2025-03-01 ~ 2025-03-15",
+        status: "todo"
+      }
+    ];
+    stageTasks.CKO.forEach((task) => {
+      task.status = "todo";
+    });
+    const stageDisplayNames = {
+      QuoteReady: "Quote Ready",
+      CKO: "Commercial Kick Off",
+      PKO: "Program Kick Off",
+      Gate1: "AR Submission Ready",
+      Gate2: "Investment Ready",
+      Gate3: "Off Tool Sample Ready",
+      Gate4: "Launch Ready",
+      Gate5: "Launch Completion & Handoff Ready",
+      Gate6: "Handover",
+      HandOver: "Handover"
+    };
     const currentOperatorName = "张工(工程部)";
+
+    function stageDisplayName(stage) {
+      return stageDisplayNames[stage] || stage;
+    }
 
     function allStageRows(stage) {
       return stageTasks[stage] || [];
@@ -14476,6 +14620,9 @@
       if (status === "rejected") {
         return `<span class="status-dot reject-dot">审批拒绝</span>`;
       }
+      if (status === "cancelled") {
+        return `<span class="status-dot reject-dot">已取消</span>`;
+      }
       return `<span class="status-dot">待完成</span>`;
     }
 
@@ -14484,6 +14631,9 @@
         return `<span class="inline-actions"><button class="blue-link" type="button" data-review-task="${escapeHtml(task.id)}">审核</button></span>`;
       }
       if (task.status === "approved" || task.status === "done") {
+        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
+      }
+      if (task.status === "cancelled") {
         return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
       }
       if (task.status === "rejected") {
@@ -14548,7 +14698,7 @@
                       <td class="truncated-cell" data-full-text="${escapeHtml(task.title)}">${escapeHtml(task.title)}</td>
                       <td><span class="tag ${task.typeClass}">${escapeHtml(task.type)}</span></td>
                       <td class="description-cell" data-full-text="${escapeHtml(task.description)}">${escapeHtml(task.description).replaceAll("\n", " / ")}</td>
-                      <td>${escapeHtml(task.department)}</td>
+                      <td>${escapeHtml(task.department)}${task.assignedMemberName ? `<br><small>负责人：${escapeHtml(task.assignedMemberName)}</small>` : ""}</td>
                       <td>${escapeHtml(stage === "PKO" && !pkoTasksManaged ? "-" : task.dateRange)}</td>
                       <td>${escapeHtml(task.operator || "-")}</td>
                       <td class="fixed-status">${statusHtml(task.status)}</td>
@@ -14580,7 +14730,7 @@
       if (submitStageTask) {
         const canSubmitStandardGate = standardGateStages.includes(stage) && stageHasStatus(stage, "status-running");
         const canSubmitGate4 = stage === "Gate4" && !stageHasStatus("Gate4", "status-done");
-        submitStageTask.hidden = !(stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running") || canSubmitGate4 || canSubmitStandardGate);
+        submitStageTask.hidden = !(stage === "QuoteReady" || stage === "CKO" || stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running") || canSubmitGate4 || canSubmitStandardGate);
       }
       if (manageStageTask) {
         manageStageTask.hidden = stage !== "PKO";
@@ -14657,12 +14807,12 @@
             </div>
             <div class="handover-head-actions">
               <span class="tag tag-blue">PM 录入</span>
-              <button class="btn btn-primary" type="button" data-add-handover-row>添加交出团队</button>
+              <button class="btn btn-primary" type="button" data-add-handover-row>添加交接团队</button>
             </div>
           </div>
-          <p class="handover-intro">PM 在 HandOver 阶段登记跨职能交接信息，先选择交接人，系统自动带出不可修改的接收团队。</p>
+          <p class="handover-intro">PM 在 Handover 阶段登记跨职能交接信息，先选择交接人，系统自动带出不可修改的接收团队。</p>
           <div class="table-wrap">
-            <table class="handover-table" aria-label="HandOver交接信息">
+            <table class="handover-table" aria-label="Handover交接信息">
               <colgroup>
                 <col style="width:120px">
                 <col style="width:230px">
@@ -14711,7 +14861,7 @@
       if (filters[1]) filters[1].textContent = "待完成 (0)";
       if (filters[2]) filters[2].textContent = "已逾期 (0)";
       if (filters[3]) filters[3].textContent = `已完成 (${handoverRows.length})`;
-      renderStageDepartmentFilter("HandOver");
+      renderStageDepartmentFilter("Gate6");
       stageStatusFilters.forEach((button) => {
         button.classList.toggle("active", button.dataset.stageStatusFilter === activeStageStatusFilter);
       });
@@ -14723,10 +14873,10 @@
     }
 
     function activateHandoverDemo() {
-      ["CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6"].forEach((stage) => {
+      ["QuoteReady", "CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5"].forEach((stage) => {
         updateStagePill(stage, "已完成", "status-done");
       });
-      updateStagePill("HandOver", handoverSubmitted ? "已完成" : "进行中", handoverSubmitted ? "status-done" : "status-running");
+      updateStagePill("Gate6", handoverSubmitted ? "已完成" : "进行中", handoverSubmitted ? "status-done" : "status-running");
       renderHandoverPanel();
     }
 
@@ -14989,9 +15139,9 @@
         stageNote.textContent = card.dataset.stageNote;
       }
       if (currentStageLabel) {
-        currentStageLabel.textContent = stage;
+        currentStageLabel.textContent = stageDisplayName(stage);
       }
-      if (stage === "HandOver") {
+      if (stage === "Gate6" || stage === "HandOver") {
         activateHandoverDemo();
       } else {
         renderStageTasks(stage);
@@ -15290,6 +15440,42 @@
       }
     }
 
+    function submitQuoteReadyStage() {
+      stageTasks.QuoteReady.forEach((task) => {
+        if (task.status === "todo") task.status = "done";
+      });
+      updateStagePill("QuoteReady", "已完成", "status-done");
+      updateStagePill("CKO", "进行中", "status-running");
+      addProjectEvent({
+        category: "stage",
+        type: "阶段",
+        title: "Quote Ready 阶段完成，项目进入 Commercial Kick Off",
+        description: "销售提交 Quote Ready 阶段任务，Commercial Kick Off 阶段已启动。",
+        actor: "Zack",
+        role: "Sales",
+        scope: "Quote Ready / Commercial Kick Off"
+      });
+      setActiveStage("CKO");
+    }
+
+    function submitCkoStage() {
+      stageTasks.CKO.forEach((task) => {
+        if (task.status === "todo") task.status = "done";
+      });
+      updateStagePill("CKO", "已完成", "status-done");
+      updateStagePill("PKO", "进行中", "status-running");
+      addProjectEvent({
+        category: "stage",
+        type: "阶段",
+        title: "Commercial Kick Off 阶段完成，项目进入 Program Kick Off",
+        description: "销售提交 Commercial Kick Off 阶段任务，Program Kick Off 阶段已启动。",
+        actor: "Zack",
+        role: "Sales",
+        scope: "Commercial Kick Off / Program Kick Off"
+      });
+      setActiveStage("PKO");
+    }
+
     function submitPkoStage() {
       stageTasks.PKO.forEach((task) => {
         if (task.status === "todo") {
@@ -15301,11 +15487,11 @@
       addProjectEvent({
         category: "stage",
         type: "阶段",
-        title: "PKO 阶段完成，项目进入 Gate1",
-        description: "PM 提交 PKO 阶段任务，Gate1 阶段任务已启动。",
+        title: "Program Kick Off 阶段完成，项目进入 AR Submission Ready",
+        description: "PM 提交 Program Kick Off 阶段任务，AR Submission Ready 阶段任务已启动。",
         actor: "Wu Zhuoren",
         role: "PM",
-        scope: "PKO / Gate1"
+        scope: "Program Kick Off / AR Submission Ready"
       });
       setActiveStage("Gate1");
     }
@@ -15385,11 +15571,11 @@
       addProjectEvent({
         category: "approval",
         type: "审批",
-        title: `${stage} ${mode === "conditional" ? "带条件通过" : "审核通过"}`,
-        description: nextStage ? `项目进入 ${nextStage} 阶段。` : "阶段审核完成。",
+        title: `${stageDisplayName(stage)} ${mode === "conditional" ? "带条件通过" : "审核通过"}`,
+        description: nextStage ? `项目进入 ${stageDisplayName(nextStage)} 阶段。` : "阶段审核完成。",
         actor: "审核小组",
         role: "Reviewer",
-        scope: nextStage ? `${stage} / ${nextStage}` : stage
+        scope: nextStage ? `${stageDisplayName(stage)} / ${stageDisplayName(nextStage)}` : stageDisplayName(stage)
       });
       if (nextStage) {
         setActiveStage(nextStage);
@@ -15470,22 +15656,22 @@
 
     function submitHandoverStage() {
       handoverSubmitted = true;
-      updateStagePill("HandOver", "已完成", "status-done");
+      updateStagePill("Gate6", "已完成", "status-done");
       setProjectStatus("completed");
       addProjectEvent({
         category: "stage",
         type: "阶段",
-        title: "HandOver 完成，项目闭环",
+        title: "Handover 完成，项目闭环",
         description: "PM 完成交接信息登记，项目状态更新为 completed / 完成。",
         actor: "Wu Zhuoren",
         role: "PM",
-        scope: "HandOver"
+        scope: "Handover"
       });
       renderHandoverPanel();
     }
 
     function nextStageName(stage) {
-      const order = ["CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6", "HandOver"];
+      const order = ["QuoteReady", "CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6"];
       const index = order.indexOf(stage);
       return index >= 0 ? order[index + 1] || "" : "";
     }
@@ -15552,7 +15738,7 @@
       const nextStage = nextStageName(stage);
       if (submitTaskName) submitTaskName.textContent = "发起阶段审核";
       if (submitProjectName) submitProjectName.textContent = document.querySelector(".project-title")?.textContent?.trim() || "EA888 E5 VCT";
-      if (submitCurrentStage) submitCurrentStage.textContent = nextStage ? `${stage} / ${nextStage}` : stage;
+      if (submitCurrentStage) submitCurrentStage.textContent = nextStage ? `${stageDisplayName(stage)} / ${stageDisplayName(nextStage)}` : stageDisplayName(stage);
       if (submitCreatedAt) submitCreatedAt.textContent = getCurrentTime().slice(0, 16);
       if (submitDueDate) submitDueDate.textContent = stageSubmitDueDate(stage);
       if (submitTaskStatus) submitTaskStatus.textContent = "待处理";
@@ -15567,16 +15753,24 @@
 
     function openSubmitConfirmModal() {
       pendingSubmitStage = activeStage;
-      const isPkoSubmit = pendingSubmitStage === "PKO";
-      submitConfirmDialog?.classList.toggle("is-simple-submit", isPkoSubmit);
+      const isSimpleSubmit = ["QuoteReady", "CKO", "PKO", "Gate6"].includes(pendingSubmitStage);
+      submitConfirmDialog?.classList.toggle("is-simple-submit", isSimpleSubmit);
       if (confirmSubmitStageTask) {
-        confirmSubmitStageTask.textContent = isPkoSubmit ? "确认提交" : "确认发起";
+        confirmSubmitStageTask.textContent = isSimpleSubmit ? "确认提交" : "确认发起";
       }
-      submitConfirmTitle.textContent = isPkoSubmit ? "提交确认" : "发起阶段审核";
-      if (!isPkoSubmit) {
+      submitConfirmTitle.textContent = isSimpleSubmit ? "提交确认" : "发起阶段审核";
+      if (!isSimpleSubmit) {
         updateSubmitConfirmMeta(pendingSubmitStage);
       }
-      if (pendingSubmitStage === "Gate1") {
+      if (pendingSubmitStage === "QuoteReady") {
+        submitSimpleMessage.textContent = "确认提交 Quote Ready 阶段任务吗？提交后项目将进入 Commercial Kick Off 阶段。";
+      } else if (pendingSubmitStage === "CKO") {
+        submitSimpleMessage.textContent = "确认提交 Commercial Kick Off 阶段任务吗？提交后项目将进入 Program Kick Off 阶段。";
+      } else if (pendingSubmitStage === "PKO") {
+        submitSimpleMessage.textContent = "确认提交 Program Kick Off 阶段任务吗？提交后项目将进入 AR Submission Ready 阶段。";
+      } else if (pendingSubmitStage === "Gate6") {
+        submitSimpleMessage.textContent = "确认提交 Handover 阶段交接信息吗？提交后项目交接闭环，项目状态将更新为完成。";
+      } else if (pendingSubmitStage === "Gate1") {
         submitConfirmMessage.textContent = "确认提交 Gate1 阶段任务吗？提交后将由审核人员进行审核，通过后进入下一个环节。";
       } else if (pendingSubmitStage === "Gate4") {
         submitConfirmMessage.textContent = "Gate4 可发起标准批准或临时批准。临时批准发起后项目阶段状态显示为临批中。";
@@ -15585,8 +15779,6 @@
         submitConfirmMessage.textContent = `确认发起 ${pendingSubmitStage} 阶段审核吗？审核通过后项目可进入 ${nextStage || "下一阶段"}。`;
       } else if (pendingSubmitStage === "HandOver") {
         submitConfirmMessage.textContent = "确认提交 HandOver 阶段交接信息吗？提交后项目交接闭环，HandOver 阶段状态将更新为已完成。";
-      } else {
-        submitSimpleMessage.textContent = "确认提交 PKO 阶段任务吗？提交后项目将进入 Gate1 阶段，任务列表将切换为 Gate1 任务。";
       }
       if (gate4PpapForm) {
         gate4PpapForm.hidden = pendingSubmitStage !== "Gate4";
@@ -16242,9 +16434,13 @@
           return;
         }
         closeSubmitConfirmModal();
-        if (stageToSubmit === "Gate1") {
+        if (stageToSubmit === "QuoteReady") {
+          submitQuoteReadyStage();
+        } else if (stageToSubmit === "CKO") {
+          submitCkoStage();
+        } else if (stageToSubmit === "Gate1") {
           submitGate1Stage();
-        } else if (stageToSubmit === "HandOver") {
+        } else if (stageToSubmit === "Gate6" || stageToSubmit === "HandOver") {
           submitHandoverStage();
         } else if (stageToSubmit === "Gate4") {
           return;
@@ -16513,14 +16709,15 @@
             closeTaskFillModal();
             return;
           }
-          if (taskUploadInput?.files?.[0]) {
-            task.uploadFile = taskUploadInput.files[0];
+          const submittedFile = taskUploadInput?.files?.[0] || null;
+          if (submittedFile) {
+            task.uploadFile = submittedFile;
           } else if (!task.uploadFile) {
             task.uploadFile = { name: "设计验证计划文档.pdf", size: 0 };
           }
           task.note = taskFillNote.value.trim();
           const taskStage = Object.entries(stageTasks).find(([, rows]) => rows.some((row) => row.id === task.id))?.[0];
-          task.status = taskStage === "PKO" ? "done" : "approval";
+          task.status = ["QuoteReady", "CKO", "PKO"].includes(taskStage) ? "done" : "approval";
           task.operator = currentOperatorName;
           addProjectEvent({
             category: "task",
@@ -16531,6 +16728,17 @@
             role: task.owner || task.department || "任务负责人",
             scope: taskStage || activeStage
           });
+          if (submittedFile && libraryTableBody) {
+            libraryTableBody.insertBefore(createLibraryRow({
+              source: "task",
+              remark: task.note || `${task.title}任务附件`,
+              fileName: submittedFile.name,
+              fileUrl: URL.createObjectURL(submittedFile),
+              uploadDate: getCurrentTime().slice(0, 10),
+              uploader: currentOperatorName
+            }), libraryTableBody.firstElementChild);
+            filterLibraryRows();
+          }
           renderStageTasks(activeStage);
         }
         closeTaskFillModal();
@@ -17033,6 +17241,159 @@
       return memberOwnerLabel(member) || role;
     }
 
+    function memberTaskKeywords(member) {
+      return [member?.role, member?.department, member?.teamName]
+        .filter(Boolean)
+        .map((value) => String(value).trim().toLowerCase());
+    }
+
+    function isTaskAssignedToMember(task, member) {
+      if (!task || !member) return false;
+      if (task.assignedMemberId) return task.assignedMemberId === member.id;
+      const taskDepartments = `${task.department || ""},${task.owner || ""}`
+        .split(",")
+        .map((value) => value.trim().toLowerCase())
+        .filter(Boolean);
+      return memberTaskKeywords(member).some((keyword) => taskDepartments.includes(keyword));
+    }
+
+    function projectTasksAssignedToMember(member) {
+      return Object.entries(stageTasks).flatMap(([stage, rows]) => rows
+        .filter((task) => task.status !== "cancelled" && isTaskAssignedToMember(task, member))
+        .map((task) => ({ stage, task })));
+    }
+
+    function apqpTasksAssignedToMember(member) {
+      return (bomState?.apqpTasks || []).filter((task) => task.status !== "已取消" && (
+        task.ownerMemberId === member.id || (!task.ownerMemberId && memberTaskKeywords(member).includes(String(task.ownerRole || "").toLowerCase()))
+      ));
+    }
+
+    function removeProjectTeamMember(memberId) {
+      const index = teamMembers.findIndex((member) => member.id === memberId);
+      if (index < 0) return false;
+      teamMembers.splice(index, 1);
+      renderBomDatalists();
+      renderTeamTable();
+      return true;
+    }
+
+    function setProjectTaskOwner(task, member) {
+      task.assignedMemberId = member.id;
+      task.assignedMemberName = member.name;
+      task.assignedMemberRole = member.role;
+    }
+
+    function setApqpTaskOwner(task, member) {
+      task.ownerMemberId = member.id;
+      task.ownerName = member.name;
+      task.ownerRole = member.role;
+      task.owner = `${member.name} · ${member.role}`;
+      const row = bomState.rows.find((item) => item.id === task.rowId);
+      if (row) {
+        row.apqpOwner = task.owner;
+        row.apqpOwnerMemberId = member.id;
+        row.apqpOwnerRole = member.role;
+      }
+    }
+
+    function cancellationReasonForMember(member) {
+      return `项目团队成员 ${member.name} 已移除，关联任务未重新指定负责人。`;
+    }
+
+    function cancelProjectTask(task, member) {
+      task.status = "cancelled";
+      task.cancelReason = cancellationReasonForMember(member);
+    }
+
+    function cancelApqpTask(task, member) {
+      task.status = "已取消";
+      task.cancelReason = cancellationReasonForMember(member);
+    }
+
+    function replacementCandidates(member) {
+      return Array.from(memberMap.values()).filter((candidate) => candidate.id !== member.id && (
+        candidate.department === member.department || candidate.role === member.role
+      ));
+    }
+
+    function refreshTeamMemberRemovalFields() {
+      const isReassign = teamMemberRemovalAction?.value === "reassign";
+      if (teamMemberReplacementField) teamMemberReplacementField.hidden = !isReassign;
+      if (teamMemberRemovalError) teamMemberRemovalError.hidden = true;
+    }
+
+    function closeTeamMemberRemovalModal() {
+      if (teamMemberRemovalModal) teamMemberRemovalModal.hidden = true;
+      pendingTeamMemberRemoval = null;
+    }
+
+    function openTeamMemberRemovalModal(context) {
+      const { member, projectTasks, apqpTasks } = context;
+      const candidates = replacementCandidates(member);
+      pendingTeamMemberRemoval = context;
+      if (teamMemberRemovalMessage) {
+        teamMemberRemovalMessage.textContent = `${member.name} 是当前项目团队中唯一的 ${member.department} 成员，仍关联 ${projectTasks.length} 项项目开发任务和 ${apqpTasks.length} 项 APQP 任务。请重新指定承接人，或取消关联任务并保留取消记录。`;
+      }
+      if (teamMemberReplacement) {
+        teamMemberReplacement.innerHTML = candidates.length
+          ? `<option value="">请选择负责人</option>${candidates.map((candidate) => `<option value="${escapeHtml(candidate.id)}">${escapeHtml(candidate.name)}（${escapeHtml(candidate.role)} · ${escapeHtml(candidate.department)}）</option>`).join("")}`
+          : `<option value="">暂无可指定的同部门成员</option>`;
+      }
+      if (teamMemberRemovalAction) {
+        const reassignOption = teamMemberRemovalAction.querySelector('option[value="reassign"]');
+        if (reassignOption) reassignOption.disabled = !candidates.length;
+        teamMemberRemovalAction.value = candidates.length ? "reassign" : "cancel";
+      }
+      refreshTeamMemberRemovalFields();
+      if (teamMemberRemovalModal) teamMemberRemovalModal.hidden = false;
+    }
+
+    async function requestTeamMemberRemoval(memberId) {
+      const member = memberMap.get(memberId);
+      if (!member) return;
+      const projectTasks = projectTasksAssignedToMember(member);
+      const apqpTasks = apqpTasksAssignedToMember(member);
+      const sameDepartmentMembers = teamMembers
+        .map((item) => memberMap.get(item.id))
+        .filter((candidate) => candidate && candidate.id !== member.id && candidate.department === member.department);
+      const confirmed = await showBomConfirm({
+        title: "确认移除团队成员",
+        message: `确认从项目团队移除 ${member.name} 吗？`,
+        detail: [
+          { title: "项目开发任务", description: `关联 ${projectTasks.length} 项` },
+          { title: "APQP 任务", description: `关联 ${apqpTasks.length} 项` },
+          ...(sameDepartmentMembers.length ? [{ title: "部门成员", description: `移除后该部门仍有 ${sameDepartmentMembers.length} 名成员。` }] : [{ title: "部门成员", description: "该成员是项目团队中该部门的最后一人，需继续处理关联任务。" }])
+        ],
+        danger: true,
+        variant: "member-removal"
+      });
+      if (!confirmed) return;
+      if (!projectTasks.length && !apqpTasks.length) {
+        removeProjectTeamMember(member.id);
+        addProjectEvent({ category: "team", type: "成员", title: "移除项目团队成员", description: `已移除 ${member.name}。`, actor: currentOperatorName, role: "PM", scope: "团队成员" });
+        return;
+      }
+      if (!sameDepartmentMembers.length) {
+        openTeamMemberRemovalModal({ member, projectTasks, apqpTasks });
+        return;
+      }
+      const replacement = sameDepartmentMembers[0];
+      projectTasks.forEach(({ task }) => setProjectTaskOwner(task, replacement));
+      apqpTasks.forEach((task) => setApqpTaskOwner(task, replacement));
+      removeProjectTeamMember(member.id);
+      renderStageTasks(activeStage);
+      addProjectEvent({
+        category: "team",
+        type: "成员",
+        title: "移除项目团队成员并转交任务",
+        description: `已移除 ${member.name}；${projectTasks.length} 项项目开发任务及 ${apqpTasks.length} 项 APQP 任务已转交 ${replacement.name}。`,
+        actor: currentOperatorName,
+        role: "PM",
+        scope: "团队成员"
+      });
+    }
+
     function supplierOptionValues() {
       const catalogRows = bomProductCatalog.flatMap((product, productIndex) => buildProductBomRows(product, productIndex));
       const values = new Set([
@@ -17395,12 +17756,64 @@
     teamTableBody.addEventListener("click", (event) => {
       const removeButton = event.target.closest("[data-remove-team-member]");
       if (removeButton) {
-        const index = teamMembers.findIndex((member) => member.id === removeButton.dataset.removeTeamMember);
-        if (index >= 0) {
-          teamMembers.splice(index, 1);
-          renderTeamTable();
-        }
+        requestTeamMemberRemoval(removeButton.dataset.removeTeamMember);
       }
+    });
+
+    document.querySelectorAll("[data-close-team-member-removal]").forEach((button) => {
+      button.addEventListener("click", closeTeamMemberRemovalModal);
+    });
+
+    teamMemberRemovalModal?.addEventListener("click", (event) => {
+      if (event.target === teamMemberRemovalModal) closeTeamMemberRemovalModal();
+    });
+
+    teamMemberRemovalAction?.addEventListener("change", refreshTeamMemberRemovalFields);
+
+    confirmTeamMemberRemoval?.addEventListener("click", () => {
+      const context = pendingTeamMemberRemoval;
+      if (!context) return;
+      const { member, projectTasks, apqpTasks } = context;
+      if (teamMemberRemovalAction?.value === "reassign") {
+        const replacement = memberMap.get(teamMemberReplacement?.value || "");
+        if (!replacement || replacement.id === member.id) {
+          if (teamMemberRemovalError) {
+            teamMemberRemovalError.textContent = "请选择同部门的新负责人。";
+            teamMemberRemovalError.hidden = false;
+          }
+          teamMemberReplacement?.focus();
+          return;
+        }
+        if (!teamMembers.some((item) => item.id === replacement.id)) {
+          teamMembers.push({ id: replacement.id, reviewer: false });
+        }
+        projectTasks.forEach(({ task }) => setProjectTaskOwner(task, replacement));
+        apqpTasks.forEach((task) => setApqpTaskOwner(task, replacement));
+        addProjectEvent({
+          category: "team",
+          type: "成员",
+          title: "移除项目团队成员并重新指定任务负责人",
+          description: `已移除 ${member.name}；${projectTasks.length} 项项目开发任务及 ${apqpTasks.length} 项 APQP 任务已转交 ${replacement.name}。`,
+          actor: currentOperatorName,
+          role: "PM",
+          scope: "团队成员"
+        });
+      } else {
+        projectTasks.forEach(({ task }) => cancelProjectTask(task, member));
+        apqpTasks.forEach((task) => cancelApqpTask(task, member));
+        addProjectEvent({
+          category: "team",
+          type: "成员",
+          title: "移除项目团队成员并取消关联任务",
+          description: `已移除 ${member.name}；${projectTasks.length} 项项目开发任务及 ${apqpTasks.length} 项 APQP 任务已取消并保留追溯记录。`,
+          actor: currentOperatorName,
+          role: "PM",
+          scope: "团队成员"
+        });
+      }
+      removeProjectTeamMember(member.id);
+      renderStageTasks(activeStage);
+      closeTeamMemberRemovalModal();
     });
 
     function filterLibraryRows() {
@@ -17447,16 +17860,16 @@
 
     function createLibraryRow(payload) {
       const row = document.createElement("tr");
-      row.dataset.source = "manual";
+      row.dataset.source = payload.source || "manual";
       row.innerHTML = `
-        <td></td>
         <td><div class="library-file-name"></div></td>
+        <td></td>
         <td></td>
         <td></td>
         <td><a class="blue-link" href="#">下载</a></td>
       `;
-      row.children[0].textContent = payload.milestone;
-      row.children[1].querySelector(".library-file-name").textContent = payload.fileName;
+      row.children[0].querySelector(".library-file-name").textContent = payload.fileName;
+      row.children[1].textContent = payload.remark || "—";
       row.children[2].textContent = payload.uploadDate;
       row.children[3].textContent = payload.uploader;
       if (payload.fileUrl) {
@@ -17524,7 +17937,8 @@
       }
 
       libraryTableBody.insertBefore(createLibraryRow({
-        milestone: `手动上传：${note}`,
+        source: "manual",
+        remark: note,
         fileName: file.name,
         fileUrl: URL.createObjectURL(file),
         uploadDate: getCurrentTime().slice(0, 10),
@@ -17605,7 +18019,7 @@
     ];
 
     const bomState = {
-      stage: "PKO",
+      stage: "QuoteReady",
       versionMajor: 0,
       versionMinor: 0,
       status: "empty",
@@ -17652,7 +18066,7 @@
     ];
 
     const bomProductMap = Object.fromEntries(bomProductCatalog.map((product) => [product.key, product]));
-    const gateOrder = ["PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6", "HandOver"];
+    const gateOrder = ["QuoteReady", "CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6", "HandOver"];
 
     function gateReached(startGate, currentGate = bomState.stage) {
       const startIndex = gateOrder.indexOf(startGate || "Gate1");
@@ -18822,7 +19236,7 @@
 
     let pendingBomConfirmResolve = null;
 
-    function showBomConfirm({ title = "操作确认", message = "确认执行此操作吗？", detail = [], danger = false } = {}) {
+    function showBomConfirm({ title = "操作确认", message = "确认执行此操作吗？", detail = [], danger = false, variant = "" } = {}) {
       const modal = document.getElementById("bomConfirmModal");
       const titleEl = document.querySelector("[data-bom-confirm-title]");
       const messageEl = document.querySelector("[data-bom-confirm-message]");
@@ -18831,7 +19245,10 @@
       if (!modal || !titleEl || !messageEl || !okButton) return Promise.resolve(true);
       titleEl.textContent = title;
       messageEl.textContent = message;
-      okButton.classList.toggle("btn-outline-danger", danger);
+      const isMemberRemoval = variant === "member-removal";
+      modal.classList.toggle("is-member-removal", isMemberRemoval);
+      okButton.classList.toggle("btn-danger", danger && isMemberRemoval);
+      okButton.classList.toggle("btn-outline-danger", danger && !isMemberRemoval);
       okButton.classList.toggle("btn-primary", !danger);
       if (detailEl) {
         detailEl.hidden = !detail.length;
@@ -18851,7 +19268,10 @@
 
     function closeBomConfirm(result = false) {
       const modal = document.getElementById("bomConfirmModal");
-      if (modal) modal.hidden = true;
+      if (modal) {
+        modal.hidden = true;
+        modal.classList.remove("is-member-removal");
+      }
       if (pendingBomConfirmResolve) {
         pendingBomConfirmResolve(result);
         pendingBomConfirmResolve = null;
@@ -19468,9 +19888,15 @@
         };
       });
       const createdAt = getCurrentTime();
+      const taskDateCode = `${String(new Date().getFullYear()).slice(-2)}${String(new Date().getMonth() + 1).padStart(2, "0")}${String(new Date().getDate()).padStart(2, "0")}`;
+      const taskPrefix = `APQP-${taskDateCode}-`;
       candidates.forEach((candidate) => {
         const row = candidate.row;
-        const taskNo = `APQP-${String(bomState.apqpTasks.length + 1).padStart(3, "0")}`;
+        const dailyMax = bomState.apqpTasks
+          .map((task) => task.id || "")
+          .filter((id) => id.startsWith(taskPrefix))
+          .reduce((max, id) => Math.max(max, Number(id.slice(taskPrefix.length)) || 0), 0);
+        const taskNo = `${taskPrefix}${String(dailyMax + 1).padStart(3, "0")}`;
         row.apqpStatus = "已创建";
         row.apqpNo = taskNo;
         row.apqpOwner = candidate.owner;
