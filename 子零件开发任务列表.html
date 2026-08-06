@@ -636,141 +636,538 @@
       line-height: 1.5;
     }
 
-    .notice {
-      margin: 18px 20px 0;
-      padding: 10px 12px;
-      border: 1px solid #fedf89;
-      border-radius: 4px;
-      background: #fffaf0;
-      color: #92400e;
-      font-size: 12px;
-      line-height: 1.55;
-    }
-
-    .switch-row {
-      min-height: 36px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #344054;
-      font-weight: 700;
-    }
-
-    .switch-row input {
-      width: 15px;
-      height: 15px;
-      margin: 0;
-      accent-color: var(--primary);
-    }
-
-    .bom-workspace {
-      margin: 0 20px 24px;
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      background: #fbfcff;
-      overflow: hidden;
-    }
-
-    .bom-workspace[hidden] {
-      display: none;
-    }
-
-    .bom-toolbar {
+    .owner-picker {
+      width: 100%;
+      height: 36px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      padding: 12px;
-      border-bottom: 1px solid var(--line);
+      border: 1px solid var(--line-strong);
+      border-radius: 2px;
       background: #fff;
-    }
-
-    .bom-actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .bom-table-wrap {
-      overflow: auto;
-    }
-
-    .bom-table {
-      width: 100%;
-      min-width: 1120px;
-      border-collapse: collapse;
-      table-layout: fixed;
-      background: #fff;
-    }
-
-    .bom-table th,
-    .bom-table td {
-      border-bottom: 1px solid var(--line);
-      padding: 8px 10px;
+      color: var(--text);
+      padding: 0 12px;
       text-align: left;
-      vertical-align: middle;
-      white-space: normal;
-      color: #2e333c;
+      transition: .16s ease;
+    }
+
+    .owner-picker:hover,
+    .owner-picker:focus-visible {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+      outline: none;
+    }
+
+    .owner-picker.invalid {
+      border-color: var(--danger);
+    }
+
+    .owner-picker-placeholder {
+      color: #9aa2af;
+    }
+
+    .owner-picker svg {
+      flex: 0 0 auto;
+      color: #98a2b3;
+    }
+
+    .field[readonly] {
+      background: #f7f8fa;
+      color: #475467;
+      cursor: default;
+    }
+
+    .org-modal-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(16, 24, 40, .48);
+    }
+
+    .org-modal-layer[hidden] {
+      display: none;
+    }
+
+    .org-modal {
+      width: min(940px, 100%);
+      max-height: min(720px, calc(100vh - 48px));
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 24px 64px rgba(16, 24, 40, .24);
+    }
+
+    .org-modal-head,
+    .org-modal-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .org-modal-head h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .org-modal-head p {
+      margin: 4px 0 0;
+      color: var(--secondary);
       font-size: 12px;
     }
 
-    .bom-table th {
-      background: #f1f4f8;
-      font-weight: 800;
+    .org-modal-close {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 0;
+      background: transparent;
+      color: #7b8493;
     }
 
-    .bom-table .mini-field,
-    .bom-table .mini-select {
-      width: 100%;
-      min-width: 92px;
-      height: 30px;
-      border: 1px solid var(--line-strong);
-      border-radius: 3px;
-      background: #fff;
-      color: #2e333c;
-      padding: 0 8px;
-      font: inherit;
+    .org-modal-body {
+      min-height: 0;
+      padding: 20px;
+      overflow: auto;
     }
 
-    .bom-table .mini-field {
-      display: block;
+    .org-transfer {
+      min-height: 360px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) 54px minmax(240px, .8fr);
+      align-items: stretch;
     }
 
-    .bom-table .mini-select {
-      appearance: none;
-      padding-right: 24px;
-      background-image:
-        linear-gradient(45deg, transparent 50%, #b8c0cc 50%),
-        linear-gradient(135deg, #b8c0cc 50%, transparent 50%);
-      background-position:
-        calc(100% - 14px) 12px,
-        calc(100% - 9px) 12px;
-      background-size: 5px 5px, 5px 5px;
-      background-repeat: no-repeat;
-    }
-
-    .bom-indent {
-      display: inline-block;
-      width: calc((var(--level) - 1) * 18px);
+    .org-panel {
       min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--line-strong);
+      border-radius: 6px;
+      background: #fff;
     }
 
-    .bom-part-cell {
+    .org-selected-list {
+      padding: 12px;
+    }
+
+    .org-member-option {
+      min-height: 56px;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+      padding: 9px 10px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .org-member-option:hover {
+      border-color: #9fc2ff;
+      background: #f7faff;
+    }
+
+    .org-member-option:has(input:checked) {
+      border-color: var(--primary);
+      background: #eef5ff;
+    }
+
+    .org-member-option input {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--primary);
+    }
+
+    .org-person-name {
+      display: block;
+      color: #1d2939;
+      font-weight: 700;
+    }
+
+    .org-selected-card {
+      padding: 12px;
+      border: 1px solid #b8d3ff;
+      border-radius: 5px;
+      background: #eef5ff;
+    }
+
+    .org-empty {
+      padding: 44px 14px;
+      color: var(--secondary);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .org-selection-error {
+      min-height: 18px;
+      margin-top: 10px;
+      color: var(--danger);
+      font-size: 12px;
+    }
+
+    .org-modal-foot {
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .org-modal {
+      width: min(1100px, 100%);
+      max-height: min(780px, calc(100vh - 32px));
+    }
+
+    .org-modal-head {
+      min-height: 82px;
+      padding: 16px 32px;
+    }
+
+    .org-modal-head h3 {
+      font-size: 16px;
+    }
+
+    .org-modal-head p {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .org-modal-head-actions,
+    .org-foot-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .org-context-tag {
+      border-radius: 4px;
+      background: #f5f7fa;
+      color: #475467;
+      padding: 7px 12px;
+      font-size: 13px;
+    }
+
+    .org-modal-body {
+      padding: 28px 32px 16px;
+    }
+
+    .org-transfer {
+      min-height: 500px;
+      grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1fr);
       gap: 0;
     }
 
-    .bom-action-cell {
-      text-align: center;
+    .org-transfer-column {
+      min-width: 0;
+      display: grid;
+      grid-template-rows: 34px minmax(0, 1fr);
     }
 
-    .bom-empty {
-      padding: 18px;
+    .org-column-caption {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      color: #344054;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .org-column-caption > span:first-child {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .org-column-caption b {
+      min-width: 28px;
+      border-radius: 4px;
+      background: #f1f4f8;
+      padding: 3px 8px;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .org-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .org-dot-blue {
+      background: var(--primary);
+    }
+
+    .org-dot-green {
+      background: #12a66a;
+    }
+
+    .org-caption-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .org-caption-actions button,
+    .org-clear-button {
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      padding: 0;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .org-caption-actions i {
+      width: 1px;
+      height: 13px;
+      background: var(--line-strong);
+    }
+
+    .org-clear-button {
+      color: var(--danger);
+    }
+
+    .org-panel {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      border-radius: 6px;
+    }
+
+    .org-panel-selected {
+      border-color: #8bddba;
+      background: #fbfffd;
+    }
+
+    .org-search-wrap {
+      position: relative;
+      margin: 12px 16px;
+    }
+
+    .org-search-wrap svg {
+      position: absolute;
+      top: 50%;
+      left: 12px;
+      transform: translateY(-50%);
+      color: #98a2b3;
+      pointer-events: none;
+    }
+
+    .org-search-wrap input {
+      width: 100%;
+      height: 34px;
+      border: 1px solid var(--line-strong);
+      border-radius: 3px;
+      outline: none;
+      padding: 0 12px 0 38px;
+      color: #344054;
+    }
+
+    .org-search-wrap input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .1);
+    }
+
+    .org-group-list,
+    .org-selected-list {
+      min-height: 0;
+      overflow: auto;
+      border-top: 1px solid var(--line);
+      padding: 0 10px 12px;
+    }
+
+    .org-group {
+      border-bottom: 1px solid #edf0f4;
+    }
+
+    .org-group-head {
+      width: 100%;
+      min-height: 48px;
+      display: grid;
+      grid-template-columns: 18px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 8px;
+      border: 0;
+      background: transparent;
+      color: #273142;
+      padding: 0 8px;
+      text-align: left;
+      font-weight: 800;
+    }
+
+    .org-group-head:hover {
+      background: #f7faff;
+    }
+
+    .org-group-chevron {
+      color: #98a2b3;
+      transition: transform .16s ease;
+    }
+
+    .org-group-head[aria-expanded="true"] .org-group-chevron {
+      transform: rotate(90deg);
+    }
+
+    .org-group-count {
+      color: #98a2b3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .org-member-option {
+      min-height: 54px;
+      grid-template-columns: auto 30px minmax(0, 1fr);
+      margin: 0 6px 6px 34px;
+      border-color: transparent;
+      padding: 7px 8px;
+    }
+
+    .org-member-option:has(input:checked) {
+      border-color: #87b4ff;
+      background: #f2f7ff;
+    }
+
+    .org-avatar {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .org-person-line {
+      display: flex;
+      align-items: baseline;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    .org-person-role,
+    .org-person-email {
+      color: #98a2b3;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .org-member-selected-state {
+      margin-left: auto;
+      color: #12a66a;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .transfer-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      padding-top: 34px;
+    }
+
+    .transfer-controls button {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      border-radius: 4px;
+      background: #fff;
+      color: #8090a6;
+      transition: .16s ease;
+    }
+
+    .transfer-controls button:hover:not(:disabled) {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #eef5ff;
+    }
+
+    .transfer-controls button:disabled {
+      background: #f7f8fa;
+      color: #c2c8d0;
+      cursor: not-allowed;
+    }
+
+    .org-selected-group {
+      margin-top: 10px;
+      overflow: hidden;
+      border: 1px solid #b9d9ff;
+      border-radius: 5px;
+      background: #fff;
+    }
+
+    .org-selected-group-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #e8f2ff;
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .org-selected-card {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 0;
+      background: #fff;
+      padding: 12px;
+    }
+
+    .org-selected-remove {
+      width: 28px;
+      height: 28px;
+      border: 0;
+      background: transparent;
+      color: #a6afbb;
+      font-size: 20px;
+    }
+
+    .org-selected-remove:hover {
+      color: var(--danger);
+    }
+
+    .org-empty,
+    .org-no-results {
+      padding: 54px 14px;
       color: var(--secondary);
       text-align: center;
+      line-height: 1.7;
+    }
+
+    .org-modal-foot {
+      min-height: 64px;
+      padding: 10px 32px;
+      background: #f9fafb;
+    }
+
+    .org-modal-summary {
+      color: #667085;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .org-modal-summary strong {
+      color: var(--primary);
     }
 
     .drawer-foot {
@@ -869,6 +1266,35 @@
 
       .form-grid {
         grid-template-columns: 1fr;
+      }
+
+      .org-modal-layer {
+        padding: 12px;
+      }
+
+      .org-transfer {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .org-modal-head,
+      .org-modal-foot {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .org-modal-body {
+        padding: 18px 16px;
+      }
+
+      .transfer-controls {
+        min-height: 58px;
+        flex-direction: row;
+        padding: 0;
+      }
+
+      .org-column-caption {
+        margin-top: 8px;
       }
     }
   </style>
@@ -995,7 +1421,7 @@
     <header class="drawer-head">
       <div class="drawer-title">
         <h2 id="drawerTitle">新建子零件开发任务</h2>
-        <span>支持手动新增，也可记录 BOM、BOM 行和供应方案来源</span>
+        <span>支持从 SAP 选择或手动添加零件并创建开发任务</span>
       </div>
       <button class="drawer-close" id="closeDrawer" type="button" aria-label="关闭">×</button>
     </header>
@@ -1026,7 +1452,7 @@
                 </select>
                 <input class="field" id="partName" name="partName" placeholder="请输入零件名称" data-required="零件名称" hidden>
               </div>
-              <div class="field-note">从 SAP 选择会自动带出推荐 BOM 信息，并支持继续编辑；手动添加时可在下方手动维护 BOM 层级。</div>
+              <div class="field-note">可从 SAP 选择已有零件，或切换为手动添加并填写零件名称。</div>
               <div class="error-text" data-error-for="partName"></div>
             </div>
             <div class="form-field">
@@ -1044,167 +1470,20 @@
               <div class="error-text" data-error-for="qualityProcess"></div>
             </div>
             <div class="form-field">
-              <label class="required" for="owner">负责人</label>
-              <select class="select" id="owner" name="owner" data-required="负责人">
-                <option value="">请选择</option>
-                <option>Li Ming</option>
-                <option>Zhang Ning</option>
-                <option>Xu Lulu</option>
-                <option>Zhang Nan</option>
-              </select>
-              <div class="error-text" data-error-for="owner"></div>
+              <label class="required" for="ownerPicker">负责人</label>
+              <button class="owner-picker" id="ownerPicker" type="button" aria-haspopup="dialog" aria-controls="orgModal" aria-expanded="false" aria-describedby="ownerError">
+                <span class="owner-picker-placeholder" id="ownerPickerText">请选择负责人</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <input type="hidden" id="owner" name="owner" data-required="负责人">
+              <div class="error-text" id="ownerError" data-error-for="owner"></div>
             </div>
             <div class="form-field">
               <label class="required" for="department">负责部门</label>
-              <input class="field" id="department" name="department" value="DMS China-547" data-required="负责部门">
+              <input class="field" id="department" name="department" placeholder="选择负责人后自动带入" data-required="负责部门" readonly aria-readonly="true">
               <div class="error-text" data-error-for="department"></div>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-card">
-          <h3 class="form-section-title">开发与供应 <span>Development and Supply</span></h3>
-          <div class="form-grid">
-            <div class="form-field">
-              <label class="required" for="gate">当前阶段</label>
-              <select class="select" id="gate" name="gate" data-required="当前阶段">
-                <option value="">请选择</option>
-                <option>Gate1</option>
-                <option>Gate2</option>
-                <option>Gate3</option>
-                <option>Gate4</option>
-                <option>Gate5</option>
-                <option>Gate6</option>
-              </select>
-              <div class="error-text" data-error-for="gate"></div>
-            </div>
-            <div class="form-field">
-              <label class="required" for="taskStatus">当前状态</label>
-              <select class="select" id="taskStatus" name="taskStatus" data-required="当前状态">
-                <option value="">请选择</option>
-                <option>未启动</option>
-                <option selected>进行中</option>
-                <option>当前 Gate 待完成</option>
-                <option>待影响分析</option>
-                <option>变更待确认</option>
-                <option>已完成</option>
-              </select>
-              <div class="error-text" data-error-for="taskStatus"></div>
-            </div>
-            <div class="form-field">
-              <label for="supplier">供应商</label>
-              <input class="field" id="supplier" name="supplier" placeholder="请输入供应商">
-            </div>
-            <div class="form-field">
-              <label for="supplierType">供应商类型</label>
-              <select class="select" id="supplierType" name="supplierType">
-                <option>一供</option>
-                <option>二供</option>
-                <option>其他</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="supplyStrategy">供应策略</label>
-              <select class="select" id="supplyStrategy" name="supplyStrategy">
-                <option>单一供应</option>
-                <option>双供备案</option>
-                <option>双供同步开发</option>
-                <option>二供后续导入</option>
-              </select>
-            </div>
-            <div class="form-field">
-              <label for="riskFlag">项目风险提示</label>
-              <select class="select" id="riskFlag" name="riskFlag">
-                <option>不影响项目风险提示</option>
-                <option>作为风险提醒展示</option>
-                <option>待项目团队人工判断</option>
-              </select>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-card">
-          <h3 class="form-section-title">来源追溯 <span>Traceability</span></h3>
-          <div class="form-grid">
-            <div class="form-field">
-              <label class="required" for="sourceType">创建来源</label>
-              <select class="select" id="sourceType" name="sourceType" data-required="创建来源">
-                <option value="">请选择</option>
-                <option selected>手动新增</option>
-                <option>BOM 创建</option>
-              </select>
-              <div class="error-text" data-error-for="sourceType"></div>
-            </div>
-            <div class="form-field">
-              <label for="sourceBomVersion">来源 BOM 版本</label>
-              <input class="field" id="sourceBomVersion" name="sourceBomVersion" placeholder="例如 PKO_V1.0">
-            </div>
-            <div class="form-field">
-              <label for="sourceBomLine">来源 BOM 行</label>
-              <input class="field" id="sourceBomLine" name="sourceBomLine" placeholder="例如 BOM-L2-003">
-            </div>
-            <div class="form-field">
-              <label for="sourceSupplyPlan">来源供应方案</label>
-              <input class="field" id="sourceSupplyPlan" name="sourceSupplyPlan" placeholder="例如 P1-A 一供开发">
-            </div>
-            <div class="form-field wide">
-              <label for="remark">备注</label>
-              <textarea class="textarea" id="remark" name="remark" placeholder="请输入任务说明、供应商开发背景或风险提醒"></textarea>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-card">
-          <h3 class="form-section-title">BOM 信息 <span>Optional BOM</span></h3>
-          <div class="notice">新建零件开发任务时可同步创建 BOM，但不是必填项；也可以先创建任务，进入详情页后再创建或补充 BOM 信息。</div>
-          <div class="form-grid">
-            <div class="form-field wide">
-              <label class="switch-row" for="createBomNow">
-                <input type="checkbox" id="createBomNow">
-                新建任务时同步创建 BOM
-              </label>
-              <div class="field-note">从 SAP 选择零件后会自动带出层级 BOM 初稿；你可以继续从 SAP 添加零件，也可以手动新增 BOM 行。</div>
-            </div>
-          </div>
-          <div class="bom-workspace" id="bomWorkspace" hidden>
-            <div class="bom-toolbar">
-              <span class="tag tag-blue">层级 BOM 初稿</span>
-              <div class="bom-actions">
-                <select class="select" id="sapBomAdd" aria-label="从 SAP 添加 BOM 零件" style="width:220px">
-                  <option value="">从 SAP 继续添加零件</option>
-                  <option value="SEAL RING">SEAL RING / 5077001</option>
-                  <option value="SPRING PIN">SPRING PIN / 5077002</option>
-                  <option value="PLASTIC COVER">PLASTIC COVER / 5077003</option>
-                </select>
-                <button class="btn btn-plain" type="button" id="addManualBomRow">手动新增 BOM 行</button>
-              </div>
-            </div>
-            <div class="bom-table-wrap">
-              <table class="bom-table" aria-label="新建任务时创建的 BOM 信息">
-                <colgroup>
-                  <col style="width:86px">
-                  <col style="width:230px">
-                  <col style="width:140px">
-                  <col style="width:90px">
-                  <col style="width:180px">
-                  <col style="width:132px">
-                  <col style="width:190px">
-                  <col style="width:72px">
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>层级</th>
-                    <th>零件名称</th>
-                    <th>零件编号</th>
-                    <th>数量</th>
-                    <th>父级零件</th>
-                    <th>是否需要 APQP</th>
-                    <th>供应方案</th>
-                    <th class="bom-action-cell">操作</th>
-                  </tr>
-                </thead>
-                <tbody id="bomRowsBody"></tbody>
-              </table>
             </div>
           </div>
         </section>
@@ -1217,6 +1496,79 @@
       </footer>
     </form>
   </aside>
+
+  <div class="org-modal-layer" id="orgModal" hidden>
+    <section class="org-modal" role="dialog" aria-modal="true" aria-labelledby="orgModalTitle">
+      <header class="org-modal-head">
+        <div>
+          <h3 id="orgModalTitle">选择负责人</h3>
+          <p>从左侧选择部门成员，添加到右侧已选列表</p>
+        </div>
+        <div class="org-modal-head-actions">
+          <span class="org-context-tag">企业组织架构</span>
+          <button class="org-modal-close" id="closeOrgModal" type="button" aria-label="关闭负责人选择">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="org-modal-body">
+        <div class="org-transfer">
+          <section class="org-transfer-column" aria-label="可选部门及成员">
+            <div class="org-column-caption">
+              <span><i class="org-dot org-dot-blue"></i>可选部门及成员 <b id="availableOwnerCount">4</b></span>
+              <span class="org-caption-actions">
+                <button type="button" id="expandAllDepartments">全部展开</button>
+                <i></i>
+                <button type="button" id="collapseAllDepartments">全部收起</button>
+              </span>
+            </div>
+            <div class="org-panel">
+              <div class="org-search-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                  <path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input id="orgAvailableSearch" type="search" placeholder="搜索部门或成员…" aria-label="搜索可选部门或成员">
+              </div>
+              <div class="org-group-list" id="orgDepartmentList" role="radiogroup" aria-label="负责人单选列表"></div>
+            </div>
+          </section>
+          <div class="transfer-controls" aria-label="穿梭操作">
+            <button type="button" id="addOwnerToSelection" aria-label="添加到已选负责人">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" id="removeOwnerSelection" aria-label="移除已选负责人">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+          <section class="org-transfer-column" aria-label="已选负责人">
+            <div class="org-column-caption">
+              <span><i class="org-dot org-dot-green"></i>已选负责人 <b id="selectedOwnerCount">0</b></span>
+              <button class="org-clear-button" id="clearSelectedOwner" type="button">清空</button>
+            </div>
+            <div class="org-panel org-panel-selected">
+              <div class="org-search-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+                  <path d="m20 20-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input id="orgSelectedSearch" type="search" placeholder="搜索已选成员…" aria-label="搜索已选负责人">
+              </div>
+              <div class="org-selected-list" id="selectedOwnerCard"></div>
+            </div>
+          </section>
+        </div>
+        <div class="org-selection-error" id="orgSelectionError" role="alert"></div>
+      </div>
+      <footer class="org-modal-foot">
+        <div class="org-modal-summary">已选 <strong id="selectedOwnerSummary">0</strong> 名负责人</div>
+        <div class="org-foot-actions">
+          <button class="btn btn-plain" id="cancelOrgModal" type="button">取消</button>
+          <button class="btn btn-primary" id="confirmOrgOwner" type="button">确认选择</button>
+        </div>
+      </footer>
+    </section>
+  </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -1256,33 +1608,30 @@
     const partSourceMode = document.querySelector("#partSourceMode");
     const sapPartSelect = document.querySelector("#sapPartSelect");
     const partNameInput = document.querySelector("#partName");
-    const createBomNow = document.querySelector("#createBomNow");
-    const bomWorkspace = document.querySelector("#bomWorkspace");
-    const bomRowsBody = document.querySelector("#bomRowsBody");
-    const sapBomAdd = document.querySelector("#sapBomAdd");
-    let bomRows = [];
-    const sapPartBomTemplates = {
-      "PHASER INSERT": [
-        { level: 1, name: "PHASER INSERT", no: "5069999", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 双供同步开发" },
-        { level: 2, name: "SEAL RING", no: "5077001", qty: "1", parent: "PHASER INSERT", apqp: "是", supplyPlan: "一供 / 单一供应" },
-        { level: 2, name: "SPRING PIN", no: "5077002", qty: "2", parent: "PHASER INSERT", apqp: "否", supplyPlan: "二供备案" }
-      ],
-      "FACE GUIDE": [
-        { level: 1, name: "FACE GUIDE", no: "5050607", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 单一供应" },
-        { level: 2, name: "PLASTIC COVER", no: "5077003", qty: "1", parent: "FACE GUIDE", apqp: "是", supplyPlan: "一供 / 单一供应" }
-      ],
-      "GUIDE SECONDARY": [
-        { level: 1, name: "GUIDE SECONDARY", no: "5054770", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 双供备案" }
-      ],
-      "TIMING CHAIN GUIDE": [
-        { level: 1, name: "TIMING CHAIN GUIDE", no: "5071024", qty: "1", parent: "-", apqp: "是", supplyPlan: "一供 / 二供后续导入" }
-      ]
-    };
-    const sapBomParts = {
-      "SEAL RING": { level: 2, name: "SEAL RING", no: "5077001", qty: "1", parent: "", apqp: "是", supplyPlan: "一供 / 单一供应" },
-      "SPRING PIN": { level: 2, name: "SPRING PIN", no: "5077002", qty: "1", parent: "", apqp: "否", supplyPlan: "二供备案" },
-      "PLASTIC COVER": { level: 2, name: "PLASTIC COVER", no: "5077003", qty: "1", parent: "", apqp: "是", supplyPlan: "一供 / 双供同步开发" }
-    };
+    const ownerInput = document.querySelector("#owner");
+    const ownerPicker = document.querySelector("#ownerPicker");
+    const ownerPickerText = document.querySelector("#ownerPickerText");
+    const departmentInput = document.querySelector("#department");
+    const orgModal = document.querySelector("#orgModal");
+    const orgDepartmentList = document.querySelector("#orgDepartmentList");
+    const selectedOwnerCard = document.querySelector("#selectedOwnerCard");
+    const selectedOwnerCount = document.querySelector("#selectedOwnerCount");
+    const selectedOwnerSummary = document.querySelector("#selectedOwnerSummary");
+    const availableOwnerCount = document.querySelector("#availableOwnerCount");
+    const orgAvailableSearch = document.querySelector("#orgAvailableSearch");
+    const orgSelectedSearch = document.querySelector("#orgSelectedSearch");
+    const addOwnerToSelection = document.querySelector("#addOwnerToSelection");
+    const removeOwnerSelection = document.querySelector("#removeOwnerSelection");
+    const orgSelectionError = document.querySelector("#orgSelectionError");
+    const organizationData = [
+      { department: "DMS China-547", members: [{ name: "Li Ming", role: "Project Manager", email: "li.ming@borgwarner.com" }] },
+      { department: "Engineering China-546", members: [{ name: "Zhang Ning", role: "Application Engineer", email: "zhang.ning@borgwarner.com" }] },
+      { department: "Quality China-548", members: [{ name: "Xu Lulu", role: "Quality Engineer", email: "xu.lulu@borgwarner.com" }] },
+      { department: "Supply Chain China-549", members: [{ name: "Zhang Nan", role: "SCM Engineer", email: "zhang.nan@borgwarner.com" }] }
+    ];
+    let expandedDepartments = new Set(organizationData.map((group) => group.department));
+    let highlightedOwner = "";
+    let pendingOwner = "";
 
     function escapeHtml(value) {
       return String(value)
@@ -1340,32 +1689,114 @@
       `).join("");
     }
 
-    function renderBomRows() {
-      if (!bomRows.length) {
-        bomRowsBody.innerHTML = `<tr><td colspan="8"><div class="bom-empty">暂无 BOM 行，可从 SAP 添加零件或手动新增 BOM 行。</div></td></tr>`;
+    function findOrganizationPerson(name) {
+      for (const group of organizationData) {
+        const person = group.members.find((member) => member.name === name);
+        if (person) return { ...person, department: group.department };
+      }
+      return null;
+    }
+
+    function personInitials(name) {
+      return name.split(/\s+/).map((part) => part[0] || "").join("").slice(0, 2).toUpperCase();
+    }
+
+    function renderOrganizationPicker() {
+      const availableQuery = orgAvailableSearch.value.trim().toLowerCase();
+      const totalMembers = organizationData.reduce((total, group) => total + group.members.length, 0);
+      availableOwnerCount.textContent = totalMembers;
+      const visibleGroups = organizationData.map((group) => {
+        const departmentMatches = group.department.toLowerCase().includes(availableQuery);
+        const members = group.members.filter((member) => {
+          const searchable = `${member.name} ${member.role} ${member.email}`.toLowerCase();
+          return !availableQuery || departmentMatches || searchable.includes(availableQuery);
+        });
+        return { ...group, members, totalCount: group.members.length };
+      }).filter((group) => group.members.length);
+
+      orgDepartmentList.innerHTML = visibleGroups.length ? visibleGroups.map((group) => {
+        const expanded = availableQuery || expandedDepartments.has(group.department);
+        const selectedCount = group.members.some((member) => member.name === pendingOwner) ? 1 : 0;
+        return `
+          <section class="org-group">
+            <button class="org-group-head" type="button" data-toggle-department="${escapeHtml(group.department)}" aria-expanded="${Boolean(expanded)}">
+              <svg class="org-group-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <span>${escapeHtml(group.department)}</span>
+              <span class="org-group-count">${selectedCount}/${group.totalCount}</span>
+            </button>
+            ${expanded ? group.members.map((member) => `
+              <label class="org-member-option">
+                <input type="radio" name="availableOwnerCandidate" value="${escapeHtml(member.name)}" ${member.name === highlightedOwner ? "checked" : ""}>
+                <span class="org-avatar">${escapeHtml(personInitials(member.name))}</span>
+                <span class="org-person-line">
+                  <span class="org-person-name">${escapeHtml(member.name)}</span>
+                  <span class="org-person-role">${escapeHtml(member.role)}</span>
+                  <span class="org-person-email">${escapeHtml(member.email)}</span>
+                  ${member.name === pendingOwner ? `<span class="org-member-selected-state">已选</span>` : ""}
+                </span>
+              </label>
+            `).join("") : ""}
+          </section>
+        `;
+      }).join("") : `<div class="org-no-results">未找到匹配的部门或成员<br>请尝试姓名、岗位或邮箱关键词</div>`;
+
+      const selectedPerson = findOrganizationPerson(pendingOwner);
+      const selectedQuery = orgSelectedSearch.value.trim().toLowerCase();
+      const selectedMatches = selectedPerson && (!selectedQuery || `${selectedPerson.name} ${selectedPerson.role} ${selectedPerson.email} ${selectedPerson.department}`.toLowerCase().includes(selectedQuery));
+      selectedOwnerCount.textContent = selectedPerson ? "1" : "0";
+      selectedOwnerSummary.textContent = selectedPerson ? "1" : "0";
+      selectedOwnerCard.innerHTML = selectedMatches ? `
+        <div class="org-selected-group">
+          <div class="org-selected-group-head"><span>${escapeHtml(selectedPerson.department)}</span><span>1人</span></div>
+          <div class="org-selected-card">
+            <span class="org-avatar">${escapeHtml(personInitials(selectedPerson.name))}</span>
+            <span class="org-person-line">
+              <span class="org-person-name">${escapeHtml(selectedPerson.name)}</span>
+              <span class="org-person-role">${escapeHtml(selectedPerson.role)}</span>
+              <span class="org-person-email">${escapeHtml(selectedPerson.email)}</span>
+            </span>
+            <button class="org-selected-remove" type="button" data-remove-selected-owner aria-label="移除 ${escapeHtml(selectedPerson.name)}">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      ` : selectedPerson ? `<div class="org-no-results">当前已选负责人不匹配搜索条件</div>` : `<div class="org-empty">尚未选择负责人<br>请从左侧单选成员后点击右移按钮</div>`;
+      addOwnerToSelection.disabled = !highlightedOwner || highlightedOwner === pendingOwner;
+      removeOwnerSelection.disabled = !pendingOwner;
+    }
+
+    function setOrganizationModal(open) {
+      orgModal.hidden = !open;
+      ownerPicker.setAttribute("aria-expanded", String(open));
+      if (open) {
+        pendingOwner = ownerInput.value;
+        highlightedOwner = pendingOwner;
+        expandedDepartments = new Set(organizationData.map((group) => group.department));
+        orgAvailableSearch.value = "";
+        orgSelectedSearch.value = "";
+        orgSelectionError.textContent = "";
+        renderOrganizationPicker();
+        orgAvailableSearch.focus();
+      } else {
+        ownerPicker.focus();
+      }
+    }
+
+    function applySelectedOwner() {
+      const selectedPerson = findOrganizationPerson(pendingOwner);
+      if (!selectedPerson) {
+        orgSelectionError.textContent = "请选择一名负责人";
         return;
       }
-      bomRowsBody.innerHTML = bomRows.map((row, index) => `
-        <tr>
-          <td>
-            <select class="mini-select" data-bom-field="level" data-bom-index="${index}" style="--level:${Number(row.level) || 1}">
-              ${[1, 2, 3, 4].map((level) => `<option value="${level}" ${Number(row.level) === level ? "selected" : ""}>L${level}</option>`).join("")}
-            </select>
-          </td>
-          <td><div class="bom-part-cell"><span class="bom-indent" style="--level:${Number(row.level) || 1}"></span><input class="mini-field" data-bom-field="name" data-bom-index="${index}" value="${escapeHtml(row.name)}"></div></td>
-          <td><input class="mini-field" data-bom-field="no" data-bom-index="${index}" value="${escapeHtml(row.no)}"></td>
-          <td><input class="mini-field" data-bom-field="qty" data-bom-index="${index}" value="${escapeHtml(row.qty)}"></td>
-          <td><input class="mini-field" data-bom-field="parent" data-bom-index="${index}" value="${escapeHtml(row.parent)}"></td>
-          <td>
-            <select class="mini-select" data-bom-field="apqp" data-bom-index="${index}">
-              <option ${row.apqp === "是" ? "selected" : ""}>是</option>
-              <option ${row.apqp === "否" ? "selected" : ""}>否</option>
-            </select>
-          </td>
-          <td><input class="mini-field" data-bom-field="supplyPlan" data-bom-index="${index}" value="${escapeHtml(row.supplyPlan)}"></td>
-          <td class="bom-action-cell"><button class="link" type="button" data-remove-bom-row="${index}">删除</button></td>
-        </tr>
-      `).join("");
+      ownerInput.value = selectedPerson.name;
+      ownerPickerText.textContent = selectedPerson.name;
+      ownerPickerText.classList.remove("owner-picker-placeholder");
+      departmentInput.value = selectedPerson.department;
+      ownerPicker.classList.remove("invalid");
+      taskForm.querySelector('[data-error-for="owner"]').textContent = "";
+      taskForm.querySelector('[data-error-for="department"]').textContent = "";
+      departmentInput.style.borderColor = "";
+      setOrganizationModal(false);
     }
 
     function syncPartSourceMode() {
@@ -1380,38 +1811,17 @@
       }
     }
 
-    function loadSapBomTemplate(partName) {
-      const template = sapPartBomTemplates[partName] || [];
-      bomRows = template.map((row) => ({ ...row }));
-      renderBomRows();
-    }
-
     function syncSapPartSelection() {
       if (partSourceMode.value !== "sap") return;
       partNameInput.value = sapPartSelect.value || "";
-      if (sapPartSelect.value) {
-        document.querySelector("#sourceType").value = "BOM 创建";
-        document.querySelector("#sourceBomLine").value = sapPartSelect.value;
-        if (!document.querySelector("#sourceBomVersion").value) {
-          document.querySelector("#sourceBomVersion").value = "SAP_WORKING_BOM";
-        }
-        loadSapBomTemplate(sapPartSelect.value);
-      } else {
-        bomRows = [];
-        renderBomRows();
-      }
-    }
-
-    function setBomWorkspace(open) {
-      bomWorkspace.hidden = !open;
-      if (open && !bomRows.length && partNameInput.value && partSourceMode.value === "sap") {
-        loadSapBomTemplate(partNameInput.value);
-      }
-      if (open) renderBomRows();
     }
 
     function setDrawer(open) {
       document.body.classList.toggle("drawer-open", open);
+      if (!open) {
+        orgModal.hidden = true;
+        ownerPicker.setAttribute("aria-expanded", "false");
+      }
       if (open) {
         document.querySelector("#sapPartSelect").focus();
       }
@@ -1437,7 +1847,11 @@
         if (error) {
           error.textContent = isEmpty ? `请填写${field.dataset.required}` : "";
         }
-        field.style.borderColor = isEmpty ? "var(--danger)" : "";
+        if (field.id === "owner") {
+          ownerPicker.classList.toggle("invalid", isEmpty);
+        } else {
+          field.style.borderColor = isEmpty ? "var(--danger)" : "";
+        }
         valid = valid && !isEmpty;
       });
       const partError = taskForm.querySelector('[data-error-for="partName"]');
@@ -1456,10 +1870,10 @@
         quality: valueOf("#qualityProcess"),
         owner: valueOf("#owner"),
         department: valueOf("#department"),
-        supplier: valueOf("#supplier") || "-",
-        source: valueOf("#sourceType"),
-        gate: valueOf("#gate"),
-        status: statusOverride || valueOf("#taskStatus")
+        supplier: "-",
+        source: "手动新增",
+        gate: "Gate1",
+        status: statusOverride || "未启动"
       };
     }
 
@@ -1474,17 +1888,16 @@
         .reduce((max, id) => Math.max(max, Number(id.slice(prefix.length)) || 0), 0);
       document.querySelector("#taskNo").value = `${prefix}${String(dailyMax + 1).padStart(3, "0")}`;
       document.querySelector("#qualityProcess").value = "Full APQP process";
-      document.querySelector("#department").value = "DMS China-547";
-      document.querySelector("#taskStatus").value = "进行中";
-      document.querySelector("#sourceType").value = "手动新增";
       document.querySelector("#partSourceMode").value = "sap";
       document.querySelector("#sapPartSelect").value = "";
       document.querySelector("#partName").value = "";
       document.querySelector("#partName").hidden = true;
       document.querySelector("#sapPartSelect").hidden = false;
-      document.querySelector("#createBomNow").checked = false;
-      bomRows = [];
-      setBomWorkspace(false);
+      ownerInput.value = "";
+      ownerPickerText.textContent = "请选择负责人";
+      ownerPickerText.classList.add("owner-picker-placeholder");
+      ownerPicker.classList.remove("invalid");
+      departmentInput.value = "";
       taskForm.querySelectorAll(".error-text").forEach((error) => {
         error.textContent = "";
       });
@@ -1526,46 +1939,64 @@
     document.querySelector("#cancelDrawer").addEventListener("click", () => setDrawer(false));
     drawerMask.addEventListener("click", () => setDrawer(false));
     document.querySelector("#saveDraft").addEventListener("click", () => submitTask("未启动"));
+    ownerPicker.addEventListener("click", () => setOrganizationModal(true));
+    document.querySelector("#closeOrgModal").addEventListener("click", () => setOrganizationModal(false));
+    document.querySelector("#cancelOrgModal").addEventListener("click", () => setOrganizationModal(false));
+    document.querySelector("#confirmOrgOwner").addEventListener("click", applySelectedOwner);
+    orgModal.addEventListener("click", (event) => {
+      if (event.target === orgModal) setOrganizationModal(false);
+    });
+    orgDepartmentList.addEventListener("click", (event) => {
+      const departmentButton = event.target.closest("[data-toggle-department]");
+      if (!departmentButton) return;
+      const department = departmentButton.dataset.toggleDepartment;
+      if (expandedDepartments.has(department)) {
+        expandedDepartments.delete(department);
+      } else {
+        expandedDepartments.add(department);
+      }
+      renderOrganizationPicker();
+    });
+    orgDepartmentList.addEventListener("change", (event) => {
+      if (event.target.name !== "availableOwnerCandidate") return;
+      highlightedOwner = event.target.value;
+      orgSelectionError.textContent = "";
+      renderOrganizationPicker();
+    });
+    orgAvailableSearch.addEventListener("input", renderOrganizationPicker);
+    orgSelectedSearch.addEventListener("input", renderOrganizationPicker);
+    document.querySelector("#expandAllDepartments").addEventListener("click", () => {
+      expandedDepartments = new Set(organizationData.map((group) => group.department));
+      renderOrganizationPicker();
+    });
+    document.querySelector("#collapseAllDepartments").addEventListener("click", () => {
+      expandedDepartments.clear();
+      renderOrganizationPicker();
+    });
+    addOwnerToSelection.addEventListener("click", () => {
+      if (!highlightedOwner) return;
+      pendingOwner = highlightedOwner;
+      orgSelectionError.textContent = "";
+      renderOrganizationPicker();
+    });
+    removeOwnerSelection.addEventListener("click", () => {
+      pendingOwner = "";
+      renderOrganizationPicker();
+    });
+    document.querySelector("#clearSelectedOwner").addEventListener("click", () => {
+      pendingOwner = "";
+      renderOrganizationPicker();
+    });
+    selectedOwnerCard.addEventListener("click", (event) => {
+      if (!event.target.closest("[data-remove-selected-owner]")) return;
+      pendingOwner = "";
+      renderOrganizationPicker();
+    });
     partSourceMode.addEventListener("change", () => {
       syncPartSourceMode();
       syncSapPartSelection();
     });
     sapPartSelect.addEventListener("change", syncSapPartSelection);
-    createBomNow.addEventListener("change", () => setBomWorkspace(createBomNow.checked));
-    document.querySelector("#addManualBomRow").addEventListener("click", () => {
-      const parent = bomRows.find((row) => Number(row.level) === 1)?.name || partNameInput.value || "-";
-      bomRows.push({ level: parent === "-" ? 1 : 2, name: "", no: "", qty: "1", parent, apqp: "是", supplyPlan: "" });
-      createBomNow.checked = true;
-      setBomWorkspace(true);
-    });
-    sapBomAdd.addEventListener("change", () => {
-      const selected = sapBomAdd.value;
-      if (!selected) return;
-      const parent = bomRows.find((row) => Number(row.level) === 1)?.name || partNameInput.value || "-";
-      bomRows.push({ ...sapBomParts[selected], parent });
-      sapBomAdd.value = "";
-      createBomNow.checked = true;
-      setBomWorkspace(true);
-    });
-    bomRowsBody.addEventListener("input", (event) => {
-      const field = event.target.dataset.bomField;
-      const index = Number(event.target.dataset.bomIndex);
-      if (!field || Number.isNaN(index) || !bomRows[index]) return;
-      bomRows[index][field] = event.target.value;
-    });
-    bomRowsBody.addEventListener("change", (event) => {
-      const field = event.target.dataset.bomField;
-      const index = Number(event.target.dataset.bomIndex);
-      if (!field || Number.isNaN(index) || !bomRows[index]) return;
-      bomRows[index][field] = event.target.value;
-      renderBomRows();
-    });
-    bomRowsBody.addEventListener("click", (event) => {
-      const removeButton = event.target.closest("[data-remove-bom-row]");
-      if (!removeButton) return;
-      bomRows.splice(Number(removeButton.dataset.removeBomRow), 1);
-      renderBomRows();
-    });
     taskForm.addEventListener("submit", (event) => {
       event.preventDefault();
       submitTask();
@@ -1588,14 +2019,17 @@
       }
     });
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && document.body.classList.contains("drawer-open")) {
-        setDrawer(false);
+      if (event.key === "Escape") {
+        if (!orgModal.hidden) {
+          setOrganizationModal(false);
+        } else if (document.body.classList.contains("drawer-open")) {
+          setDrawer(false);
+        }
       }
     });
 
     applyFilter();
     syncPartSourceMode();
-    renderBomRows();
   </script>
 </body>
 </html>

@@ -468,11 +468,35 @@
     }
 
     .group-row td {
-      height: 30px;
+      min-height: 42px;
+      padding: 6px 16px;
       background: #f6f7f9;
       color: var(--secondary);
       font-size: 12px;
       font-weight: 900;
+    }
+
+    .group-row-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .group-add-task {
+      min-height: 28px;
+      padding: 0 10px;
+      border: 1px solid #cfe0ff;
+      border-radius: 4px;
+      background: #fff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .group-add-task:hover {
+      border-color: var(--primary);
+      background: var(--primary-weak);
     }
 
     .title-cell {
@@ -666,6 +690,34 @@
       border-bottom: 0;
     }
 
+    .task-type-modal {
+      width: min(480px, 100%);
+      grid-template-rows: auto 1fr auto;
+    }
+
+    .task-type-form {
+      display: grid;
+      gap: 8px;
+      padding: 22px 24px;
+    }
+
+    .task-type-form label {
+      color: #344054;
+      font-weight: 850;
+    }
+
+    .task-type-form .field {
+      width: 100%;
+    }
+
+    .task-type-error {
+      min-height: 18px;
+      margin: 0;
+      color: var(--danger);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .toast {
       position: fixed;
       left: 50%;
@@ -785,6 +837,24 @@
       <div class="modal-foot">
         <button class="btn" type="button" id="cancelLibrary">取消</button>
         <button class="btn btn-primary" type="button" id="confirmLibrary">确定</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="taskTypeModal" hidden>
+    <section class="modal task-type-modal" role="dialog" aria-modal="true" aria-labelledby="taskTypeTitle">
+      <div class="modal-head">
+        <h2 id="taskTypeTitle">新增任务类型</h2>
+        <button class="close-button" type="button" data-close-task-type aria-label="关闭">×</button>
+      </div>
+      <form class="task-type-form" id="taskTypeForm">
+        <label for="taskTypeName" class="required">任务类型名称</label>
+        <input class="field" id="taskTypeName" type="text" maxlength="60" placeholder="请输入任务类型名称" autocomplete="off">
+        <p class="task-type-error" id="taskTypeError" hidden></p>
+      </form>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-task-type>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmTaskType">确定新增</button>
       </div>
     </section>
   </div>
@@ -990,6 +1060,10 @@
     const stageList = document.getElementById("stageList");
     const stageTabs = document.getElementById("stageTabs");
     const libraryModal = document.getElementById("libraryModal");
+    const taskTypeModal = document.getElementById("taskTypeModal");
+    const taskTypeForm = document.getElementById("taskTypeForm");
+    const taskTypeName = document.getElementById("taskTypeName");
+    const taskTypeError = document.getElementById("taskTypeError");
     const libraryKeyword = document.getElementById("libraryKeyword");
     const libraryResponsible = document.getElementById("libraryResponsible");
     const categoryTabs = document.getElementById("categoryTabs");
@@ -998,6 +1072,7 @@
     const departmentMenu = document.getElementById("departmentMenu");
     let currentStageName = "CKO";
     let libraryStageName = "CKO";
+    let taskTypeStageName = "CKO";
     let currentCategory = "All";
     let activeFloatingButton = null;
     let toastTimer;
@@ -1091,13 +1166,18 @@
 
       stageList.innerHTML = stageConfigs.map((stage, index) => {
         const criticalCount = stage.tasks.filter((task) => task.critical).length;
-        const groupedTasks = categories.filter((category) => category !== "All").map((category) => {
+        const stageCategories = [...new Set([
+          ...categories.filter((category) => category !== "All"),
+          ...(stage.customCategories || [])
+        ])];
+        const groupedTasks = stageCategories.map((category) => {
           const tasks = stage.tasks.filter((task) => task.category === category);
-          if (!tasks.length) return "";
+          const isCustomCategory = (stage.customCategories || []).includes(category);
+          if (!tasks.length && !isCustomCategory) return "";
 
           return `
-            <tr class="group-row"><td colspan="11">${category}</td></tr>
-            ${tasks.map((task, taskIndex) => `
+            <tr class="group-row"><td colspan="11"><div class="group-row-content"><span>${escapeHtml(category)}</span><button class="group-add-task" type="button" data-add-task="${escapeHtml(stage.name)}" data-task-category="${escapeHtml(category)}">新增任务</button></div></td></tr>
+            ${tasks.length ? tasks.map((task, taskIndex) => `
               <tr data-row="${task.uid}" data-stage="${stage.name}">
                 <td class="center"><input type="checkbox" data-row-check></td>
                 <td class="center">${taskIndex + 1}</td>
@@ -1117,7 +1197,7 @@
                 <td>${task.source === "manual" ? "手动新增" : "子任务库"}</td>
                 <td><button class="link-button" type="button" data-delete>删除</button></td>
               </tr>
-            `).join("")}
+            `).join("") : `<tr><td colspan="11" class="center">暂无任务，点击“新增任务”创建。</td></tr>`}
           `;
         }).join("");
 
@@ -1150,7 +1230,7 @@
                 <h2>任务清单</h2>
                 <div class="toolbar">
                   <button class="btn btn-primary" type="button" data-open-library="${stage.name}">子任务库</button>
-                  <button class="btn" type="button" data-add-manual="${stage.name}">手动新增</button>
+                  <button class="btn" type="button" data-add-task-type="${stage.name}">新增任务类型</button>
                   <button class="btn btn-danger" type="button" data-bulk-delete="${stage.name}">批量移除</button>
                 </div>
               </div>
@@ -1301,7 +1381,7 @@
       closeFloatingMenu();
     }
 
-    function addManualTask(stageName) {
+    function addManualTask(stageName, category) {
       const stage = getStage(stageName);
       const next = stage.tasks.length + 1;
       stage.tasks.push({
@@ -1309,7 +1389,7 @@
         id: `MANUAL-${String(next).padStart(2, "0")}`,
         title: "手动新增任务",
         description: "请补充任务执行要求",
-        category: "Plan and Define",
+        category: category || "Plan and Define",
         ownerRole: "PM",
         version: "V1",
         deliverable: "",
@@ -1323,6 +1403,46 @@
       currentStageName = stageName;
       renderStages();
       showToast("已新增手动任务，请补充任务信息。");
+    }
+
+    function showTaskTypeModal(stageName) {
+      taskTypeStageName = stageName;
+      taskTypeForm.reset();
+      taskTypeError.hidden = true;
+      taskTypeModal.hidden = false;
+      taskTypeName.focus();
+    }
+
+    function hideTaskTypeModal() {
+      taskTypeModal.hidden = true;
+      taskTypeError.hidden = true;
+    }
+
+    function confirmTaskType() {
+      const stage = getStage(taskTypeStageName);
+      const name = taskTypeName.value.trim();
+      const existing = new Set([
+        ...categories.filter((category) => category !== "All"),
+        ...(stage?.customCategories || [])
+      ].map((category) => category.toLocaleLowerCase("zh-CN")));
+      if (!name) {
+        taskTypeError.textContent = "请输入任务类型名称。";
+        taskTypeError.hidden = false;
+        taskTypeName.focus();
+        return;
+      }
+      if (existing.has(name.toLocaleLowerCase("zh-CN"))) {
+        taskTypeError.textContent = "该任务类型已存在，请输入其他名称。";
+        taskTypeError.hidden = false;
+        taskTypeName.focus();
+        return;
+      }
+      stage.customCategories = [...(stage.customCategories || []), name];
+      stage.collapsed = false;
+      currentStageName = stage.name;
+      hideTaskTypeModal();
+      renderStages();
+      showToast(`已新增任务类型“${name}”。`);
     }
 
     function resetStage(stageName) {
@@ -1507,7 +1627,8 @@
     stageList.addEventListener("click", (event) => {
       const toggle = event.target.closest("[data-toggle]");
       const openButton = event.target.closest("[data-open-library]");
-      const addButton = event.target.closest("[data-add-manual]");
+      const addTaskTypeButton = event.target.closest("[data-add-task-type]");
+      const addTaskButton = event.target.closest("[data-add-task]");
       const deleteButton = event.target.closest("[data-delete]");
       const bulkButton = event.target.closest("[data-bulk-delete]");
       const resetStageButton = event.target.closest("[data-reset-stage]");
@@ -1522,7 +1643,8 @@
         renderStages();
       }
       if (openButton) openLibrary(openButton.dataset.openLibrary);
-      if (addButton) addManualTask(addButton.dataset.addManual);
+      if (addTaskTypeButton) showTaskTypeModal(addTaskTypeButton.dataset.addTaskType);
+      if (addTaskButton) addManualTask(addTaskButton.dataset.addTask, addTaskButton.dataset.taskCategory);
       if (bulkButton) bulkDelete(bulkButton.dataset.bulkDelete);
       if (resetStageButton) resetStage(resetStageButton.dataset.resetStage);
       if (deleteStageButton) deleteStage(deleteStageButton.dataset.deleteStage);
@@ -1592,6 +1714,19 @@
     document.getElementById("confirmLibrary").addEventListener("click", confirmLibrary);
     libraryModal.addEventListener("click", (event) => {
       if (event.target === libraryModal) closeLibrary();
+    });
+
+    document.querySelectorAll("[data-close-task-type]").forEach((button) => button.addEventListener("click", hideTaskTypeModal));
+    document.getElementById("confirmTaskType").addEventListener("click", confirmTaskType);
+    taskTypeForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      confirmTaskType();
+    });
+    taskTypeName.addEventListener("input", () => {
+      taskTypeError.hidden = true;
+    });
+    taskTypeModal.addEventListener("click", (event) => {
+      if (event.target === taskTypeModal) hideTaskTypeModal();
     });
 
     document.getElementById("submitButton").addEventListener("click", () => {

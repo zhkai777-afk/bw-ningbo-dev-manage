@@ -4752,6 +4752,10 @@
       table-layout: fixed;
     }
 
+    .library-table.is-task-source {
+      min-width: 1360px;
+    }
+
     .library-table th,
     .library-table td {
       min-height: 53px;
@@ -6489,27 +6493,6 @@
             <div class="record-alert-list" data-record-alerts></div>
           </section>
 
-      <div class="toolbar">
-        <div class="stage-task-filterbar">
-          <label>
-            编号 / 标题
-            <input class="field" type="search" placeholder="输入 K-PAC 编号或标题" data-stage-task-keyword>
-          </label>
-          <div class="stage-dept-multiselect" data-stage-dept-filter>
-            <span>负责部门</span>
-            <button class="btn stage-dept-toggle" type="button" data-stage-dept-toggle>全部部门</button>
-            <div class="stage-dept-menu" data-stage-dept-menu hidden></div>
-          </div>
-          <button class="btn" type="button" data-stage-filter-reset>重置</button>
-        </div>
-        <div class="filters">
-          <button class="filter active" type="button" data-stage-status-filter="all">全部 (6)</button>
-          <button class="filter" type="button" data-stage-status-filter="pending">待完成 (5)</button>
-          <button class="filter" type="button" data-stage-status-filter="overdue">已逾期 (0)</button>
-          <button class="filter" type="button" data-stage-status-filter="done">已完成 (1)</button>
-        </div>
-      </div>
-
       <div id="stageTaskTables"></div>
         </section>
       </div>
@@ -7084,15 +7067,15 @@
           </div>
 
           <div class="bom-table-wrap library-table-wrap">
-            <table class="library-table" aria-label="项目资料库列表">
-              <colgroup>
+            <table class="library-table" id="libraryTable" aria-label="项目资料库列表">
+              <colgroup id="libraryTableColgroup">
                 <col style="width: 38%">
                 <col style="width: 30%">
                 <col style="width: 14%">
                 <col style="width: 12%">
                 <col style="width: 6%">
               </colgroup>
-              <thead>
+              <thead id="libraryTableHead">
                 <tr>
                   <th>文件名称</th>
                   <th>备注信息</th>
@@ -7101,36 +7084,7 @@
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody id="libraryTableBody">
-                <tr data-source="task">
-                  <td><div class="library-file-name">供应商产能爬坡计划与风险清单.xlsx</div></td>
-                  <td>供应商准备度评审任务附件</td>
-                  <td>2025-10-31</td>
-                  <td>Luna</td>
-                  <td><a class="blue-link" href="#">下载</a></td>
-                </tr>
-                <tr data-source="task">
-                  <td><div class="library-file-name">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</div></td>
-                  <td>3.5 CQI 特殊过程评审任务附件</td>
-                  <td>2025-10-31</td>
-                  <td>Theodore</td>
-                  <td><a class="blue-link" href="#">下载</a></td>
-                </tr>
-                <tr data-source="task">
-                  <td><div class="library-file-name">二供样件验证计划与供应商开发记录.xlsx</div></td>
-                  <td>二供同步开发资料包</td>
-                  <td>2025-10-31</td>
-                  <td>SQD</td>
-                  <td><a class="blue-link" href="#">下载</a></td>
-                </tr>
-                <tr data-source="task">
-                  <td><div class="library-file-name">PKO 启动会会议纪要及行动项.docx</div></td>
-                  <td>项目启动会会议纪要</td>
-                  <td>2025-10-31</td>
-                  <td>Willow</td>
-                  <td><a class="blue-link" href="#">下载</a></td>
-                </tr>
-              </tbody>
+              <tbody id="libraryTableBody"></tbody>
             </table>
           </div>
 
@@ -14026,6 +13980,9 @@
     const teamSearchInput = document.getElementById("teamSearchInput");
     const librarySearchForm = document.getElementById("librarySearchForm");
     const librarySearchInput = document.getElementById("librarySearchInput");
+    const libraryTable = document.getElementById("libraryTable");
+    const libraryTableColgroup = document.getElementById("libraryTableColgroup");
+    const libraryTableHead = document.getElementById("libraryTableHead");
     const libraryTableBody = document.getElementById("libraryTableBody");
     const libraryResultCount = document.getElementById("libraryResultCount");
     const librarySourceTabs = Array.from(document.querySelectorAll("[data-library-source]"));
@@ -14038,6 +13995,48 @@
     const libraryUploadNote = document.getElementById("libraryUploadNote");
     const libraryUploadError = document.getElementById("libraryUploadError");
     let activeLibrarySource = "task";
+    const libraryRecords = [
+      {
+        source: "task",
+        fileName: "供应商产能爬坡计划与风险清单.xlsx",
+        documentType: "项目文件",
+        taskTitle: "Estimated Facility Cost Estimate",
+        stage: "Investment Ready",
+        taskCode: "GPM_GR-37",
+        uploadDate: "2025-10-31",
+        uploader: "Luna"
+      },
+      {
+        source: "task",
+        fileName: "CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx",
+        documentType: "零件APQP",
+        taskTitle: "CQI-9 热处理特殊过程评审",
+        stage: "Investment Ready",
+        taskCode: "APQP_TASK-003",
+        uploadDate: "2025-10-31",
+        uploader: "Theodore"
+      },
+      {
+        source: "task",
+        fileName: "二供样件验证计划与供应商开发记录.xlsx",
+        documentType: "零件APQP",
+        taskTitle: "二供样件验证与供应商开发",
+        stage: "Off Tool Sample Ready",
+        taskCode: "APQP_TASK-006",
+        uploadDate: "2025-10-31",
+        uploader: "SQD"
+      },
+      {
+        source: "task",
+        fileName: "PKO 启动会会议纪要及行动项.docx",
+        documentType: "项目文件",
+        taskTitle: "Program Kick Off Meeting",
+        stage: "Program Kick Off",
+        taskCode: "GPM_GR-4",
+        uploadDate: "2025-10-31",
+        uploader: "Willow"
+      }
+    ];
     const memberModal = document.getElementById("memberModal");
     const openMemberModal = document.getElementById("openMemberModal");
     const availableGroupList = document.getElementById("availableGroupList");
@@ -14712,7 +14711,7 @@
         `;
       }).join("") : `
         <section class="table-panel">
-          <div class="empty-tip">暂无符合条件的任务，请调整 编号 / 标题 或负责部门筛选条件。</div>
+          <div class="empty-tip">当前阶段暂无任务。</div>
         </section>
       `;
 
@@ -16729,14 +16728,18 @@
             scope: taskStage || activeStage
           });
           if (submittedFile && libraryTableBody) {
-            libraryTableBody.insertBefore(createLibraryRow({
+            const partApqpTaskNumber = task.apqpTaskNumber || task.apqpNo || "";
+            libraryRecords.unshift({
               source: "task",
-              remark: task.note || `${task.title}任务附件`,
               fileName: submittedFile.name,
               fileUrl: URL.createObjectURL(submittedFile),
+              documentType: partApqpTaskNumber ? "零件APQP" : "项目文件",
+              taskTitle: task.title || "—",
+              stage: stageDisplayName(taskStage || activeStage),
+              taskCode: task.kpac || "—",
               uploadDate: getCurrentTime().slice(0, 10),
               uploader: currentOperatorName
-            }), libraryTableBody.firstElementChild);
+            });
             filterLibraryRows();
           }
           renderStageTasks(activeStage);
@@ -17818,28 +17821,13 @@
 
     function filterLibraryRows() {
       const keyword = librarySearchInput.value.trim().toLowerCase();
-      let visibleCount = 0;
-      Array.from(libraryTableBody.querySelectorAll("tr")).forEach((row) => {
-        if (row.classList.contains("library-empty-row")) {
-          return;
-        }
-        const matchesSource = row.dataset.source === activeLibrarySource;
-        const matchesKeyword = !keyword || row.textContent.toLowerCase().includes(keyword);
-        row.hidden = !(matchesSource && matchesKeyword);
-        if (!row.hidden) {
-          visibleCount += 1;
-        }
+      const records = libraryRecords.filter((record) => {
+        const matchesSource = record.source === activeLibrarySource;
+        const matchesKeyword = !keyword || Object.values(record).join(" ").toLowerCase().includes(keyword);
+        return matchesSource && matchesKeyword;
       });
-
-      let emptyRow = libraryTableBody.querySelector(".library-empty-row");
-      if (!emptyRow) {
-        emptyRow = document.createElement("tr");
-        emptyRow.className = "library-empty-row";
-        emptyRow.innerHTML = `<td class="library-empty" colspan="5">暂无匹配资料</td>`;
-        libraryTableBody.appendChild(emptyRow);
-      }
-      emptyRow.hidden = visibleCount > 0;
-      libraryResultCount.textContent = `共 ${visibleCount} 项数据`;
+      renderLibraryTable(records);
+      libraryResultCount.textContent = `共 ${records.length} 项数据`;
     }
 
     function resetLibraryUploadForm() {
@@ -17858,26 +17846,72 @@
       libraryUploadModal.hidden = true;
     }
 
-    function createLibraryRow(payload) {
-      const row = document.createElement("tr");
-      row.dataset.source = payload.source || "manual";
-      row.innerHTML = `
-        <td><div class="library-file-name"></div></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><a class="blue-link" href="#">下载</a></td>
-      `;
-      row.children[0].querySelector(".library-file-name").textContent = payload.fileName;
-      row.children[1].textContent = payload.remark || "—";
-      row.children[2].textContent = payload.uploadDate;
-      row.children[3].textContent = payload.uploader;
-      if (payload.fileUrl) {
-        const downloadLink = row.querySelector(".blue-link");
-        downloadLink.href = payload.fileUrl;
-        downloadLink.download = payload.fileName;
-      }
-      return row;
+    function libraryDownloadLink(record) {
+      const attributes = record.fileUrl
+        ? `href="${escapeHtml(record.fileUrl)}" download="${escapeHtml(record.fileName)}"`
+        : 'href="#"';
+      return `<a class="blue-link" ${attributes}>下载</a>`;
+    }
+
+    function renderLibraryTable(records) {
+      const isTaskSource = activeLibrarySource === "task";
+      libraryTable.classList.toggle("is-task-source", isTaskSource);
+      libraryTableColgroup.innerHTML = isTaskSource
+        ? `
+            <col style="width: 20%">
+            <col style="width: 9%">
+            <col style="width: 22%">
+            <col style="width: 13%">
+            <col style="width: 12%">
+            <col style="width: 9%">
+            <col style="width: 9%">
+            <col style="width: 6%">`
+        : `
+            <col style="width: 38%">
+            <col style="width: 30%">
+            <col style="width: 14%">
+            <col style="width: 12%">
+            <col style="width: 6%">`;
+      libraryTableHead.innerHTML = isTaskSource
+          ? `<tr>
+            <th>文件名称</th>
+            <th>类型</th>
+            <th>任务标题</th>
+            <th>所属阶段</th>
+            <th>所属任务编号</th>
+            <th>上传日期</th>
+            <th>上传人</th>
+            <th>操作</th>
+          </tr>`
+        : `<tr>
+            <th>文件名称</th>
+            <th>备注信息</th>
+            <th>上传日期</th>
+            <th>上传人</th>
+            <th>操作</th>
+          </tr>`;
+      const colspan = isTaskSource ? 8 : 5;
+      libraryTableBody.innerHTML = records.length
+        ? records.map((record) => isTaskSource
+          ? `<tr data-source="task">
+              <td><div class="library-file-name">${escapeHtml(record.fileName)}</div></td>
+              <td>${escapeHtml(record.documentType || "项目文件")}</td>
+              <td>${escapeHtml(record.taskTitle || "—")}</td>
+              <td>${escapeHtml(record.stage || "—")}</td>
+              <td>${escapeHtml(record.taskCode || "—")}</td>
+              <td>${escapeHtml(record.uploadDate)}</td>
+              <td>${escapeHtml(record.uploader)}</td>
+              <td>${libraryDownloadLink(record)}</td>
+            </tr>`
+          : `<tr data-source="manual">
+              <td><div class="library-file-name">${escapeHtml(record.fileName)}</div></td>
+              <td>${escapeHtml(record.remark || "—")}</td>
+              <td>${escapeHtml(record.uploadDate)}</td>
+              <td>${escapeHtml(record.uploader)}</td>
+              <td>${libraryDownloadLink(record)}</td>
+            </tr>`
+        ).join("")
+        : `<tr class="library-empty-row"><td class="library-empty" colspan="${colspan}">暂无匹配资料</td></tr>`;
     }
 
     librarySearchForm.addEventListener("submit", (event) => {
@@ -17936,14 +17970,14 @@
         return;
       }
 
-      libraryTableBody.insertBefore(createLibraryRow({
+      libraryRecords.unshift({
         source: "manual",
         remark: note,
         fileName: file.name,
         fileUrl: URL.createObjectURL(file),
         uploadDate: getCurrentTime().slice(0, 10),
         uploader: "当前用户"
-      }), libraryTableBody.firstElementChild);
+      });
       hideLibraryUploadModal();
       activeLibrarySource = "manual";
       librarySourceTabs.forEach((button) => button.classList.toggle("active", button.dataset.librarySource === "manual"));
