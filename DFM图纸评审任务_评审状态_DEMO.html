@@ -40,7 +40,6 @@
 
     .app-shell {
       height: 100vh;
-      padding-bottom: 74px;
       overflow: hidden;
     }
 
@@ -64,6 +63,14 @@
       gap: 2px;
     }
 
+    .title-row {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
     .breadcrumb {
       color: var(--muted);
       font-size: 12px;
@@ -78,6 +85,11 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .header-save-state {
+      flex: 0 0 auto;
+      font-size: 12px;
     }
 
     [hidden] {
@@ -131,7 +143,7 @@
       width: min(100%, 1760px);
       margin: 0 auto;
       padding: 20px 24px 28px;
-      height: calc(100vh - 64px - 74px);
+      height: calc(100vh - 64px);
       min-height: 0;
       overflow: hidden;
       display: grid;
@@ -900,6 +912,12 @@
       border-radius: 4px;
       background: transparent;
       box-shadow: none;
+    }
+
+    .issue-input[readonly] {
+      background: var(--readonly);
+      color: #475467;
+      cursor: default;
     }
 
     .issue-input:hover,
@@ -1700,6 +1718,21 @@
       border-color: #ffd893;
     }
 
+    .reviewer-status-pill.archived {
+      color: #475467;
+      background: #f2f4f7;
+      border-color: #d0d5dd;
+    }
+
+    .reviewer-department-row.is-inactive {
+      border-style: dashed;
+      background: #f8fafc !important;
+    }
+
+    .reviewer-department-row.is-inactive .reviewer-readonly-value {
+      color: #667085;
+    }
+
     .mini-btn.danger-lite {
       color: var(--danger);
       border-color: #f0b6b6;
@@ -1735,6 +1768,72 @@
       font-weight: 800;
     }
 
+    .reviewer-retention-note {
+      display: none;
+      margin: -2px 0 12px;
+      border: 1px solid #c9dcff;
+      border-radius: 8px;
+      background: var(--primary-soft);
+      color: #184b93;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    body.review-editing .reviewer-retention-note {
+      display: block;
+    }
+
+    .locked-view-banner {
+      display: none;
+      margin: 0 0 16px;
+      border: 1px solid #bce8ce;
+      border-radius: 10px;
+      background: var(--success-soft);
+      color: #146c3a;
+      padding: 12px 16px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    body.review-locked .locked-view-banner {
+      display: flex;
+    }
+
+    body.review-locked .page[data-detail-view] {
+      grid-template-rows: auto auto minmax(0, 1fr);
+    }
+
+    .locked-view-banner strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+    }
+
+    .locked-view-banner span {
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    body.review-locked [data-detail-view] input:disabled,
+    body.review-locked [data-detail-view] select:disabled,
+    body.review-locked [data-detail-view] textarea:disabled {
+      opacity: 1;
+      color: #475467;
+      background: var(--readonly);
+      cursor: not-allowed;
+    }
+
+    body.review-locked [data-detail-view] .issue-delete-btn,
+    body.review-locked [data-detail-view] .upload-btn,
+    body.review-locked [data-detail-view] [data-add-issue-row],
+    body.review-locked [data-detail-view] [data-add-reviewer-department] {
+      display: none !important;
+    }
+
     .reviewer-section-actions {
       margin-top: 12px;
       display: flex;
@@ -1765,21 +1864,14 @@
     }
 
     body.reviewer-mode [data-ae-only],
+    body.reviewer-mode .top-actions [data-edit-basic-info],
+    body.reviewer-mode .top-actions [data-create-version],
     body.reviewer-mode .top-actions [data-save-review],
     body.reviewer-mode .top-actions [data-delete-review],
-    body.reviewer-mode .bottom-actions [data-delete-review],
     body.reviewer-mode section[aria-label="评审人员"],
     body.reviewer-mode section[aria-label="小组结论和签核"],
     body.reviewer-mode .drawing-management,
     body.reviewer-mode .review-card button {
-      display: none !important;
-    }
-
-    body.reviewer-mode.reviewer-submitted .bottom-actions [data-save-review] {
-      display: none !important;
-    }
-
-    body.reviewer-mode.reviewer-submitted [data-add-issue-row] {
       display: none !important;
     }
 
@@ -1809,34 +1901,6 @@
       pointer-events: none;
     }
 
-    .bottom-bar {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 25;
-      background: rgba(255, 255, 255, .96);
-      border-top: 1px solid var(--line);
-      backdrop-filter: blur(10px);
-    }
-
-    .bottom-inner {
-      width: min(100%, 1760px);
-      min-height: 64px;
-      margin: 0 auto;
-      padding: 10px 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .bottom-bar[data-detail-only] .bottom-inner {
-      width: 100%;
-      padding-left: 10px;
-      padding-right: 10px;
-    }
-
     .save-state {
       display: flex;
       align-items: center;
@@ -1845,19 +1909,9 @@
       font-weight: 900;
     }
 
-    .bottom-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-    }
-
-    .bottom-actions.locked [data-delete-review],
-    .bottom-actions.locked [data-save-review] {
-      display: none;
-    }
-
     .top-actions.locked [data-delete-review],
+    .top-actions.locked [data-edit-basic-info],
+    .top-actions.locked [data-create-version],
     .top-actions.locked [data-save-review] {
       display: none;
     }
@@ -1991,7 +2045,7 @@
     }
 
     .drawing-list-dialog {
-      width: min(1040px, calc(100vw - 48px));
+      width: min(1180px, calc(100vw - 48px));
       max-height: min(820px, calc(100vh - 48px));
       border: 1px solid var(--line);
       border-radius: 10px;
@@ -2102,6 +2156,81 @@
       background: #fff;
     }
 
+    .create-version-dialog {
+      width: min(560px, calc(100vw - 48px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+      padding: 0;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .create-version-dialog::backdrop {
+      background: rgba(15, 23, 42, .42);
+    }
+
+    .create-version-content {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      max-height: min(720px, calc(100vh - 48px));
+      background: #fff;
+    }
+
+    .create-version-head {
+      min-height: 58px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .create-version-title {
+      min-width: 0;
+      display: grid;
+      gap: 2px;
+    }
+
+    .create-version-title strong {
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .create-version-title span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .create-version-body {
+      min-height: 0;
+      overflow: auto;
+      padding: 16px;
+    }
+
+    .create-version-body .upload-zone {
+      margin: 0;
+    }
+
+    .create-version-file-name {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      min-height: 18px;
+    }
+
+    .create-version-actions {
+      padding: 12px 16px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
     .create-dialog {
       width: min(720px, calc(100vw - 32px));
       border: 1px solid var(--line);
@@ -2143,6 +2272,153 @@
       display: flex;
       justify-content: flex-end;
       gap: 10px;
+    }
+
+    .part-combobox {
+      position: relative;
+    }
+
+    .part-option-list {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: calc(100% + 6px);
+      z-index: 12;
+      max-height: 240px;
+      overflow: auto;
+      border: 1px solid var(--line-strong);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, .16);
+      padding: 6px;
+    }
+
+    .part-option {
+      width: 100%;
+      min-height: 48px;
+      display: grid;
+      gap: 3px;
+      border: 0;
+      border-radius: 6px;
+      background: #fff;
+      color: #1f2937;
+      padding: 8px 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color .16s ease, color .16s ease;
+    }
+
+    .part-option:hover,
+    .part-option:focus-visible,
+    .part-option.is-active {
+      outline: none;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .part-option strong,
+    .part-option span {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .part-option span {
+      color: #475467;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .part-option-empty {
+      padding: 12px 10px;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.5;
+    }
+
+    .edit-basic-dialog {
+      width: min(760px, calc(100vw - 32px));
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 18px 42px rgba(15, 23, 42, .22);
+      padding: 0;
+      color: var(--text);
+    }
+
+    .edit-basic-dialog::backdrop {
+      background: rgba(15, 23, 42, .42);
+    }
+
+    .edit-basic-content {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      max-height: min(760px, calc(100vh - 48px));
+      background: #fff;
+    }
+
+    .edit-basic-head {
+      min-height: 58px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .edit-basic-title {
+      display: grid;
+      gap: 2px;
+    }
+
+    .edit-basic-title strong {
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .edit-basic-title span,
+    .source-hint {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .edit-basic-body {
+      min-height: 0;
+      overflow: auto;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .creation-source-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+    }
+
+    .creation-source-card strong {
+      font-size: 13px;
+    }
+
+    .edit-basic-actions {
+      padding: 12px 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .edit-basic-dialog [hidden] {
+      display: none !important;
     }
 
     .owner-picker-trigger {
@@ -3366,8 +3642,6 @@
       .owner-org-list { height: 239px; }
       .owner-picker-dialog { overflow: auto; }
       .drawing-stage { height: 360px; }
-      .bottom-inner { align-items: stretch; flex-direction: column; }
-      .bottom-actions .btn { flex: 1; }
     }
 
     @page {
@@ -3403,7 +3677,6 @@
       .top-actions,
       .filter-bar,
       .state-row,
-      .bottom-bar,
       .drawing-toolbar,
       .upload-zone,
       .upload-btn,
@@ -3732,13 +4005,21 @@
     <header class="topbar">
       <div class="title-stack">
         <div class="breadcrumb" data-page-breadcrumb>项目开发管理 / DFM / 列表</div>
-        <h1 data-page-title>DFM(Design For Manufacturing)</h1>
+        <div class="title-row">
+          <h1 data-page-title>DFM(Design For Manufacturing)</h1>
+          <div class="save-state header-save-state" data-detail-only hidden>
+            <span class="tag green" data-save-state-tag>已保存</span>
+            <span data-save-message>最近保存：20xx-12-25 14:30</span>
+          </div>
+        </div>
       </div>
       <div class="top-actions" data-list-actions>
-        <button class="btn primary" type="button" data-open-create-dfm>新建图纸评审任务（关联零件）</button>
+        <button class="btn primary" type="button" data-open-create-dfm>新建图纸评审任务</button>
       </div>
       <div class="top-actions" data-detail-actions hidden>
         <button class="btn" type="button" data-back-list>返回列表</button>
+        <button class="btn" type="button" data-edit-basic-info>编辑</button>
+        <button class="btn primary" type="button" data-create-version>创建图纸版本</button>
         <button class="btn" type="button" data-export-pdf>导出 PDF</button>
         <button class="btn danger" type="button" data-delete-review>删除</button>
         <button class="btn" type="button" data-save-review>保存</button>
@@ -4056,6 +4337,14 @@
         </div>
       </section>
 
+      <section class="locked-view-banner" data-locked-view-banner aria-live="polite">
+        <div>
+          <strong>该 DFM 评审记录已提交并锁定，当前为只读查看状态</strong>
+          <span data-locked-view-meta>锁定人：AE / Alex Wang　锁定时间：-　锁定版本：Rev.A</span>
+        </div>
+        <span class="tag green">记录快照已保留</span>
+      </section>
+
       <div class="workspace">
         <aside class="panel drawing-panel">
           <div class="panel-head">
@@ -4072,7 +4361,7 @@
               <button class="icon-btn" type="button" title="放大" aria-label="放大图纸" data-drawing-zoom-in>＋</button>
               <button class="icon-btn" type="button" title="缩小" aria-label="缩小图纸" data-drawing-zoom-out>－</button>
               <button class="icon-btn" type="button" title="弹窗查看" aria-label="弹窗查看图纸" data-drawing-fullscreen>□</button>
-              <button class="btn" type="button" data-drawing-download>下载</button>
+              <button class="btn" type="button" data-drawing-view-all>查看全部</button>
             </div>
           </div>
           <div class="drawing-stage">
@@ -4253,14 +4542,6 @@
               </svg>
             </div>
           </div>
-          <div class="drawing-status-board" aria-label="当前版本图纸状态">
-            <div class="drawing-status-head">
-              <h3>当前版本图纸状态</h3>
-              <button class="mini-btn primary" type="button" data-lock-current-drawing>锁定当前图纸</button>
-            </div>
-            <div class="drawing-status-list" data-drawing-status-list></div>
-            <div class="drawing-locked-banner warning" data-drawing-lock-hint>未锁定图纸仍可登记开放问题；AE 可将已评审且无问题的图纸改为锁定状态。</div>
-          </div>
           <div class="side-summary">
             <div class="review-card">
               <div class="review-card-head">
@@ -4307,17 +4588,6 @@
               </ul>
             </div>
           </div>
-          <div class="drawing-management">
-            <div class="upload-zone">
-              <strong>上传图纸</strong>
-              <span>可一次选择多张图纸，支持 PDF、PNG、JPG、TIFF。上传后可通过图纸预览区左右切换查看。</span>
-              <label class="upload-version-field">版本号
-                <input value="Rev.B" placeholder="例如 Rev.B">
-              </label>
-              <input class="file-input" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff">
-              <button class="btn primary" type="button">上传并生成版本</button>
-            </div>
-          </div>
         </aside>
 
         <section class="form-panel">
@@ -4331,11 +4601,11 @@
             </div>
             <div class="section-body">
               <div class="field-grid">
-                <label class="field">项目名称
+                <label class="field">项目编号
                   <input value="PRJ-260803-001" readonly data-detail-project-input>
                 </label>
                 <label class="field">客户名称
-                  <input value="OEM 客户 A" data-detail-customer-input>
+                  <input value="OEM 客户 A" readonly data-detail-customer-input>
                 </label>
                 <label class="field">图纸版本
                   <select data-detail-drawing-input>
@@ -4346,10 +4616,10 @@
                   </select>
                 </label>
                 <label class="field">评审日期
-                  <input type="date" value="2024-12-25">
+                  <input type="date" value="2024-12-25" data-detail-review-date-input>
                 </label>
                 <label class="field">零件名称/描述
-                  <input value="涡轮增压器壳体" data-detail-part-name-input>
+                  <input value="涡轮增压器壳体" readonly data-detail-part-name-input>
                 </label>
                 <label class="field">零件编号
                   <input value="TH-2024-001" readonly data-detail-part-no-input>
@@ -4364,7 +4634,7 @@
                 <strong>评审人员/发布</strong>
                 <span>AE 指定部门、人员及职责；发布后评审人员可确认或登记问题</span>
               </div>
-              <span class="tag amber" data-review-publish-state>未发布</span>
+              <span class="tag green" data-review-publish-state>已发布</span>
             </div>
             <div class="section-body">
               <div class="reviewer-publish-strip">
@@ -4372,6 +4642,9 @@
                 <div class="reviewer-publish-actions">
                   <button class="mini-btn" type="button" data-edit-reviewers hidden>编辑评审人员</button>
                 </div>
+              </div>
+              <div class="reviewer-retention-note">
+                已提交评审意见的人员不可改名或覆盖。移除后将标记为“已移除（记录保留）”，其评审结论、已登记问题、附件和处理记录继续保留并参与问题闭环。
               </div>
               <div class="reviewer-table-head" aria-hidden="true">
                 <span>部门</span>
@@ -4381,7 +4654,7 @@
                 <span class="reviewer-action-head">操作</span>
               </div>
               <div class="reviewer-department-list" data-reviewer-department-list>
-                <div class="reviewer-department-row" data-reviewer-row>
+                <div class="reviewer-department-row" data-reviewer-row data-review-submitted="true">
                   <label class="field">部门
                     <select data-reviewer-department>
                       <option selected>制造工程部</option>
@@ -4409,7 +4682,7 @@
                     </select>
                   </label>
                   <label class="field" data-reviewer-status-field>状态
-                    <span class="reviewer-status-pill pending" data-reviewer-status>待确认</span>
+                    <span class="reviewer-status-pill passed" data-reviewer-status>已确认</span>
                   </label>
                   <div class="reviewer-row-action">
                     <button class="mini-btn" type="button" data-reviewer-confirm>确认无问题</button>
@@ -4417,7 +4690,7 @@
                     <button class="mini-btn danger-lite" type="button" data-remove-reviewer-department>删除</button>
                   </div>
                 </div>
-                <div class="reviewer-department-row" data-reviewer-row>
+                <div class="reviewer-department-row" data-reviewer-row data-review-submitted="true">
                   <label class="field">部门
                     <select data-reviewer-department>
                       <option>制造工程部</option>
@@ -4453,7 +4726,7 @@
                     <button class="mini-btn danger-lite" type="button" data-remove-reviewer-department>删除</button>
                   </div>
                 </div>
-                <div class="reviewer-department-row" data-reviewer-row>
+                <div class="reviewer-department-row" data-reviewer-row data-review-submitted="true">
                   <label class="field">部门
                     <select data-reviewer-department>
                       <option>制造工程部</option>
@@ -4481,7 +4754,7 @@
                     </select>
                   </label>
                   <label class="field" data-reviewer-status-field>状态
-                    <span class="reviewer-status-pill issue" data-reviewer-status>已登记问题</span>
+                    <span class="reviewer-status-pill passed" data-reviewer-status>已确认</span>
                   </label>
                   <div class="reviewer-row-action">
                     <button class="mini-btn" type="button" data-reviewer-confirm>确认无问题</button>
@@ -4607,35 +4880,27 @@
       </div>
     </main>
 
-    <footer class="bottom-bar" data-detail-only hidden>
-      <div class="bottom-inner">
-        <div class="save-state">
-          <span class="tag green">已保存</span>
-          <span data-save-message>最近保存：20xx-12-25 14:30</span>
-        </div>
-        <div class="bottom-actions" data-bottom-actions>
-          <button class="btn danger" type="button" data-delete-review>删除</button>
-          <button class="btn" type="button" data-save-review>保存</button>
-          <button class="btn primary" type="button" data-lock-review disabled>提交并锁定</button>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <dialog class="create-dialog" data-create-dfm-dialog>
-    <form class="create-dialog-content" method="dialog" data-create-dfm-form>
+    <form class="create-dialog-content" method="dialog" data-create-dfm-form novalidate>
       <div>
-        <h3>新建图纸评审任务（关联零件）</h3>
-        <p>从项目零件中选择对象后生成 DFM 图纸评审任务，任务号和零件编号将在列表中成为详情入口。</p>
+        <h3>新建图纸评审任务</h3>
+        <p>手动填写零件和评审信息创建独立 DFM 图纸评审任务，不关联项目编号。</p>
       </div>
       <div class="dialog-field-grid">
-        <label class="field">关联零件
-          <select data-create-part>
-            <option value="TH-2024-001" data-project="PRJ-260803-001" data-customer="OEM 客户 A" data-part-name="涡轮增压器壳体" data-drawing="Rev.A">TH-2024-001 / 涡轮增压器壳体</option>
-            <option value="CH-2024-014" data-project="PRJ-260803-001" data-customer="OEM 客户 A" data-part-name="正时链轮支架" data-drawing="Rev.B">CH-2024-014 / 正时链轮支架</option>
-            <option value="OP-2024-021" data-project="PRJ-260803-002" data-customer="OEM 客户 B" data-part-name="油泵盖板" data-drawing="Rev.A">OP-2024-021 / 油泵盖板</option>
-            <option value="CG-2024-032" data-project="PRJ-260803-002" data-customer="OEM 客户 B" data-part-name="链条导轨" data-drawing="Rev.C">CG-2024-032 / 链条导轨</option>
-          </select>
+        <label class="field">客户名称
+          <input required data-create-customer-input>
+        </label>
+        <div class="field part-combobox-field">
+          <span>零件编号</span>
+          <div class="part-combobox">
+            <input required data-create-part-no-input role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="createPartOptions" autocomplete="off" placeholder="输入零件编号或名称查询">
+            <div class="part-option-list" id="createPartOptions" role="listbox" data-create-part-options hidden></div>
+          </div>
+        </div>
+        <label class="field">零件名称/描述
+          <input required readonly aria-readonly="true" data-create-part-name-input placeholder="选择零件编号后自动带出">
         </label>
         <label class="field">负责人
           <input type="hidden" data-create-owner value="Alex Wang" data-owner-id="alex-wang">
@@ -4645,19 +4910,13 @@
             <span class="owner-trigger-arrow" aria-hidden="true">›</span>
           </button>
         </label>
-        <label class="field">初始状态
-          <select data-create-status>
-            <option selected>进行中</option>
-            <option>已锁定</option>
-          </select>
-        </label>
       </div>
       <label class="field">创建说明
-        <textarea class="comment-box" data-create-note>基于项目 BOM 零件发起图纸 DFM 评审任务，待制造工程、产品工程和质量团队补充开放问题。</textarea>
+        <textarea class="comment-box" data-create-note>手动发起图纸 DFM 评审任务，待制造工程、产品工程和质量团队补充开放问题。</textarea>
       </label>
       <div class="dialog-actions">
         <button class="btn" type="button" data-close-create-dfm>取消</button>
-        <button class="btn primary" type="submit">创建并关联</button>
+        <button class="btn primary" type="submit">创建任务</button>
       </div>
     </form>
   </dialog>
@@ -4753,12 +5012,13 @@
           <table class="drawing-list-table" aria-label="DFM 上传图纸评审状态表格">
             <colgroup>
               <col style="width:70px">
-              <col style="width:120px">
-              <col style="width:280px">
-              <col style="width:120px">
-              <col style="width:130px">
-              <col style="width:150px">
               <col style="width:110px">
+              <col style="width:250px">
+              <col style="width:110px">
+              <col style="width:120px">
+              <col style="width:140px">
+              <col style="width:100px">
+              <col style="width:200px">
             </colgroup>
             <thead>
               <tr>
@@ -4769,6 +5029,7 @@
                 <th>负责人</th>
                 <th>最后更新</th>
                 <th>开放问题</th>
+                <th>操作</th>
               </tr>
             </thead>
             <tbody data-drawing-list-body></tbody>
@@ -4776,6 +5037,8 @@
         </div>
       </div>
       <div class="drawing-list-actions">
+        <button class="btn primary" type="button" data-drawing-upload>上传图纸</button>
+        <input type="file" accept=".pdf,.dwg,.dxf" multiple data-drawing-upload-input hidden>
         <button class="btn" type="button" data-drawing-list-export>导出</button>
         <button class="btn primary" type="button" data-drawing-list-close>关闭</button>
       </div>
@@ -4801,6 +5064,80 @@
       </div>
       <div class="drawing-viewer-stage" data-viewer-stage>
         <div class="drawing-viewer-sheet" data-viewer-sheet></div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog class="edit-basic-dialog" data-edit-basic-dialog aria-labelledby="editBasicTitle">
+    <form class="edit-basic-content" method="dialog" data-edit-basic-form novalidate>
+      <div class="edit-basic-head">
+        <div class="edit-basic-title">
+          <strong id="editBasicTitle">编辑项目基本信息</strong>
+          <span>修改内容将同步到详情摘要、任务列表和导出信息</span>
+        </div>
+        <button class="icon-btn" type="button" title="关闭" aria-label="关闭基本信息编辑" data-edit-basic-close>×</button>
+      </div>
+      <div class="edit-basic-body">
+        <div class="creation-source-card">
+          <div>
+            <strong data-edit-source-label>通过项目创建</strong>
+            <div class="source-hint" data-edit-source-hint>项目编号来自项目开发模块，不可编辑。</div>
+          </div>
+          <span class="tag blue" data-edit-source-tag>项目来源</span>
+        </div>
+        <div class="dialog-field-grid">
+          <label class="field" data-edit-project-field>项目编号
+            <input readonly data-edit-project-input>
+          </label>
+          <label class="field">客户名称
+            <input required data-edit-customer-input>
+          </label>
+          <label class="field">零件编号
+            <input required data-edit-part-no-input>
+          </label>
+          <label class="field">零件名称/描述
+            <input required data-edit-part-name-input>
+          </label>
+          <label class="field">图纸版本
+            <select data-edit-drawing-input>
+              <option>Rev.A</option>
+              <option>Rev.B</option>
+              <option>Rev.C</option>
+              <option>Rev.D</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="edit-basic-actions">
+        <button class="btn" type="button" data-edit-basic-close>取消</button>
+        <button class="btn primary" type="submit">保存修改</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="create-version-dialog" data-create-version-dialog>
+    <div class="create-version-content">
+      <div class="create-version-head">
+        <div class="create-version-title">
+          <strong>创建图纸版本</strong>
+          <span>上传图纸并生成新版本</span>
+        </div>
+        <button class="icon-btn" type="button" title="关闭" aria-label="关闭创建图纸版本" data-create-version-close>×</button>
+      </div>
+      <div class="create-version-body">
+        <div class="upload-zone">
+          <strong>上传图纸</strong>
+          <span>可一次选择多张图纸，支持 PDF、PNG、JPG、TIFF。上传后可通过图纸预览区左右切换查看。</span>
+          <label class="upload-version-field">版本号
+            <input value="Rev.B" placeholder="例如 Rev.B" data-create-version-input>
+          </label>
+          <input class="file-input" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.tif,.tiff" data-create-version-file>
+          <div class="create-version-file-name" data-create-version-file-name>未选择任何文件</div>
+          <button class="btn primary" type="button" data-create-version-submit>上传并生成版本</button>
+        </div>
+      </div>
+      <div class="create-version-actions">
+        <button class="btn" type="button" data-create-version-close>取消</button>
       </div>
     </div>
   </dialog>
@@ -4884,7 +5221,10 @@
     const drawingFilterSearchButton = document.querySelector('[data-drawing-filter-search]');
     const drawingFilterResetButton = document.querySelector('[data-drawing-filter-reset]');
     const drawingListExportButton = document.querySelector('[data-drawing-list-export]');
-    const createPartSelect = document.querySelector('[data-create-part]');
+    const createCustomerInput = document.querySelector('[data-create-customer-input]');
+    const createPartNoInput = document.querySelector('[data-create-part-no-input]');
+    const createPartOptions = document.querySelector('[data-create-part-options]');
+    const createPartNameInput = document.querySelector('[data-create-part-name-input]');
     const createOwnerInput = document.querySelector('[data-create-owner]');
     const openOwnerPickerButton = document.querySelector('[data-open-owner-picker]');
     const ownerPickerDialog = document.querySelector('[data-owner-picker-dialog]');
@@ -4899,7 +5239,6 @@
     const ownerTriggerName = document.querySelector('[data-owner-trigger-name]');
     const ownerPickerTitle = document.querySelector('[data-owner-picker-title]');
     const ownerPickerSubtitle = document.querySelector('[data-owner-picker-subtitle]');
-    const createStatusSelect = document.querySelector('[data-create-status]');
     const dfmListBody = document.querySelector('[data-dfm-list-body]');
     const listKeywordInput = document.querySelector('[data-list-keyword]');
     const listProjectSelect = document.querySelector('[data-list-project]');
@@ -4942,6 +5281,7 @@
     const detailProjectInput = document.querySelector('[data-detail-project-input]');
     const detailCustomerInput = document.querySelector('[data-detail-customer-input]');
     const detailDrawingInput = document.querySelector('[data-detail-drawing-input]');
+    const detailReviewDateInput = document.querySelector('[data-detail-review-date-input]');
     const detailPartNameInput = document.querySelector('[data-detail-part-name-input]');
     const detailPartNoInput = document.querySelector('[data-detail-part-no-input]');
     const reviewList = document.querySelector('[data-review-list]');
@@ -4958,16 +5298,35 @@
     const drawingSheet = document.querySelector('.drawing-sheet');
     const drawingPages = Array.from(document.querySelectorAll('[data-drawing-page]'));
     const drawingPageTitle = document.querySelector('[data-drawing-page-title]');
-    const drawingStatusList = document.querySelector('[data-drawing-status-list]');
-    const drawingLockHint = document.querySelector('[data-drawing-lock-hint]');
-    const lockCurrentDrawingButton = document.querySelector('[data-lock-current-drawing]');
+    const drawingUploadButton = document.querySelector('[data-drawing-upload]');
+    const drawingUploadInput = document.querySelector('[data-drawing-upload-input]');
     const drawingCounter = document.querySelector('[data-drawing-counter]');
     const drawingPrevButton = document.querySelector('[data-drawing-prev]');
     const drawingNextButton = document.querySelector('[data-drawing-next]');
     const drawingZoomInButton = document.querySelector('[data-drawing-zoom-in]');
     const drawingZoomOutButton = document.querySelector('[data-drawing-zoom-out]');
     const drawingFullscreenButton = document.querySelector('[data-drawing-fullscreen]');
-    const drawingDownloadButton = document.querySelector('[data-drawing-download]');
+    const drawingViewAllButton = document.querySelector('[data-drawing-view-all]');
+    const createVersionButton = document.querySelector('[data-create-version]');
+    const createVersionDialog = document.querySelector('[data-create-version-dialog]');
+    const createVersionCloseButtons = Array.from(document.querySelectorAll('[data-create-version-close]'));
+    const createVersionInput = document.querySelector('[data-create-version-input]');
+    const createVersionFile = document.querySelector('[data-create-version-file]');
+    const createVersionFileName = document.querySelector('[data-create-version-file-name]');
+    const createVersionSubmit = document.querySelector('[data-create-version-submit]');
+    const editBasicButton = document.querySelector('[data-edit-basic-info]');
+    const editBasicDialog = document.querySelector('[data-edit-basic-dialog]');
+    const editBasicForm = document.querySelector('[data-edit-basic-form]');
+    const editBasicCloseButtons = Array.from(document.querySelectorAll('[data-edit-basic-close]'));
+    const editProjectField = document.querySelector('[data-edit-project-field]');
+    const editProjectInput = document.querySelector('[data-edit-project-input]');
+    const editCustomerInput = document.querySelector('[data-edit-customer-input]');
+    const editPartNoInput = document.querySelector('[data-edit-part-no-input]');
+    const editPartNameInput = document.querySelector('[data-edit-part-name-input]');
+    const editDrawingInput = document.querySelector('[data-edit-drawing-input]');
+    const editSourceLabel = document.querySelector('[data-edit-source-label]');
+    const editSourceHint = document.querySelector('[data-edit-source-hint]');
+    const editSourceTag = document.querySelector('[data-edit-source-tag]');
     const drawingViewerDialog = document.querySelector('[data-drawing-viewer]');
     const viewerStage = document.querySelector('[data-viewer-stage]');
     const viewerSheet = document.querySelector('[data-viewer-sheet]');
@@ -4987,6 +5346,9 @@
     const saveReviewButtons = Array.from(document.querySelectorAll('[data-save-review]'));
     const deleteReviewButtons = Array.from(document.querySelectorAll('[data-delete-review]'));
     const saveMessage = document.querySelector('[data-save-message]');
+    const saveStateTag = document.querySelector('[data-save-state-tag]');
+    const lockedViewBanner = document.querySelector('[data-locked-view-banner]');
+    const lockedViewMeta = document.querySelector('[data-locked-view-meta]');
     const statusHelpButton = document.querySelector('[data-status-help]');
     const statusDialog = document.querySelector('[data-status-dialog]');
     const statusCloseButton = document.querySelector('[data-status-close]');
@@ -5016,8 +5378,10 @@
     let viewerDragScrollLeft = 0;
     let viewerDragScrollTop = 0;
     let currentReviewView = 'ae';
-    let reviewTasksPublished = false;
+    let reviewTasksPublished = true;
     let reviewEditMode = false;
+    let reviewLocked = false;
+    let reviewLockedAt = '';
     let currentDrawingListRows = [];
     let currentDrawingListRecord = null;
     let currentDetailRecord = null;
@@ -5067,7 +5431,7 @@
         sheetNo: 1,
         version: 'Rev.A',
         name: 'TH-2024-001_RevA_Main.pdf',
-        status: '待评审',
+        status: '评审中',
         owner: 'Alex Wang',
         updated: '20xx-12-25 14:30'
       },
@@ -5076,26 +5440,37 @@
         sheetNo: 2,
         version: 'Rev.A',
         name: 'TH-2024-001_RevA_Detail.pdf',
-        status: '待评审',
+        status: '评审中',
         owner: 'Mia Chen',
         updated: '20xx-12-25 14:30'
       }
     ];
+    const partCatalog = [
+      { partNo: 'TH-2024-001', partName: '涡轮增压器壳体' },
+      { partNo: 'CH-2024-014', partName: '正时链轮支架' },
+      { partNo: 'OP-2024-021', partName: '油泵盖板' },
+      { partNo: 'CG-2024-032', partName: '链条导轨' },
+      { partNo: 'TS-2024-047', partName: '张紧器总成支架' },
+      { partNo: 'MC-2024-058', partName: '电机链轮连接板' }
+    ];
+    let activeCreatePartIndex = -1;
 
-    function optionData(option) {
+    function optionData() {
       return {
-        id: option?.dataset.dfmId || '',
-        project: option?.dataset.project || '',
-        customer: option?.dataset.customer || '',
-        partNo: option?.value || option?.dataset.partNo || '',
-        partName: option?.dataset.partName || '',
-        drawing: option?.dataset.drawing || 'Rev.A',
+        id: '',
+        project: '',
+        customer: createCustomerInput?.value.trim() || '',
+        partNo: createPartNoInput?.value.trim() || '',
+        partName: createPartNameInput?.value.trim() || '',
+        drawing: 'Rev.-',
         owner: createOwnerInput?.value.trim() || 'Alex Wang',
         open: '0',
         infeasible: '0',
         unoptimized: '0',
         cost: '0.00',
-        status: createStatusSelect?.value || '进行中',
+        status: '进行中',
+        source: 'manual',
+        reviewDate: new Date().toISOString().slice(0, 10),
         updated: '刚刚创建'
       };
     }
@@ -5108,6 +5483,47 @@
         '"': '&quot;',
         "'": '&#039;'
       })[char]);
+    }
+
+    function filteredCreateParts() {
+      const keyword = (createPartNoInput?.value || '').trim().toLowerCase();
+      return partCatalog.filter((part) => !keyword || `${part.partNo} ${part.partName}`.toLowerCase().includes(keyword));
+    }
+
+    function closeCreatePartOptions() {
+      if (createPartOptions) createPartOptions.hidden = true;
+      createPartNoInput?.setAttribute('aria-expanded', 'false');
+      createPartNoInput?.removeAttribute('aria-activedescendant');
+      activeCreatePartIndex = -1;
+    }
+
+    function renderCreatePartOptions() {
+      if (!createPartOptions || !createPartNoInput) return;
+      const matches = filteredCreateParts();
+      activeCreatePartIndex = Math.min(activeCreatePartIndex, matches.length - 1);
+      createPartOptions.innerHTML = matches.length
+        ? matches.map((part, index) => `
+            <button class="part-option${index === activeCreatePartIndex ? ' is-active' : ''}" id="createPartOption${index}" type="button" role="option" data-create-part-option="${escapeOwnerHtml(part.partNo)}" aria-selected="${part.partNo === createPartNoInput.dataset.selectedPartNo}">
+              <strong>${escapeOwnerHtml(part.partNo)}</strong>
+              <span>${escapeOwnerHtml(part.partName)}</span>
+            </button>
+          `).join('')
+        : '<div class="part-option-empty">未找到匹配零件，请调整零件编号或名称关键字。</div>';
+      createPartOptions.hidden = false;
+      createPartNoInput.setAttribute('aria-expanded', 'true');
+      if (activeCreatePartIndex >= 0) {
+        createPartNoInput.setAttribute('aria-activedescendant', `createPartOption${activeCreatePartIndex}`);
+      } else {
+        createPartNoInput.removeAttribute('aria-activedescendant');
+      }
+    }
+
+    function selectCreatePart(part) {
+      if (!part || !createPartNoInput || !createPartNameInput) return;
+      createPartNoInput.value = part.partNo;
+      createPartNoInput.dataset.selectedPartNo = part.partNo;
+      createPartNameInput.value = part.partName;
+      closeCreatePartOptions();
     }
 
     function ownerSearchText(member) {
@@ -5212,6 +5628,8 @@
         unoptimized: row?.dataset.unoptimized || '0',
         cost: row?.dataset.cost || '0.00',
         status: row?.dataset.status || '进行中',
+        source: row?.dataset.source || (row?.dataset.project ? 'project' : 'manual'),
+        reviewDate: row?.dataset.reviewDate || '2024-12-25',
         updated: row?.dataset.updated || ''
       };
     }
@@ -5233,6 +5651,7 @@
       const updated = record.updated || '20xx-12-25 14:30';
       const owners = [record.owner || 'Alex Wang', record.status === '已锁定' ? record.owner || 'Kevin Liu' : 'Mia Chen'];
       return ['Main', 'Detail'].map((suffix, index) => ({
+        id: drawingFiles[index]?.id || `row-${index}`,
         sheetNo: index + 1,
         version,
         name: `${safePartNo}_${version.replace('.', '')}_${suffix}.pdf`,
@@ -5291,16 +5710,76 @@
           <td>${drawing.owner}</td>
           <td>${drawing.updated}</td>
           <td>${drawing.openIssues}</td>
+          <td>
+            <div class="table-actions">
+              <button class="mini-btn" type="button" data-dl-download data-id="${drawing.id}" title="下载该图纸">下载</button>
+              <button class="mini-btn" type="button" data-dl-delete data-id="${drawing.id}" title="删除该图纸">删除</button>
+              <button class="mini-btn ${drawing.status === '已锁定' ? '' : 'primary'}" type="button" data-dl-lock data-id="${drawing.id}" title="锁定或解锁该图纸">${drawing.status === '已锁定' ? '解锁' : '锁定'}</button>
+            </div>
+          </td>
         </tr>
       `).join('') : `
         <tr>
-          <td colspan="7" class="center">未找到符合筛选条件的图纸</td>
+          <td colspan="8" class="center">未找到符合筛选条件的图纸</td>
         </tr>
       `;
       if (drawingListTotalMetric) drawingListTotalMetric.textContent = String(drawings.length);
       if (drawingListPendingMetric) drawingListPendingMetric.textContent = String(drawings.filter((drawing) => drawing.status === '待评审').length);
       if (drawingListReviewingMetric) drawingListReviewingMetric.textContent = String(drawings.filter((drawing) => drawing.status === '评审中').length);
       if (drawingListLockedMetric) drawingListLockedMetric.textContent = String(drawings.filter((drawing) => drawing.status === '已锁定').length);
+    }
+
+    function downloadDrawingFile(drawing) {
+      if (!drawing) return;
+      const content = [
+        `图纸文件：${drawing.name}`,
+        `图纸版本：${drawing.version}`,
+        `负责人：${drawing.owner}`,
+        `评审状态：${drawing.status}`,
+        `最后更新：${drawing.updated}`,
+        '',
+        '（演示用占位文件，仅用于验证下载操作）'
+      ].join('\n');
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = drawing.name.replace(/\.pdf$/i, '') + '.txt';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function deleteDrawingRow(id) {
+      const target = currentDrawingListRows.find((drawing) => drawing.id === id);
+      if (!target) return;
+      openAppDialog({
+        title: '删除图纸',
+        message: `确认删除图纸 ${target.name} 吗？删除后该图纸将从当前图纸清单移除。`,
+        confirmText: '删除',
+        danger: true,
+        onConfirm: () => {
+          currentDrawingListRows = currentDrawingListRows.filter((drawing) => drawing.id !== id);
+          renderDrawingListRows();
+          syncDrawingPage();
+        }
+      });
+    }
+
+    function toggleDrawingLock(id) {
+      const row = currentDrawingListRows.find((drawing) => drawing.id === id);
+      if (!row) return;
+      const file = drawingFiles.find((drawing) => drawing.id === id);
+      if (row.status === '已锁定') {
+        row.status = row.prevStatus || '评审中';
+      } else {
+        row.prevStatus = row.status;
+        row.status = '已锁定';
+      }
+      if (file) file.status = row.status;
+      renderDrawingListRows();
+      syncDrawingPage();
     }
 
     function csvCell(value) {
@@ -5382,6 +5861,8 @@
       row.dataset.unoptimized = record.unoptimized;
       row.dataset.cost = record.cost;
       row.dataset.status = record.status;
+      row.dataset.source = record.source || (record.project ? 'project' : 'manual');
+      row.dataset.reviewDate = record.reviewDate || '2024-12-25';
       row.dataset.updated = record.updated;
       row.innerHTML = `
         <td><button class="record-link" type="button" data-view-detail>${record.id}</button></td>
@@ -5412,7 +5893,10 @@
       if (pageTitle) pageTitle.textContent = isDetail ? 'DFM(Design For Manufacturing) - 开放问题清单' : 'DFM(Design For Manufacturing)';
       if (isDetail && record) {
         currentDetailRecord = record;
+        reviewLocked = record.status === '已锁定';
+        reviewLockedAt = reviewLocked ? (record.updated || '') : '';
         populateDetail(record);
+        applyReviewView();
       }
     }
 
@@ -5429,6 +5913,7 @@
         ensureDrawingVersionOption(record.drawing);
         detailDrawingInput.value = record.drawing;
       }
+      if (detailReviewDateInput) detailReviewDateInput.value = record.reviewDate || '2024-12-25';
       if (detailPartNameInput) detailPartNameInput.value = record.partName;
       if (detailPartNoInput) detailPartNoInput.value = record.partNo;
       refreshIssueSummary();
@@ -5450,7 +5935,7 @@
       drawingFiles.forEach((drawing, index) => {
         drawing.version = version;
         drawing.name = `${safePartNo}_${version.replace('.', '')}_${index === 0 ? 'Main' : 'Detail'}.pdf`;
-        if (drawing.status !== '已锁定') drawing.status = reviewTasksPublished ? '评审中' : '待评审';
+        drawing.status = record.status === '已锁定' ? '已锁定' : (reviewTasksPublished ? '评审中' : '待评审');
       });
     }
 
@@ -5805,11 +6290,12 @@
     function setReviewerStatus(row, status) {
       const pill = row?.querySelector('[data-reviewer-status]');
       if (!pill) return;
-      pill.classList.remove('pending', 'passed', 'issue');
+      pill.classList.remove('pending', 'passed', 'issue', 'archived');
       const config = {
         pending: ['pending', '待确认'],
         passed: ['passed', '已确认'],
-        issue: ['issue', '已登记问题']
+        issue: ['issue', '已登记问题'],
+        archived: ['archived', '已移除（记录保留）']
       }[status] || ['pending', '待确认'];
       pill.classList.add(config[0]);
       pill.textContent = config[1];
@@ -5838,7 +6324,8 @@
     function currentReviewerRow() {
       return Array.from(reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]') || [])
         .find((row) => row.querySelector('[data-reviewer-people]')?.value === currentReviewerName)
-        || reviewerDepartmentList?.querySelector('[data-reviewer-row]');
+        || Array.from(reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]') || [])
+          .find((row) => row.dataset.reviewerInactive !== 'true');
     }
 
     function reviewerInfoFromRow(row = currentReviewerRow()) {
@@ -5859,8 +6346,11 @@
 
     function reviewClosureState() {
       const statusSelects = Array.from(issueTbody?.querySelectorAll('[data-issue-status]') || []);
-      const allIssueClosed = statusSelects.length > 0 && statusSelects.every((select) => ['G', 'N'].includes(select.value));
-      const reviewerStatuses = Array.from(reviewerDepartmentList?.querySelectorAll('[data-reviewer-status]') || []);
+      const allIssueClosed = statusSelects.every((select) => ['G', 'N'].includes(select.value));
+      const reviewerStatuses = Array.from(reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]') || [])
+        .filter((row) => row.dataset.reviewerInactive !== 'true')
+        .map((row) => row.querySelector('[data-reviewer-status]'))
+        .filter(Boolean);
       const allReviewersResponded = reviewerStatuses.length > 0 && reviewerStatuses.every((status) => status.textContent.trim() !== '待确认');
       const hasOpenReviewerIssue = reviewerIssueRows().some((row) => {
         const status = row.querySelector('[data-issue-status]')?.value || '';
@@ -5885,6 +6375,110 @@
       reviewClosureMessage.textContent = messages.join(' ');
     }
 
+    function applyLockedView() {
+      document.body.classList.toggle('review-locked', reviewLocked);
+      document.querySelectorAll('.top-actions').forEach((actions) => actions.classList.toggle('locked', reviewLocked));
+      if (lockedViewBanner) lockedViewBanner.hidden = !reviewLocked;
+
+      const allowedSelector = [
+        '[data-review-view]',
+        '[data-drawing-prev]', '[data-drawing-next]', '[data-drawing-zoom-in]', '[data-drawing-zoom-out]',
+        '[data-drawing-fullscreen]', '[data-drawing-view-all]', '[data-drawing-counter]',
+        '[data-status-help]'
+      ].join(',');
+      detailView?.querySelectorAll('input, select, textarea, button').forEach((control) => {
+        if (reviewLocked) {
+          if (control.matches(allowedSelector) || control.disabled) return;
+          control.disabled = true;
+          control.dataset.lockedDisabled = 'true';
+        } else if (control.dataset.lockedDisabled === 'true') {
+          control.disabled = false;
+          delete control.dataset.lockedDisabled;
+        }
+      });
+
+      lockReviewButtons.forEach((button) => {
+        if (reviewLocked) {
+          button.textContent = '发起变更';
+          button.classList.remove('primary');
+          button.classList.add('success');
+          button.disabled = false;
+        } else {
+          button.classList.remove('success');
+          const reviewerSubmitted = currentReviewView === 'reviewer' && isCurrentReviewerSubmitted();
+          const reviewerInactive = currentReviewView === 'reviewer' && currentReviewerRow()?.dataset.reviewerInactive === 'true';
+          button.textContent = currentReviewView === 'reviewer'
+            ? (reviewerInactive ? '已移除' : (reviewerSubmitted ? '已提交' : '提交'))
+            : (reviewTasksPublished ? '提交并锁定' : '发布');
+        }
+      });
+
+      if (reviewLocked) {
+        if (reviewPublishState) {
+          reviewPublishState.textContent = '已锁定';
+          reviewPublishState.classList.remove('amber');
+          reviewPublishState.classList.add('green');
+        }
+        if (saveStateTag) {
+          saveStateTag.textContent = '已锁定';
+          saveStateTag.className = 'tag green';
+        }
+        if (lockedViewMeta) {
+          lockedViewMeta.textContent = `锁定人：AE / Alex Wang　锁定时间：${reviewLockedAt || '-'}　锁定版本：${detailDrawingInput?.value || 'Rev.A'}`;
+        }
+      } else {
+        if (saveStateTag?.textContent.trim() === '已锁定') {
+          saveStateTag.textContent = '已保存';
+          saveStateTag.className = 'tag green';
+        }
+        if (reviewPublishState?.textContent.trim() === '已锁定') {
+          reviewPublishState.textContent = '已发布';
+          reviewPublishState.className = 'tag green';
+        }
+      }
+    }
+
+    function startReviewChange() {
+      openAppDialog({
+        title: '发起 DFM 评审变更',
+        message: '发起变更后将退出只读状态。本次锁定快照和历史评审意见仍保留，后续修改作为新的变更记录继续处理。',
+        confirmText: '确认发起变更',
+        onConfirm: () => {
+          reviewLocked = false;
+          drawingFiles.forEach((drawing) => {
+            drawing.status = '评审中';
+            drawing.updated = new Date().toLocaleString('zh-CN', { hour12: false });
+          });
+          if (reviewPublishState) {
+            reviewPublishState.textContent = '变更中';
+            reviewPublishState.classList.remove('green');
+            reviewPublishState.classList.add('amber');
+          }
+          if (saveStateTag) {
+            saveStateTag.textContent = '变更中';
+            saveStateTag.className = 'tag amber';
+          }
+          if (saveMessage) saveMessage.textContent = `已发起变更：${new Date().toLocaleString('zh-CN', { hour12: false })}`;
+          if (currentDetailRecord) {
+            currentDetailRecord.status = '进行中';
+            currentDetailRecord.updated = new Date().toLocaleString('zh-CN', { hour12: false });
+          }
+          const currentListRow = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || [])
+            .find((row) => row.dataset.id === currentDetailRecord?.id);
+          if (currentListRow) {
+            currentListRow.dataset.status = '进行中';
+            currentListRow.dataset.updated = currentDetailRecord?.updated || '';
+            const statusCell = currentListRow.children[6];
+            const updatedCell = currentListRow.children[8];
+            if (statusCell) statusCell.innerHTML = statusTag({ status: '进行中' });
+            if (updatedCell) updatedCell.textContent = currentDetailRecord?.updated || '';
+          }
+          applyReviewView();
+          syncDrawingPage();
+        }
+      });
+    }
+
     function applyReviewView() {
       const isReviewer = currentReviewView === 'reviewer';
       document.body.classList.toggle('reviewer-mode', isReviewer);
@@ -5897,35 +6491,53 @@
 
       const currentRow = currentReviewerRow();
       const currentInfo = reviewerInfoFromRow(currentRow);
+      const currentReviewerInactive = currentRow?.dataset.reviewerInactive === 'true';
       const reviewerSubmitted = isReviewer && isCurrentReviewerSubmitted(currentRow);
       const hasOwnIssue = isReviewer && reviewerIssueRows().some((issueRow) => issueRow.dataset.owner === currentInfo.name);
       document.body.classList.toggle('reviewer-submitted', reviewerSubmitted);
       if (currentReviewerBadge) {
         currentReviewerBadge.hidden = !isReviewer;
-        currentReviewerBadge.textContent = `当前登录评审人：${currentInfo.name} / ${currentInfo.department}`;
+        currentReviewerBadge.textContent = currentReviewerInactive
+          ? `当前登录评审人：${currentInfo.name} / ${currentInfo.department}（已移除）`
+          : `当前登录评审人：${currentInfo.name} / ${currentInfo.department}`;
       }
       if (reviewerGuidance) {
-        reviewerGuidance.textContent = reviewerSubmitted
+        reviewerGuidance.textContent = currentReviewerInactive
+          ? '该评审人员已被移除，历史意见和问题保留，但已无权继续提交或修改评审内容。'
+          : reviewerSubmitted
           ? (hasOwnIssue ? '已提交：当前评审人员已登记问题，等待 AE 回复与评估。' : '已提交：当前评审人员已确认无新增问题。')
+          : hasOwnIssue
+          ? '已登记问题：请补充完整问题内容后重新提交，提交后由 AE 回复与评估。'
           : '无问题可直接提交确认；如提出问题，提交后需由 AE 进行回复与评估。';
       }
       if (reviewerEmptyState) {
-        reviewerEmptyState.hidden = !(reviewerSubmitted && !hasOwnIssue);
+        reviewerEmptyState.hidden = !isReviewer || hasOwnIssue || currentReviewerInactive;
+        reviewerEmptyState.textContent = reviewerSubmitted
+          ? '当前评审人员尚未登记问题；如需补充，可点击“补充登记问题”，系统将恢复为待重新提交状态。'
+          : '当前评审人员尚未登记问题，可点击“登记问题”新增评审意见。';
       }
 
       reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]').forEach((row) => {
         const isCurrent = row === currentRow;
         const canEditReviewers = !isReviewer && (!reviewTasksPublished || reviewEditMode);
+        const hasSubmittedReview = row.dataset.reviewSubmitted === 'true';
+        const isInactiveReviewer = row.dataset.reviewerInactive === 'true';
+        const canEditReviewerIdentity = canEditReviewers && !hasSubmittedReview && !isInactiveReviewer;
         row.classList.toggle('is-current', isReviewer && isCurrent);
+        row.classList.toggle('is-inactive', isInactiveReviewer);
         row.querySelectorAll('select').forEach((select) => {
-          select.disabled = !canEditReviewers;
+          select.disabled = !canEditReviewerIdentity;
         });
         const removeButton = row.querySelector('[data-remove-reviewer-department]');
         const confirmButton = row.querySelector('[data-reviewer-confirm]');
         const registerButton = row.querySelector('[data-reviewer-register]');
-        if (removeButton) removeButton.disabled = !canEditReviewers;
-        if (confirmButton) confirmButton.hidden = !reviewTasksPublished || !isReviewer || !isCurrent;
-        if (registerButton) registerButton.hidden = !reviewTasksPublished || !isReviewer || !isCurrent;
+        if (removeButton) {
+          removeButton.disabled = !canEditReviewers || isInactiveReviewer;
+          removeButton.textContent = hasSubmittedReview ? '移除并保留记录' : '删除';
+          removeButton.hidden = isInactiveReviewer;
+        }
+        if (confirmButton) confirmButton.hidden = !reviewTasksPublished || !isReviewer || !isCurrent || currentReviewerInactive;
+        if (registerButton) registerButton.hidden = !reviewTasksPublished || !isReviewer || !isCurrent || currentReviewerInactive;
       });
 
       if (publishReviewersButton) publishReviewersButton.hidden = isReviewer || reviewTasksPublished;
@@ -5954,15 +6566,21 @@
       });
 
       if (addIssueRowButton) {
-        addIssueRowButton.textContent = isReviewer ? '登记问题' : '添加问题行';
-        addIssueRowButton.disabled = reviewerSubmitted;
+        addIssueRowButton.textContent = isReviewer ? (reviewerSubmitted ? '补充登记问题' : '登记问题') : '添加问题行';
+        addIssueRowButton.disabled = currentReviewerInactive;
       }
+      if (createVersionButton) createVersionButton.hidden = isReviewer || reviewLocked;
       lockReviewButtons.forEach((button) => {
-        if (!button.classList.contains('success')) button.textContent = isReviewer ? (reviewerSubmitted ? '已提交' : '提交') : (reviewTasksPublished ? '提交并锁定' : '发布');
-        if (isReviewer && reviewerSubmitted) button.disabled = true;
+        if (!button.classList.contains('success')) {
+          button.textContent = isReviewer
+            ? (currentReviewerInactive ? '已移除' : (reviewerSubmitted ? '已提交' : '提交'))
+            : (reviewTasksPublished ? '提交并锁定' : '发布');
+        }
+        if (isReviewer && (reviewerSubmitted || currentReviewerInactive)) button.disabled = true;
       });
       syncDrawingLockState();
       refreshLockButton();
+      applyLockedView();
     }
 
     function currentDrawingInfo() {
@@ -5978,7 +6596,7 @@
       return drawingFiles.map((drawing) => {
         const disabled = drawing.status === '已锁定' ? ' disabled' : '';
         const selected = drawing.id === selectedId && !disabled ? ' selected' : '';
-        return `<option value="${drawing.id}"${selected}${disabled}>${drawing.version} / 第 ${drawing.sheetNo} 张 / ${drawing.name}${disabled ? '（已锁定）' : ''}</option>`;
+        return `<option value="${drawing.id}"${selected}${disabled}>${drawing.name}</option>`;
       }).join('');
     }
 
@@ -6005,37 +6623,12 @@
       return canAdd;
     }
 
-    function renderDrawingStatusList() {
-      if (!drawingStatusList) return;
-      drawingStatusList.innerHTML = drawingFiles.map((drawing, index) => `
-        <div class="drawing-status-item${index === currentDrawingPage ? ' active' : ''}" data-drawing-status-item="${drawing.id}" data-jump-drawing="${index}" role="button" tabindex="0" aria-label="切换到${drawing.version}第${drawing.sheetNo}张图纸">
-          <div class="drawing-status-main">
-            <strong>${drawing.version} / 第 ${drawing.sheetNo} 张 / ${drawing.name}</strong>
-            <span>负责人：${drawing.owner}　最近更新：${drawing.updated}</span>
-          </div>
-          <div class="mini-actions">
-            ${drawingStatusTag(drawing.status)}
-          </div>
-        </div>
-      `).join('');
-    }
-
     function syncDrawingLockState() {
       const drawing = currentDrawingInfo();
       const isLocked = drawing?.status === '已锁定';
-      if (lockCurrentDrawingButton) {
-        lockCurrentDrawingButton.disabled = currentReviewView === 'reviewer' || isLocked;
-        lockCurrentDrawingButton.textContent = isLocked ? '当前图纸已锁定' : '锁定当前图纸';
-      }
-      if (drawingLockHint) {
-        drawingLockHint.classList.toggle('warning', !isLocked);
-        drawingLockHint.textContent = isLocked
-          ? '当前图纸已锁定，不能再登记新的开放问题；历史问题仍可查看和追溯。'
-          : '未锁定图纸仍可登记开放问题；AE 可将已评审且无问题的图纸改为锁定状态。';
-      }
       if (addIssueRowButton) {
-        const reviewerSubmitted = currentReviewView === 'reviewer' && isCurrentReviewerSubmitted();
-        addIssueRowButton.disabled = reviewerSubmitted || isLocked;
+        const reviewerInactive = currentReviewView === 'reviewer' && currentReviewerRow()?.dataset.reviewerInactive === 'true';
+        addIssueRowButton.disabled = reviewerInactive || isLocked;
       }
       issueTbody?.querySelectorAll('[data-issue-drawing]').forEach((select) => {
         const previousValue = select.value;
@@ -6059,7 +6652,6 @@
         const drawing = currentDrawingInfo();
         drawingPageTitle.textContent = `${drawing.version} / 第 ${drawing.sheetNo} 张，共 ${total} 张 / ${drawing.name}`;
       }
-      renderDrawingStatusList();
       syncDrawingLockState();
     }
 
@@ -6261,47 +6853,7 @@
     drawingZoomInButton?.addEventListener('click', () => setDrawingZoom(drawingZoom + .25));
     drawingZoomOutButton?.addEventListener('click', () => setDrawingZoom(drawingZoom - .25));
     drawingFullscreenButton?.addEventListener('click', openDrawingViewer);
-    drawingDownloadButton?.addEventListener('click', downloadCurrentDrawing);
-    drawingStatusList?.addEventListener('click', (event) => {
-      const statusItem = event.target.closest('[data-jump-drawing]');
-      if (!statusItem) return;
-      currentDrawingPage = Number(statusItem.dataset.jumpDrawing || 0);
-      syncDrawingPage();
-    });
-    drawingStatusList?.addEventListener('keydown', (event) => {
-      if (!['Enter', ' '].includes(event.key)) return;
-      const statusItem = event.target.closest('[data-jump-drawing]');
-      if (!statusItem) return;
-      event.preventDefault();
-      currentDrawingPage = Number(statusItem.dataset.jumpDrawing || 0);
-      syncDrawingPage();
-    });
-    lockCurrentDrawingButton?.addEventListener('click', () => {
-      if (currentReviewView === 'reviewer') return;
-      const drawing = currentDrawingInfo();
-      if (!drawing || drawing.status === '已锁定') return;
-      const relatedIssues = issueRowsForDrawing(drawing.id);
-      if (relatedIssues.length > 0) {
-        openAppDialog({
-          title: '暂不能锁定图纸',
-          message: `当前图纸仍关联 ${relatedIssues.length} 条开放问题。请先确认问题闭环或切换到没有问题的图纸后再锁定。`,
-          confirmText: '知道了',
-          hideCancel: true
-        });
-        return;
-      }
-      openAppDialog({
-        title: '锁定当前图纸',
-        message: `确认将 ${drawing.version} 第 ${drawing.sheetNo} 张图纸改为锁定状态吗？锁定后不能再针对该图纸提出新的开放问题。`,
-        confirmText: '确认锁定',
-        onConfirm: () => {
-          drawing.status = '已锁定';
-          drawing.updated = new Date().toLocaleString('zh-CN', { hour12: false });
-          syncDrawingPage();
-          if (saveMessage) saveMessage.textContent = '当前图纸已锁定';
-        }
-      });
-    });
+    drawingViewAllButton?.addEventListener('click', () => openDrawingListDialog(currentDetailRecord));
     drawingStage?.addEventListener('mousedown', startDrawingDrag);
     window.addEventListener('mousemove', moveDrawingDrag);
     window.addEventListener('mouseup', stopDrawingDrag);
@@ -6434,6 +6986,14 @@
       syncAllReviewerReadonlyValues();
       applyReviewView();
       if (saveMessage) saveMessage.textContent = reviewEditMode ? '正在编辑评审人员' : '评审人员已更新';
+      if (reviewEditMode) {
+        openAppDialog({
+          title: '评审记录保留规则',
+          message: '已提交评审意见的人员不可改名或覆盖。若需移除，系统会保留其评审结论、已登记问题、附件及处理记录，并将人员状态标记为“已移除（记录保留）”。',
+          confirmText: '知道了',
+          hideCancel: true
+        });
+      }
     });
 
     reviewerDepartmentList?.addEventListener('change', (event) => {
@@ -6478,18 +7038,50 @@
       }
 
       if (!removeButton) return;
-      const rows = Array.from(reviewerDepartmentList.querySelectorAll('.reviewer-department-row'));
-      if (rows.length <= 1) {
+      const targetRow = removeButton.closest('[data-reviewer-row]');
+      const activeRows = Array.from(reviewerDepartmentList.querySelectorAll('[data-reviewer-row]'))
+        .filter((row) => row.dataset.reviewerInactive !== 'true');
+      if (activeRows.length <= 1) {
         openAppDialog({
-          title: '至少保留一个部门',
-          message: '评审人员需要至少保留一个部门，可修改部门和人员内容。',
+          title: '至少保留一名评审人员',
+          message: '当前仅剩一名有效评审人员，不能继续移除。请先新增替代人员。',
           confirmText: '知道了',
           hideCancel: true
         });
         return;
       }
-      removeButton.closest('.reviewer-department-row')?.remove();
-      refreshLockButton();
+      const reviewerName = targetRow?.querySelector('[data-reviewer-people]')?.value || '该评审人员';
+      const hasSubmittedReview = targetRow?.dataset.reviewSubmitted === 'true';
+      const hasRegisteredIssue = Array.from(issueTbody?.querySelectorAll('tr') || []).some((issueRow) => {
+        const registrant = issueRow.querySelector('td:nth-child(2) input')?.value || '';
+        return issueRow.dataset.owner === reviewerName || registrant === reviewerName;
+      });
+      const mustArchive = hasSubmittedReview || hasRegisteredIssue;
+      openAppDialog({
+        title: mustArchive ? '移除评审人员并保留记录' : '删除评审人员',
+        message: mustArchive
+          ? `${reviewerName} 已提交评审意见或登记问题。移除后人员将失去后续评审权限，但其意见、问题、附件和处理记录全部保留。`
+          : `确认删除尚未提交意见的评审人员 ${reviewerName} 吗？`,
+        confirmText: mustArchive ? '移除并保留记录' : '确认删除',
+        danger: true,
+        onConfirm: () => {
+          if (mustArchive && targetRow) {
+            targetRow.dataset.reviewerInactive = 'true';
+            targetRow.dataset.removedAt = new Date().toLocaleString('zh-CN', { hour12: false });
+            setReviewerStatus(targetRow, 'archived');
+            syncReviewerReadonlyValues(targetRow);
+          } else {
+            targetRow?.remove();
+          }
+          applyReviewView();
+          refreshLockButton();
+          if (saveMessage) {
+            saveMessage.textContent = mustArchive
+              ? `${reviewerName} 已移除，历史评审记录已保留`
+              : `${reviewerName} 已从评审人员中删除`;
+          }
+        }
+      });
     });
 
     function publishReviewTasks(showDialog = true) {
@@ -6547,7 +7139,7 @@
       const drawingId = currentDrawingInfo()?.status === '已锁定' ? firstUnlockedDrawingId() : currentDrawingInfo()?.id;
       return `
         <td class="center"><strong>${index}</strong></td>
-        <td><input class="issue-input" value="${registrant}" data-ae-field></td>
+        <td><input class="issue-input" value="${registrant}" readonly aria-readonly="true" title="登记人由系统根据当前登录用户自动带入，不可修改"></td>
         <td><input class="issue-input" value="${department}" data-ae-field></td>
         <td>
           <input type="hidden" value="${owner}" data-issue-owner data-owner-id="${ownerId}">
@@ -6610,9 +7202,18 @@
     }
 
     function refreshLockButton() {
+      if (reviewLocked) {
+        lockReviewButtons.forEach((button) => {
+          button.textContent = '发起变更';
+          button.disabled = false;
+        });
+        updateReviewClosureMessage();
+        return;
+      }
       const state = reviewClosureState();
       const reviewerSubmitted = currentReviewView === 'reviewer' && isCurrentReviewerSubmitted();
-      const canLock = (currentReviewView === 'reviewer' && !reviewerSubmitted) || (currentReviewView === 'ae' && (!reviewTasksPublished || (state.allIssueClosed && state.allReviewersResponded && !state.hasOpenReviewerIssue)));
+      const reviewerInactive = currentReviewView === 'reviewer' && currentReviewerRow()?.dataset.reviewerInactive === 'true';
+      const canLock = (currentReviewView === 'reviewer' && !reviewerSubmitted && !reviewerInactive) || (currentReviewView === 'ae' && (!reviewTasksPublished || (state.allIssueClosed && state.allReviewersResponded && !state.hasOpenReviewerIssue)));
       lockReviewButtons.forEach((button) => {
         button.disabled = !canLock;
       });
@@ -6650,8 +7251,14 @@
     }
 
     addIssueRowButton?.addEventListener('click', () => {
-      if (currentReviewView === 'reviewer' && isCurrentReviewerSubmitted()) return;
+      if (currentReviewView === 'reviewer' && currentReviewerRow()?.dataset.reviewerInactive === 'true') return;
       if (!canAddIssueOnCurrentDrawing(true)) return;
+      if (currentReviewView === 'reviewer' && isCurrentReviewerSubmitted()) {
+        const reviewerRow = currentReviewerRow();
+        reviewerRow.dataset.reviewSubmitted = 'false';
+        setReviewerStatus(reviewerRow, 'issue');
+        if (saveMessage) saveMessage.textContent = '已补充登记问题，评审状态恢复为待重新提交';
+      }
       const row = document.createElement('tr');
       row.innerHTML = issueRowTemplate((issueTbody?.children.length || 0) + 1);
       const reviewer = reviewerInfoFromRow();
@@ -6805,9 +7412,14 @@
     }));
 
     lockReviewButtons.forEach((button) => button.addEventListener('click', () => {
+      if (reviewLocked) {
+        startReviewChange();
+        return;
+      }
       const state = reviewClosureState();
       if (currentReviewView === 'reviewer') {
         const row = currentReviewerRow();
+        if (row?.dataset.reviewerInactive === 'true') return;
         if (isCurrentReviewerSubmitted(row)) return;
         const hasOwnIssue = reviewerIssueRows().some((issueRow) => issueRow.dataset.owner === reviewerInfoFromRow(row).name);
         openAppDialog({
@@ -6851,15 +7463,37 @@
         message: '当前 DFM 评审已满足闭环条件：所有评审人员已响应，评审人员登记问题已由 AE 处理，问题状态全部为 G 或 N。确认后将锁定本次 DFM 评审记录。',
         confirmText: '确认锁定',
         onConfirm: () => {
-        lockReviewButtons.forEach((lockButton) => {
-          lockButton.textContent = '变更';
-          lockButton.classList.remove('primary');
-          lockButton.classList.add('success');
-          lockButton.disabled = false;
-        });
-        document.querySelectorAll('.top-actions, [data-bottom-actions]').forEach((actions) => actions.classList.add('locked'));
-        if (saveMessage) saveMessage.textContent = '已锁定，可发起变更';
-      }
+          reviewLocked = true;
+          reviewEditMode = false;
+          reviewLockedAt = new Date().toLocaleString('zh-CN', { hour12: false });
+          drawingFiles.forEach((drawing) => {
+            drawing.status = '已锁定';
+            drawing.updated = reviewLockedAt;
+          });
+          if (currentDetailRecord) {
+            currentDetailRecord.status = '已锁定';
+            currentDetailRecord.updated = reviewLockedAt;
+          }
+          const currentRow = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || [])
+            .find((row) => row.dataset.id === currentDetailRecord?.id);
+          if (currentRow) {
+            currentRow.dataset.status = '已锁定';
+            currentRow.dataset.updated = reviewLockedAt;
+            const statusCell = currentRow.children[6];
+            const updatedCell = currentRow.children[8];
+            if (statusCell) statusCell.innerHTML = statusTag({ status: '已锁定' });
+            if (updatedCell) updatedCell.textContent = reviewLockedAt;
+          }
+          if (saveMessage) saveMessage.textContent = `已锁定：${reviewLockedAt}`;
+          applyReviewView();
+          syncDrawingPage();
+          openAppDialog({
+            title: 'DFM 评审已锁定',
+            message: '当前记录已生成只读快照。评审人员、开放问题、结论和附件均不可修改；如需调整，请点击“发起变更”。',
+            confirmText: '进入只读查看',
+            hideCancel: true
+          });
+        }
       });
     }));
 
@@ -6895,8 +7529,60 @@
       if (event.target === appDialog) closeAppDialog(false);
     });
 
+    function prepareManualCreateForm() {
+      if (createCustomerInput) createCustomerInput.value = '';
+      if (createPartNoInput) {
+        createPartNoInput.value = '';
+        delete createPartNoInput.dataset.selectedPartNo;
+      }
+      if (createPartNameInput) createPartNameInput.value = '';
+      closeCreatePartOptions();
+    }
+
     openCreateDfmButtons.forEach((button) => {
-      button.addEventListener('click', () => createDfmDialog?.showModal());
+      button.addEventListener('click', () => {
+        prepareManualCreateForm();
+        createDfmDialog?.showModal();
+        createCustomerInput?.focus();
+      });
+    });
+
+    createPartNoInput?.addEventListener('focus', renderCreatePartOptions);
+    createPartNoInput?.addEventListener('input', () => {
+      delete createPartNoInput.dataset.selectedPartNo;
+      if (createPartNameInput) createPartNameInput.value = '';
+      activeCreatePartIndex = -1;
+      const exactPart = partCatalog.find((part) => part.partNo.toLowerCase() === createPartNoInput.value.trim().toLowerCase());
+      if (exactPart && createPartNameInput) {
+        createPartNoInput.dataset.selectedPartNo = exactPart.partNo;
+        createPartNameInput.value = exactPart.partName;
+      }
+      renderCreatePartOptions();
+    });
+    createPartNoInput?.addEventListener('keydown', (event) => {
+      const matches = filteredCreateParts();
+      if (event.key === 'ArrowDown' && matches.length) {
+        event.preventDefault();
+        activeCreatePartIndex = (activeCreatePartIndex + 1) % matches.length;
+        renderCreatePartOptions();
+      } else if (event.key === 'ArrowUp' && matches.length) {
+        event.preventDefault();
+        activeCreatePartIndex = (activeCreatePartIndex - 1 + matches.length) % matches.length;
+        renderCreatePartOptions();
+      } else if (event.key === 'Enter' && activeCreatePartIndex >= 0 && matches[activeCreatePartIndex]) {
+        event.preventDefault();
+        selectCreatePart(matches[activeCreatePartIndex]);
+      } else if (event.key === 'Escape') {
+        closeCreatePartOptions();
+      }
+    });
+    createPartNoInput?.addEventListener('blur', () => {
+      window.setTimeout(closeCreatePartOptions, 120);
+    });
+    createPartOptions?.addEventListener('click', (event) => {
+      const option = event.target.closest('[data-create-part-option]');
+      if (!option) return;
+      selectCreatePart(partCatalog.find((part) => part.partNo === option.dataset.createPartOption));
     });
 
     closeCreateDfmButton?.addEventListener('click', () => {
@@ -6952,20 +7638,185 @@
 
     drawingListExportButton?.addEventListener('click', exportDrawingListCsv);
 
+    drawingListBody?.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-dl-download],[data-dl-delete],[data-dl-lock]');
+      if (!button) return;
+      const id = button.dataset.id;
+      if (button.hasAttribute('data-dl-download')) {
+        downloadDrawingFile(currentDrawingListRows.find((drawing) => drawing.id === id));
+      } else if (button.hasAttribute('data-dl-delete')) {
+        deleteDrawingRow(id);
+      } else if (button.hasAttribute('data-dl-lock')) {
+        toggleDrawingLock(id);
+      }
+    });
+
+    drawingUploadButton?.addEventListener('click', () => drawingUploadInput?.click());
+    drawingUploadInput?.addEventListener('change', (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!files.length) return;
+      const baseVersion = currentDetailRecord?.drawing || currentDrawingListRows[0]?.version || 'Rev.A';
+      files.forEach((file, index) => {
+        currentDrawingListRows.push({
+          id: `row-${Date.now()}-${index}`,
+          sheetNo: currentDrawingListRows.length + 1,
+          version: baseVersion,
+          name: file.name,
+          status: '待评审',
+          owner: 'Mia Chen',
+          updated: new Date().toLocaleString('zh-CN', { hour12: false }),
+          openIssues: 0
+        });
+      });
+      renderDrawingListRows();
+      event.target.value = '';
+    });
+
+    function nextDrawingVersion(version = 'Rev.A') {
+      const match = String(version).match(/Rev\.([A-Z])/i);
+      if (!match) return 'Rev.B';
+      const nextChar = String.fromCharCode(Math.min(match[1].toUpperCase().charCodeAt(0) + 1, 90));
+      return `Rev.${nextChar}`;
+    }
+
+    function openCreateVersionDialog() {
+      if (!createVersionDialog) return;
+      if (createVersionInput) createVersionInput.value = nextDrawingVersion(currentDetailRecord?.drawing);
+      if (createVersionFile) createVersionFile.value = '';
+      if (createVersionFileName) createVersionFileName.textContent = '未选择任何文件';
+      createVersionDialog.showModal();
+    }
+
+    function closeCreateVersionDialog() {
+      createVersionDialog?.close();
+    }
+
+    function ensureEditDrawingOption(version) {
+      if (!editDrawingInput || !version) return;
+      const exists = Array.from(editDrawingInput.options).some((option) => option.value === version);
+      if (exists) return;
+      const option = document.createElement('option');
+      option.textContent = version;
+      editDrawingInput.appendChild(option);
+    }
+
+    function openEditBasicDialog() {
+      if (!editBasicDialog || !currentDetailRecord) return;
+      const isProjectSource = currentDetailRecord.source !== 'manual' && Boolean(currentDetailRecord.project);
+      if (editProjectField) editProjectField.hidden = !isProjectSource;
+      if (editProjectInput) editProjectInput.value = isProjectSource ? currentDetailRecord.project : '';
+      if (editCustomerInput) editCustomerInput.value = currentDetailRecord.customer || '';
+      if (editPartNoInput) editPartNoInput.value = currentDetailRecord.partNo || '';
+      if (editPartNameInput) editPartNameInput.value = currentDetailRecord.partName || '';
+      ensureEditDrawingOption(currentDetailRecord.drawing);
+      if (editDrawingInput) editDrawingInput.value = currentDetailRecord.drawing || 'Rev.A';
+      if (editSourceLabel) editSourceLabel.textContent = isProjectSource ? '通过项目创建' : '手动创建';
+      if (editSourceHint) editSourceHint.textContent = isProjectSource
+        ? '项目编号来自项目开发模块，不可编辑；其他基本信息可在此维护。'
+        : '该任务为手动创建，不关联项目编号。';
+      if (editSourceTag) {
+        editSourceTag.textContent = isProjectSource ? '项目来源' : '手动来源';
+        editSourceTag.className = `tag ${isProjectSource ? 'blue' : 'gray'}`;
+      }
+      editBasicDialog.showModal();
+      (editCustomerInput || editPartNoInput)?.focus();
+    }
+
+    function closeEditBasicDialog() {
+      editBasicDialog?.close();
+    }
+
+    editBasicButton?.addEventListener('click', openEditBasicDialog);
+    editBasicCloseButtons.forEach((button) => button.addEventListener('click', closeEditBasicDialog));
+    editBasicDialog?.addEventListener('click', (event) => {
+      if (event.target === editBasicDialog) closeEditBasicDialog();
+    });
+    editBasicForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!currentDetailRecord) return;
+      const customer = editCustomerInput?.value.trim() || '';
+      const partNo = editPartNoInput?.value.trim() || '';
+      const partName = editPartNameInput?.value.trim() || '';
+      if (!customer || !partNo || !partName) {
+        openAppDialog({
+          title: '请完善基本信息',
+          message: '客户名称、零件编号和零件名称/描述均为必填项。',
+          confirmText: '知道了'
+        });
+        return;
+      }
+
+      Object.assign(currentDetailRecord, {
+        customer,
+        partNo,
+        partName,
+        drawing: editDrawingInput?.value || currentDetailRecord.drawing,
+        updated: new Date().toLocaleString('zh-CN', { hour12: false })
+      });
+      const existingRow = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || [])
+        .find((row) => row.dataset.id === currentDetailRecord.id);
+      if (existingRow) existingRow.replaceWith(renderDfmRow(currentDetailRecord));
+      populateDetail(currentDetailRecord);
+      closeEditBasicDialog();
+      if (saveMessage) saveMessage.textContent = `基本信息已更新：${currentDetailRecord.updated}`;
+      openAppDialog({
+        title: '基本信息已保存',
+        message: '修改内容已同步到详情摘要、任务列表和导出信息。',
+        confirmText: '知道了'
+      });
+    });
+
+    createVersionButton?.addEventListener('click', openCreateVersionDialog);
+    createVersionCloseButtons.forEach((button) => button.addEventListener('click', closeCreateVersionDialog));
+    createVersionFile?.addEventListener('change', (event) => {
+      const files = Array.from(event.target.files || []);
+      if (!createVersionFileName) return;
+      createVersionFileName.textContent = files.length
+        ? files.map((file) => file.name).join('；')
+        : '未选择任何文件';
+    });
+    createVersionSubmit?.addEventListener('click', () => {
+      const files = Array.from(createVersionFile?.files || []);
+      const version = (createVersionInput?.value || '').trim();
+      if (!version) {
+        openAppDialog({ title: '缺少版本号', message: '请输入图纸版本号后再继续。', confirmText: '知道了' });
+        return;
+      }
+      if (!files.length) {
+        openAppDialog({ title: '尚未选择图纸', message: '请选择需要上传的图纸文件后再继续。', confirmText: '知道了' });
+        return;
+      }
+      if (currentDetailRecord) currentDetailRecord.drawing = version;
+      syncDetailDrawingVersion(version);
+      closeCreateVersionDialog();
+      openAppDialog({
+        title: '图纸版本已创建',
+        message: `已创建图纸版本 ${version}，并上传 ${files.length} 张图纸。`,
+        confirmText: '知道了'
+      });
+    });
+
     createDfmForm?.addEventListener('submit', (event) => {
       event.preventDefault();
-      const selectedOption = createPartSelect?.selectedOptions?.[0];
-      const record = optionData(selectedOption);
+      const record = optionData();
+      const selectedPart = partCatalog.find((part) => part.partNo === record.partNo && part.partNo === createPartNoInput?.dataset.selectedPartNo);
+      if (!record.customer || !selectedPart || !record.partName) {
+        openAppDialog({
+          title: '请完善创建信息',
+          message: '请填写客户名称，并从零件编号查询结果中选择一个零件。零件名称将由系统自动带出。',
+          confirmText: '知道了'
+        });
+        return;
+      }
       record.id = nextDfmId();
       record.updated = '刚刚创建';
-      record.status = createStatusSelect?.value || '进行中';
       const row = renderDfmRow(record);
       dfmListBody?.prepend(row);
       applyListFilter();
       createDfmDialog?.close();
       openAppDialog({
         title: '图纸评审任务已创建',
-        message: `${record.id} 已关联零件 ${record.partNo} / ${record.partName}，可进入详情补充图纸、关注点和开放问题。`,
+        message: `${record.id} 已手动创建，零件为 ${record.partNo} / ${record.partName}，未关联项目编号。`,
         confirmText: '查看详情',
         onConfirm: () => setView('detail', record)
       });

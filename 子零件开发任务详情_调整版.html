@@ -573,12 +573,18 @@
     .stage-title {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 10px;
       color: #4a4f59;
       font-size: 17px;
       font-weight: 900;
       margin-bottom: 10px;
+      line-height: 1.28;
+    }
+
+    .stage-title .status-pill {
+      flex: 0 0 auto;
+      margin-top: 1px;
     }
 
     .stage-card.active .stage-title {
@@ -2812,7 +2818,7 @@
     }
 
     .library-table {
-      min-width: 1000px;
+      min-width: 1280px;
       table-layout: fixed;
     }
 
@@ -2840,17 +2846,6 @@
     .library-file-title {
       color: #252a34;
       font-weight: 800;
-      line-height: 1.45;
-    }
-
-    .library-file-meta {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 6px 10px;
-      color: #667085;
-      font-size: 12px;
-      font-weight: 650;
       line-height: 1.45;
     }
 
@@ -5261,7 +5256,7 @@
               </div>
               <div>
                 <div class="stat-label">阶段</div>
-                <div class="stat-value" data-current-stage-label>Gate1</div>
+                <div class="stat-value" data-current-stage-label>Program Kick Off</div>
               </div>
               <div>
                 <div class="stat-label">任务健康度</div>
@@ -5354,31 +5349,31 @@
             <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
             <div class="stage-strip" data-stage-strip>
               <button class="stage-card active" type="button" data-stage-id="Gate1">
-                <div class="stage-title">Gate1 <span class="status-pill status-running">进行中</span></div>
+                <div class="stage-title">Program Kick Off <span class="status-pill status-running">进行中</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate2">
-                <div class="stage-title">Gate2 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">AR Submission Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate3">
-                <div class="stage-title">Gate3 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Investment Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate4">
-                <div class="stage-title">Gate4 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Off Tool Sample Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate5">
-                <div class="stage-title">Gate5 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Launch Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate6">
-                <div class="stage-title">Gate6 <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Launch Completion &amp; Handoff Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="HandOver">
-                <div class="stage-title">HandOver <span class="status-pill status-pending">未开始</span></div>
+                <div class="stage-title">Handover <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>时间</span><b>-</b></div>
               </button>
             </div>
@@ -5739,15 +5734,19 @@
           <div class="bom-table-wrap library-table-wrap">
             <table class="library-table" aria-label="项目资料库列表">
               <colgroup>
-                <col style="width: 45%">
+                <col style="width: 27%">
+                <col style="width: 11%">
                 <col style="width: 23%">
-                <col style="width: 12%">
-                <col style="width: 12%">
+                <col style="width: 17%">
+                <col style="width: 10%">
                 <col style="width: 8%">
+                <col style="width: 4%">
               </colgroup>
               <thead>
                 <tr>
                   <th>文件名称</th>
+                  <th>所属阶段</th>
+                  <th>关联任务标题</th>
                   <th>备注</th>
                   <th>上传日期</th>
                   <th>上传人</th>
@@ -5756,28 +5755,36 @@
               </thead>
               <tbody id="libraryTableBody">
                 <tr data-source="task">
-                  <td><div class="library-file-name"><span class="library-file-title">供应商产能爬坡计划与风险清单.xlsx</span><div class="library-file-meta"><span class="library-stage-tag">Gate2</span><span>任务：供应商准备度评审</span></div></div></td>
+                  <td><div class="library-file-name"><span class="library-file-title">供应商产能爬坡计划与风险清单.xlsx</span></div></td>
+                  <td><span class="library-stage-tag">AR Submission Ready</span></td>
+                  <td>供应商准备度评审</td>
                   <td>供应商产能与风险评审附件</td>
                   <td>2025-10-31</td>
                   <td>Luna</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td><div class="library-file-name"><span class="library-file-title">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</span><div class="library-file-meta"><span class="library-stage-tag">Gate2</span><span>任务：3.5 CQI 特殊过程评审（CQI-9/11/12 等）</span></div></div></td>
+                  <td><div class="library-file-name"><span class="library-file-title">CQI-9 第 4 版 _最终版 六月（连云港东睦热处理工序 2023.07.07）.xlsx</span></div></td>
+                  <td><span class="library-stage-tag">AR Submission Ready</span></td>
+                  <td>3.5 CQI 特殊过程评审（CQI-9/11/12 等）</td>
                   <td>CQI 特殊过程评审支撑资料</td>
                   <td>2025-10-31</td>
                   <td>Theodore</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td><div class="library-file-name"><span class="library-file-title">二供样件验证计划与供应商开发记录.xlsx</span><div class="library-file-meta"><span class="library-stage-tag">Gate2</span><span>任务：二供同步开发资料包</span></div></div></td>
+                  <td><div class="library-file-name"><span class="library-file-title">二供样件验证计划与供应商开发记录.xlsx</span></div></td>
+                  <td><span class="library-stage-tag">AR Submission Ready</span></td>
+                  <td>二供同步开发资料包</td>
                   <td>二供同步开发过程记录</td>
                   <td>2025-10-31</td>
                   <td>SQD</td>
                   <td><a class="blue-link" href="#">下载</a></td>
                 </tr>
                 <tr data-source="task">
-                  <td><div class="library-file-name"><span class="library-file-title">PKO 启动会会议纪要及行动项.docx</span><div class="library-file-meta"><span class="library-stage-tag">PKO</span><span>任务：启动会会议纪要</span></div></div></td>
+                  <td><div class="library-file-name"><span class="library-file-title">PKO 启动会会议纪要及行动项.docx</span></div></td>
+                  <td><span class="library-stage-tag">Program Kick Off</span></td>
+                  <td>启动会会议纪要</td>
                   <td>PKO 会议归档资料</td>
                   <td>2025-10-31</td>
                   <td>Willow</td>
@@ -6412,13 +6419,13 @@
             <label class="required" for="editCurrentGate">当前阶段</label>
             <select class="select" id="editCurrentGate">
               <option>请选择</option>
-              <option selected>Gate1</option>
-              <option>Gate2</option>
-              <option>Gate3</option>
-              <option>Gate4</option>
-              <option>Gate5</option>
-              <option>Gate6</option>
-              <option>HandOver</option>
+              <option selected>Program Kick Off</option>
+              <option>AR Submission Ready</option>
+              <option>Investment Ready</option>
+              <option>Off Tool Sample Ready</option>
+              <option>Launch Ready</option>
+              <option>Launch Completion &amp; Handoff Ready</option>
+              <option>Handover</option>
             </select>
           </div>
           <div class="project-edit-field">
@@ -10959,6 +10966,19 @@
       }
     ];
     const stageTasks = JSON.parse(document.getElementById("stageTasksData").textContent);
+    const stageDisplayNames = {
+      Gate1: "Program Kick Off",
+      Gate2: "AR Submission Ready",
+      Gate3: "Investment Ready",
+      Gate4: "Off Tool Sample Ready",
+      Gate5: "Launch Ready",
+      Gate6: "Launch Completion & Handoff Ready",
+      HandOver: "Handover"
+    };
+
+    function stageDisplayName(stage) {
+      return stageDisplayNames[stage] || stage;
+    }
 
     function showMessage(title, html) {
       if (!messageModal || !messageModalTitle || !messageModalBody) return;
@@ -11713,7 +11733,7 @@
       stageCards.forEach((item) => item.classList.toggle("active", item.dataset.stageId === stage));
       const card = stageCards.find((item) => item.dataset.stageId === stage);
       if (currentStageLabel) {
-        currentStageLabel.textContent = stage;
+        currentStageLabel.textContent = stageDisplayName(stage);
       }
       renderStageTasks(stage);
       card?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
@@ -11897,7 +11917,7 @@
       const nextStage = nextStageId(stage);
       if (submitTaskName) submitTaskName.textContent = "发起阶段审核";
       if (submitProjectName) submitProjectName.textContent = sourceProjectName();
-      if (submitCurrentStage) submitCurrentStage.textContent = nextStage ? `${stage} / ${nextStage}` : stage;
+      if (submitCurrentStage) submitCurrentStage.textContent = nextStage ? `${stageDisplayName(stage)} / ${stageDisplayName(nextStage)}` : stageDisplayName(stage);
       if (submitCreatedAt) submitCreatedAt.textContent = getCurrentTime().slice(0, 16);
       if (submitDueDate) submitDueDate.textContent = stageSubmitDueDate(stage);
       if (submitTaskStatus) submitTaskStatus.textContent = "待处理";
@@ -11913,7 +11933,7 @@
       selectedSubmitReviewerIds = new Set(["sophia-qin"]);
       updateSubmitConfirmMeta(pendingSubmitStage);
       submitConfirmTitle.textContent = "发起阶段审核";
-      submitConfirmMessage.textContent = `确认提交 ${pendingSubmitStage} 阶段任务吗？提交后将由指定审批成员进行审核，通过后进入下一个环节。`;
+      submitConfirmMessage.textContent = `确认提交 ${stageDisplayName(pendingSubmitStage)} 阶段任务吗？提交后将由指定审批成员进行审核，通过后进入下一个环节。`;
       if (confirmSubmitStageTask) confirmSubmitStageTask.textContent = "确认发起";
       submitConfirmModal.hidden = false;
     }
@@ -13249,7 +13269,7 @@
       if (!emptyRow) {
         emptyRow = document.createElement("tr");
         emptyRow.className = "library-empty-row";
-        emptyRow.innerHTML = `<td class="library-empty" colspan="5">暂无匹配资料</td>`;
+        emptyRow.innerHTML = `<td class="library-empty" colspan="7">暂无匹配资料</td>`;
         libraryTableBody.appendChild(emptyRow);
       }
       emptyRow.hidden = visibleCount > 0;
@@ -13294,19 +13314,21 @@
       const row = document.createElement("tr");
       row.dataset.source = payload.source;
       row.innerHTML = `
-        <td><div class="library-file-name"><span class="library-file-title"></span><div class="library-file-meta"><span class="library-stage-tag"></span><span class="library-task-title"></span></div></div></td>
+        <td><div class="library-file-name"><span class="library-file-title"></span></div></td>
+        <td><span class="library-stage-tag"></span></td>
+        <td></td>
         <td></td>
         <td></td>
         <td></td>
         <td><a class="blue-link" href="#">下载</a></td>
       `;
       row.children[0].querySelector(".library-file-title").textContent = payload.fileName;
-      row.children[0].querySelector(".library-stage-tag").textContent = payload.stage || "手动上传";
-      row.children[0].querySelector(".library-task-title").textContent = `任务：${payload.taskTitle || "无关联任务"}`;
-      row.children[1].textContent = payload.remark || payload.milestone || "-";
-      row.children[2].textContent = payload.uploadDate;
-      row.children[3].textContent = payload.uploader;
-      const downloadLink = row.children[4].querySelector("a");
+      row.children[1].querySelector(".library-stage-tag").textContent = payload.stage || "手动上传";
+      row.children[2].textContent = payload.taskTitle || "无关联任务";
+      row.children[3].textContent = payload.remark || payload.milestone || "-";
+      row.children[4].textContent = payload.uploadDate;
+      row.children[5].textContent = payload.uploader;
+      const downloadLink = row.children[6].querySelector("a");
       if (payload.url) {
         downloadLink.href = payload.url;
         downloadLink.download = payload.fileName;

@@ -100,30 +100,201 @@
       line-height: 1.35;
     }
 
+    .filter-config-wrap {
+      position: relative;
+      flex: 0 0 auto;
+    }
+
     .filter-config {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      border: 0;
-      background: transparent;
-      color: #666f7e;
+      gap: 8px;
+      min-height: 36px;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      background: #fff;
+      color: #4d5868;
       font-size: 14px;
-      padding: 8px 0;
+      padding: 7px 10px;
+      cursor: pointer;
+      transition: color .18s ease, border-color .18s ease, background-color .18s ease;
     }
 
-    .filter-config .gear {
+    .filter-config:hover,
+    .filter-config[aria-expanded="true"] {
+      color: var(--primary);
+      border-color: #b8d0ff;
+      background: #f5f8ff;
+    }
+
+    .filter-config:focus-visible,
+    .filter-popover button:focus-visible,
+    .filter-option:has(input:focus-visible) {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .filter-config-icon,
+    .filter-config-chevron {
       width: 16px;
       height: 16px;
+      flex: 0 0 auto;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .filter-config-chevron {
+      width: 14px;
+      height: 14px;
+      transition: transform .18s ease;
+    }
+
+    .filter-config[aria-expanded="true"] .filter-config-chevron {
+      transform: rotate(180deg);
+    }
+
+    .filter-config-count {
+      min-width: 20px;
+      height: 20px;
       display: inline-grid;
       place-items: center;
-      color: #737373;
-      font-size: 15px;
+      border-radius: 10px;
+      background: #eaf1ff;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .filter-popover {
+      position: absolute;
+      z-index: 30;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 420px;
+      border: 1px solid #d9e0ea;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(28, 47, 78, .14);
+      color: var(--text);
+    }
+
+    .filter-popover[hidden],
+    .filter-item[hidden] {
+      display: none !important;
+    }
+
+    .filter-popover-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 20px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .filter-popover-title {
+      margin: 0 0 4px;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .filter-popover-description {
+      margin: 0;
+      color: var(--tertiary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .filter-popover-close {
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      border: 0;
+      border-radius: 3px;
+      background: transparent;
+      color: #738095;
+      cursor: pointer;
+      transition: color .18s ease, background-color .18s ease;
+    }
+
+    .filter-popover-close:hover {
+      color: var(--text);
+      background: #f2f5f9;
+    }
+
+    .filter-popover-close svg {
+      width: 17px;
+      height: 17px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .filter-option-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      padding: 16px 20px 10px;
+    }
+
+    .filter-option {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 11px;
+      border: 1px solid #e1e6ee;
+      border-radius: 3px;
+      color: #384354;
+      cursor: pointer;
+      transition: color .18s ease, border-color .18s ease, background-color .18s ease;
+    }
+
+    .filter-option:hover,
+    .filter-option:has(input:checked) {
+      border-color: #b8d0ff;
+      background: #f6f9ff;
+      color: #1d5fd1;
+    }
+
+    .filter-option input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .filter-config-error {
+      min-height: 20px;
+      margin: 0;
+      padding: 0 20px 8px;
+      color: #d43838;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .filter-popover-footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--line);
+      background: #fafbfd;
     }
 
     .filter-panel {
       min-height: 88px;
       display: grid;
-      grid-template-columns: repeat(5, minmax(190px, 1fr)) auto auto;
+      grid-template-columns: repeat(6, minmax(170px, 1fr)) auto auto;
       gap: 18px 20px;
       align-items: center;
       padding: 26px 22px;
@@ -292,7 +463,7 @@
     }
 
     table {
-      width: 2080px;
+      width: 2480px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -303,9 +474,10 @@
       border-bottom: 1px solid #e6ebf1;
       padding: 0 12px;
       text-align: left;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
       color: #2e333c;
     }
 
@@ -686,7 +858,7 @@
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
       gap: 28px 24px;
       padding: 26px 20px 28px;
     }
@@ -705,6 +877,13 @@
 
     .form-field.wide {
       grid-column: 1 / -1;
+    }
+
+    .form-help {
+      margin: -3px 0 0;
+      color: #7b8493;
+      font-size: 12px;
+      line-height: 1.5;
     }
 
     .form-field label {
@@ -733,6 +912,76 @@
       border-radius: 4px;
       border-color: #d9dee7;
       color: #333945;
+    }
+
+    .drawer .field-invalid {
+      border-color: #d92d20;
+      box-shadow: 0 0 0 3px rgba(217, 45, 32, .10);
+    }
+
+    .field-error {
+      margin-top: 6px;
+      color: #d92d20;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .project-info-textarea {
+      min-height: 92px;
+      padding: 10px 12px;
+      line-height: 1.55;
+    }
+
+    .section-description {
+      margin: 8px 20px 0;
+      color: #737d8c;
+      font-size: 13px;
+    }
+
+    .milestone-table {
+      margin: 24px 20px 28px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      overflow: visible;
+    }
+
+    .milestone-row {
+      display: grid;
+      grid-template-columns: minmax(180px, .7fr) minmax(320px, 1.3fr);
+      min-height: 60px;
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .milestone-row:last-child {
+      border-bottom: 0;
+    }
+
+    .milestone-row > div {
+      min-width: 0;
+      padding: 12px 16px;
+    }
+
+    .milestone-row > div + div {
+      border-left: 1px solid var(--line);
+    }
+
+    .milestone-head {
+      min-height: 44px;
+      background: #f6f8fb;
+      color: #3f4857;
+      font-weight: 700;
+    }
+
+    .milestone-name {
+      font-weight: 650;
+      color: #1f2937;
+    }
+
+    .milestone-name span {
+      margin-left: 6px;
+      color: #697386;
+      font-weight: 500;
     }
 
     .multi-select {
@@ -1390,6 +1639,33 @@
         grid-template-columns: repeat(3, minmax(190px, 1fr));
       }
     }
+
+    @media (max-width: 640px) {
+      .page-title {
+        align-items: flex-start;
+      }
+
+      .filter-popover {
+        position: fixed;
+        top: 76px;
+        right: 16px;
+        left: 16px;
+        width: auto;
+      }
+
+      .filter-option-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .filter-config,
+      .filter-config-chevron,
+      .filter-popover-close,
+      .filter-option {
+        transition: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1401,26 +1677,73 @@
           <div class="page-subtitle">面向新产品开发全生命周期的项目创建、阶段流转、任务协同与交接闭环管理</div>
         </div>
       </div>
-      <button class="filter-config" type="button" aria-label="自定义筛选条件">
-        <span class="gear" aria-hidden="true">⚙</span>
-        自定义筛选条件
-      </button>
+      <div class="filter-config-wrap">
+        <button class="filter-config" id="filterConfigButton" type="button" aria-expanded="false" aria-controls="customFilterPopover" aria-haspopup="dialog">
+          <svg class="filter-config-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M6 14v6"></path></svg>
+          <span>自定义筛选条件</span>
+          <span class="filter-config-count" id="filterConfigCount" aria-live="polite">6</span>
+          <svg class="filter-config-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
+        </button>
+        <section class="filter-popover" id="customFilterPopover" role="dialog" aria-modal="false" aria-labelledby="customFilterTitle" hidden>
+          <div class="filter-popover-header">
+            <div>
+              <h2 class="filter-popover-title" id="customFilterTitle">自定义筛选条件</h2>
+              <p class="filter-popover-description">选择需要显示在查询区域的字段</p>
+            </div>
+            <button class="filter-popover-close" id="closeFilterConfig" type="button" aria-label="关闭自定义筛选条件">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"></path></svg>
+            </button>
+          </div>
+          <div class="filter-option-list" role="group" aria-label="可显示的筛选条件">
+            <label class="filter-option"><input type="checkbox" data-filter-option="projectNo" checked><span>项目编号</span></label>
+            <label class="filter-option"><input type="checkbox" data-filter-option="projectName" checked><span>项目名称</span></label>
+            <label class="filter-option"><input type="checkbox" data-filter-option="customer" checked><span>客户</span></label>
+            <label class="filter-option"><input type="checkbox" data-filter-option="product" checked><span>产品</span></label>
+            <label class="filter-option"><input type="checkbox" data-filter-option="programLevel" checked><span>项目等级</span></label>
+            <label class="filter-option"><input type="checkbox" data-filter-option="status" checked><span>状态</span></label>
+          </div>
+          <p class="filter-config-error" id="filterConfigError" role="alert" aria-live="assertive"></p>
+          <div class="filter-popover-footer">
+            <button class="btn btn-plain" id="resetFilterConfig" type="button">恢复默认</button>
+            <button class="btn btn-primary" id="applyFilterConfig" type="button">应用</button>
+          </div>
+        </section>
+      </div>
     </header>
 
     <section class="filter-panel" aria-label="项目筛选">
-      <div class="filter-item">
+      <div class="filter-item" data-filter-item="projectNo">
         <label for="projectNo">项目编号</label>
         <input class="field" id="projectNo" placeholder="请输入项目编号">
       </div>
-      <div class="filter-item">
+      <div class="filter-item" data-filter-item="projectName">
         <label for="projectName">项目名称</label>
         <input class="field" id="projectName" placeholder="请输入项目名称">
       </div>
-      <div class="filter-item">
-        <label for="brand">客户品牌</label>
-        <input class="field" id="brand" placeholder="请输入客户品牌">
+      <div class="filter-item" data-filter-item="customer">
+        <label for="customerFilter">客户</label>
+        <input class="field" id="customerFilter" placeholder="请输入客户名称">
       </div>
-      <div class="filter-item">
+      <div class="filter-item" data-filter-item="product">
+        <label for="productFilter">产品</label>
+        <select class="select" id="productFilter">
+          <option>请选择产品</option>
+          <option>TD System</option>
+          <option>Chain</option>
+          <option>Motor Chain</option>
+          <option>VVT System</option>
+        </select>
+      </div>
+      <div class="filter-item" data-filter-item="programLevel">
+        <label for="programLevelFilter">项目等级</label>
+        <select class="select" id="programLevelFilter">
+          <option>请选择项目等级</option>
+          <option>Level 1</option>
+          <option>Level 2</option>
+          <option>Level 3</option>
+        </select>
+      </div>
+      <div class="filter-item" data-filter-item="status">
         <label for="status">状态</label>
         <select class="select" id="status">
           <option>请选择状态</option>
@@ -1429,15 +1752,6 @@
           <option>已拒绝</option>
           <option>已通过</option>
           <option>带条件通过</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <label for="projectHealth">项目健康度</label>
-        <select class="select" id="projectHealth">
-          <option>请选择健康度</option>
-          <option>绿色</option>
-          <option>黄色</option>
-          <option>红色</option>
         </select>
       </div>
       <button class="btn btn-soft" id="queryProjects" type="button">查询</button>
@@ -1461,19 +1775,17 @@
           <tr>
             <th class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="全选"></th>
             <th class="sticky-left sticky-code" style="width:150px;">项目编号</th>
-            <th class="sticky-left sticky-project" style="width:180px;">项目名称</th>
-            <th style="width:130px;">销售责任单元</th>
+            <th class="sticky-left sticky-project" style="width:190px;">项目名称</th>
             <th style="width:140px;">客户</th>
-            <th style="width:150px;">系统</th>
-            <th style="width:220px;">产品</th>
-            <th style="width:120px;">项目经理</th>
-            <th style="width:90px;">等级</th>
-            <th style="width:140px;">物流计划类型</th>
+            <th style="width:190px;">客户项目</th>
+            <th style="width:150px;">产品</th>
+            <th style="width:150px;">项目经理</th>
+            <th style="width:110px;">项目等级</th>
+            <th style="width:220px;">组织层级</th>
             <th style="width:130px;">峰值订单量</th>
-            <th style="width:130px;">预计营收</th>
-            <th style="width:130px;">配套需求量</th>
-            <th style="width:120px;">定点季度</th>
             <th style="width:130px;">定点日期</th>
+            <th style="width:120px;">OTS</th>
+            <th style="width:120px;">PPAP</th>
             <th style="width:120px;">SOP</th>
             <th class="sticky-right sticky-stage" style="width:100px;">阶段</th>
             <th class="sticky-right sticky-health" style="width:120px;">项目健康度</th>
@@ -1482,23 +1794,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-code="PRJ-260803-001" data-name="EA888 E5 VCT" data-brand="Volkswagen" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
+          <tr data-code="PRJ-260803-001" data-name="EA888 E5 VCT" data-customer="Volkswagen" data-product="VVT System" data-level="Level 2" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 PRJ-260803-001"></td>
             <td class="sticky-left sticky-code">PRJ-260803-001</td>
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
-            <td>NINGBO VT</td>
             <td>Volkswagen</td>
-            <td>VVT系统</td>
-            <td>Phaser, VFS</td>
-            <td>王浩</td>
-            <td>A</td>
-            <td>LRP+</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>2026 Q1</td>
-            <td>2024-01-13</td>
-            <td>2027-12</td>
+            <td>EA888 Gen5 CN</td>
+            <td>VVT System</td>
+            <td>Danny Fang</td>
+            <td>Level 2</td>
+            <td>Regional</td>
+            <td>1,200,000</td>
+            <td>2026-01-13</td>
+            <td>2026-10-15</td>
+            <td>2027-06-30</td>
+            <td>2027-12-01</td>
             <td class="sticky-right sticky-stage"><span class="stage-pill stage-gate1">Gate1</span></td>
             <td class="sticky-right sticky-health">
               <span class="health-badge health-green"><span class="dot dot-green"></span>绿色</span>
@@ -1508,23 +1818,21 @@
             </td>
             <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
           </tr>
-          <tr data-code="PRJ-260803-002" data-name="EA211 Evo 1.5l CN7" data-brand="Volkswagen" data-status="审批中" data-health="黄色" data-members="Michael Wang|Lisa Li">
+          <tr data-code="PRJ-260803-002" data-name="EA211 Evo 1.5l CN7" data-customer="Volkswagen" data-product="Chain" data-level="Level 1" data-status="审批中" data-health="黄色" data-members="Michael Wang|Lisa Li">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 PRJ-260803-002"></td>
             <td class="sticky-left sticky-code">PRJ-260803-002</td>
             <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
-            <td>NINGBO TD</td>
             <td>Volkswagen</td>
-            <td>TD</td>
-            <td>Chain, TSC, CC Guide</td>
-            <td>李敏</td>
-            <td>A</td>
-            <td>未预定</td>
-            <td>-</td>
-            <td>-</td>
-            <td>-</td>
-            <td>2026 Q2</td>
-            <td>2024-01-13</td>
-            <td>2027-12</td>
+            <td>EA211 Evo CN7</td>
+            <td>Chain</td>
+            <td>Michael Wang</td>
+            <td>Level 1</td>
+            <td>Global - Cross Business Unit</td>
+            <td>980,000</td>
+            <td>2026-04-18</td>
+            <td>2026-12-15</td>
+            <td>2027-08-31</td>
+            <td>2028-01-15</td>
             <td class="sticky-right sticky-stage"><span class="stage-pill stage-gate2">Gate2</span></td>
             <td class="sticky-right sticky-health">
               <span class="health-badge health-yellow"><span class="dot dot-yellow"></span>黄色</span>
@@ -1538,7 +1846,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1548,7 +1856,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1558,7 +1866,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1568,7 +1876,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1578,7 +1886,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1588,7 +1896,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1598,7 +1906,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1608,7 +1916,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="13">.</td>
+            <td colspan="11">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1644,50 +1952,34 @@
 
     <div class="drawer-body">
       <section class="form-card">
-        <h2 class="form-section-title" id="drawerTitle">基本信息 <span>Basic Information</span></h2>
+        <h2 class="form-section-title" id="drawerTitle">项目信息 <span>Program Information</span></h2>
+        <p class="section-description">建立项目主数据，并作为后续 CKO、PKO 与 Gate 流程的基础信息。</p>
         <div class="form-grid">
           <div class="form-field">
-            <label class="required" for="sellingRu">销售责任单元<span class="en">Selling RU</span></label>
-            <input class="field" id="sellingRu" placeholder="请输入">
+            <label class="required" for="programName">项目名称<span class="en">Program Name</span></label>
+            <input class="field" id="programName" data-required="项目名称" placeholder="请输入项目名称" maxlength="120">
           </div>
           <div class="form-field">
-            <label class="required" for="customerBrand">客户<span class="en">Customer Brand</span></label>
-            <input class="field" id="customerBrand" placeholder="请输入客户品牌" maxlength="100">
+            <label class="required" for="customer">客户<span class="en">Customer</span></label>
+            <input class="field" id="customer" data-required="客户" placeholder="请输入客户名称" maxlength="100">
           </div>
           <div class="form-field">
-            <label class="required" for="program">项目<span class="en">Program</span></label>
-            <input class="field" id="program" placeholder="请输入">
+            <label class="required" for="customerProgram">客户项目<span class="en">Customer Program</span></label>
+            <input class="field" id="customerProgram" data-required="客户项目" placeholder="请输入客户项目名称" maxlength="120">
           </div>
           <div class="form-field">
-            <label class="required" for="productMulti">产品<span class="en">Product</span></label>
-            <div class="multi-select" id="productMulti">
-              <button class="multi-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-                <span class="multi-values"><span class="multi-placeholder">请选择产品</span></span>
-              </button>
-              <div class="multi-menu" role="listbox" aria-label="产品多选">
-                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="Phaser">Phaser</label>
-                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="VFS">VFS</label>
-                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="CB">CB</label>
-                <label class="multi-option" data-system="VVT系统"><input type="checkbox" value="OCV">OCV</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="Chain">Chain</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="TSC">TSC</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="Timing Tensioner">Timing Tensioner</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="OP tensioner">OP tensioner</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="Sprocket">Sprocket</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="CC Guide">CC Guide</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="Arm Guide">Arm Guide</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="PP(Chain内部子零件)">PP(Chain内部子零件)</label>
-                <label class="multi-option" data-system="TD"><input type="checkbox" value="Motor Chain">Motor Chain</label>
-              </div>
-            </div>
+            <label class="required" for="product">产品<span class="en">Product</span></label>
+            <select class="select" id="product" data-required="产品">
+              <option>请选择产品</option>
+              <option>TD System</option>
+              <option>Chain</option>
+              <option>Motor Chain</option>
+              <option>VVT System</option>
+            </select>
           </div>
           <div class="form-field">
-            <label for="systemValue">系统</label>
-            <div class="readonly-value" id="systemValue">-</div>
-          </div>
-          <div class="form-field">
-            <label class="required" for="projectManager">项目经理<span class="en">Project Manager</span></label>
-            <select class="select" id="projectManager">
+            <label class="required" for="projectManager">项目经理<span class="en">Program Manager</span></label>
+            <select class="select" id="projectManager" data-required="项目经理">
               <option>请选择项目经理</option>
               <option value="Danny Fang">Danny Fang</option>
               <option value="Alice Chen">Alice Chen</option>
@@ -1695,43 +1987,9 @@
               <option value="Lisa Li">Lisa Li</option>
             </select>
           </div>
-        </div>
-      </section>
-
-      <section class="form-card">
-        <h2 class="form-section-title">销售 &amp; 前瞻规划 <span>Business and Market Data</span></h2>
-        <div class="form-grid">
           <div class="form-field">
             <label for="peakVolume">峰值订单量 <span class="en">Peak Volume</span></label>
-            <input class="field" id="peakVolume" placeholder="请输入">
-          </div>
-          <div class="form-field">
-            <label for="price">定价 <span class="en">Price（RMB：元）</span></label>
-            <input class="field" id="price" placeholder="请输入">
-          </div>
-          <div class="form-field">
-            <label for="revenue">预计营收 <span class="en">Revenue（RMB：元）</span></label>
-            <input class="field" id="revenue" placeholder="请输入">
-          </div>
-          <div class="form-field">
-            <label for="applicationVolume">配套需求量 <span class="en">Application Volume</span></label>
-            <input class="field" id="applicationVolume" placeholder="请输入">
-          </div>
-        </div>
-      </section>
-
-      <section class="form-card">
-        <h2 class="form-section-title">采购与排程 <span>Procurement and Schedule</span></h2>
-        <div class="form-grid two">
-          <div class="form-field">
-            <label for="sourcingQuarter">定点季度 <span class="en">Sourcing Quarter</span></label>
-            <select class="select" id="sourcingQuarter">
-              <option>请选择</option>
-              <option>2026 Q1</option>
-              <option>2026 Q2</option>
-              <option>2026 Q3</option>
-              <option>2026 Q4</option>
-            </select>
+            <input class="field" id="peakVolume" type="number" min="0" step="1" inputmode="numeric" placeholder="请输入峰值订单量">
           </div>
           <div class="form-field">
             <label for="sourcingDate">定点日期 <span class="en">Sourcing Date</span></label>
@@ -1750,131 +2008,102 @@
               </div>
             </div>
           </div>
+          <div class="form-field wide">
+            <label for="otherProjectInfo">其他项目信息 <span class="en">Other Program Information</span></label>
+            <textarea class="textarea project-info-textarea" id="otherProjectInfo" placeholder="请输入项目背景、客户特殊要求或其他补充信息"></textarea>
+          </div>
         </div>
       </section>
 
       <section class="form-card">
-        <h2 class="form-section-title">评价与分级 <span>Evaluation and Classification</span></h2>
-        <div class="form-grid three">
+        <h2 class="form-section-title">项目复杂度 <span>Program Complexity</span></h2>
+        <p class="section-description">项目等级与组织层级用于确定治理强度、跨区域协同范围及后续审批配置。</p>
+        <div class="form-grid">
           <div class="form-field">
-            <label for="sop">SOP</label>
-            <div class="date-picker">
-              <button class="date-trigger" id="sop" type="button" data-placeholder="请选择日期" data-value="" aria-haspopup="dialog" aria-expanded="false">请选择日期</button>
-              <div class="date-menu" role="dialog" aria-label="选择 SOP 日期">
-                <div class="date-controls">
-                  <select class="select date-year" aria-label="年份"></select>
-                  <select class="select date-month" aria-label="月份"></select>
-                  <select class="select date-day" aria-label="日期"></select>
-                </div>
-                <div class="date-actions">
-                  <button class="date-action date-clear" type="button">清空</button>
-                  <button class="date-action primary date-apply" type="button">确定</button>
+            <label class="required" for="programLevel">项目等级 <span class="en">Program Level</span></label>
+            <select class="select" id="programLevel" data-required="项目等级">
+              <option>请选择项目等级</option>
+              <option>Level 1</option>
+              <option>Level 2</option>
+              <option>Level 3</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="required" for="organizationalLevel">组织层级 <span class="en">Organizational Level</span></label>
+            <select class="select" id="organizationalLevel" data-required="组织层级">
+              <option>请选择组织层级</option>
+              <option>Global</option>
+              <option>Global - Cross Business Unit</option>
+              <option>Regional</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-card">
+        <h2 class="form-section-title">项目里程碑 <span>Program Milestones</span></h2>
+        <p class="section-description">客户定义 <span lang="en">Customer Defined</span>：登记客户承诺的 OTS、PPAP 与 SOP 计划日期。</p>
+        <div class="milestone-table" role="table" aria-label="客户项目里程碑">
+          <div class="milestone-row milestone-head" role="row">
+            <div role="columnheader">阶段名称 <span lang="en">Phase Name</span></div>
+            <div role="columnheader">计划日期 <span lang="en">Planned Date</span></div>
+          </div>
+          <div class="milestone-row" role="row">
+            <div class="milestone-name" role="cell">OTS <span>Off-Tool Sample</span></div>
+            <div role="cell">
+              <div class="date-picker">
+                <button class="date-trigger" id="otsDate" type="button" data-placeholder="请选择 OTS 日期" data-value="" aria-haspopup="dialog" aria-expanded="false">请选择 OTS 日期</button>
+                <div class="date-menu" role="dialog" aria-label="选择 OTS 日期">
+                  <div class="date-controls">
+                    <select class="select date-year" aria-label="年份"></select>
+                    <select class="select date-month" aria-label="月份"></select>
+                    <select class="select date-day" aria-label="日期"></select>
+                  </div>
+                  <div class="date-actions">
+                    <button class="date-action date-clear" type="button">清空</button>
+                    <button class="date-action primary date-apply" type="button">确定</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="form-field">
-            <label for="rank">等级 <span class="en">Rank</span></label>
-            <select class="select" id="rank">
-              <option>请选择</option>
-              <option>A</option>
-              <option>B</option>
-              <option>C</option>
-            </select>
-          </div>
-          <div class="form-field">
-            <label for="lrpType">物流计划类型 <span class="en">LRP Type</span></label>
-            <select class="select" id="lrpType">
-              <option>请选择</option>
-              <option>Booked</option>
-              <option>未预定</option>
-              <option>LRP+</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="score-grid">
-          <div class="score-item">
-            <div class="score-title">开发跟进评级 <span class="en">Pursuit Rating</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="pursuit"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="pursuit"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="pursuit"><span class="color-block green"></span>G</label>
+          <div class="milestone-row" role="row">
+            <div class="milestone-name" role="cell">PPAP <span>Production Part Approval Process</span></div>
+            <div role="cell">
+              <div class="date-picker">
+                <button class="date-trigger" id="ppapDate" type="button" data-placeholder="请选择 PPAP 日期" data-value="" aria-haspopup="dialog" aria-expanded="false">请选择 PPAP 日期</button>
+                <div class="date-menu" role="dialog" aria-label="选择 PPAP 日期">
+                  <div class="date-controls">
+                    <select class="select date-year" aria-label="年份"></select>
+                    <select class="select date-month" aria-label="月份"></select>
+                    <select class="select date-day" aria-label="日期"></select>
+                  </div>
+                  <div class="date-actions">
+                    <button class="date-action date-clear" type="button">清空</button>
+                    <button class="date-action primary date-apply" type="button">确定</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-          <div class="score-item">
-            <div class="score-title">财务数据 <span class="en">Financials</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="financials"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="financials"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="financials"><span class="color-block green"></span>G</label>
+          <div class="milestone-row" role="row">
+            <div class="milestone-name" role="cell">SOP <span>Start of Production</span></div>
+            <div role="cell">
+              <div class="date-picker">
+                <button class="date-trigger" id="sopDate" type="button" data-placeholder="请选择 SOP 日期" data-value="" aria-haspopup="dialog" aria-expanded="false">请选择 SOP 日期</button>
+                <div class="date-menu" role="dialog" aria-label="选择 SOP 日期">
+                  <div class="date-controls">
+                    <select class="select date-year" aria-label="年份"></select>
+                    <select class="select date-month" aria-label="月份"></select>
+                    <select class="select date-day" aria-label="日期"></select>
+                  </div>
+                  <div class="date-actions">
+                    <button class="date-action date-clear" type="button">清空</button>
+                    <button class="date-action primary date-apply" type="button">确定</button>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">制造 <span class="en">MFG</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="mfg"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="mfg"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="mfg"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">价格及成本 <span class="en">Price &amp; Costs</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="cost"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="cost"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="cost"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">产品 <span class="en">Product</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="productScore"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="productScore"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="productScore"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">品质 <span class="en">Quality</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="quality"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="quality"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="quality"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">关联关系 <span class="en">Relationships</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="relationship"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="relationship"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="relationship"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">供应商 <span class="en">Suppliers</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="supplier"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="supplier"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="supplier"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-          <div class="score-item">
-            <div class="score-title">时间节点 <span class="en">Timing</span></div>
-            <div class="score-options">
-              <label class="radio"><input type="radio" name="timing"><span class="color-block red"></span>R</label>
-              <label class="radio"><input type="radio" name="timing"><span class="color-block yellow"></span>Y</label>
-              <label class="radio"><input type="radio" name="timing"><span class="color-block green"></span>G</label>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="form-card">
-        <h2 class="form-section-title">备注信息 <span>Remarks</span></h2>
-        <div class="form-grid">
-          <div class="form-field wide">
-            <label for="remarks">备注</label>
-            <textarea class="textarea" id="remarks" placeholder="请输入"></textarea>
           </div>
         </div>
       </section>
@@ -2029,11 +2258,18 @@
     const queryProjects = document.querySelector("#queryProjects");
     const resetProjects = document.querySelector("#resetProjects");
     const relatedProjectsOnly = document.querySelector("#relatedProjectsOnly");
-    const systemValue = document.querySelector("#systemValue");
-    const productMulti = document.querySelector("#productMulti");
-    const productTrigger = productMulti.querySelector(".multi-trigger");
-    const productValues = productMulti.querySelector(".multi-values");
-    const productOptions = Array.from(productMulti.querySelectorAll(".multi-option"));
+    const filterConfigButton = document.querySelector("#filterConfigButton");
+    const customFilterPopover = document.querySelector("#customFilterPopover");
+    const closeFilterConfig = document.querySelector("#closeFilterConfig");
+    const resetFilterConfig = document.querySelector("#resetFilterConfig");
+    const applyFilterConfig = document.querySelector("#applyFilterConfig");
+    const filterConfigCount = document.querySelector("#filterConfigCount");
+    const filterConfigError = document.querySelector("#filterConfigError");
+    const filterConfigOptions = Array.from(document.querySelectorAll("[data-filter-option]"));
+    const filterConfigTargets = new Map(
+      Array.from(document.querySelectorAll("[data-filter-item]")).map((element) => [element.dataset.filterItem, element])
+    );
+    let appliedFilterKeys = new Set(filterConfigOptions.map((option) => option.dataset.filterOption));
     const currentUserName = "Danny Fang";
     function compactTaskDate(date = new Date()) {
       return `${String(date.getFullYear()).slice(-2)}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
@@ -2100,49 +2336,6 @@
 
     function setModal(modal, open) {
       modal.hidden = !open;
-    }
-
-    function selectedValues(options) {
-      return options
-        .map((option) => option.querySelector("input"))
-        .filter((input) => input.checked)
-        .map((input) => input.value);
-    }
-
-    function renderMultiValues(container, values, placeholder) {
-      container.innerHTML = "";
-
-      if (!values.length) {
-        container.innerHTML = `<span class="multi-placeholder">${placeholder}</span>`;
-        return;
-      }
-
-      values.forEach((value) => {
-        const tag = document.createElement("span");
-        tag.className = "multi-tag";
-        tag.textContent = value;
-        container.appendChild(tag);
-      });
-    }
-
-    function renderProducts() {
-      const checked = selectedValues(productOptions);
-      renderMultiValues(productValues, checked, "请选择产品");
-      const systems = [...new Set(productOptions
-        .filter((option) => option.querySelector("input").checked)
-        .map((option) => option.dataset.system)
-        .filter(Boolean))];
-      systemValue.textContent = systems.length ? systems.join("、") : "-";
-    }
-
-    function toggleMulti(selectEl, triggerEl) {
-      const nextOpen = !selectEl.classList.contains("open");
-      document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
-        openSelect.classList.remove("open");
-        openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
-      });
-      selectEl.classList.toggle("open", nextOpen);
-      triggerEl.setAttribute("aria-expanded", String(nextOpen));
     }
 
     function closeDatePickers() {
@@ -2272,9 +2465,40 @@
       return element.value || element.options[element.selectedIndex].text || fallback;
     }
 
-    function selectedScoreValue(name) {
-      const checked = document.querySelector(`input[name="${name}"]:checked`);
-      return checked ? checked.closest("label").textContent.trim() : "";
+    function clearFieldError(element) {
+      element.classList.remove("field-invalid");
+      const field = element.closest(".form-field");
+      if (field) {
+        field.querySelector(".field-error")?.remove();
+      }
+    }
+
+    function validateProjectForm() {
+      const requiredFields = Array.from(document.querySelectorAll(".drawer [data-required]"));
+      let firstInvalid = null;
+
+      requiredFields.forEach((element) => {
+        const empty = element.tagName === "SELECT"
+          ? element.selectedIndex <= 0
+          : !element.value.trim();
+        clearFieldError(element);
+        if (!empty) {
+          return;
+        }
+
+        element.classList.add("field-invalid");
+        const message = document.createElement("div");
+        message.className = "field-error";
+        message.textContent = `请填写${element.dataset.required}`;
+        element.closest(".form-field")?.appendChild(message);
+        firstInvalid ||= element;
+      });
+
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ block: "center", behavior: "smooth" });
+        firstInvalid.focus();
+      }
+      return !firstInvalid;
     }
 
     function escapeHtml(value) {
@@ -2309,28 +2533,6 @@
       return `<span class="health-badge ${healthClass}"><span class="dot ${dotClass}"></span>${escapeHtml(health || "黄色")}</span>`;
     }
 
-    function resolveProjectHealth() {
-      const scores = [
-        "pursuit",
-        "financials",
-        "mfg",
-        "cost",
-        "productScore",
-        "quality",
-        "relationship",
-        "supplier",
-        "timing"
-      ].map(selectedScoreValue);
-
-      if (scores.includes("R")) {
-        return "红色";
-      }
-      if (scores.includes("Y") || scores.some((score) => !score)) {
-        return "黄色";
-      }
-      return "绿色";
-    }
-
     function stageMarkup(stage) {
       const normalized = String(stage).trim();
       const classMap = {
@@ -2349,30 +2551,24 @@
     }
 
     function collectProject(status) {
-      const products = selectedValues(productOptions);
-      const systems = [...new Set(productOptions
-        .filter((option) => option.querySelector("input").checked)
-        .map((option) => option.dataset.system)
-        .filter(Boolean))];
       return {
         code: nextProjectTaskNo(),
-        name: fieldValue("#program", "未命名项目"),
+        name: fieldValue("#programName", "未命名项目"),
         stage: status === "草稿" ? "草稿" : "CKO",
-        sellingRu: fieldValue("#sellingRu"),
-        customer: fieldValue("#customerBrand"),
-        system: systems.length ? systems.join("、") : "-",
-        products: products.length ? products.join(", ") : "-",
+        customer: fieldValue("#customer"),
+        customerProgram: fieldValue("#customerProgram"),
+        product: selectValue("#product"),
         pm: selectValue("#projectManager"),
         members: [...new Set([currentUserName, selectValue("#projectManager", "")].filter(Boolean))],
-        rank: selectValue("#rank"),
-        lrpType: selectValue("#lrpType"),
+        programLevel: selectValue("#programLevel"),
+        organizationalLevel: selectValue("#organizationalLevel"),
         peakVolume: fieldValue("#peakVolume"),
-        revenue: fieldValue("#revenue"),
-        applicationVolume: fieldValue("#applicationVolume"),
-        sourcingQuarter: selectValue("#sourcingQuarter"),
         sourcingDate: fieldValue("#sourcingDate"),
-        sop: fieldValue("#sop"),
-        health: resolveProjectHealth(),
+        otsDate: fieldValue("#otsDate"),
+        ppapDate: fieldValue("#ppapDate"),
+        sopDate: fieldValue("#sopDate"),
+        otherProjectInfo: fieldValue("#otherProjectInfo", ""),
+        health: "绿色",
         status
       };
     }
@@ -2381,7 +2577,9 @@
       const row = document.createElement("tr");
       row.dataset.code = project.code;
       row.dataset.name = project.name;
-      row.dataset.brand = project.customer;
+      row.dataset.customer = project.customer;
+      row.dataset.product = project.product;
+      row.dataset.level = project.programLevel;
       row.dataset.status = project.status;
       row.dataset.health = project.health;
       row.dataset.members = (project.members || []).join("|");
@@ -2389,19 +2587,17 @@
         <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 ${escapeHtml(project.code)}"></td>
         <td class="sticky-left sticky-code">${escapeHtml(project.code)}</td>
         <td class="sticky-left sticky-project">${escapeHtml(project.name)}</td>
-        <td>${escapeHtml(project.sellingRu)}</td>
         <td>${escapeHtml(project.customer)}</td>
-        <td>${escapeHtml(project.system)}</td>
-        <td title="${escapeHtml(project.products)}">${escapeHtml(project.products)}</td>
+        <td>${escapeHtml(project.customerProgram)}</td>
+        <td>${escapeHtml(project.product)}</td>
         <td>${escapeHtml(project.pm)}</td>
-        <td>${escapeHtml(project.rank)}</td>
-        <td>${escapeHtml(project.lrpType)}</td>
+        <td>${escapeHtml(project.programLevel)}</td>
+        <td>${escapeHtml(project.organizationalLevel)}</td>
         <td>${escapeHtml(project.peakVolume)}</td>
-        <td>${escapeHtml(project.revenue)}</td>
-        <td>${escapeHtml(project.applicationVolume)}</td>
-        <td>${escapeHtml(project.sourcingQuarter)}</td>
         <td>${escapeHtml(project.sourcingDate)}</td>
-        <td>${escapeHtml(project.sop)}</td>
+        <td>${escapeHtml(project.otsDate)}</td>
+        <td>${escapeHtml(project.ppapDate)}</td>
+        <td>${escapeHtml(project.sopDate)}</td>
         <td class="sticky-right sticky-stage">${stageMarkup(project.stage)}</td>
         <td class="sticky-right sticky-health">${healthMarkup(project.health)}</td>
         <td class="sticky-right sticky-status">${statusMarkup(project.status)}</td>
@@ -2425,9 +2621,10 @@
       const filters = {
         code: normalizeFilterValue("#projectNo").toLowerCase(),
         name: normalizeFilterValue("#projectName").toLowerCase(),
-        brand: normalizeFilterValue("#brand").toLowerCase(),
+        customer: normalizeFilterValue("#customerFilter").toLowerCase(),
+        product: normalizeFilterValue("#productFilter"),
+        level: normalizeFilterValue("#programLevelFilter"),
         status: normalizeFilterValue("#status"),
-        health: normalizeFilterValue("#projectHealth"),
         relatedOnly: relatedProjectsOnly.checked
       };
 
@@ -2436,22 +2633,82 @@
         const matches =
           (!filters.code || row.dataset.code.toLowerCase().includes(filters.code)) &&
           (!filters.name || row.dataset.name.toLowerCase().includes(filters.name)) &&
-          (!filters.brand || row.dataset.brand.toLowerCase().includes(filters.brand)) &&
+          (!filters.customer || row.dataset.customer.toLowerCase().includes(filters.customer)) &&
+          (!filters.product || row.dataset.product === filters.product) &&
+          (!filters.level || row.dataset.level === filters.level) &&
           (!filters.status || row.dataset.status === filters.status) &&
-          (!filters.health || row.dataset.health === filters.health) &&
           (!filters.relatedOnly || members.includes(currentUserName));
         row.hidden = !matches;
       });
     }
 
     function resetProjectFilters() {
-      document.querySelectorAll("#projectNo, #projectName, #brand").forEach((element) => {
+      document.querySelectorAll("#projectNo, #projectName, #customerFilter").forEach((element) => {
         element.value = "";
       });
+      document.querySelector("#productFilter").selectedIndex = 0;
+      document.querySelector("#programLevelFilter").selectedIndex = 0;
       document.querySelector("#status").selectedIndex = 0;
-      document.querySelector("#projectHealth").selectedIndex = 0;
       relatedProjectsOnly.checked = true;
       filterProjectRows();
+    }
+
+    function syncFilterConfigOptions() {
+      filterConfigOptions.forEach((option) => {
+        option.checked = appliedFilterKeys.has(option.dataset.filterOption);
+      });
+      filterConfigError.textContent = "";
+    }
+
+    function setFilterConfig(open) {
+      customFilterPopover.hidden = !open;
+      filterConfigButton.setAttribute("aria-expanded", String(open));
+      if (open) {
+        syncFilterConfigOptions();
+        window.requestAnimationFrame(() => filterConfigOptions[0]?.focus());
+      }
+    }
+
+    function updateFilterConfigCount() {
+      const count = appliedFilterKeys.size;
+      filterConfigCount.textContent = String(count);
+      filterConfigButton.setAttribute("aria-label", `自定义筛选条件，当前显示 ${count} 项`);
+    }
+
+    function clearHiddenFilterValue(target) {
+      const control = target.querySelector("input, select");
+      if (!control) {
+        return;
+      }
+      if (control.tagName === "SELECT") {
+        control.selectedIndex = 0;
+      } else {
+        control.value = "";
+      }
+    }
+
+    function applyCustomFilterConfig() {
+      const selectedKeys = filterConfigOptions
+        .filter((option) => option.checked)
+        .map((option) => option.dataset.filterOption);
+      if (!selectedKeys.length) {
+        filterConfigError.textContent = "请至少保留一个筛选条件";
+        filterConfigOptions[0]?.focus();
+        return;
+      }
+
+      appliedFilterKeys = new Set(selectedKeys);
+      filterConfigTargets.forEach((target, key) => {
+        const visible = appliedFilterKeys.has(key);
+        target.hidden = !visible;
+        if (!visible) {
+          clearHiddenFilterValue(target);
+        }
+      });
+      updateFilterConfigCount();
+      setFilterConfig(false);
+      filterProjectRows();
+      filterConfigButton.focus();
     }
 
     function renderCkoTasks() {
@@ -2517,14 +2774,18 @@
         setDateValue(picker, "");
         syncDateControls(picker);
       });
-      renderProducts();
+      document.querySelectorAll(".drawer .field-invalid").forEach((element) => clearFieldError(element));
     }
 
     function submitProject(status) {
+      if (status !== "草稿" && !validateProjectForm()) {
+        return;
+      }
       const project = collectProject(status);
       const firstDataRow = tableBody.querySelector("tr:not(.empty-row)");
       tableBody.insertBefore(createProjectRow(project), firstDataRow || tableBody.firstChild);
       tableShell.scrollLeft = 0;
+      filterProjectRows();
       resetProjectForm();
       setDrawer(false);
       if (status !== "草稿") {
@@ -2542,6 +2803,26 @@
     queryProjects.addEventListener("click", filterProjectRows);
     resetProjects.addEventListener("click", resetProjectFilters);
     relatedProjectsOnly.addEventListener("change", filterProjectRows);
+    filterConfigButton.addEventListener("click", () => {
+      setFilterConfig(customFilterPopover.hidden);
+    });
+    closeFilterConfig.addEventListener("click", () => {
+      setFilterConfig(false);
+      filterConfigButton.focus();
+    });
+    resetFilterConfig.addEventListener("click", () => {
+      filterConfigOptions.forEach((option) => {
+        option.checked = true;
+      });
+      filterConfigError.textContent = "";
+    });
+    applyFilterConfig.addEventListener("click", applyCustomFilterConfig);
+    filterConfigOptions.forEach((option) => {
+      option.addEventListener("change", () => {
+        filterConfigError.textContent = "";
+      });
+    });
+    updateFilterConfigCount();
     filterProjectRows();
     fillCkoLater.addEventListener("click", () => setModal(createSuccessModal, false));
     fillCkoNow.addEventListener("click", () => {
@@ -2578,20 +2859,17 @@
       }
       closeTaskFillModal();
     });
-    productTrigger.addEventListener("click", () => toggleMulti(productMulti, productTrigger));
-    productOptions.forEach((option) => {
-      option.querySelector("input").addEventListener("change", renderProducts);
+    document.querySelectorAll(".drawer [data-required]").forEach((element) => {
+      element.addEventListener("input", () => clearFieldError(element));
+      element.addEventListener("change", () => clearFieldError(element));
     });
 
     document.addEventListener("click", (event) => {
-      if (!event.target.closest(".multi-select")) {
-        document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
-          openSelect.classList.remove("open");
-          openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
-        });
-      }
       if (!event.target.closest(".date-picker")) {
         closeDatePickers();
+      }
+      if (!event.target.closest(".filter-config-wrap")) {
+        setFilterConfig(false);
       }
     });
 
@@ -2601,16 +2879,12 @@
         setModal(taskFillModal, false);
         setModal(ckoTaskDrawer, false);
         setDrawer(false);
-        document.querySelectorAll(".multi-select.open").forEach((openSelect) => {
-          openSelect.classList.remove("open");
-          openSelect.querySelector(".multi-trigger").setAttribute("aria-expanded", "false");
-        });
+        setFilterConfig(false);
         closeDatePickers();
       }
     });
 
     initDatePickers();
-    renderProducts();
   </script>
 </body>
 </html>
