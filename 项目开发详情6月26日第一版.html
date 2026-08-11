@@ -1024,7 +1024,7 @@
 
     .stage-card {
       flex: 0 0 clamp(198px, 15.6vw, 232px);
-      min-height: 106px;
+      min-height: 122px;
       background: #eef2f7;
       border: 1px solid transparent;
       border-radius: 8px;
@@ -1075,7 +1075,16 @@
       font-size: 15px;
       line-height: 1.28;
       font-weight: 900;
-      margin-bottom: 5px;
+      margin-bottom: 7px;
+    }
+
+    .stage-gate-label {
+      min-height: 16px;
+      margin-bottom: 6px;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1.3;
     }
 
     .stage-title .status-pill {
@@ -6446,38 +6455,47 @@
             <button class="stage-nav" type="button" data-stage-scroll="prev" aria-label="向左滑动阶段">‹</button>
             <div class="stage-strip" data-stage-strip>
               <button class="stage-card active" type="button" data-stage-id="QuoteReady" data-stage-note="Quote Ready 是项目报价准备阶段。销售完成报价准备任务并提交后，项目进入 Commercial Kick Off。">
+                <div class="stage-gate-label">Phase Gate 0</div>
                 <div class="stage-title">Quote Ready <span class="status-pill status-running">进行中</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="Commercial Kick Off 阶段由销售完成商业启动任务，提交后项目进入 Program Kick Off。">
+                <div class="stage-gate-label">CKO</div>
                 <div class="stage-title">Commercial Kick Off <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="PKO" data-stage-note="Program Kick Off 对齐客户与内部需求，明确项目目标、范围与资源配置，并组织跨职能评审。">
+                <div class="stage-gate-label">PKO</div>
                 <div class="stage-title">Program Kick Off <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
+                <div class="stage-gate-label">Phase Gate 1</div>
                 <div class="stage-title">AR Submission Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate1">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate2" data-stage-note="PM 分配 Gate2 阶段任务，各职能部门按计划推进并反馈完成情况，待评审通过后进入下一 Gate。">
+                <div class="stage-gate-label">Phase Gate 2</div>
                 <div class="stage-title">Investment Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate2">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate3" data-stage-note="Gate3 聚焦阶段任务闭环和跨职能问题清理，确保开发活动满足进入后续样件或节点验证的条件。">
+                <div class="stage-gate-label">Phase Gate 3</div>
                 <div class="stage-title">Off Tool Sample Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate3">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate4" data-stage-note="Gate4 对应 BW 内部 OTS 节点，团队确认样件、质量、供应和工程任务达到 OTS 准入要求。">
+                <div class="stage-gate-label">Phase Gate 4</div>
                 <div class="stage-title">Launch Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate4">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate5" data-stage-note="Gate5 对应 BW 内部 PPAP 节点，围绕 PPAP 准备、供应商质量和量产验证进行门径审批。">
+                <div class="stage-gate-label">Phase Gate 5</div>
                 <div class="stage-title">Launch Completion &amp; Handoff Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="Gate6" data-stage-note="Gate6 对应 BW 内部 SOP 节点，PM 组织完成 SOP 前最终评审，确认所有 Gate 任务闭环。">
+                <div class="stage-gate-label">Phase Gate 6</div>
                 <div class="stage-title">Handover <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate5">-</b></div>
               </button>

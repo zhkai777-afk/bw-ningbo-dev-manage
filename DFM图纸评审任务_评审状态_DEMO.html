@@ -87,11 +87,6 @@
       text-overflow: ellipsis;
     }
 
-    .header-save-state {
-      flex: 0 0 auto;
-      font-size: 12px;
-    }
-
     [hidden] {
       display: none !important;
     }
@@ -1901,14 +1896,6 @@
       pointer-events: none;
     }
 
-    .save-state {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--success);
-      font-weight: 900;
-    }
-
     .top-actions.locked [data-delete-review],
     .top-actions.locked [data-edit-basic-info],
     .top-actions.locked [data-create-version],
@@ -2419,6 +2406,10 @@
 
     .edit-basic-dialog [hidden] {
       display: none !important;
+    }
+
+    .edit-note-field {
+      grid-column: 1 / -1;
     }
 
     .owner-picker-trigger {
@@ -4007,10 +3998,6 @@
         <div class="breadcrumb" data-page-breadcrumb>项目开发管理 / DFM / 列表</div>
         <div class="title-row">
           <h1 data-page-title>DFM(Design For Manufacturing)</h1>
-          <div class="save-state header-save-state" data-detail-only hidden>
-            <span class="tag green" data-save-state-tag>已保存</span>
-            <span data-save-message>最近保存：20xx-12-25 14:30</span>
-          </div>
         </div>
       </div>
       <div class="top-actions" data-list-actions>
@@ -5092,19 +5079,26 @@
           <label class="field">客户名称
             <input required data-edit-customer-input>
           </label>
-          <label class="field">零件编号
-            <input required data-edit-part-no-input>
-          </label>
+          <div class="field part-combobox-field">
+            <span>零件编号</span>
+            <div class="part-combobox">
+              <input required data-edit-part-no-input role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="editPartOptions" autocomplete="off" placeholder="输入零件编号或名称查询">
+              <div class="part-option-list" id="editPartOptions" role="listbox" data-edit-part-options hidden></div>
+            </div>
+          </div>
           <label class="field">零件名称/描述
-            <input required data-edit-part-name-input>
+            <input required readonly aria-readonly="true" data-edit-part-name-input placeholder="选择零件编号后自动带出">
           </label>
-          <label class="field">图纸版本
-            <select data-edit-drawing-input>
-              <option>Rev.A</option>
-              <option>Rev.B</option>
-              <option>Rev.C</option>
-              <option>Rev.D</option>
-            </select>
+          <label class="field">负责人
+            <input type="hidden" data-edit-owner data-owner-id="alex-wang">
+            <button class="owner-picker-trigger" type="button" data-open-edit-owner-picker aria-haspopup="dialog">
+              <span class="owner-trigger-avatar" data-edit-owner-avatar>AW</span>
+              <span class="owner-trigger-name" data-edit-owner-name>Alex Wang · 制造工程部</span>
+              <span class="owner-trigger-arrow" aria-hidden="true">›</span>
+            </button>
+          </label>
+          <label class="field edit-note-field">创建说明
+            <textarea class="comment-box" data-edit-note placeholder="请输入创建说明或备注"></textarea>
           </label>
         </div>
       </div>
@@ -5226,6 +5220,7 @@
     const createPartOptions = document.querySelector('[data-create-part-options]');
     const createPartNameInput = document.querySelector('[data-create-part-name-input]');
     const createOwnerInput = document.querySelector('[data-create-owner]');
+    const createNoteInput = document.querySelector('[data-create-note]');
     const openOwnerPickerButton = document.querySelector('[data-open-owner-picker]');
     const ownerPickerDialog = document.querySelector('[data-owner-picker-dialog]');
     const closeOwnerPickerButtons = Array.from(document.querySelectorAll('[data-close-owner-picker]'));
@@ -5322,8 +5317,13 @@
     const editProjectInput = document.querySelector('[data-edit-project-input]');
     const editCustomerInput = document.querySelector('[data-edit-customer-input]');
     const editPartNoInput = document.querySelector('[data-edit-part-no-input]');
+    const editPartOptions = document.querySelector('[data-edit-part-options]');
     const editPartNameInput = document.querySelector('[data-edit-part-name-input]');
-    const editDrawingInput = document.querySelector('[data-edit-drawing-input]');
+    const editOwnerInput = document.querySelector('[data-edit-owner]');
+    const openEditOwnerPickerButton = document.querySelector('[data-open-edit-owner-picker]');
+    const editOwnerAvatar = document.querySelector('[data-edit-owner-avatar]');
+    const editOwnerName = document.querySelector('[data-edit-owner-name]');
+    const editNoteInput = document.querySelector('[data-edit-note]');
     const editSourceLabel = document.querySelector('[data-edit-source-label]');
     const editSourceHint = document.querySelector('[data-edit-source-hint]');
     const editSourceTag = document.querySelector('[data-edit-source-tag]');
@@ -5346,7 +5346,6 @@
     const saveReviewButtons = Array.from(document.querySelectorAll('[data-save-review]'));
     const deleteReviewButtons = Array.from(document.querySelectorAll('[data-delete-review]'));
     const saveMessage = document.querySelector('[data-save-message]');
-    const saveStateTag = document.querySelector('[data-save-state-tag]');
     const lockedViewBanner = document.querySelector('[data-locked-view-banner]');
     const lockedViewMeta = document.querySelector('[data-locked-view-meta]');
     const statusHelpButton = document.querySelector('[data-status-help]');
@@ -5454,6 +5453,7 @@
       { partNo: 'MC-2024-058', partName: '电机链轮连接板' }
     ];
     let activeCreatePartIndex = -1;
+    let activeEditPartIndex = -1;
 
     function optionData() {
       return {
@@ -5464,6 +5464,7 @@
         partName: createPartNameInput?.value.trim() || '',
         drawing: 'Rev.-',
         owner: createOwnerInput?.value.trim() || 'Alex Wang',
+        note: createNoteInput?.value.trim() || '',
         open: '0',
         infeasible: '0',
         unoptimized: '0',
@@ -5526,6 +5527,47 @@
       closeCreatePartOptions();
     }
 
+    function filteredEditParts() {
+      const keyword = (editPartNoInput?.value || '').trim().toLowerCase();
+      return partCatalog.filter((part) => !keyword || `${part.partNo} ${part.partName}`.toLowerCase().includes(keyword));
+    }
+
+    function closeEditPartOptions() {
+      if (editPartOptions) editPartOptions.hidden = true;
+      editPartNoInput?.setAttribute('aria-expanded', 'false');
+      editPartNoInput?.removeAttribute('aria-activedescendant');
+      activeEditPartIndex = -1;
+    }
+
+    function renderEditPartOptions() {
+      if (!editPartOptions || !editPartNoInput) return;
+      const matches = filteredEditParts();
+      activeEditPartIndex = Math.min(activeEditPartIndex, matches.length - 1);
+      editPartOptions.innerHTML = matches.length
+        ? matches.map((part, index) => `
+            <button class="part-option${index === activeEditPartIndex ? ' is-active' : ''}" id="editPartOption${index}" type="button" role="option" data-edit-part-option="${escapeOwnerHtml(part.partNo)}" aria-selected="${part.partNo === editPartNoInput.dataset.selectedPartNo}">
+              <strong>${escapeOwnerHtml(part.partNo)}</strong>
+              <span>${escapeOwnerHtml(part.partName)}</span>
+            </button>
+          `).join('')
+        : '<div class="part-option-empty">未找到匹配零件，请调整零件编号或名称关键字。</div>';
+      editPartOptions.hidden = false;
+      editPartNoInput.setAttribute('aria-expanded', 'true');
+      if (activeEditPartIndex >= 0) {
+        editPartNoInput.setAttribute('aria-activedescendant', `editPartOption${activeEditPartIndex}`);
+      } else {
+        editPartNoInput.removeAttribute('aria-activedescendant');
+      }
+    }
+
+    function selectEditPart(part) {
+      if (!part || !editPartNoInput || !editPartNameInput) return;
+      editPartNoInput.value = part.partNo;
+      editPartNoInput.dataset.selectedPartNo = part.partNo;
+      editPartNameInput.value = part.partName;
+      closeEditPartOptions();
+    }
+
     function ownerSearchText(member) {
       return [member.name, member.department, member.role, member.email, member.teamName].join(' ').toLowerCase();
     }
@@ -5578,13 +5620,17 @@
       issueOwnerTargetInput = context === 'issue' ? targetInput : null;
       const storedOwnerId = context === 'issue'
         ? issueOwnerTargetInput?.dataset.ownerId
+        : context === 'edit'
+          ? editOwnerInput?.dataset.ownerId
         : createOwnerInput?.dataset.ownerId;
       draftOwnerId = storedOwnerId && ownerMap.has(storedOwnerId) ? storedOwnerId : 'alex-wang';
       if (ownerPickerTitle) ownerPickerTitle.textContent = context === 'issue' ? '选择问题责任人' : '选择负责人';
       if (ownerPickerSubtitle) {
         ownerPickerSubtitle.textContent = context === 'issue'
           ? '从组织架构中选择 1 名成员负责当前开放问题的跟踪与闭环。'
-          : '从组织架构中选择 1 名成员作为 DFM 图纸评审任务负责人。';
+          : context === 'edit'
+            ? '从组织架构中选择 1 名成员作为当前 DFM 图纸评审任务负责人。'
+            : '从组织架构中选择 1 名成员作为 DFM 图纸评审任务负责人。';
       }
       if (ownerSearchInput) ownerSearchInput.value = '';
       renderOwnerPicker();
@@ -5603,6 +5649,11 @@
         if (issueOwnerName) issueOwnerName.textContent = member.name;
         if (issueOwnerButton) issueOwnerButton.setAttribute('aria-label', `从组织结构中选择责任人，当前为 ${member.name}`);
         if (saveMessage) saveMessage.textContent = `问题责任人已改为 ${member.name}，请保存`;
+      } else if (ownerPickerContext === 'edit' && editOwnerInput) {
+        editOwnerInput.value = member.name;
+        editOwnerInput.dataset.ownerId = member.id;
+        if (editOwnerAvatar) editOwnerAvatar.textContent = member.initials;
+        if (editOwnerName) editOwnerName.textContent = `${member.name} · ${member.department}`;
       } else if (createOwnerInput) {
         createOwnerInput.value = member.name;
         createOwnerInput.dataset.ownerId = member.id;
@@ -5623,6 +5674,7 @@
         partName: row?.dataset.partName || '',
         drawing: row?.dataset.drawing || 'Rev.A',
         owner: row?.dataset.owner || '',
+        note: row?.dataset.note || '',
         open: row?.dataset.open || '0',
         infeasible: row?.dataset.infeasible || '0',
         unoptimized: row?.dataset.unoptimized || '0',
@@ -5856,6 +5908,7 @@
       row.dataset.partName = record.partName;
       row.dataset.drawing = record.drawing;
       row.dataset.owner = record.owner;
+      row.dataset.note = record.note || '';
       row.dataset.open = record.open;
       row.dataset.infeasible = record.infeasible;
       row.dataset.unoptimized = record.unoptimized;
@@ -6419,18 +6472,10 @@
           reviewPublishState.classList.remove('amber');
           reviewPublishState.classList.add('green');
         }
-        if (saveStateTag) {
-          saveStateTag.textContent = '已锁定';
-          saveStateTag.className = 'tag green';
-        }
         if (lockedViewMeta) {
           lockedViewMeta.textContent = `锁定人：AE / Alex Wang　锁定时间：${reviewLockedAt || '-'}　锁定版本：${detailDrawingInput?.value || 'Rev.A'}`;
         }
       } else {
-        if (saveStateTag?.textContent.trim() === '已锁定') {
-          saveStateTag.textContent = '已保存';
-          saveStateTag.className = 'tag green';
-        }
         if (reviewPublishState?.textContent.trim() === '已锁定') {
           reviewPublishState.textContent = '已发布';
           reviewPublishState.className = 'tag green';
@@ -6453,10 +6498,6 @@
             reviewPublishState.textContent = '变更中';
             reviewPublishState.classList.remove('green');
             reviewPublishState.classList.add('amber');
-          }
-          if (saveStateTag) {
-            saveStateTag.textContent = '变更中';
-            saveStateTag.className = 'tag amber';
           }
           if (saveMessage) saveMessage.textContent = `已发起变更：${new Date().toLocaleString('zh-CN', { hour12: false })}`;
           if (currentDetailRecord) {
@@ -7585,6 +7626,44 @@
       selectCreatePart(partCatalog.find((part) => part.partNo === option.dataset.createPartOption));
     });
 
+    editPartNoInput?.addEventListener('focus', renderEditPartOptions);
+    editPartNoInput?.addEventListener('input', () => {
+      delete editPartNoInput.dataset.selectedPartNo;
+      if (editPartNameInput) editPartNameInput.value = '';
+      activeEditPartIndex = -1;
+      const exactPart = partCatalog.find((part) => part.partNo.toLowerCase() === editPartNoInput.value.trim().toLowerCase());
+      if (exactPart && editPartNameInput) {
+        editPartNoInput.dataset.selectedPartNo = exactPart.partNo;
+        editPartNameInput.value = exactPart.partName;
+      }
+      renderEditPartOptions();
+    });
+    editPartNoInput?.addEventListener('keydown', (event) => {
+      const matches = filteredEditParts();
+      if (event.key === 'ArrowDown' && matches.length) {
+        event.preventDefault();
+        activeEditPartIndex = (activeEditPartIndex + 1) % matches.length;
+        renderEditPartOptions();
+      } else if (event.key === 'ArrowUp' && matches.length) {
+        event.preventDefault();
+        activeEditPartIndex = (activeEditPartIndex - 1 + matches.length) % matches.length;
+        renderEditPartOptions();
+      } else if (event.key === 'Enter' && activeEditPartIndex >= 0 && matches[activeEditPartIndex]) {
+        event.preventDefault();
+        selectEditPart(matches[activeEditPartIndex]);
+      } else if (event.key === 'Escape') {
+        closeEditPartOptions();
+      }
+    });
+    editPartNoInput?.addEventListener('blur', () => {
+      window.setTimeout(closeEditPartOptions, 120);
+    });
+    editPartOptions?.addEventListener('click', (event) => {
+      const option = event.target.closest('[data-edit-part-option]');
+      if (!option) return;
+      selectEditPart(partCatalog.find((part) => part.partNo === option.dataset.editPartOption));
+    });
+
     closeCreateDfmButton?.addEventListener('click', () => {
       createDfmDialog?.close();
     });
@@ -7594,6 +7673,7 @@
     });
 
     openOwnerPickerButton?.addEventListener('click', () => openOwnerPicker('create'));
+    openEditOwnerPickerButton?.addEventListener('click', () => openOwnerPicker('edit'));
 
     closeOwnerPickerButtons.forEach((button) => {
       button.addEventListener('click', () => ownerPickerDialog?.close());
@@ -7691,25 +7771,28 @@
       createVersionDialog?.close();
     }
 
-    function ensureEditDrawingOption(version) {
-      if (!editDrawingInput || !version) return;
-      const exists = Array.from(editDrawingInput.options).some((option) => option.value === version);
-      if (exists) return;
-      const option = document.createElement('option');
-      option.textContent = version;
-      editDrawingInput.appendChild(option);
-    }
-
     function openEditBasicDialog() {
       if (!editBasicDialog || !currentDetailRecord) return;
       const isProjectSource = currentDetailRecord.source !== 'manual' && Boolean(currentDetailRecord.project);
       if (editProjectField) editProjectField.hidden = !isProjectSource;
       if (editProjectInput) editProjectInput.value = isProjectSource ? currentDetailRecord.project : '';
       if (editCustomerInput) editCustomerInput.value = currentDetailRecord.customer || '';
-      if (editPartNoInput) editPartNoInput.value = currentDetailRecord.partNo || '';
-      if (editPartNameInput) editPartNameInput.value = currentDetailRecord.partName || '';
-      ensureEditDrawingOption(currentDetailRecord.drawing);
-      if (editDrawingInput) editDrawingInput.value = currentDetailRecord.drawing || 'Rev.A';
+      const selectedPart = partCatalog.find((part) => part.partNo === currentDetailRecord.partNo);
+      if (editPartNoInput) {
+        editPartNoInput.value = currentDetailRecord.partNo || '';
+        if (selectedPart) editPartNoInput.dataset.selectedPartNo = selectedPart.partNo;
+        else delete editPartNoInput.dataset.selectedPartNo;
+      }
+      if (editPartNameInput) editPartNameInput.value = selectedPart?.partName || currentDetailRecord.partName || '';
+      const selectedOwner = Array.from(ownerMap.values()).find((member) => member.name === currentDetailRecord.owner) || ownerMap.get('alex-wang');
+      if (editOwnerInput && selectedOwner) {
+        editOwnerInput.value = selectedOwner.name;
+        editOwnerInput.dataset.ownerId = selectedOwner.id;
+      }
+      if (editOwnerAvatar && selectedOwner) editOwnerAvatar.textContent = selectedOwner.initials;
+      if (editOwnerName && selectedOwner) editOwnerName.textContent = `${selectedOwner.name} · ${selectedOwner.department}`;
+      if (editNoteInput) editNoteInput.value = currentDetailRecord.note || '';
+      closeEditPartOptions();
       if (editSourceLabel) editSourceLabel.textContent = isProjectSource ? '通过项目创建' : '手动创建';
       if (editSourceHint) editSourceHint.textContent = isProjectSource
         ? '项目编号来自项目开发模块，不可编辑；其他基本信息可在此维护。'
@@ -7723,6 +7806,7 @@
     }
 
     function closeEditBasicDialog() {
+      closeEditPartOptions();
       editBasicDialog?.close();
     }
 
@@ -7731,26 +7815,15 @@
     editBasicDialog?.addEventListener('click', (event) => {
       if (event.target === editBasicDialog) closeEditBasicDialog();
     });
-    editBasicForm?.addEventListener('submit', (event) => {
-      event.preventDefault();
-      if (!currentDetailRecord) return;
-      const customer = editCustomerInput?.value.trim() || '';
-      const partNo = editPartNoInput?.value.trim() || '';
-      const partName = editPartNameInput?.value.trim() || '';
-      if (!customer || !partNo || !partName) {
-        openAppDialog({
-          title: '请完善基本信息',
-          message: '客户名称、零件编号和零件名称/描述均为必填项。',
-          confirmText: '知道了'
-        });
-        return;
-      }
 
+    function saveEditedBasicInfo({ customer, partNo, partName, owner, note }) {
+      if (!currentDetailRecord) return;
       Object.assign(currentDetailRecord, {
         customer,
         partNo,
         partName,
-        drawing: editDrawingInput?.value || currentDetailRecord.drawing,
+        owner,
+        note,
         updated: new Date().toLocaleString('zh-CN', { hour12: false })
       });
       const existingRow = Array.from(dfmListBody?.querySelectorAll('[data-dfm-record]') || [])
@@ -7764,6 +7837,38 @@
         message: '修改内容已同步到详情摘要、任务列表和导出信息。',
         confirmText: '知道了'
       });
+    }
+
+    editBasicForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!currentDetailRecord) return;
+      const customer = editCustomerInput?.value.trim() || '';
+      const partNo = editPartNoInput?.value.trim() || '';
+      const partName = editPartNameInput?.value.trim() || '';
+      const selectedPart = partCatalog.find((part) => part.partNo === partNo && part.partNo === editPartNoInput?.dataset.selectedPartNo);
+      const owner = editOwnerInput?.value.trim() || '';
+      const note = editNoteInput?.value.trim() || '';
+      if (!customer || !selectedPart || !partName || !owner) {
+        openAppDialog({
+          title: '请完善基本信息',
+          message: '请填写客户名称，并从零件编号查询结果中选择零件；零件名称会自动带出，同时需指定负责人。',
+          confirmText: '知道了'
+        });
+        return;
+      }
+      const changes = { customer, partNo, partName, owner, note };
+      const previousOwner = currentDetailRecord.owner || '原负责人';
+      if (owner !== previousOwner) {
+        openAppDialog({
+          title: '确认转移负责人权限',
+          message: `负责人将由 ${previousOwner} 变更为 ${owner}。确认后，${previousOwner} 将失去当前 DFM 图纸评审任务的管理权限，无法继续编辑、保存、发布或提交并锁定；${owner} 将获得上述管理权限。原负责人仍可查看历史记录与追溯信息。`,
+          confirmText: '确认转移并保存',
+          cancelText: '暂不转移',
+          onConfirm: () => saveEditedBasicInfo(changes)
+        });
+        return;
+      }
+      saveEditedBasicInfo(changes);
     });
 
     createVersionButton?.addEventListener('click', openCreateVersionDialog);
