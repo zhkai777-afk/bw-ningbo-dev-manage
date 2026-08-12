@@ -4996,7 +4996,7 @@
           </div>
         </div>
         <div class="drawing-list-table-wrap">
-          <table class="drawing-list-table" aria-label="DFM 上传图纸评审状态表格">
+          <table class="drawing-list-table" aria-label="DFM 图纸评审状态表格">
             <colgroup>
               <col style="width:70px">
               <col style="width:110px">
@@ -5024,8 +5024,6 @@
         </div>
       </div>
       <div class="drawing-list-actions">
-        <button class="btn primary" type="button" data-drawing-upload>上传图纸</button>
-        <input type="file" accept=".pdf,.dwg,.dxf" multiple data-drawing-upload-input hidden>
         <button class="btn" type="button" data-drawing-list-export>导出</button>
         <button class="btn primary" type="button" data-drawing-list-close>关闭</button>
       </div>
@@ -5293,8 +5291,6 @@
     const drawingSheet = document.querySelector('.drawing-sheet');
     const drawingPages = Array.from(document.querySelectorAll('[data-drawing-page]'));
     const drawingPageTitle = document.querySelector('[data-drawing-page-title]');
-    const drawingUploadButton = document.querySelector('[data-drawing-upload]');
-    const drawingUploadInput = document.querySelector('[data-drawing-upload-input]');
     const drawingCounter = document.querySelector('[data-drawing-counter]');
     const drawingPrevButton = document.querySelector('[data-drawing-prev]');
     const drawingNextButton = document.querySelector('[data-drawing-next]');
@@ -7729,27 +7725,6 @@
       } else if (button.hasAttribute('data-dl-lock')) {
         toggleDrawingLock(id);
       }
-    });
-
-    drawingUploadButton?.addEventListener('click', () => drawingUploadInput?.click());
-    drawingUploadInput?.addEventListener('change', (event) => {
-      const files = Array.from(event.target.files || []);
-      if (!files.length) return;
-      const baseVersion = currentDetailRecord?.drawing || currentDrawingListRows[0]?.version || 'Rev.A';
-      files.forEach((file, index) => {
-        currentDrawingListRows.push({
-          id: `row-${Date.now()}-${index}`,
-          sheetNo: currentDrawingListRows.length + 1,
-          version: baseVersion,
-          name: file.name,
-          status: '待评审',
-          owner: 'Mia Chen',
-          updated: new Date().toLocaleString('zh-CN', { hour12: false }),
-          openIssues: 0
-        });
-      });
-      renderDrawingListRows();
-      event.target.value = '';
     });
 
     function nextDrawingVersion(version = 'Rev.A') {

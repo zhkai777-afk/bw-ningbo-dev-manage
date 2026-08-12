@@ -4257,19 +4257,45 @@
     }
 
     .requirement-table {
-      min-width: 1120px;
+      min-width: 1420px;
       table-layout: fixed;
     }
 
     .requirement-table th,
     .requirement-table td {
-      height: 52px;
-      padding: 0 60px;
+      min-height: 52px;
+      height: auto;
+      padding: 14px 28px;
       font-weight: 500;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      line-height: 1.55;
+      vertical-align: top;
     }
 
     .requirement-table th {
       font-weight: 900;
+      vertical-align: middle;
+    }
+
+    .requirement-table th:last-child,
+    .requirement-table td:last-child {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      box-shadow: -8px 0 16px rgba(16, 24, 40, .06);
+      white-space: nowrap;
+      overflow-wrap: normal;
+      word-break: keep-all;
+    }
+
+    .requirement-table th:last-child {
+      z-index: 3;
+      background: #f5f7fa;
     }
 
     .requirement-table .time-cell {
@@ -4283,7 +4309,9 @@
       display: flex;
       gap: 12px;
       align-items: center;
-      height: 52px;
+      min-height: 24px;
+      height: auto;
+      white-space: nowrap;
     }
 
     .link-button {
@@ -5490,37 +5518,47 @@
           <div class="bom-table-wrap requirement-table-wrap">
             <table class="requirement-table" aria-label="客户要求列表">
               <colgroup>
-                <col style="width:52%">
-                <col style="width:12%">
-                <col style="width:20%">
-                <col style="width:16%">
+                <col style="width:160px">
+                <col style="width:280px">
+                <col style="width:160px">
+                <col style="width:390px">
+                <col style="width:180px">
+                <col style="width:120px">
               </colgroup>
               <thead>
                 <tr>
-                  <th>需求标题</th>
-                  <th>需求发起人</th>
-                  <th>添加时间</th>
+                  <th>K-PAC编号</th>
+                  <th>K-PAC标题</th>
+                  <th>责任部门</th>
+                  <th>任务描述</th>
+                  <th>所属阶段</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody id="requirementTableBody">
                 <tr>
-                  <td>核心性能要求</td>
-                  <td>-</td>
-                  <td class="time-cell">2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button></div></td>
+                  <td>GPM_QR-1</td>
+                  <td>Quote Preparation Complete</td>
+                  <td>Sales</td>
+                  <td>Confirm quotation scope, commercial assumptions and customer-submitted requirements.</td>
+                  <td>Phase Gate 0 - Quote Ready</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
                 <tr>
-                  <td>适配与兼容要求</td>
-                  <td>-</td>
-                  <td class="time-cell">2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button></div></td>
+                  <td>GPM_GR-12</td>
+                  <td>Customer Requirements (Volumes, Key dates, others)</td>
+                  <td>Sales</td>
+                  <td>Verify customer requirements and share them with the project team.</td>
+                  <td>CKO - Commercial Kick Off</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
                 <tr>
-                  <td>交付与文档要求</td>
-                  <td>-</td>
-                  <td class="time-cell">2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button></div></td>
+                  <td>GPM_GR-15</td>
+                  <td>Commercial Kick Off</td>
+                  <td>Sales</td>
+                  <td>Share project updates with the launch team as applicable.</td>
+                  <td>PKO - Program Kick Off</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
               </tbody>
             </table>

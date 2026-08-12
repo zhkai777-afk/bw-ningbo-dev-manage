@@ -463,7 +463,7 @@
     }
 
     table {
-      width: 2480px;
+      width: 2640px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -912,6 +912,147 @@
       border-radius: 4px;
       border-color: #d9dee7;
       color: #333945;
+    }
+
+    .multi-select {
+      position: relative;
+    }
+
+    .multi-select-trigger {
+      width: 100%;
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #fff;
+      color: #333945;
+      padding: 5px 10px;
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+    }
+
+    .multi-select-trigger:hover:not(:disabled),
+    .multi-select-trigger[aria-expanded="true"] {
+      border-color: var(--primary);
+    }
+
+    .multi-select-trigger:focus-visible {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .10);
+    }
+
+    .multi-select-trigger:disabled {
+      background: #f5f7fa;
+      color: #a4acb8;
+      cursor: not-allowed;
+    }
+
+    .multi-select-values {
+      min-width: 0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .multi-select-placeholder {
+      color: #aeb5bf;
+    }
+
+    .multi-select-tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      border: 1px solid #c9d9fb;
+      border-radius: 3px;
+      background: #f2f6ff;
+      color: #245fca;
+      padding: 1px 7px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .multi-select-chevron {
+      width: 15px;
+      height: 15px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: #9aa4b2;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      transition: transform .18s ease;
+    }
+
+    .multi-select-trigger[aria-expanded="true"] .multi-select-chevron {
+      transform: rotate(180deg);
+    }
+
+    .multi-select-menu {
+      position: absolute;
+      z-index: 45;
+      top: calc(100% + 6px);
+      right: 0;
+      left: 0;
+      max-height: 300px;
+      overflow-y: auto;
+      border: 1px solid #d9e0ea;
+      border-radius: 4px;
+      background: #fff;
+      box-shadow: 0 10px 24px rgba(28, 47, 78, .14);
+      padding: 6px;
+    }
+
+    .multi-select-menu[hidden],
+    .multi-select-group[hidden],
+    .multi-select-option[hidden] {
+      display: none !important;
+    }
+
+    .multi-select-group + .multi-select-group {
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px solid #edf0f4;
+    }
+
+    .multi-select-group-title {
+      padding: 6px 9px 4px;
+      color: #788394;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .form-field .multi-select-option {
+      min-height: 34px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0;
+      padding: 7px 9px;
+      border-radius: 3px;
+      color: #384354;
+      font-weight: 400;
+      cursor: pointer;
+      transition: color .18s ease, background-color .18s ease;
+    }
+
+    .form-field .multi-select-option:hover,
+    .form-field .multi-select-option:has(input:checked) {
+      background: #f2f6ff;
+      color: #1d5fd1;
+    }
+
+    .multi-select-option input {
+      width: 16px;
+      height: 16px;
+      margin: 0;
+      accent-color: var(--primary);
+      cursor: pointer;
     }
 
     .drawer .field-invalid {
@@ -1665,6 +1806,12 @@
       .filter-option {
         transition: none;
       }
+
+      .multi-select-trigger,
+      .multi-select-chevron,
+      .multi-select-option {
+        transition: none;
+      }
     }
   </style>
 </head>
@@ -1728,10 +1875,17 @@
         <label for="productFilter">产品</label>
         <select class="select" id="productFilter">
           <option>请选择产品</option>
-          <option>TD System</option>
+          <option>Phaser</option>
+          <option>VFS</option>
+          <option>CB</option>
+          <option>OCV</option>
           <option>Chain</option>
-          <option>Motor Chain</option>
-          <option>VVT System</option>
+          <option>TSC</option>
+          <option>Timing Tensioner</option>
+          <option>OP Tensioner</option>
+          <option>Sprocket</option>
+          <option>CC Guide</option>
+          <option>Arm Guide</option>
         </select>
       </div>
       <div class="filter-item" data-filter-item="programLevel">
@@ -1748,10 +1902,9 @@
         <select class="select" id="status">
           <option>请选择状态</option>
           <option>进行中</option>
-          <option>审批中</option>
-          <option>已拒绝</option>
-          <option>已通过</option>
-          <option>带条件通过</option>
+          <option>已完成</option>
+          <option>暂停</option>
+          <option>项目终止</option>
         </select>
       </div>
       <button class="btn btn-soft" id="queryProjects" type="button">查询</button>
@@ -1778,7 +1931,8 @@
             <th class="sticky-left sticky-project" style="width:190px;">项目名称</th>
             <th style="width:140px;">客户</th>
             <th style="width:190px;">客户项目</th>
-            <th style="width:150px;">产品</th>
+            <th style="width:210px;">产品</th>
+            <th style="width:150px;">系统</th>
             <th style="width:150px;">项目经理</th>
             <th style="width:110px;">项目等级</th>
             <th style="width:220px;">组织层级</th>
@@ -1794,12 +1948,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr data-code="PRJ-260803-001" data-name="EA888 E5 VCT" data-customer="Volkswagen" data-product="VVT System" data-level="Level 2" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
+          <tr data-code="PRJ-260803-001" data-name="EA888 E5 VCT" data-customer="Volkswagen" data-product="Phaser|VFS" data-system="VVT System" data-level="Level 2" data-status="进行中" data-health="绿色" data-members="Danny Fang|Alice Chen">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 PRJ-260803-001"></td>
             <td class="sticky-left sticky-code">PRJ-260803-001</td>
             <td class="sticky-left sticky-project">EA888 E5 VCT</td>
             <td>Volkswagen</td>
             <td>EA888 Gen5 CN</td>
+            <td>Phaser、VFS</td>
             <td>VVT System</td>
             <td>Danny Fang</td>
             <td>Level 2</td>
@@ -1818,13 +1973,14 @@
             </td>
             <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
           </tr>
-          <tr data-code="PRJ-260803-002" data-name="EA211 Evo 1.5l CN7" data-customer="Volkswagen" data-product="Chain" data-level="Level 1" data-status="审批中" data-health="黄色" data-members="Michael Wang|Lisa Li">
+          <tr data-code="PRJ-260803-002" data-name="EA211 Evo 1.5l CN7" data-customer="Volkswagen" data-product="Chain|CC Guide" data-system="TD System" data-level="Level 1" data-status="已完成" data-health="黄色" data-members="Michael Wang|Lisa Li">
             <td class="checkbox-cell sticky-left sticky-check"><input class="check" type="checkbox" aria-label="选择 PRJ-260803-002"></td>
             <td class="sticky-left sticky-code">PRJ-260803-002</td>
             <td class="sticky-left sticky-project">EA211 Evo 1.5l CN7</td>
             <td>Volkswagen</td>
             <td>EA211 Evo CN7</td>
-            <td>Chain</td>
+            <td>Chain、CC Guide</td>
+            <td>TD System</td>
             <td>Michael Wang</td>
             <td>Level 1</td>
             <td>Global - Cross Business Unit</td>
@@ -1838,7 +1994,7 @@
               <span class="health-badge health-yellow"><span class="dot dot-yellow"></span>黄色</span>
             </td>
             <td class="sticky-right sticky-status">
-              <span class="status status-orange"><span class="dot dot-orange"></span>审批中</span>
+              <span class="status status-green"><span class="dot dot-green"></span>已完成</span>
             </td>
             <td class="sticky-right sticky-operation"><button class="link" type="button">查看</button></td>
           </tr>
@@ -1846,7 +2002,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1856,7 +2012,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1866,7 +2022,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1876,7 +2032,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1886,7 +2042,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1896,7 +2052,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1906,7 +2062,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1916,7 +2072,7 @@
             <td class="checkbox-cell sticky-left sticky-check">.</td>
             <td class="sticky-left sticky-code">.</td>
             <td class="sticky-left sticky-project">.</td>
-            <td colspan="11">.</td>
+            <td colspan="12">.</td>
             <td class="sticky-right sticky-stage">.</td>
             <td class="sticky-right sticky-health">.</td>
             <td class="sticky-right sticky-status">.</td>
@@ -1969,13 +2125,43 @@
           </div>
           <div class="form-field">
             <label class="required" for="product">产品<span class="en">Product</span></label>
-            <select class="select" id="product" data-required="产品">
-              <option>请选择产品</option>
-              <option>TD System</option>
-              <option>Chain</option>
-              <option>Motor Chain</option>
-              <option>VVT System</option>
-            </select>
+            <div class="multi-select" id="productMultiSelect" data-multi-select="product">
+              <button class="multi-select-trigger" id="product" type="button" data-multi-trigger="product" data-required="产品" data-value="" data-placeholder="请选择产品" aria-haspopup="listbox" aria-expanded="false" aria-controls="productMultiSelectMenu">
+                <span class="multi-select-values"><span class="multi-select-placeholder">请选择产品</span></span>
+                <svg class="multi-select-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"></path></svg>
+              </button>
+              <div class="multi-select-menu" id="productMultiSelectMenu" role="group" aria-label="选择产品" hidden>
+                <div class="multi-select-group" data-product-group="VVT System">
+                  <div class="multi-select-group-title">VVT System</div>
+                  <label class="multi-select-option"><input type="checkbox" value="Phaser"><span>Phaser</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="VFS"><span>VFS</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="CB"><span>CB</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="OCV"><span>OCV</span></label>
+                </div>
+                <div class="multi-select-group" data-product-group="TD System">
+                  <div class="multi-select-group-title">TD System</div>
+                  <label class="multi-select-option"><input type="checkbox" value="Chain"><span>Chain</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="TSC"><span>TSC</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="Timing Tensioner"><span>Timing Tensioner</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="OP Tensioner"><span>OP Tensioner</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="Sprocket"><span>Sprocket</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="CC Guide"><span>CC Guide</span></label>
+                  <label class="multi-select-option"><input type="checkbox" value="Arm Guide"><span>Arm Guide</span></label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label for="system">系统<span class="en">System</span></label>
+            <div class="multi-select" id="systemMultiSelect" data-multi-select="system">
+              <button class="multi-select-trigger" id="system" type="button" data-multi-trigger="system" data-value="" data-placeholder="根据产品自动带出" aria-disabled="true" disabled>
+                <span class="multi-select-values"><span class="multi-select-placeholder">根据产品自动带出</span></span>
+              </button>
+              <div class="multi-select-menu" hidden aria-hidden="true">
+                <input type="checkbox" value="VVT System" data-derived-system>
+                <input type="checkbox" value="TD System" data-derived-system>
+              </div>
+            </div>
           </div>
           <div class="form-field">
             <label class="required" for="projectManager">项目经理<span class="en">Program Manager</span></label>
@@ -2269,6 +2455,7 @@
     const filterConfigTargets = new Map(
       Array.from(document.querySelectorAll("[data-filter-item]")).map((element) => [element.dataset.filterItem, element])
     );
+    const multiSelectRoots = Array.from(document.querySelectorAll("[data-multi-select]"));
     let appliedFilterKeys = new Set(filterConfigOptions.map((option) => option.dataset.filterOption));
     const currentUserName = "Danny Fang";
     function compactTaskDate(date = new Date()) {
@@ -2465,6 +2652,99 @@
       return element.value || element.options[element.selectedIndex].text || fallback;
     }
 
+    function multiSelectValues(name) {
+      const root = document.querySelector(`[data-multi-select="${name}"]`);
+      if (!root) {
+        return [];
+      }
+      return Array.from(root.querySelectorAll("input[type='checkbox']:checked"))
+        .filter((checkbox) => !checkbox.closest(".multi-select-group[hidden]"))
+        .map((checkbox) => checkbox.value);
+    }
+
+    function renderMultiSelect(name) {
+      const root = document.querySelector(`[data-multi-select="${name}"]`);
+      if (!root) {
+        return;
+      }
+      const trigger = root.querySelector("[data-multi-trigger]");
+      const valueHost = trigger.querySelector(".multi-select-values");
+      const values = multiSelectValues(name);
+      trigger.dataset.value = values.join("|");
+      valueHost.replaceChildren();
+      if (!values.length) {
+        const placeholder = document.createElement("span");
+        placeholder.className = "multi-select-placeholder";
+        placeholder.textContent = trigger.dataset.placeholder;
+        valueHost.appendChild(placeholder);
+        return;
+      }
+      values.forEach((value) => {
+        const tag = document.createElement("span");
+        tag.className = "multi-select-tag";
+        tag.textContent = value;
+        valueHost.appendChild(tag);
+      });
+    }
+
+    function setMultiSelectOpen(root, open) {
+      const trigger = root.querySelector("[data-multi-trigger]");
+      const menu = root.querySelector(".multi-select-menu");
+      if (open && trigger.disabled) {
+        return;
+      }
+      menu.hidden = !open;
+      trigger.setAttribute("aria-expanded", String(open));
+    }
+
+    function closeMultiSelectMenus(exceptRoot = null) {
+      let closed = false;
+      multiSelectRoots.forEach((root) => {
+        if (root !== exceptRoot && !root.querySelector(".multi-select-menu").hidden) {
+          setMultiSelectOpen(root, false);
+          closed = true;
+        }
+      });
+      return closed;
+    }
+
+    function syncSystemsFromProducts() {
+      const selectedProducts = new Set(multiSelectValues("product"));
+      const systemProducts = {
+        "VVT System": ["Phaser", "VFS", "CB", "OCV"],
+        "TD System": ["Chain", "TSC", "Timing Tensioner", "OP Tensioner", "Sprocket", "CC Guide", "Arm Guide"]
+      };
+      const systemRoot = document.querySelector('[data-multi-select="system"]');
+      systemRoot.querySelectorAll("[data-derived-system]").forEach((checkbox) => {
+        checkbox.checked = systemProducts[checkbox.value].some((product) => selectedProducts.has(product));
+      });
+      renderMultiSelect("system");
+    }
+
+    function initMultiSelects() {
+      multiSelectRoots.forEach((root) => {
+        const name = root.dataset.multiSelect;
+        const trigger = root.querySelector("[data-multi-trigger]");
+        trigger.addEventListener("click", () => {
+          const shouldOpen = root.querySelector(".multi-select-menu").hidden;
+          closeMultiSelectMenus(root);
+          closeDatePickers();
+          setMultiSelectOpen(root, shouldOpen);
+        });
+        root.querySelectorAll("input[type='checkbox']").forEach((checkbox) => {
+          checkbox.addEventListener("change", () => {
+            renderMultiSelect(name);
+            clearFieldError(trigger);
+            if (name === "product") {
+              syncSystemsFromProducts();
+            }
+          });
+        });
+        renderMultiSelect(name);
+      });
+      syncSystemsFromProducts();
+    }
+
     function clearFieldError(element) {
       element.classList.remove("field-invalid");
       const field = element.closest(".form-field");
@@ -2478,9 +2758,11 @@
       let firstInvalid = null;
 
       requiredFields.forEach((element) => {
-        const empty = element.tagName === "SELECT"
-          ? element.selectedIndex <= 0
-          : !element.value.trim();
+        const empty = element.matches("[data-multi-trigger]")
+          ? !element.dataset.value
+          : element.tagName === "SELECT"
+            ? element.selectedIndex <= 0
+            : !element.value.trim();
         clearFieldError(element);
         if (!empty) {
           return;
@@ -2514,10 +2796,9 @@
       const map = {
         "草稿": ["status-gray", "dot-gray"],
         "进行中": ["status-blue", "dot-blue"],
-        "审批中": ["status-orange", "dot-orange"],
-        "已拒绝": ["status-red", "dot-red"],
-        "已通过": ["status-green", "dot-green"],
-        "带条件通过": ["status-purple", "dot-purple"]
+        "已完成": ["status-green", "dot-green"],
+        "暂停": ["status-orange", "dot-orange"],
+        "项目终止": ["status-red", "dot-red"]
       };
       const [statusClass, dotClass] = map[status] || map["进行中"];
       return `<span class="status ${statusClass}"><span class="dot ${dotClass}"></span>${status}</span>`;
@@ -2557,7 +2838,10 @@
         stage: status === "草稿" ? "草稿" : "CKO",
         customer: fieldValue("#customer"),
         customerProgram: fieldValue("#customerProgram"),
-        product: selectValue("#product"),
+        products: multiSelectValues("product"),
+        product: multiSelectValues("product").join("、") || "-",
+        systems: multiSelectValues("system"),
+        system: multiSelectValues("system").join("、") || "-",
         pm: selectValue("#projectManager"),
         members: [...new Set([currentUserName, selectValue("#projectManager", "")].filter(Boolean))],
         programLevel: selectValue("#programLevel"),
@@ -2578,7 +2862,8 @@
       row.dataset.code = project.code;
       row.dataset.name = project.name;
       row.dataset.customer = project.customer;
-      row.dataset.product = project.product;
+      row.dataset.product = (project.products || []).join("|") || project.product;
+      row.dataset.system = (project.systems || []).join("|") || project.system;
       row.dataset.level = project.programLevel;
       row.dataset.status = project.status;
       row.dataset.health = project.health;
@@ -2590,6 +2875,7 @@
         <td>${escapeHtml(project.customer)}</td>
         <td>${escapeHtml(project.customerProgram)}</td>
         <td>${escapeHtml(project.product)}</td>
+        <td>${escapeHtml(project.system)}</td>
         <td>${escapeHtml(project.pm)}</td>
         <td>${escapeHtml(project.programLevel)}</td>
         <td>${escapeHtml(project.organizationalLevel)}</td>
@@ -2634,7 +2920,7 @@
           (!filters.code || row.dataset.code.toLowerCase().includes(filters.code)) &&
           (!filters.name || row.dataset.name.toLowerCase().includes(filters.name)) &&
           (!filters.customer || row.dataset.customer.toLowerCase().includes(filters.customer)) &&
-          (!filters.product || row.dataset.product === filters.product) &&
+          (!filters.product || (row.dataset.product || "").split("|").includes(filters.product)) &&
           (!filters.level || row.dataset.level === filters.level) &&
           (!filters.status || row.dataset.status === filters.status) &&
           (!filters.relatedOnly || members.includes(currentUserName));
@@ -2770,6 +3056,8 @@
       document.querySelectorAll(".drawer input[type='radio'], .drawer input[type='checkbox']").forEach((element) => {
         element.checked = false;
       });
+      renderMultiSelect("product");
+      syncSystemsFromProducts();
       document.querySelectorAll(".drawer .date-picker").forEach((picker) => {
         setDateValue(picker, "");
         syncDateControls(picker);
@@ -2871,10 +3159,16 @@
       if (!event.target.closest(".filter-config-wrap")) {
         setFilterConfig(false);
       }
+      if (!event.target.closest(".multi-select")) {
+        closeMultiSelectMenus();
+      }
     });
 
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
+        if (closeMultiSelectMenus()) {
+          return;
+        }
         setModal(createSuccessModal, false);
         setModal(taskFillModal, false);
         setModal(ckoTaskDrawer, false);
@@ -2885,6 +3179,7 @@
     });
 
     initDatePickers();
+    initMultiSelects();
   </script>
 </body>
 </html>

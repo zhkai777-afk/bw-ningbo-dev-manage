@@ -5591,7 +5591,7 @@
     }
 
     .requirement-table {
-      min-width: 1120px;
+      min-width: 1420px;
       table-layout: fixed;
     }
 
@@ -5791,8 +5791,16 @@
     }
 
     .requirement-form {
-      padding: 30px 22px 44px 66px;
+      padding: 30px 42px 28px 48px;
       overflow-y: auto;
+    }
+
+    .requirement-form .form-row {
+      grid-template-columns: 120px minmax(0, 1fr);
+    }
+
+    .requirement-form .field-input {
+      width: 100%;
     }
 
     .form-row {
@@ -6511,6 +6519,27 @@
             <div class="record-alert-list" data-record-alerts></div>
           </section>
 
+          <div class="toolbar" aria-label="任务筛选">
+            <div class="stage-task-filterbar">
+              <label>
+                编号 / 标题
+                <input class="field" type="search" placeholder="输入 K-PAC 编号或标题" data-stage-task-keyword>
+              </label>
+              <div class="stage-dept-multiselect" data-stage-dept-filter>
+                <span>负责部门</span>
+                <button class="btn stage-dept-toggle" type="button" data-stage-dept-toggle>全部部门</button>
+                <div class="stage-dept-menu" data-stage-dept-menu hidden></div>
+              </div>
+              <button class="btn" type="button" data-stage-filter-reset>重置</button>
+            </div>
+            <div class="filters" aria-label="任务状态筛选">
+              <button class="filter active" type="button" data-stage-status-filter="all">全部 (0)</button>
+              <button class="filter" type="button" data-stage-status-filter="pending">待完成 (0)</button>
+              <button class="filter" type="button" data-stage-status-filter="overdue">已逾期 (0)</button>
+              <button class="filter" type="button" data-stage-status-filter="done">已完成 (0)</button>
+            </div>
+          </div>
+
       <div id="stageTaskTables"></div>
         </section>
       </div>
@@ -6632,37 +6661,47 @@
           <div class="bom-table-wrap requirement-table-wrap">
             <table class="requirement-table" aria-label="客户要求列表">
               <colgroup>
-                <col style="width:520px">
+                <col style="width:160px">
+                <col style="width:280px">
+                <col style="width:160px">
+                <col style="width:390px">
                 <col style="width:180px">
-                <col style="width:220px">
-                <col style="width:190px">
+                <col style="width:120px">
               </colgroup>
               <thead>
                 <tr>
-                  <th>需求标题</th>
-                  <th>需求发起人</th>
-                  <th>添加时间</th>
+                  <th>K-PAC编号</th>
+                  <th>K-PAC标题</th>
+                  <th>责任部门</th>
+                  <th>任务描述</th>
+                  <th>所属阶段</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody id="requirementTableBody">
                 <tr>
-                  <td>核心性能要求</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+                  <td>GPM_QR-1</td>
+                  <td>Quote Preparation Complete</td>
+                  <td>Sales</td>
+                  <td>Confirm quotation scope, commercial assumptions and customer-submitted requirements.</td>
+                  <td>Phase Gate 0 - Quote Ready</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
                 <tr>
-                  <td>适配与兼容要求</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+                  <td>GPM_GR-12</td>
+                  <td>Customer Requirements (Volumes, Key dates, others)</td>
+                  <td>Sales</td>
+                  <td>Verify customer requirements and share them with the project team.</td>
+                  <td>CKO - Commercial Kick Off</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
                 <tr>
-                  <td>交付与文档要求</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+                  <td>GPM_GR-15</td>
+                  <td>Commercial Kick Off</td>
+                  <td>Sales</td>
+                  <td>Share project updates with the launch team as applicable.</td>
+                  <td>PKO - Program Kick Off</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
                 </tr>
               </tbody>
             </table>
@@ -7643,49 +7682,26 @@
       <form id="requirementForm">
         <div class="requirement-form">
           <div class="form-row">
-            <label for="requirementTitle"><span class="required">*</span>需求标题:</label>
-            <input class="field-input" id="requirementTitle" name="requirementTitle" type="text" placeholder="请输入问题名称" autocomplete="off">
+            <label for="requirementKpac"><span class="required">*</span>K-PAC编号:</label>
+            <input class="field-input" id="requirementKpac" name="requirementKpac" type="text" placeholder="请输入K-PAC编号" autocomplete="off">
           </div>
           <div class="form-row">
-            <label for="requirementOwner">需求发起人:</label>
-            <input class="field-input" id="requirementOwner" name="requirementOwner" type="text" placeholder="请输入需求发起人" autocomplete="off">
+            <label for="requirementTitle"><span class="required">*</span>K-PAC标题:</label>
+            <input class="field-input" id="requirementTitle" name="requirementTitle" type="text" placeholder="请输入K-PAC标题" autocomplete="off">
           </div>
-          <div class="form-row form-upload">
-            <label>上传附件:</label>
-            <div class="upload-stack">
-              <button class="btn btn-primary" type="button">＋ 上传文件</button>
-              <div class="upload-note">支持扩展名：.doc .docx .pdf .jpg...</div>
-              <div class="mock-file" id="mockFile">⌘ <span>文档.docx</span><button class="file-remove" type="button" aria-label="移除附件">×</button></div>
-            </div>
+          <div class="form-row">
+            <label for="requirementDepartment"><span class="required">*</span>责任部门:</label>
+            <input class="field-input" id="requirementDepartment" name="requirementDepartment" type="text" placeholder="请输入责任部门" autocomplete="off">
           </div>
-          <div class="form-row form-editor">
-            <label for="requirementDescription">需求描述:</label>
-            <div class="editor-shell">
-              <div class="editor-toolbar" aria-label="需求描述工具栏">
-                <button class="editor-tool" type="button">A</button>
-                <button class="editor-tool" type="button"><b>B</b></button>
-                <button class="editor-tool" type="button"><i>I</i></button>
-                <button class="editor-tool" type="button"><u>U</u></button>
-                <button class="editor-tool" type="button">H</button>
-                <button class="editor-tool" type="button">≡</button>
-                <button class="editor-tool" type="button">▤</button>
-                <button class="editor-tool" type="button">≔</button>
-                <button class="editor-tool" type="button">≓</button>
-                <button class="editor-tool" type="button">T↕</button>
-                <button class="editor-tool" type="button">↔</button>
-                <button class="editor-tool" type="button">▻</button>
-                <button class="editor-tool" type="button">◅</button>
-                <button class="editor-tool" type="button">↕</button>
-                <button class="editor-tool" type="button">⊞</button>
-                <button class="editor-tool" type="button">☷</button>
-                <button class="editor-tool" type="button">☰</button>
-                <button class="editor-tool" type="button">⟳</button>
-                <button class="editor-tool" type="button">↶</button>
-              </div>
-              <div class="editor-body" id="requirementDescription" contenteditable="true" aria-label="需求描述"></div>
-            </div>
+          <div class="form-row">
+            <label for="requirementDescription"><span class="required">*</span>任务描述:</label>
+            <input class="field-input" id="requirementDescription" name="requirementDescription" type="text" placeholder="请输入任务描述" autocomplete="off">
           </div>
-          <div class="form-error" id="requirementError" hidden>请输入需求标题</div>
+          <div class="form-row">
+            <label for="requirementStage"><span class="required">*</span>所属阶段:</label>
+            <input class="field-input" id="requirementStage" name="requirementStage" type="text" placeholder="例如：CKO - Commercial Kick Off" autocomplete="off">
+          </div>
+          <div class="form-error" id="requirementError" hidden>请完整填写客户需求字段</div>
         </div>
         <div class="modal-foot">
           <button class="btn" type="button" data-close-requirement>取消</button>
@@ -13960,12 +13976,13 @@
     const requirementModal = document.getElementById("requirementModal");
     const openRequirementModal = document.getElementById("openRequirementModal");
     const requirementForm = document.getElementById("requirementForm");
+    const requirementKpac = document.getElementById("requirementKpac");
     const requirementTitle = document.getElementById("requirementTitle");
-    const requirementOwner = document.getElementById("requirementOwner");
+    const requirementDepartment = document.getElementById("requirementDepartment");
     const requirementDescription = document.getElementById("requirementDescription");
+    const requirementStage = document.getElementById("requirementStage");
     const requirementError = document.getElementById("requirementError");
     const requirementTableBody = document.getElementById("requirementTableBody");
-    const mockFile = document.getElementById("mockFile");
     const issueModal = document.getElementById("issueModal");
     const openIssueModal = document.getElementById("openIssueModal");
     const issueForm = document.getElementById("issueForm");
@@ -16927,32 +16944,34 @@
 
     function resetRequirementForm() {
       requirementForm.reset();
-      requirementDescription.textContent = "";
       requirementError.hidden = true;
-      mockFile.hidden = false;
     }
 
     function showRequirementModal() {
       resetRequirementForm();
       requirementModal.hidden = false;
-      requirementTitle.focus();
+      requirementKpac.focus();
     }
 
     function hideRequirementModal() {
       requirementModal.hidden = true;
     }
 
-    function createRequirementRow(title, owner) {
+    function createRequirementRow(requirement) {
       const row = document.createElement("tr");
       row.innerHTML = `
         <td></td>
         <td></td>
         <td></td>
-        <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-row>删除</button></div></td>
+        <td></td>
+        <td></td>
+        <td><div class="actions"><button class="link-button" type="button" data-delete-row>删除</button></div></td>
       `;
-      row.children[0].textContent = title;
-      row.children[1].textContent = owner || "-";
-      row.children[2].textContent = getCurrentTime();
+      row.children[0].textContent = requirement.kpac;
+      row.children[1].textContent = requirement.title;
+      row.children[2].textContent = requirement.department;
+      row.children[3].textContent = requirement.description;
+      row.children[4].textContent = requirement.stage;
       return row;
     }
 
@@ -16970,23 +16989,29 @@
 
     requirementForm.addEventListener("submit", (event) => {
       event.preventDefault();
-      const title = requirementTitle.value.trim();
-      if (!title) {
+      const requirement = {
+        kpac: requirementKpac.value.trim(),
+        title: requirementTitle.value.trim(),
+        department: requirementDepartment.value.trim(),
+        description: requirementDescription.value.trim(),
+        stage: requirementStage.value.trim()
+      };
+      if (Object.values(requirement).some((value) => !value)) {
         requirementError.hidden = false;
-        requirementTitle.focus();
+        const firstEmpty = [requirementKpac, requirementTitle, requirementDepartment, requirementDescription, requirementStage]
+          .find((input) => !input.value.trim());
+        firstEmpty?.focus();
         return;
       }
 
-      requirementTableBody.appendChild(createRequirementRow(title, requirementOwner.value.trim()));
+      requirementTableBody.appendChild(createRequirementRow(requirement));
       hideRequirementModal();
     });
 
-    requirementTitle.addEventListener("input", () => {
-      requirementError.hidden = Boolean(requirementTitle.value.trim());
-    });
-
-    mockFile.querySelector(".file-remove").addEventListener("click", () => {
-      mockFile.hidden = true;
+    [requirementKpac, requirementTitle, requirementDepartment, requirementDescription, requirementStage].forEach((input) => {
+      input.addEventListener("input", () => {
+        requirementError.hidden = true;
+      });
     });
 
     requirementTableBody.addEventListener("click", (event) => {
