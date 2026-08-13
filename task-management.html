@@ -143,6 +143,31 @@
       font-weight: 900;
     }
 
+    .stage-name-input {
+      width: min(220px, 28vw);
+      height: 36px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      padding: 0 9px;
+      color: #1d2939;
+      background: transparent;
+      font: inherit;
+      font-weight: 900;
+      transition: border-color .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+
+    .stage-name-input:hover {
+      border-color: #cfd8e6;
+      background: #fff;
+    }
+
+    .stage-name-input:focus-visible {
+      outline: 0;
+      border-color: var(--primary);
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(23, 105, 255, .14);
+    }
+
     .stage-index {
       width: 30px;
       height: 30px;
@@ -439,7 +464,7 @@
 
     table {
       width: 100%;
-      min-width: 1490px;
+      min-width: 1630px;
       border-collapse: collapse;
       table-layout: fixed;
     }
@@ -483,6 +508,37 @@
       gap: 12px;
     }
 
+    .group-title-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .group-title {
+      color: var(--secondary);
+      font-weight: 900;
+      overflow-wrap: anywhere;
+    }
+
+    .group-edit-title {
+      min-height: 28px;
+      padding: 0 8px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background: transparent;
+      color: var(--primary);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .group-edit-title:hover {
+      border-color: #cfe0ff;
+      background: var(--primary-weak);
+    }
+
     .group-add-task {
       min-height: 28px;
       padding: 0 10px;
@@ -502,6 +558,13 @@
     .title-cell {
       font-weight: 900;
       color: #2f3645;
+    }
+
+    .title-cell .task-title {
+      display: block;
+      font-weight: 800;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
     }
 
     .desc-cell {
@@ -859,6 +922,40 @@
     </section>
   </div>
 
+  <div class="modal-backdrop" id="editTaskTypeModal" hidden>
+    <section class="modal task-type-modal" role="dialog" aria-modal="true" aria-labelledby="editTaskTypeTitle">
+      <div class="modal-head">
+        <h2 id="editTaskTypeTitle">编辑任务类型</h2>
+        <button class="close-button" type="button" data-close-edit-task-type aria-label="关闭">×</button>
+      </div>
+      <form class="task-type-form" id="editTaskTypeForm">
+        <label for="editTaskTypeName" class="required">任务类型名称</label>
+        <input class="field" id="editTaskTypeName" type="text" maxlength="60" placeholder="请输入任务类型名称" autocomplete="off">
+        <p class="task-type-error" id="editTaskTypeError" hidden></p>
+      </form>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-edit-task-type>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmEditTaskType">保存</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="confirmModal" hidden>
+    <section class="modal task-type-modal" role="alertdialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmMessage">
+      <div class="modal-head">
+        <h2 id="confirmTitle">确认操作</h2>
+        <button class="close-button" type="button" data-close-confirm aria-label="关闭">×</button>
+      </div>
+      <div class="task-type-form">
+        <p id="confirmMessage"></p>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-confirm>取消</button>
+        <button class="btn btn-danger" type="button" id="confirmAction">确认</button>
+      </div>
+    </section>
+  </div>
+
   <div class="toast" id="toast" hidden></div>
   <div class="floating-select-menu" id="departmentMenu" hidden></div>
 
@@ -992,22 +1089,25 @@
     let taskLibrary = fallbackTaskLibrary;
     let defaultStageConfigs = [];
     let stageConfigs = [];
+    let editingTaskCategory = null;
 
     function clone(value) {
       return JSON.parse(JSON.stringify(value));
     }
 
     function mapSourceTask(item, index = 0) {
+      const category = item.function || item.category || "Plan and Define";
       return {
         uid: item.taskId || `${item.uiStage || "task"}-${item.kpacId || item.id || index}-${index}`,
         id: item.kpacId || item.id || "",
         title: item.title || "",
         description: item.taskDescription || item.description || "",
-        category: item.function || item.category || "Plan and Define",
+        category,
         ownerRole: item.responsible || item.ownerRole || "",
         version: item.version || "",
         deliverable: item.documentOrEvidence || item.deliverable || "",
         critical: item.requiredType ? item.requiredType === "required" : Boolean(item.critical),
+        customerRequirement: typeof item.customerRequirement === "boolean" ? item.customerRequirement : category === "Customer",
         start: "",
         end: "",
         source: "library",
@@ -1021,6 +1121,7 @@
         const stageEnd = addDays(stageEndBaseDate, index * 15);
         return {
           name,
+          defaultName: name,
           end: stageEnd,
           collapsed: index !== 0,
           tasks: tasks
@@ -1042,6 +1143,7 @@
         const stageEnd = addDays(stageEndBaseDate, index * 15);
         return {
           name,
+          defaultName: name,
           end: stageEnd,
           collapsed: index !== 0,
           tasks: index === 0
@@ -1050,6 +1152,7 @@
               ...task,
               start: "",
               end: task.critical ? stageEnd : "",
+              customerRequirement: task.category === "Customer",
               source: "library"
             }))
             : []
@@ -1064,6 +1167,13 @@
     const taskTypeForm = document.getElementById("taskTypeForm");
     const taskTypeName = document.getElementById("taskTypeName");
     const taskTypeError = document.getElementById("taskTypeError");
+    const editTaskTypeModal = document.getElementById("editTaskTypeModal");
+    const editTaskTypeForm = document.getElementById("editTaskTypeForm");
+    const editTaskTypeName = document.getElementById("editTaskTypeName");
+    const editTaskTypeError = document.getElementById("editTaskTypeError");
+    const confirmModal = document.getElementById("confirmModal");
+    const confirmMessage = document.getElementById("confirmMessage");
+    const confirmAction = document.getElementById("confirmAction");
     const libraryKeyword = document.getElementById("libraryKeyword");
     const libraryResponsible = document.getElementById("libraryResponsible");
     const categoryTabs = document.getElementById("categoryTabs");
@@ -1075,6 +1185,7 @@
     let taskTypeStageName = "CKO";
     let currentCategory = "All";
     let activeFloatingButton = null;
+    let pendingConfirmAction = null;
     let toastTimer;
 
     function escapeHtml(value) {
@@ -1095,6 +1206,19 @@
       toastTimer = setTimeout(() => {
         toast.hidden = true;
       }, 2800);
+    }
+
+    function showConfirm(message, actionLabel, action) {
+      confirmMessage.textContent = message;
+      confirmAction.textContent = actionLabel;
+      pendingConfirmAction = action;
+      confirmModal.hidden = false;
+      confirmAction.focus();
+    }
+
+    function hideConfirm() {
+      confirmModal.hidden = true;
+      pendingConfirmAction = null;
     }
 
     function getStage(name) {
@@ -1143,7 +1267,7 @@
 
     function renderTabs() {
       stageTabs.innerHTML = stageConfigs.map((stage) => `
-        <button class="stage-tab ${stage.name === currentStageName ? "active" : ""}" type="button" data-jump="${stage.name}">${stage.name}</button>
+        <button class="stage-tab ${stage.name === currentStageName ? "active" : ""}" type="button" data-jump="${escapeHtml(stage.name)}">${escapeHtml(stage.name)}</button>
       `).join("");
     }
 
@@ -1176,28 +1300,31 @@
           if (!tasks.length && !isCustomCategory) return "";
 
           return `
-            <tr class="group-row"><td colspan="11"><div class="group-row-content"><span>${escapeHtml(category)}</span><button class="group-add-task" type="button" data-add-task="${escapeHtml(stage.name)}" data-task-category="${escapeHtml(category)}">新增任务</button></div></td></tr>
+            <tr class="group-row"><td colspan="12"><div class="group-row-content"><div class="group-title-actions"><span class="group-title">${escapeHtml(category)}</span><button class="group-edit-title" type="button" data-edit-task-category="${escapeHtml(stage.name)}" data-task-category="${escapeHtml(category)}">编辑任务类型</button></div><button class="group-add-task" type="button" data-add-task="${escapeHtml(stage.name)}" data-task-category="${escapeHtml(category)}">新增任务</button></div></td></tr>
             ${tasks.length ? tasks.map((task, taskIndex) => `
               <tr data-row="${task.uid}" data-stage="${stage.name}">
                 <td class="center"><input type="checkbox" data-row-check></td>
                 <td class="center">${taskIndex + 1}</td>
                 <td>${escapeHtml(task.id)}</td>
-                <td class="title-cell">${task.source === "manual"
-                  ? `<input class="task-input" type="text" value="${escapeHtml(task.title)}" data-task-field="title">`
-                  : escapeHtml(task.title)}
-                </td>
+                <td class="title-cell"><span class="task-title">${escapeHtml(task.title)}</span></td>
                 <td class="desc-cell">${task.source === "manual"
                   ? `<input class="task-input" type="text" value="${escapeHtml(task.description || "")}" data-task-field="description">`
                   : escapeHtml(task.description || "-")}
                 </td>
                 <td>${renderDepartmentButton(task)}</td>
                 <td>${renderTypeButton(task)}</td>
+                <td>
+                  <select class="task-input" aria-label="是否属于客户需求" data-task-field="customerRequirement">
+                    <option value="true" ${task.customerRequirement ? "selected" : ""}>是</option>
+                    <option value="false" ${!task.customerRequirement ? "selected" : ""}>否</option>
+                  </select>
+                </td>
                 <td><input class="task-input" type="date" value="${task.start}" data-task-field="start"></td>
                 <td><input class="task-input" type="date" value="${task.end}" data-task-field="end"></td>
                 <td>${task.source === "manual" ? "手动新增" : "子任务库"}</td>
                 <td><button class="link-button" type="button" data-delete>删除</button></td>
               </tr>
-            `).join("") : `<tr><td colspan="11" class="center">暂无任务，点击“新增任务”创建。</td></tr>`}
+            `).join("") : `<tr><td colspan="12" class="center">暂无任务，点击“新增任务”创建。</td></tr>`}
           `;
         }).join("");
 
@@ -1206,7 +1333,7 @@
             <header class="stage-head">
               <div class="stage-title">
                 <span class="stage-index">${index + 1}</span>
-                <span>${stage.name}</span>
+                <input class="stage-name-input" type="text" maxlength="40" aria-label="阶段名称" title="点击编辑阶段名称" value="${escapeHtml(stage.name)}" data-stage-name-edit="${escapeHtml(stage.name)}">
                 <span class="stage-summary">
                   <span>${stage.tasks.length} 个任务</span>
                   <span>${criticalCount} 个关键任务</span>
@@ -1245,6 +1372,7 @@
                     <col style="width:350px">
                     <col style="width:130px">
                     <col style="width:180px">
+                    <col style="width:156px">
                     <col style="width:150px">
                     <col style="width:150px">
                     <col style="width:96px">
@@ -1259,6 +1387,7 @@
                       <th>任务描述</th>
                       <th>负责部门</th>
                       <th>任务类型</th>
+                      <th>是否属于客户需求</th>
                       <th>开始时间</th>
                       <th>结束时间</th>
                       <th>来源</th>
@@ -1266,7 +1395,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    ${stage.tasks.length ? groupedTasks : `<tr><td colspan="11" class="center">暂无任务，可通过子任务库添加或手动新增</td></tr>`}
+                    ${stage.tasks.length ? groupedTasks : `<tr><td colspan="12" class="center">暂无任务，可通过子任务库添加或手动新增</td></tr>`}
                   </tbody>
                 </table>
               </div>
@@ -1289,11 +1418,44 @@
       if (control.dataset.taskField === "critical") {
         task.critical = control.value === "critical";
         control.classList.toggle("critical", task.critical);
+      } else if (control.dataset.taskField === "customerRequirement") {
+        task.customerRequirement = control.value === "true";
       } else {
         task[control.dataset.taskField] = control.value;
         if (control.dataset.taskField === "ownerRole") control.title = control.value;
       }
       control.classList.remove("is-invalid");
+    }
+
+    function renameStage(control) {
+      const previousName = control.dataset.stageNameEdit;
+      const stage = getStage(previousName);
+      const nextName = control.value.trim();
+      if (!stage) return;
+      if (!nextName) {
+        control.value = previousName;
+        showToast("阶段名称不能为空。", true);
+        return;
+      }
+      if (!/^[\p{L}\p{N}_ -]+$/u.test(nextName)) {
+        control.value = previousName;
+        showToast("阶段名称仅支持文字、数字、空格、下划线和短横线。", true);
+        return;
+      }
+      if (stageConfigs.some((item) => item !== stage && item.name.toLocaleLowerCase("zh-CN") === nextName.toLocaleLowerCase("zh-CN"))) {
+        control.value = previousName;
+        showToast("阶段名称已存在，请使用其他名称。", true);
+        return;
+      }
+      if (nextName === previousName) return;
+      stage.name = nextName;
+      stage.tasks.forEach((task) => {
+        if (task.uid.startsWith(`${previousName}-`)) task.uid = `${nextName}-${task.uid.slice(previousName.length + 1)}`;
+      });
+      if (currentStageName === previousName) currentStageName = nextName;
+      if (libraryStageName === previousName) libraryStageName = nextName;
+      renderStages();
+      showToast(`阶段名称已修改为“${nextName}”。`);
     }
 
     function closeFloatingMenu() {
@@ -1394,6 +1556,7 @@
         version: "V1",
         deliverable: "",
         critical: false,
+        customerRequirement: category === "Customer",
         owner: "",
         start: "",
         end: "",
@@ -1416,6 +1579,55 @@
     function hideTaskTypeModal() {
       taskTypeModal.hidden = true;
       taskTypeError.hidden = true;
+    }
+
+    function showEditTaskTypeModal(stageName, category) {
+      editingTaskCategory = { stageName, category };
+      editTaskTypeForm.reset();
+      editTaskTypeError.hidden = true;
+      editTaskTypeName.value = category;
+      editTaskTypeModal.hidden = false;
+      editTaskTypeName.focus();
+      editTaskTypeName.select();
+    }
+
+    function hideEditTaskTypeModal() {
+      editTaskTypeModal.hidden = true;
+      editTaskTypeError.hidden = true;
+      editingTaskCategory = null;
+    }
+
+    function confirmEditTaskType() {
+      const context = editingTaskCategory;
+      const stage = getStage(context?.stageName);
+      const nextName = editTaskTypeName.value.trim();
+      const currentName = context?.category;
+      if (!stage || !currentName) return;
+      if (!nextName) {
+        editTaskTypeError.textContent = "请输入任务类型名称。";
+        editTaskTypeError.hidden = false;
+        editTaskTypeName.focus();
+        return;
+      }
+      const existing = new Set([
+        ...categories.filter((category) => category !== "All" && category !== currentName),
+        ...(stage.customCategories || []).filter((category) => category !== currentName)
+      ].map((category) => category.toLocaleLowerCase("zh-CN")));
+      if (existing.has(nextName.toLocaleLowerCase("zh-CN"))) {
+        editTaskTypeError.textContent = "该任务类型已存在，请输入其他名称。";
+        editTaskTypeError.hidden = false;
+        editTaskTypeName.focus();
+        return;
+      }
+      stage.tasks.forEach((task) => {
+        if (task.category === currentName) task.category = nextName;
+      });
+      if ((stage.customCategories || []).includes(currentName)) {
+        stage.customCategories = stage.customCategories.map((category) => category === currentName ? nextName : category);
+      }
+      hideEditTaskTypeModal();
+      renderStages();
+      showToast(`任务类型已更新为“${nextName}”。`);
     }
 
     function confirmTaskType() {
@@ -1447,12 +1659,16 @@
 
     function resetStage(stageName) {
       const index = stageConfigs.findIndex((stage) => stage.name === stageName);
-      const source = defaultStageConfigs.find((stage) => stage.name === stageName);
+      const target = stageConfigs[index];
+      const sourceName = target?.defaultName || stageName;
+      const source = defaultStageConfigs.find((stage) => stage.name === sourceName);
       if (!source) {
         showToast("未找到该阶段的默认配置，请使用重置全部恢复。", true);
         return;
       }
       const nextStage = clone(source);
+      nextStage.name = stageName;
+      nextStage.defaultName = sourceName;
       nextStage.collapsed = false;
       if (index >= 0) {
         stageConfigs.splice(index, 1, nextStage);
@@ -1467,11 +1683,12 @@
     }
 
     function deleteStage(stageName) {
-      if (!confirm(`确定删除 ${stageName} 阶段及其全部任务吗？可通过“重置全部”恢复。`)) return;
-      stageConfigs = stageConfigs.filter((stage) => stage.name !== stageName);
-      setActiveStage(stageConfigs[0]?.name);
-      renderStages();
-      showToast(`${stageName} 阶段已删除。`);
+      showConfirm(`确定删除 ${stageName} 阶段及其全部任务吗？可通过“重置全部”恢复。`, "删除阶段", () => {
+        stageConfigs = stageConfigs.filter((stage) => stage.name !== stageName);
+        setActiveStage(stageConfigs[0]?.name);
+        renderStages();
+        showToast(`${stageName} 阶段已删除。`);
+      });
     }
 
     function resetAllStages() {
@@ -1483,9 +1700,12 @@
 
     function deleteTask(stageName, uid) {
       const stage = getStage(stageName);
-      stage.tasks = stage.tasks.filter((task) => task.uid !== uid);
-      renderStages();
-      showToast("任务已删除。");
+      const task = stage.tasks.find((item) => item.uid === uid);
+      showConfirm(`确定删除任务“${task?.title || "未命名任务"}”吗？`, "删除任务", () => {
+        stage.tasks = stage.tasks.filter((item) => item.uid !== uid);
+        renderStages();
+        showToast("任务已删除。");
+      });
     }
 
     function bulkDelete(stageName) {
@@ -1495,9 +1715,11 @@
         return;
       }
       const stage = getStage(stageName);
-      stage.tasks = stage.tasks.filter((task) => !checked.includes(task.uid));
-      renderStages();
-      showToast(`已移除 ${checked.length} 个任务。`);
+      showConfirm(`确定移除已勾选的 ${checked.length} 个任务吗？`, "批量移除", () => {
+        stage.tasks = stage.tasks.filter((task) => !checked.includes(task.uid));
+        renderStages();
+        showToast(`已移除 ${checked.length} 个任务。`);
+      });
     }
 
     function renderCategories() {
@@ -1511,9 +1733,10 @@
       const keyword = libraryKeyword.value.trim().toLowerCase();
       const responsible = libraryResponsible.value;
       const existing = new Set((getStage(libraryStageName)?.tasks || []).map((task) => task.id));
+      const sourceStageName = getStage(libraryStageName)?.defaultName || libraryStageName;
       const items = taskLibrary.filter((task) => {
         const mapped = mapSourceTask(task);
-        const matchStage = (task.uiStage || task.stage || libraryStageName) === libraryStageName;
+        const matchStage = (task.uiStage || task.stage || sourceStageName) === sourceStageName;
         const matchCategory = currentCategory === "All" || mapped.category === currentCategory;
         const matchKeyword = !keyword || mapped.title.toLowerCase().includes(keyword) || mapped.id.toLowerCase().includes(keyword);
         const matchResponsible = !responsible || mapped.ownerRole === responsible;
@@ -1558,13 +1781,14 @@
     function confirmLibrary() {
       const selectedIds = Array.from(document.querySelectorAll("[data-library-check]:checked")).map((item) => item.value);
       const stage = getStage(libraryStageName);
+      const sourceStageName = stage.defaultName || stage.name;
       const existing = new Set(stage.tasks.map((task) => task.id));
       let added = 0;
       selectedIds.forEach((id) => {
         if (existing.has(id)) return;
         const source = taskLibrary.find((task) => {
           const mapped = mapSourceTask(task);
-          return mapped.id === id && (task.uiStage || task.stage || libraryStageName) === libraryStageName;
+          return mapped.id === id && (task.uiStage || task.stage || sourceStageName) === sourceStageName;
         });
         if (!source) return;
         const mapped = mapSourceTask(source);
@@ -1628,6 +1852,7 @@
       const toggle = event.target.closest("[data-toggle]");
       const openButton = event.target.closest("[data-open-library]");
       const addTaskTypeButton = event.target.closest("[data-add-task-type]");
+      const editTaskTypeButton = event.target.closest("[data-edit-task-category]");
       const addTaskButton = event.target.closest("[data-add-task]");
       const deleteButton = event.target.closest("[data-delete]");
       const bulkButton = event.target.closest("[data-bulk-delete]");
@@ -1644,6 +1869,7 @@
       }
       if (openButton) openLibrary(openButton.dataset.openLibrary);
       if (addTaskTypeButton) showTaskTypeModal(addTaskTypeButton.dataset.addTaskType);
+      if (editTaskTypeButton) showEditTaskTypeModal(editTaskTypeButton.dataset.editTaskCategory, editTaskTypeButton.dataset.taskCategory);
       if (addTaskButton) addManualTask(addTaskButton.dataset.addTask, addTaskButton.dataset.taskCategory);
       if (bulkButton) bulkDelete(bulkButton.dataset.bulkDelete);
       if (resetStageButton) resetStage(resetStageButton.dataset.resetStage);
@@ -1676,7 +1902,24 @@
       if (event.target.matches("[data-task-field]")) updateTaskField(event.target);
     });
 
+    stageList.addEventListener("focusout", (event) => {
+      if (event.target.matches("[data-stage-name-edit]")) renameStage(event.target);
+    });
+
+    stageList.addEventListener("keydown", (event) => {
+      if (!event.target.matches("[data-stage-name-edit]")) return;
+      if (event.key === "Enter") {
+        event.preventDefault();
+        event.target.blur();
+      }
+      if (event.key === "Escape") {
+        event.target.value = event.target.dataset.stageNameEdit;
+        event.target.blur();
+      }
+    });
+
     stageList.addEventListener("change", (event) => {
+      if (event.target.matches('[data-task-field="customerRequirement"]')) updateTaskField(event.target);
       const selectAll = event.target.closest("[data-select-all]");
       if (selectAll) {
         document.querySelectorAll(`[data-stage="${selectAll.dataset.selectAll}"] [data-row-check]`).forEach((box) => {
@@ -1727,6 +1970,29 @@
     });
     taskTypeModal.addEventListener("click", (event) => {
       if (event.target === taskTypeModal) hideTaskTypeModal();
+    });
+
+    document.querySelectorAll("[data-close-edit-task-type]").forEach((button) => button.addEventListener("click", hideEditTaskTypeModal));
+    document.getElementById("confirmEditTaskType").addEventListener("click", confirmEditTaskType);
+    editTaskTypeForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      confirmEditTaskType();
+    });
+    editTaskTypeName.addEventListener("input", () => {
+      editTaskTypeError.hidden = true;
+    });
+    editTaskTypeModal.addEventListener("click", (event) => {
+      if (event.target === editTaskTypeModal) hideEditTaskTypeModal();
+    });
+
+    document.querySelectorAll("[data-close-confirm]").forEach((button) => button.addEventListener("click", hideConfirm));
+    confirmAction.addEventListener("click", () => {
+      const action = pendingConfirmAction;
+      hideConfirm();
+      action?.();
+    });
+    confirmModal.addEventListener("click", (event) => {
+      if (event.target === confirmModal) hideConfirm();
     });
 
     document.getElementById("submitButton").addEventListener("click", () => {

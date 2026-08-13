@@ -124,6 +124,11 @@
     }
 
     .more-link {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      text-align: left;
+      font: inherit;
       color: #8592a6;
       font-weight: 700;
       cursor: pointer;
@@ -139,6 +144,12 @@
       transform: rotate(45deg);
       margin-left: 6px;
       vertical-align: 1px;
+    }
+
+    .more-link:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+      border-radius: 2px;
     }
 
     .project-side {
@@ -1871,6 +1882,10 @@
       overflow: hidden;
     }
 
+    body.project-info-drawer-open {
+      overflow: hidden;
+    }
+
     body.part-drawer-open .project-edit-mask {
       opacity: 1;
       pointer-events: auto;
@@ -2109,6 +2124,120 @@
 
     #projectEditMessageModal {
       z-index: 120;
+    }
+
+    .project-info-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 105;
+      background: rgba(16, 24, 40, .28);
+      opacity: 0;
+      transition: opacity .22s ease;
+    }
+
+    .project-info-backdrop[hidden] {
+      display: none;
+    }
+
+    .project-info-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 106;
+      width: min(560px, calc(100vw - 28px));
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border-left: 1px solid var(--line);
+      box-shadow: -18px 0 42px rgba(15, 23, 42, .18);
+      transform: translateX(104%);
+      transition: transform .26s ease;
+    }
+
+    .project-info-drawer.is-open {
+      transform: translateX(0);
+    }
+
+    .project-info-drawer-head {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .project-info-drawer-head h2,
+    .project-info-drawer-head p,
+    .project-info-section h3 {
+      margin: 0;
+    }
+
+    .project-info-drawer-head h2 {
+      color: #1f2937;
+      font-size: 18px;
+    }
+
+    .project-info-drawer-head p {
+      margin-top: 3px;
+      color: #667085;
+      font-size: 12px;
+    }
+
+    .project-info-drawer-body {
+      flex: 1;
+      overflow: auto;
+      padding: 20px;
+      background: #f8fafc;
+    }
+
+    .project-info-section {
+      margin-bottom: 16px;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .project-info-section h3 {
+      margin-bottom: 14px;
+      color: #1f2937;
+      font-size: 15px;
+    }
+
+    .project-info-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0;
+    }
+
+    .project-info-list > div {
+      min-width: 0;
+      padding: 10px 12px;
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+
+    .project-info-list .wide {
+      grid-column: 1 / -1;
+    }
+
+    .project-info-list dt {
+      margin-bottom: 5px;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .project-info-list dd {
+      margin: 0;
+      color: #1f2937;
+      font-weight: 700;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
     }
 
     .subtask-drawer-backdrop {
@@ -2605,7 +2734,7 @@
     .gate-grid {
       margin-top: 14px;
       display: grid;
-      grid-template-columns: repeat(7, minmax(120px, 1fr));
+      grid-template-columns: repeat(9, minmax(140px, 1fr));
       overflow-x: auto;
       border: 1px solid #dbe4f0;
       border-radius: 6px;
@@ -6381,9 +6510,8 @@
               <div class="info-item"><b>客户品牌：</b>Volkswagen</div>
               <div class="info-item"><b>产品：</b>VCT</div>
               <div class="info-item"><b>系统：</b>VVT系统</div>
-              <div class="info-item"><b>LRP Type：</b>LRPV1</div>
               <div class="info-item"><b>PM：</b>Wu Zhuoren</div>
-              <div class="info-item more-link">更多项目信息</div>
+              <button class="info-item more-link" type="button" data-open-project-info>更多项目信息</button>
             </div>
           </div>
           <aside class="project-side">
@@ -6465,12 +6593,12 @@
               <button class="stage-card active" type="button" data-stage-id="QuoteReady" data-stage-note="Quote Ready 是项目报价准备阶段。销售完成报价准备任务并提交后，项目进入 Commercial Kick Off。">
                 <div class="stage-gate-label">Phase Gate 0</div>
                 <div class="stage-title">Quote Ready <span class="status-pill status-running">进行中</span></div>
-                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gateQuoteReady">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="CKO" data-stage-note="Commercial Kick Off 阶段由销售完成商业启动任务，提交后项目进入 Program Kick Off。">
                 <div class="stage-gate-label">CKO</div>
                 <div class="stage-title">Commercial Kick Off <span class="status-pill status-pending">未开始</span></div>
-                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
+                <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gateCko">-</b></div>
               </button>
               <button class="stage-card" type="button" data-stage-id="PKO" data-stage-note="Program Kick Off 对齐客户与内部需求，明确项目目标、范围与资源配置，并组织跨职能评审。">
                 <div class="stage-gate-label">PKO</div>
@@ -6766,13 +6894,15 @@
               <section class="gate-panel" aria-label="Gate计划">
                 <h3 class="gate-title">Gate 计划基线</h3>
                 <div class="gate-grid">
+                  <div class="gate-cell" data-plan-node="gateQuoteReady"><div><span class="gate-badge kickoff">Phase Gate 0</span></div><div class="gate-name">Quote Ready<span data-date-label="gateQuoteReady">未设置</span><input class="gate-date-input" type="date" data-plan-field="gateQuoteReady"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gateCko"><div><span class="gate-badge kickoff">CKO</span></div><div class="gate-name">Commercial Kick Off<span data-date-label="gateCko">未设置</span><input class="gate-date-input" type="date" data-plan-field="gateCko"><span class="buffer-risk-tag">缓冲不足</span></div></div>
                   <div class="gate-cell" data-plan-node="gatePko"><div><span class="gate-badge kickoff">PKO</span></div><div class="gate-name">Program Kick Off<span data-date-label="gatePko">未设置</span><input class="gate-date-input" type="date" data-plan-field="gatePko" data-limit="customerQuoteDue"><span class="buffer-risk-tag">缓冲不足</span></div></div>
-                  <div class="gate-cell" data-plan-node="gate1"><div><span class="gate-badge">1</span></div><div class="gate-name">AR Approval<span data-date-label="gate1">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate1" data-limit="customerNomination"><span class="buffer-risk-tag">缓冲不足</span></div></div>
-                  <div class="gate-cell" data-plan-node="gate2"><div><span class="gate-badge">2</span></div><div class="gate-name">Tooling Kick Off<span data-date-label="gate2">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate2" data-limit="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div></div>
-                  <div class="gate-cell" data-plan-node="gate3"><div><span class="gate-badge">3</span></div><div class="gate-name">OTS<span data-date-label="gate3">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate3" data-limit="customerOts"><span class="buffer-risk-tag">缓冲不足</span></div></div>
-                  <div class="gate-cell" data-plan-node="gate4"><div><span class="gate-badge">4</span></div><div class="gate-name">PPAP<span data-date-label="gate4">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate4" data-limit="customerPpap"><span class="buffer-risk-tag">缓冲不足</span></div></div>
-                  <div class="gate-cell" data-plan-node="gate5"><div><span class="gate-badge">5</span></div><div class="gate-name">SOP<span data-date-label="gate5">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate5" data-limit="customerSop"><span class="buffer-risk-tag">缓冲不足</span></div></div>
-                  <div class="gate-cell"><div><span class="gate-badge">6</span></div><div class="gate-name">Hand Over<span>待 SOP 后确认</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate1"><div><span class="gate-badge">Phase Gate 1</span></div><div class="gate-name">AR Submission Ready<span data-date-label="gate1">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate1" data-limit="customerNomination"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate2"><div><span class="gate-badge">Phase Gate 2</span></div><div class="gate-name">Investment Ready<span data-date-label="gate2">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate2" data-limit="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate3"><div><span class="gate-badge">Phase Gate 3</span></div><div class="gate-name">Off Tool Sample Ready<span data-date-label="gate3">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate3" data-limit="customerProtype"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate4"><div><span class="gate-badge">Phase Gate 4</span></div><div class="gate-name">Launch Ready<span data-date-label="gate4">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate4" data-limit="customerOts"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate5"><div><span class="gate-badge">Phase Gate 5</span></div><div class="gate-name">Launch Completion &amp; Handoff Ready<span data-date-label="gate5">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate5" data-limit="customerPpap"><span class="buffer-risk-tag">缓冲不足</span></div></div>
+                  <div class="gate-cell" data-plan-node="gate6"><div><span class="gate-badge">Phase Gate 6</span></div><div class="gate-name">Handover<span data-date-label="gate6">未设置</span><input class="gate-date-input" type="date" data-plan-field="gate6" data-limit="customerSop"><span class="buffer-risk-tag">缓冲不足</span></div></div>
                 </div>
               </section>
             </div>
@@ -8078,22 +8208,16 @@
         <h2 class="project-edit-title" id="projectEditTitle">基本信息 <span>Basic Information</span></h2>
         <div class="project-edit-grid">
           <div class="project-edit-field">
-            <label class="required" for="editSellingRu">销售责任单元<span class="en">Selling RU</span></label>
-            <input class="field" id="editSellingRu" value="宁波" placeholder="请输入">
+            <label class="required" for="editProgramName">项目名称<span class="en">Program Name</span></label>
+            <input class="field" id="editProgramName" value="EA888 E5 VCT" placeholder="请输入项目名称">
           </div>
           <div class="project-edit-field">
-            <label class="required" for="editCustomerBrand">客户<span class="en">Customer Brand</span></label>
-            <select class="select" id="editCustomerBrand">
-              <option>请选择</option>
-              <option selected>Volkswagen</option>
-              <option>BMW</option>
-              <option>Mercedes-Benz</option>
-              <option>Geely</option>
-            </select>
+            <label class="required" for="editCustomer">客户<span class="en">Customer</span></label>
+            <input class="field" id="editCustomer" value="Volkswagen" placeholder="请输入客户名称">
           </div>
           <div class="project-edit-field">
-            <label class="required" for="editProgram">项目<span class="en">Program</span></label>
-            <input class="field" id="editProgram" value="EA888 E5 VCT" placeholder="请输入">
+            <label class="required" for="editCustomerProgram">客户项目<span class="en">Customer Program</span></label>
+            <input class="field" id="editCustomerProgram" value="EA888 E5 VCT" placeholder="请输入客户项目名称">
           </div>
           <div class="project-edit-field">
             <label class="required">产品<span class="en">Product</span></label>
@@ -8132,90 +8256,37 @@
         </div>
       </section>
       <section class="project-edit-card">
-        <h2 class="project-edit-title">销售 &amp; 前瞻规划 <span>Business and Market Data</span></h2>
+        <h2 class="project-edit-title">补充信息 <span>Additional Information</span></h2>
         <div class="project-edit-grid">
           <div class="project-edit-field">
             <label for="editPeakVolume">峰值订单量 <span class="en">Peak Volume</span></label>
             <input class="field" id="editPeakVolume" value="420,000" placeholder="请输入">
           </div>
           <div class="project-edit-field">
-            <label for="editPrice">定价 <span class="en">Price（RMB：元）</span></label>
-            <input class="field" id="editPrice" value="86.50" placeholder="请输入">
-          </div>
-          <div class="project-edit-field">
-            <label for="editRevenue">预计营收 <span class="en">Revenue（RMB：元）</span></label>
-            <input class="field" id="editRevenue" value="36,330,000" placeholder="请输入">
-          </div>
-          <div class="project-edit-field">
-            <label for="editApplicationVolume">配套需求量 <span class="en">Application Volume</span></label>
-            <input class="field" id="editApplicationVolume" value="380,000" placeholder="请输入">
-          </div>
-        </div>
-      </section>
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">采购与排程 <span>Procurement and Schedule</span></h2>
-        <div class="project-edit-grid two">
-          <div class="project-edit-field">
-            <label for="editSourcingQuarter">定点季度 <span class="en">Sourcing Quarter</span></label>
-            <select class="select" id="editSourcingQuarter">
-              <option>请选择</option>
-              <option selected>2026 Q1</option>
-              <option>2026 Q2</option>
-              <option>2026 Q3</option>
-              <option>2026 Q4</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
             <label for="editSourcingDate">定点日期 <span class="en">Sourcing Date</span></label>
             <input class="field" id="editSourcingDate" type="date" value="2026-02-20">
           </div>
-        </div>
-      </section>
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">评价与分级 <span>Evaluation and Classification</span></h2>
-        <div class="project-edit-grid three">
           <div class="project-edit-field">
-            <label for="editSop">SOP</label>
-            <input class="field" id="editSop" type="date" value="2027-12-01">
-          </div>
-          <div class="project-edit-field">
-            <label for="editRank">等级 <span class="en">Rank</span></label>
-            <select class="select" id="editRank">
-              <option>请选择</option>
-              <option selected>A</option>
-              <option>B</option>
-              <option>C</option>
+            <label class="required" for="editProgramLevel">项目等级 <span class="en">Program Level</span></label>
+            <select class="select" id="editProgramLevel">
+              <option>请选择项目等级</option>
+              <option selected>Level 1</option>
+              <option>Level 2</option>
+              <option>Level 3</option>
             </select>
           </div>
           <div class="project-edit-field">
-            <label for="editLrpType">物流计划类型 <span class="en">LRP Type</span></label>
-            <select class="select" id="editLrpType">
-              <option>请选择</option>
-              <option>Booked</option>
-              <option>未预定</option>
-              <option selected>LRPV1</option>
-              <option>LRP+</option>
+            <label class="required" for="editOrganizationalLevel">组织层级 <span class="en">Organizational Level</span></label>
+            <select class="select" id="editOrganizationalLevel">
+              <option>请选择组织层级</option>
+              <option selected>Global</option>
+              <option>Global - Cross Business Unit</option>
+              <option>Regional</option>
             </select>
           </div>
-        </div>
-        <div class="score-grid">
-          <div class="score-item"><div class="score-title">开发跟进评级 <span class="en">Pursuit Rating</span></div><div class="score-options"><label class="radio"><input type="radio" name="editPursuit"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editPursuit"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editPursuit" checked><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">财务数据 <span class="en">Financials</span></div><div class="score-options"><label class="radio"><input type="radio" name="editFinancials"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editFinancials" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editFinancials"><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">制造 <span class="en">MFG</span></div><div class="score-options"><label class="radio"><input type="radio" name="editMfg"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editMfg"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editMfg" checked><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">价格及成本 <span class="en">Price &amp; Costs</span></div><div class="score-options"><label class="radio"><input type="radio" name="editCost"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editCost" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editCost"><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">产品 <span class="en">Product</span></div><div class="score-options"><label class="radio"><input type="radio" name="editProductScore"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editProductScore"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editProductScore" checked><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">品质 <span class="en">Quality</span></div><div class="score-options"><label class="radio"><input type="radio" name="editQuality"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editQuality"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editQuality" checked><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">关联关系 <span class="en">Relationships</span></div><div class="score-options"><label class="radio"><input type="radio" name="editRelationship"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editRelationship" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editRelationship"><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">供应商 <span class="en">Suppliers</span></div><div class="score-options"><label class="radio"><input type="radio" name="editSupplier"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editSupplier"><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editSupplier" checked><span class="color-block green"></span>G</label></div></div>
-          <div class="score-item"><div class="score-title">时间节点 <span class="en">Timing</span></div><div class="score-options"><label class="radio"><input type="radio" name="editTiming"><span class="color-block red"></span>R</label><label class="radio"><input type="radio" name="editTiming" checked><span class="color-block yellow"></span>Y</label><label class="radio"><input type="radio" name="editTiming"><span class="color-block green"></span>G</label></div></div>
-        </div>
-      </section>
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">备注信息 <span>Remarks</span></h2>
-        <div class="project-edit-grid">
           <div class="project-edit-field wide">
-            <label for="editRemarks">备注</label>
-            <textarea class="textarea" id="editRemarks" placeholder="请输入">EA888 E5 VCT 开发项目，当前处于 PKO 阶段。</textarea>
+            <label for="editOtherProjectInfo">其他项目信息 <span class="en">Other Program Information</span></label>
+            <textarea class="textarea" id="editOtherProjectInfo" placeholder="请输入项目背景、客户特殊要求或其他补充信息">EA888 E5 VCT 开发项目。</textarea>
           </div>
         </div>
       </section>
@@ -8225,6 +8296,42 @@
       <button class="btn" type="button" id="saveProjectEditDraft">保存草稿</button>
       <button class="btn btn-primary" type="button" id="confirmProjectEdit">确定</button>
     </footer>
+  </aside>
+
+  <div class="project-info-backdrop" id="projectInfoBackdrop" hidden></div>
+  <aside class="project-info-drawer" id="projectInfoDrawer" role="dialog" aria-modal="true" aria-labelledby="projectInfoDrawerTitle" aria-hidden="true">
+    <header class="project-info-drawer-head">
+      <div>
+        <h2 id="projectInfoDrawerTitle">项目信息</h2>
+        <p>Project Information</p>
+      </div>
+      <button class="modal-close" type="button" data-close-project-info aria-label="关闭">×</button>
+    </header>
+    <div class="project-info-drawer-body">
+      <section class="project-info-section">
+        <h3>基本信息</h3>
+        <dl class="project-info-list">
+          <div><dt>项目编号</dt><dd>PRJ-260803-001</dd></div>
+          <div><dt>项目名称</dt><dd>EA888 E5 VCT</dd></div>
+          <div><dt>客户</dt><dd>Volkswagen</dd></div>
+          <div><dt>客户项目</dt><dd>EA888 E5 VCT</dd></div>
+          <div><dt>销售责任单元</dt><dd>宁波</dd></div>
+          <div><dt>产品</dt><dd>VCT</dd></div>
+          <div><dt>系统</dt><dd>VVT系统</dd></div>
+          <div><dt>项目经理</dt><dd>Wu Zhuoren</dd></div>
+        </dl>
+      </section>
+      <section class="project-info-section">
+        <h3>项目补充信息</h3>
+        <dl class="project-info-list">
+          <div><dt>峰值订单量</dt><dd>420,000</dd></div>
+          <div><dt>定点日期</dt><dd>2026-02-20</dd></div>
+          <div><dt>项目等级</dt><dd>Level 1</dd></div>
+          <div><dt>组织层级</dt><dd>Global</dd></div>
+          <div class="wide"><dt>其他项目信息</dt><dd>EA888 E5 VCT 开发项目。</dd></div>
+        </dl>
+      </section>
+    </div>
   </aside>
 
   <div class="modal-backdrop" id="projectEditMessageModal" hidden>
@@ -14158,6 +14265,8 @@
     const projectEditDrawer = document.getElementById("projectEditDrawer");
     const projectEditMask = document.getElementById("projectEditMask");
     const closeProjectEditDrawer = document.getElementById("closeProjectEditDrawer");
+    const projectInfoDrawer = document.getElementById("projectInfoDrawer");
+    const projectInfoBackdrop = document.getElementById("projectInfoBackdrop");
     const editSystemValue = document.getElementById("editSystemValue");
     const saveProjectEditDraft = document.getElementById("saveProjectEditDraft");
     const confirmProjectEdit = document.getElementById("confirmProjectEdit");
@@ -15455,6 +15564,20 @@
       }
     }
 
+    function setProjectInfoDrawer(open) {
+      if (!projectInfoDrawer || !projectInfoBackdrop) return;
+      projectInfoDrawer.classList.toggle("is-open", open);
+      projectInfoDrawer.setAttribute("aria-hidden", String(!open));
+      projectInfoBackdrop.hidden = !open;
+      requestAnimationFrame(() => {
+        projectInfoBackdrop.style.opacity = open ? "1" : "";
+      });
+      document.body.classList.toggle("project-info-drawer-open", open);
+      if (open) {
+        projectInfoDrawer.querySelector("[data-close-project-info]")?.focus();
+      }
+    }
+
     function syncEditSystemValue() {
       if (!editSystemValue) return;
       const systems = new Set(Array.from(document.querySelectorAll("[data-edit-product]:checked")).map((input) => input.dataset.system));
@@ -15894,9 +16017,10 @@
       bwPmKickoff: "gatePko",
       bwArApproval: "gate1",
       bwToolingKickoff: "gate2",
-      bwOts: "gate3",
-      bwPpap: "gate4",
-      bwSop: "gate5"
+      bwProtype: "gate3",
+      bwOts: "gate4",
+      bwPpap: "gate5",
+      bwSop: "gate6"
     };
 
     const planLimitNames = {
@@ -15922,12 +16046,15 @@
       bwOts: "BW OTS",
       bwPpap: "BW PPAP",
       bwSop: "BW SOP",
-      gatePko: "PKO",
-      gate1: "Gate1",
-      gate2: "Gate2",
-      gate3: "Gate3 / OTS",
-      gate4: "Gate4 / PPAP",
-      gate5: "Gate5 / SOP"
+      gateQuoteReady: "Phase Gate 0 - Quote Ready",
+      gateCko: "CKO - Commercial Kick Off",
+      gatePko: "PKO - Program Kick Off",
+      gate1: "Phase Gate 1 - AR Submission Ready",
+      gate2: "Phase Gate 2 - Investment Ready",
+      gate3: "Phase Gate 3 - Off Tool Sample Ready",
+      gate4: "Phase Gate 4 - Launch Ready",
+      gate5: "Phase Gate 5 - Launch Completion & Handoff Ready",
+      gate6: "Phase Gate 6 - Handover"
     };
 
     function planValues() {
@@ -16096,11 +16223,14 @@
         ["bwProtype", "bwOts", "BW Protype 不能晚于 BW OTS"],
         ["bwOts", "bwPpap", "BW OTS 不能晚于 BW PPAP"],
         ["bwPpap", "bwSop", "BW PPAP 不能晚于 BW SOP"],
-        ["gatePko", "gate1", "PKO 不能晚于 Gate1"],
-        ["gate1", "gate2", "Gate1 不能晚于 Gate2"],
-        ["gate2", "gate3", "Gate2 不能晚于 Gate3"],
-        ["gate3", "gate4", "Gate3 不能晚于 Gate4"],
-        ["gate4", "gate5", "Gate4 不能晚于 Gate5"]
+        ["gateQuoteReady", "gateCko", "Quote Ready 不能晚于 Commercial Kick Off"],
+        ["gateCko", "gatePko", "Commercial Kick Off 不能晚于 Program Kick Off"],
+        ["gatePko", "gate1", "Program Kick Off 不能晚于 AR Submission Ready"],
+        ["gate1", "gate2", "AR Submission Ready 不能晚于 Investment Ready"],
+        ["gate2", "gate3", "Investment Ready 不能晚于 Off Tool Sample Ready"],
+        ["gate3", "gate4", "Off Tool Sample Ready 不能晚于 Launch Ready"],
+        ["gate4", "gate5", "Launch Ready 不能晚于 Launch Completion & Handoff Ready"],
+        ["gate5", "gate6", "Launch Completion & Handoff Ready 不能晚于 Handover"]
       ].forEach(([start, end, message]) => {
         const startInput = getPlanInput(start);
         const endInput = getPlanInput(end);
@@ -16181,6 +16311,11 @@
       syncEditSystemValue();
       setProjectEditDrawer(true);
     });
+    document.querySelector("[data-open-project-info]")?.addEventListener("click", () => setProjectInfoDrawer(true));
+    document.querySelectorAll("[data-close-project-info]").forEach((button) => {
+      button.addEventListener("click", () => setProjectInfoDrawer(false));
+    });
+    projectInfoBackdrop?.addEventListener("click", () => setProjectInfoDrawer(false));
     closeProjectEditDrawer?.addEventListener("click", () => setProjectEditDrawer(false));
     projectEditMask?.addEventListener("click", () => setProjectEditDrawer(false));
     document.querySelectorAll("[data-close-project-edit]").forEach((button) => {
@@ -16214,8 +16349,12 @@
       showProjectEditMessage("保存成功", "<p>项目信息已更新。</p>");
     });
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && document.body.classList.contains("part-drawer-open")) {
-        setProjectEditDrawer(false);
+      if (event.key === "Escape") {
+        if (document.body.classList.contains("project-info-drawer-open")) {
+          setProjectInfoDrawer(false);
+        } else if (document.body.classList.contains("part-drawer-open")) {
+          setProjectEditDrawer(false);
+        }
       }
     });
 
