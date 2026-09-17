@@ -1621,9 +1621,15 @@
       text-overflow: clip;
     }
 
-    .stage-task-table .description-cell {
-      cursor: help;
+    .stage-task-table .description-cell,
+    .stage-task-table .truncated-cell {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      overflow-wrap: anywhere;
     }
+
+    .stage-task-table .inline-actions { flex-wrap: wrap; }
 
     .stage-task-tooltip {
       position: fixed;
@@ -3460,6 +3466,172 @@
       color: #c2410c;
     }
 
+    .bom-confirmation-status {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      width: 100%;
+      min-width: 132px;
+      max-width: 168px;
+      padding: 9px 11px;
+      border: 1px solid #f0dfbd;
+      border-radius: 8px;
+      background: #fffdf8;
+      box-sizing: border-box;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, .04);
+    }
+
+    .bom-confirmation-cell {
+      padding: 8px 12px !important;
+      vertical-align: middle !important;
+    }
+
+    .bom-confirmation-steps {
+      display: grid;
+      gap: 5px;
+      width: 100%;
+      color: #667085;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .bom-confirmation-step {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .bom-confirmation-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #f59e0b;
+    }
+
+    .bom-confirmation-step.is-done {
+      color: #15803d;
+    }
+
+    .bom-confirmation-step.is-done .bom-confirmation-dot {
+      background: #22c55e;
+    }
+
+    .bom-import-modal {
+      width: min(920px, calc(100vw - 40px));
+    }
+
+    .bom-import-guide {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 14px 0;
+    }
+
+    .bom-import-step {
+      padding: 12px;
+      border: 1px solid #dbe4f0;
+      border-radius: 8px;
+      background: #f8fafc;
+    }
+
+    .bom-import-step b {
+      display: block;
+      margin-bottom: 4px;
+      color: #1f2937;
+      font-size: 13px;
+    }
+
+    .bom-import-step span {
+      color: #667085;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .bom-import-upload {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 14px;
+      border: 1px dashed #9db4d8;
+      border-radius: 8px;
+      background: #f7faff;
+    }
+
+    .bom-import-file-name {
+      color: #526276;
+      font-size: 13px;
+    }
+
+    .bom-import-error {
+      margin: 10px 0 0;
+      padding: 12px 14px;
+      border: 1px solid #fecaca;
+      border-radius: 8px;
+      background: #fff1f2;
+      color: #b42318;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .bom-import-error strong {
+      display: block;
+      margin-bottom: 6px;
+      color: #991b1b;
+      font-size: 13px;
+    }
+
+    .bom-import-error-list {
+      display: grid;
+      gap: 5px;
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .bom-import-error-list li {
+      padding-left: 2px;
+    }
+
+    .bom-import-validation {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      padding: 9px 11px;
+      border: 1px solid #bbf7d0;
+      border-radius: 8px;
+      background: #f0fdf4;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .bom-import-preview {
+      margin-top: 14px;
+    }
+
+    .bom-import-preview-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .bom-import-preview-meta span {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #eef4ff;
+      color: #315b96;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 720px) {
+      .bom-import-guide { grid-template-columns: 1fr; }
+    }
+
     .bom-part-cell {
       display: grid;
       gap: 4px;
@@ -3602,7 +3774,100 @@
 
     .bom-assembly-table {
       width: 100%;
-      min-width: 1540px;
+      min-width: 1920px;
+    }
+
+    .bom-version-change-text {
+      min-width: 300px;
+      max-width: 560px;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      text-overflow: clip;
+      line-height: 1.6;
+    }
+
+    .bom-version-record {
+      margin: 12px 0;
+      padding: 14px 16px;
+      border: 1px solid #cfd9e8;
+      border-radius: 6px;
+      background: #f8faff;
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .bom-version-record .bom-version-change-text { max-width: none; min-width: 0; }
+
+    .bom-version-entry {
+      margin: 12px 0 16px;
+      padding: 16px;
+      border: 1px solid #cddaf0;
+      border-radius: 6px;
+      background: linear-gradient(180deg, #f8faff 0%, #fff 100%);
+    }
+
+    .bom-version-entry-head,
+    .bom-version-entry-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .bom-version-entry-title {
+      margin: 0;
+      color: #1f2937;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .bom-required-mark { color: #e5484d; }
+
+    .bom-version-entry-help {
+      margin: 4px 0 10px;
+      color: #667085;
+      font-size: 12px;
+    }
+
+    .bom-version-entry textarea {
+      width: 100%;
+      min-height: 72px;
+      box-sizing: border-box;
+      resize: vertical;
+      line-height: 1.6;
+      border-color: #b9c7dc;
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease;
+    }
+
+    .bom-version-entry textarea:hover:not(:read-only) {
+      border-color: #7f9dcc;
+    }
+
+    .bom-version-entry textarea:focus {
+      outline: none;
+      border-color: #2f6fed;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(47, 111, 237, .14);
+    }
+
+    .bom-version-entry textarea:read-only {
+      color: #475467;
+      background: #f6f8fb;
+      cursor: default;
+    }
+
+    .bom-version-entry-foot {
+      margin-top: 7px;
+      color: #7a8493;
+      font-size: 12px;
+    }
+
+    .bom-version-entry-count { font-variant-numeric: tabular-nums; }
+
+    @media (max-width: 720px) {
+      .bom-version-entry-head { align-items: flex-start; flex-direction: column; gap: 8px; }
     }
 
     .bom-table th {
@@ -3695,6 +3960,9 @@
     .level-2 { background: #d7b79b; }
     .level-3 { background: #91c596; }
     .level-4 { background: #b9a3bd; }
+    .level-5 { background: #87bfc5; }
+    .level-6 { background: #c7aa72; }
+    .level-7 { background: #9fa8da; }
 
     .part-name {
       display: inline-flex;
@@ -4404,7 +4672,7 @@
       min-height: 88px;
       padding: 26px 22px;
       display: grid;
-      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) minmax(260px, 1fr) auto;
+      grid-template-columns: minmax(220px, 1fr) minmax(180px, .75fr) minmax(200px, .85fr) minmax(200px, .85fr) auto;
       align-items: center;
       gap: 24px;
       background: #f2f5f9;
@@ -4467,16 +4735,19 @@
     }
 
     .issue-table {
-      min-width: 1420px;
+      min-width: 1840px;
       table-layout: fixed;
     }
 
     .issue-table th,
     .issue-table td {
       height: 53px;
-      padding: 0 20px;
+      padding: 12px 20px;
       font-weight: 500;
       color: #252a34;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      vertical-align: top;
     }
 
     .issue-table th {
@@ -4509,6 +4780,82 @@
     .issue-state.done::before {
       background: #25b33f;
     }
+
+    .issue-state.inprogress::before { background: #f59e0b; }
+
+    .issue-owner-picker {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+    }
+
+    .issue-attachment-stack { display: grid; gap: 8px; justify-items: start; }
+    .issue-attachment-list { display: flex; flex-wrap: wrap; gap: 8px; }
+    .issue-attachment-item { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; color: var(--primary); font-size: 13px; font-weight: 700; }
+    .issue-attachment-item a { overflow-wrap: anywhere; }
+    .issue-detail-body { padding: 22px 26px; overflow-y: auto; }
+    .issue-detail-grid { display: grid; grid-template-columns: 180px minmax(0, 1fr); border: 1px solid var(--line); border-bottom: 0; }
+    .issue-detail-grid dt, .issue-detail-grid dd { margin: 0; padding: 12px 14px; border-bottom: 1px solid var(--line); overflow-wrap: anywhere; }
+    .issue-detail-grid dt { background: #f7f9fc; color: #475467; font-weight: 800; }
+    .issue-detail-grid dd { color: #1f2937; white-space: pre-wrap; }
+
+    .issue-owner-picker .issue-input[readonly] {
+      background: #f8fafc;
+      cursor: default;
+    }
+
+    .issue-owner-member-modal .member-picker {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 32px;
+    }
+
+    .issue-owner-member-modal .member-group-head {
+      grid-template-columns: 18px minmax(0, 1fr) auto;
+    }
+
+    .issue-owner-member-modal .member-option { cursor: pointer; }
+    .issue-owner-member-modal .member-option:has(input:checked) { background: #eff6ff; }
+    .issue-owner-member-modal .picker-box { min-height: 500px; }
+    .issue-owner-member-modal .group-list,
+    .issue-owner-member-modal .selected-group-list { height: 436px; }
+
+    .issue-owner-selected-member {
+      min-height: 50px;
+      display: grid;
+      grid-template-columns: 20px 28px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      margin: 6px 8px 8px;
+      padding: 4px 12px 4px 6px;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .issue-owner-selected-member input { pointer-events: none; }
+
+    .issue-owner-modal {
+      width: min(720px, calc(100vw - 28px));
+      max-height: calc(100vh - 24px);
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 20px 48px rgba(15, 23, 42, .22);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .issue-owner-body { padding: 20px 22px 24px; overflow-y: auto; }
+    .issue-owner-tip { margin: 0 0 14px; color: #667085; font-size: 13px; font-weight: 700; }
+    .issue-owner-search { width: 100%; height: 40px; border: 1px solid var(--line-strong); border-radius: 6px; padding: 0 12px; font: inherit; }
+    .issue-owner-list { display: grid; gap: 10px; margin-top: 16px; }
+    .issue-owner-group { border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+    .issue-owner-group h4 { margin: 0; padding: 10px 14px; background: #f7f9fc; color: #344054; font-size: 13px; }
+    .issue-owner-option { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; border-top: 1px solid var(--line); }
+    .issue-owner-option:has(input:checked) { background: #eff6ff; }
+    .issue-owner-option strong, .issue-owner-option span { display: block; }
+    .issue-owner-option strong { color: #1f2937; }
+    .issue-owner-option span { color: #667085; font-size: 12px; margin-top: 3px; }
+    .issue-owner-empty { padding: 18px; color: #667085; text-align: center; }
 
     .issue-empty {
       text-align: center;
@@ -6081,7 +6428,7 @@
     }
 
     .issue-modal {
-      width: min(638px, calc(100vw - 28px));
+      width: min(920px, calc(100vw - 28px));
       max-height: calc(100vh - 24px);
       background: #fff;
       border-radius: 4px;
@@ -6202,9 +6549,11 @@
     }
 
     .issue-form .form-row {
-      grid-template-columns: 108px minmax(0, 440px);
+      grid-template-columns: 190px minmax(0, 1fr);
       margin-bottom: 20px;
     }
+
+    .issue-form .form-error { margin-left: 190px; }
 
     .issue-form .issue-input,
     .issue-form .issue-select {
@@ -6583,6 +6932,7 @@
                 <option value="rejected">未通过</option>
               </select>
               <button class="btn btn-primary" type="button" id="manageStageTask">任务管理</button>
+              <button class="btn" type="button" id="withdrawStageTask" hidden>撤回审核</button>
               <button class="btn btn-primary" type="button" id="submitStageTask">提交</button>
             </div>
           </div>
@@ -6605,7 +6955,7 @@
                 <div class="stage-title">Program Kick Off <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gatePko">-</b></div>
               </button>
-              <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
+              <button class="stage-card" type="button" data-stage-id="Gate1" data-stage-note="PM 基于 SCM 与 ME 均确认后的 BOM 创建总成 APQP，AQE 拆解子总成和子零件开发任务，并分配给 SQD 跟进。">
                 <div class="stage-gate-label">Phase Gate 1</div>
                 <div class="stage-title">AR Submission Ready <span class="status-pill status-pending">未开始</span></div>
                 <div class="stage-meta"><span>截止时间</span><b data-stage-deadline="gate1">-</b></div>
@@ -6680,13 +7030,15 @@
                 <h2 class="section-title">生产BOM列表</h2>
               </div>
               <div class="bom-meta">
-                <span>当前阶段：PKO</span>
+                <span data-bom-current-stage>当前阶段：QuoteReady</span>
                 <span class="meta-person-group"><span class="meta-role">AE</span><span class="meta-person">Li Ming</span></span>
                 <span class="meta-person-group"><span class="meta-role">SCM</span><span class="meta-person">Chen Wei</span></span>
+                <span class="meta-person-group"><span class="meta-role">ME</span><span class="meta-person">Eric Li</span></span>
               </div>
             </div>
             <div class="bom-actions">
               <button class="btn" type="button" data-bom-export-template><svg class="icon"><use href="#i-download"></use></svg>导出BOM</button>
+              <button class="btn" type="button" data-bom-import-template><svg class="icon"><use href="#i-upload"></use></svg>导入BOM</button>
               <button class="btn" type="button" data-copy-selected-l1-secondary disabled><svg class="icon"><use href="#i-copy"></use></svg>复制BOM</button>
               <button class="btn" type="button" data-bom-apqp-tasks hidden><svg class="icon"><use href="#i-eye"></use></svg>APQP任务</button>
               <button class="btn btn-primary" type="button" data-bom-create-apqp><svg class="icon"><use href="#i-check"></use></svg>创建APQP</button>
@@ -6709,7 +7061,7 @@
               <select class="select-field" data-bom-status-filter>
                 <option value="">全部</option>
                 <option value="AE编辑中">AE编辑中</option>
-                <option value="待SCM确认">待SCM确认</option>
+                <option value="待确认">待确认</option>
                 <option value="已生效">已生效</option>
                 <option value="未创建">未创建</option>
               </select>
@@ -6723,7 +7075,7 @@
           <div class="bom-summary">
             <div class="bom-summary-item"><span>L1总成数</span><b data-bom-l1-count>0</b></div>
             <div class="bom-summary-item"><span>已生效L1</span><b data-bom-all-count>0</b></div>
-            <div class="bom-summary-item"><span>待SCM确认L1</span><b data-bom-blocking-count>0</b></div>
+            <div class="bom-summary-item"><span>待确认L1</span><b data-bom-blocking-count>0</b></div>
             <div class="bom-summary-item"><span>有未处理变更L1</span><b data-bom-change-count>0</b></div>
           </div>
 
@@ -6731,7 +7083,8 @@
             <table class="bom-table bom-detail-table bom-assembly-table" aria-label="生产BOM列表">
               <colgroup>
                 <col style="width:62px"><col style="width:130px"><col style="width:220px"><col style="width:130px">
-                <col style="width:130px"><col style="width:120px"><col style="width:150px"><col style="width:130px">
+                <col style="width:130px"><col style="width:140px"><col style="width:420px">
+                <col style="width:180px"><col style="width:130px">
                 <col style="width:120px"><col style="width:150px"><col style="width:150px"><col style="width:170px">
               </colgroup>
               <thead data-bom-head></thead>
@@ -6927,29 +7280,25 @@
 
           <div class="issue-status-tabs" aria-label="问题状态筛选">
             <button class="active" type="button" data-issue-status="all">全部</button>
-            <button type="button" data-issue-status="pending">待解决</button>
-            <button type="button" data-issue-status="done">已解决</button>
+            <button type="button" data-issue-status="pending">待处理</button>
+            <button type="button" data-issue-status="inprogress">进行中</button>
+            <button type="button" data-issue-status="done">已完成</button>
           </div>
 
           <form class="bom-filter issue-filter" id="issueFilter">
-            <label>问题标题
-              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题描述">
+            <label>问题 / 行动
+              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题或行动内容">
             </label>
-            <label>问题类型
-              <select class="select-field issue-select" id="issueTypeFilter">
-                <option value="">请选择问题类型</option>
-                <option>尺寸精度</option>
-                <option>精度</option>
-                <option>性能</option>
+            <label>状态
+              <select class="select-field issue-select" id="issueStatusFilter">
+                <option value="">全部状态</option><option value="pending">待处理</option><option value="inprogress">进行中</option><option value="done">已完成</option>
               </select>
             </label>
-            <label>严重程度
-              <select class="select-field issue-select" id="issueSeverityFilter">
-                <option value="">请选择严重程度</option>
-                <option>高</option>
-                <option>中</option>
-                <option>低</option>
-              </select>
+            <label>泳道 / 负责领域
+              <input class="field issue-input" id="issueSwimLaneFilter" type="search" placeholder="输入部门、模块或分类">
+            </label>
+            <label>负责人
+              <input class="field issue-input" id="issueChampionFilter" type="search" placeholder="输入负责人姓名">
             </label>
             <div class="issue-filter-actions">
               <button class="btn btn-soft-primary" type="submit">查询</button>
@@ -6958,64 +7307,28 @@
           </form>
 
           <div class="bom-table-wrap issue-table-wrap">
-            <table class="issue-table" aria-label="问题清单列表">
+            <table class="issue-table" aria-label="Issue list">
               <colgroup>
-                <col style="width:28%">
-                <col style="width:9%">
-                <col style="width:8%">
-                <col style="width:10%">
-                <col style="width:12%">
-                <col style="width:12%">
-                <col style="width:7%">
-                <col style="width:7%">
-                <col style="width:7%">
+                <col style="width:140px"><col style="width:170px"><col style="width:300px"><col style="width:140px"><col style="width:120px"><col style="width:120px"><col style="width:120px"><col style="width:260px"><col style="width:160px"><col style="width:220px">
               </colgroup>
               <thead>
                 <tr>
-                  <th>问题标题</th>
-                  <th>问题类型</th>
-                  <th>责任人</th>
-                  <th>发现日期</th>
-                  <th>计划解决日期</th>
-                  <th>添加时间</th>
-                  <th>严重程度</th>
-                  <th>问题状态</th>
+                  <th>Status</th><th>Swim Lane</th><th>Issue / Action Required</th><th>Champion</th><th>Opened</th><th>Target</th><th>Closed</th><th>Next Steps / Updates</th><th>Attachments</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody id="issueTableBody">
-                <tr data-status="pending" data-type="尺寸精度" data-severity="高">
-                  <td>发动机缸体缸孔圆度超差</td>
-                  <td>尺寸精度</td>
-                  <td>李工</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td>高</td>
-                  <td><span class="issue-state pending">待解决</span></td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+                <tr data-status="pending" data-swim-lane="制造工程" data-champion="李工">
+                  <td><span class="issue-state pending">Pending</span></td><td>Manufacturing Engineering</td><td>Engine cylinder-bore roundness is out of tolerance; confirm tooling compensation.</td><td>Li</td><td>2025-10-10</td><td>2025-10-18</td><td>-</td><td>Complete tooling-parameter review, then arrange trial validation.</td><td>-</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-view-issue>详情</button><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
                 </tr>
-                <tr data-status="done" data-type="精度" data-severity="中">
-                  <td>悬挂控制臂盐雾测试 720 小时出现局部红锈</td>
-                  <td>精度</td>
-                  <td>李工</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td>中</td>
-                  <td><span class="issue-state done">已解决</span></td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+                <tr data-status="inprogress" data-swim-lane="质量" data-champion="张工">
+                  <td><span class="issue-state inprogress">In Progress</span></td><td>Quality</td><td>Red rust occurred during the salt-spray test; validate the corrosion-protection plan.</td><td>Zhang</td><td>2025-10-10</td><td>2025-10-22</td><td>-</td><td>Supplier submitted improved samples; await the 480-hour retest result.</td><td><a class="link-button" href="data:text/plain;charset=utf-8,Test%20Report" download="Test_Report.txt">Test Report</a></td>
+                  <td><div class="actions"><button class="link-button" type="button" data-view-issue>详情</button><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
                 </tr>
-                <tr data-status="done" data-type="性能" data-severity="低">
-                  <td>上盖气密性测试压力衰减 85Pa/min</td>
-                  <td>性能</td>
-                  <td>李工</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td>低</td>
-                  <td><span class="issue-state done">已解决</span></td>
-                  <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+                <tr data-status="done" data-swim-lane="产品工程" data-champion="王工">
+                  <td><span class="issue-state done">Closed</span></td><td>Product Engineering</td><td>Cover leak-test pressure decay exceeded the limit; optimize the sealing structure.</td><td>Wang</td><td>2025-10-10</td><td>2025-10-15</td><td>2025-10-14</td><td>The optimized plan passed validation and drawings were archived.</td><td>-</td>
+                  <td><div class="actions"><button class="link-button" type="button" data-view-issue>详情</button><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
                 </tr>
               </tbody>
             </table>
@@ -7397,6 +7710,7 @@
         </button>
       </header>
       <div class="bom-modal-body">
+        <div data-bom-version-record-fields></div>
         <section class="bom-part-search-wrap" data-bom-create-options>
           <h3>搜索零件</h3>
           <div class="bom-part-search">
@@ -7654,6 +7968,7 @@
           <button class="btn btn-primary" type="button" data-bom-detail-query>查询</button>
           <button class="btn" type="button" data-bom-detail-reset>重置</button>
         </div>
+        <div data-bom-detail-version-record></div>
         <div class="bom-table-wrap" data-bom-detail-wrap>
           <table class="bom-table bom-detail-table" aria-label="BOM详情明细">
             <colgroup>
@@ -7701,6 +8016,9 @@
                 <option value="2">L2</option>
                 <option value="3">L3</option>
                 <option value="4">L4</option>
+                <option value="5">L5</option>
+                <option value="6">L6</option>
+                <option value="7">L7</option>
               </select>
             </label>
             <label>零件 / 材料名称 *
@@ -7844,84 +8162,85 @@
   <div class="modal-backdrop" id="issueModal" hidden>
     <section class="issue-modal" role="dialog" aria-modal="true" aria-labelledby="issueModalTitle">
       <div class="modal-head">
-        <h3 id="issueModalTitle">添加问题</h3>
-        <button class="modal-close" type="button" data-close-issue aria-label="关闭">×</button>
+        <h3 id="issueModalTitle">Add Issue</h3>
+        <button class="modal-close" type="button" data-close-issue aria-label="Close">×</button>
       </div>
-      <form id="issueForm">
+      <form id="issueForm" novalidate>
         <div class="issue-form">
           <div class="form-row">
-            <label for="issueName"><span class="required">*</span>问题名称:</label>
-            <input class="issue-input" id="issueName" name="issueName" type="text" placeholder="请输入问题名称" autocomplete="off">
+            <label for="issueStatus"><span class="required">*</span>Status:</label>
+            <select class="issue-select" id="issueStatus" name="issueStatus"><option value="">Select status</option><option value="pending">Pending</option><option value="inprogress">In Progress</option><option value="done">Closed</option></select>
           </div>
           <div class="form-row">
-            <label for="issueFoundDate">发现日期:</label>
+            <label for="issueSwimLane"><span class="required">*</span>Swim Lane:</label>
+            <input class="issue-input" id="issueSwimLane" name="issueSwimLane" type="text" placeholder="e.g. Quality, Manufacturing Engineering" autocomplete="off">
+          </div>
+          <div class="form-row">
+            <label for="issueName"><span class="required">*</span>Issue / Action Required:</label>
+            <textarea class="issue-textarea" id="issueName" name="issueName" maxlength="500" placeholder="Describe the issue or action required"></textarea>
+          </div>
+          <div class="form-row">
+            <label for="issueOwner"><span class="required">*</span>Champion:</label>
+            <div class="issue-owner-picker"><input class="issue-input" id="issueOwner" name="issueOwner" type="text" placeholder="Select from the organization" readonly><button class="btn" id="openIssueOwnerModal" type="button">选择</button></div>
+          </div>
+          <div class="form-row">
+            <label for="issueFoundDate"><span class="required">*</span>Opened:</label>
             <input class="issue-input" id="issueFoundDate" name="issueFoundDate" type="date">
           </div>
           <div class="form-row">
-            <label for="issuePlanDate">计划解决时间:</label>
+            <label for="issuePlanDate"><span class="required">*</span>Target:</label>
             <input class="issue-input" id="issuePlanDate" name="issuePlanDate" type="date">
           </div>
           <div class="form-row">
-            <label for="issueType"><span class="required">*</span>问题类型:</label>
-            <select class="issue-select" id="issueType" name="issueType">
-              <option value="">请选择</option>
-              <option>尺寸精度</option>
-              <option>精度</option>
-              <option>性能</option>
-              <option>材料</option>
-              <option>供应商</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="issueSeverity"><span class="required">*</span>严重程度:</label>
-            <select class="issue-select" id="issueSeverity" name="issueSeverity">
-              <option value="">请选择</option>
-              <option>高</option>
-              <option>中</option>
-              <option>低</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="issueStatus"><span class="required">*</span>当前状态:</label>
-            <select class="issue-select" id="issueStatus" name="issueStatus">
-              <option value="">请选择</option>
-              <option value="pending">待解决</option>
-              <option value="done">已解决</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="issueOwner"><span class="required">*</span>责任人:</label>
-            <select class="issue-select" id="issueOwner" name="issueOwner">
-              <option value="">请选择</option>
-              <option>李工</option>
-              <option>张工</option>
-              <option>王工</option>
-              <option>AQE</option>
-              <option>SQD</option>
-            </select>
+            <label for="issueClosedDate">Closed:</label>
+            <input class="issue-input" id="issueClosedDate" name="issueClosedDate" type="date">
           </div>
           <div class="form-row form-editor">
-            <label for="issueDescription">问题描述:</label>
+            <label for="issueDescription"><span class="required">*</span>Next Steps / Updates:</label>
             <div>
-              <textarea class="issue-textarea" id="issueDescription" name="issueDescription" maxlength="100" placeholder="请输入内容"></textarea>
-              <div class="issue-counter"><span id="issueDescriptionCount">0</span>/100</div>
+              <textarea class="issue-textarea" id="issueDescription" name="issueDescription" maxlength="500" placeholder="Enter follow-up plan or latest progress"></textarea>
+              <div class="issue-counter"><span id="issueDescriptionCount">0</span>/500</div>
             </div>
           </div>
-          <div class="form-row form-upload">
-            <label>上传附件:</label>
-            <div class="issue-upload">
-              <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-plus"></use></svg>上传文件</button>
-              <div class="upload-note">支持扩展名：.doc .docx .pdf .jpg...</div>
-              <div class="mock-file" id="issueMockFile"><svg class="icon"><use href="#i-paperclip"></use></svg><span>文档.docx</span><button class="file-remove" type="button" aria-label="移除附件">×</button></div>
-            </div>
+          <div class="form-row">
+            <label for="issueAttachments">Attachments:</label>
+            <div class="issue-attachment-stack"><input id="issueAttachments" name="issueAttachments" type="file" multiple hidden><button class="btn" id="chooseIssueAttachments" type="button"><svg class="icon"><use href="#i-upload"></use></svg>上传文件</button><div class="issue-attachment-list" id="issueAttachmentList"><span class="upload-note">未选择文件</span></div></div>
           </div>
-          <div class="form-error" id="issueError" hidden>请完整填写必填项</div>
+          <div class="form-error" id="issueError" hidden>Please complete all required fields.</div>
         </div>
         <div class="modal-foot">
           <button class="btn" type="button" data-close-issue>取消</button>
           <button class="btn btn-primary" type="submit">确定</button>
         </div>
       </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="issueOwnerModal" hidden>
+    <section class="member-modal issue-owner-member-modal" role="dialog" aria-modal="true" aria-labelledby="issueOwnerModalTitle">
+      <header class="modal-head">
+        <div><h3 class="member-modal-title" id="issueOwnerModalTitle">选择负责人</h3><p class="member-modal-subtitle">从左侧组织架构中选择一名负责人</p></div>
+        <button class="modal-close" type="button" data-close-issue-owner aria-label="关闭">×</button>
+      </header>
+      <div class="member-picker issue-owner-picker-layout">
+        <section class="picker-column" aria-label="可选团队及成员">
+          <div class="picker-column-head"><span class="picker-label"><span class="picker-dot"></span>可选团队及成员 <span class="picker-count" id="issueOwnerAvailableCount">0</span></span><span class="picker-mini-actions"><button type="button" id="issueOwnerExpandAll">全部展开</button><span>|</span><button type="button" id="issueOwnerCollapseAll">全部收起</button></span></div>
+          <div class="picker-box"><div class="picker-search"><svg class="icon"><use href="#i-search"></use></svg><input id="issueOwnerSearch" type="search" placeholder="搜索团队或成员..." aria-label="搜索团队或成员"></div><div class="group-list" id="issueOwnerList"></div></div>
+        </section>
+        <section class="picker-column selected" aria-label="已选负责人">
+          <div class="picker-column-head"><span class="picker-label"><span class="picker-dot green"></span>已选负责人 <span class="picker-count" id="issueOwnerSelectedCount">0</span></span><button class="clear-selected" type="button" id="clearIssueOwner">清空</button></div>
+          <div class="picker-box"><div class="picker-search"><svg class="icon"><use href="#i-search"></use></svg><input id="issueOwnerSelectedSearch" type="search" placeholder="搜索已选负责人..." aria-label="搜索已选负责人"></div><div class="selected-group-list" id="issueOwnerSelectedList"></div></div>
+        </section>
+      </div>
+      <footer class="member-modal-foot"><span id="issueOwnerSummary">暂未选择负责人</span><div class="member-modal-actions"><button class="btn" type="button" data-close-issue-owner>取消</button><button class="btn btn-primary" id="confirmIssueOwner" type="button">确认选择</button></div></footer>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="issueDetailModal" hidden>
+    <section class="issue-modal" role="dialog" aria-modal="true" aria-labelledby="issueDetailTitle">
+      <div class="modal-head"><h3 id="issueDetailTitle">问题详情</h3><button class="modal-close" type="button" data-close-issue-detail aria-label="关闭">×</button></div>
+      <div class="issue-detail-body" id="issueDetailBody"></div>
+      <div class="modal-foot"><button class="btn btn-primary" type="button" data-close-issue-detail>关闭</button></div>
     </section>
   </div>
 
@@ -8508,6 +8827,7 @@
           </label>
         </div>
         <div class="bom-summary" data-assembly-history-summary></div>
+        <div data-assembly-version-record></div>
         <div class="bom-table-wrap">
           <table class="bom-table bom-detail-table" aria-label="L1 BOM历史版本明细">
             <colgroup>
@@ -8711,6 +9031,47 @@
       <div class="modal-foot">
         <button class="btn" type="button" data-close-controlled-bom-export>取消</button>
         <button class="btn btn-primary" type="button" data-confirm-controlled-bom-export>导出</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="bomImportModal" hidden>
+    <section class="confirm-modal bom-import-modal" role="dialog" aria-modal="true" aria-labelledby="bomImportTitle">
+      <div class="modal-head">
+        <h3 id="bomImportTitle">通过模板导入BOM初始版本</h3>
+        <button class="modal-close" type="button" data-close-bom-import aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body">
+        <p>使用标准Excel模板导入BOM行和供应方案。导入后生成V1.0工作版本，由AE继续核对和编辑。</p>
+        <div class="bom-import-guide" aria-label="BOM导入步骤">
+          <div class="bom-import-step"><b>1. 下载模板</b><span>按“BOM行”和“供应方案”工作表填写，无需填写技术行号。</span></div>
+          <div class="bom-import-step"><b>2. 上传并校验</b><span>系统检查必填项、L1-L7层级、父级关系和供应方案匹配。</span></div>
+          <div class="bom-import-step"><b>3. 确认导入</b><span>新L1生成V1.0工作版本，重复L1编号不会覆盖。</span></div>
+        </div>
+        <div class="bom-import-upload">
+          <button class="btn" type="button" data-download-bom-import-template><svg class="icon"><use href="#i-download"></use></svg>下载Excel模板</button>
+          <input type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" data-bom-import-file hidden>
+          <button class="btn btn-primary" type="button" data-choose-bom-import-file><svg class="icon"><use href="#i-upload"></use></svg>选择Excel文件</button>
+          <span class="bom-import-file-name" data-bom-import-file-name>尚未选择文件</span>
+        </div>
+        <div class="bom-import-error" data-bom-import-error hidden>
+          <strong data-bom-import-error-title></strong>
+          <ul class="bom-import-error-list" data-bom-import-error-list></ul>
+        </div>
+        <div class="bom-import-validation" data-bom-import-validation hidden></div>
+        <div class="bom-import-preview" data-bom-import-preview hidden>
+          <div class="bom-import-preview-meta" data-bom-import-preview-meta></div>
+          <div class="bom-table-wrap">
+            <table class="bom-table" aria-label="BOM导入预览">
+              <thead><tr><th>层级</th><th>零件编号</th><th>零件名称</th><th>数量</th><th>产品应用</th><th>供应类型</th></tr></thead>
+              <tbody data-bom-import-preview-body></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-bom-import>取消</button>
+        <button class="btn btn-primary" type="button" data-confirm-bom-import disabled>确认导入</button>
       </div>
     </section>
   </div>
@@ -14064,6 +14425,7 @@
 }
   </script>
 
+  <script src="./vendor/jszip.min.js"></script>
   <script>
     const tabs = Array.from(document.querySelectorAll("[data-tab-target]"));
     const tabPanels = Array.from(document.querySelectorAll("[data-tab-panel]"));
@@ -14096,21 +14458,44 @@
     const issueName = document.getElementById("issueName");
     const issueFoundDate = document.getElementById("issueFoundDate");
     const issuePlanDate = document.getElementById("issuePlanDate");
-    const issueType = document.getElementById("issueType");
-    const issueSeverity = document.getElementById("issueSeverity");
     const issueStatus = document.getElementById("issueStatus");
     const issueOwner = document.getElementById("issueOwner");
+    const issueSwimLane = document.getElementById("issueSwimLane");
+    const issueClosedDate = document.getElementById("issueClosedDate");
+    const issueAttachments = document.getElementById("issueAttachments");
+    const chooseIssueAttachments = document.getElementById("chooseIssueAttachments");
+    const issueAttachmentList = document.getElementById("issueAttachmentList");
+    const issueModalTitle = document.getElementById("issueModalTitle");
+    const issueDetailModal = document.getElementById("issueDetailModal");
+    const issueDetailBody = document.getElementById("issueDetailBody");
     const issueDescription = document.getElementById("issueDescription");
     const issueDescriptionCount = document.getElementById("issueDescriptionCount");
     const issueError = document.getElementById("issueError");
     const issueTableBody = document.getElementById("issueTableBody");
     const issueFilter = document.getElementById("issueFilter");
     const issueSearchTitle = document.getElementById("issueSearchTitle");
-    const issueTypeFilter = document.getElementById("issueTypeFilter");
-    const issueSeverityFilter = document.getElementById("issueSeverityFilter");
-    const issueMockFile = document.getElementById("issueMockFile");
+    const issueStatusFilter = document.getElementById("issueStatusFilter");
+    const issueSwimLaneFilter = document.getElementById("issueSwimLaneFilter");
+    const issueChampionFilter = document.getElementById("issueChampionFilter");
+    const issueOwnerModal = document.getElementById("issueOwnerModal");
+    const openIssueOwnerModal = document.getElementById("openIssueOwnerModal");
+    const issueOwnerSearch = document.getElementById("issueOwnerSearch");
+    const issueOwnerList = document.getElementById("issueOwnerList");
+    const issueOwnerSelectedSearch = document.getElementById("issueOwnerSelectedSearch");
+    const issueOwnerSelectedList = document.getElementById("issueOwnerSelectedList");
+    const issueOwnerAvailableCount = document.getElementById("issueOwnerAvailableCount");
+    const issueOwnerSelectedCount = document.getElementById("issueOwnerSelectedCount");
+    const issueOwnerSummary = document.getElementById("issueOwnerSummary");
+    const issueOwnerExpandAll = document.getElementById("issueOwnerExpandAll");
+    const issueOwnerCollapseAll = document.getElementById("issueOwnerCollapseAll");
+    const clearIssueOwner = document.getElementById("clearIssueOwner");
+    const confirmIssueOwner = document.getElementById("confirmIssueOwner");
     const issueStatusTabs = Array.from(document.querySelectorAll("[data-issue-status]"));
     let activeIssueStatus = "all";
+    let draftIssueOwnerId = "";
+    let issueAttachmentFiles = [];
+    let editingIssueRow = null;
+    let collapsedIssueOwnerTeams = new Set();
     const qualitySearchForm = document.getElementById("qualitySearchForm");
     const qualitySearchInput = document.getElementById("qualitySearchInput");
     const qualityTableBody = document.getElementById("qualityTableBody");
@@ -14473,9 +14858,9 @@
         alerts.push({
           kind: "待确认",
           level: "risk",
-          title: `L1 BOM 版本集合等待 SCM 确认`,
-          description: "SCM 确认前，对应 L1 总成 BOM 不能作为已锁定生效版本推进 L1 APQP。",
-          roles: ["SCM", "PM"],
+          title: `L1 BOM 版本集合等待确认`,
+          description: "SCM 与 ME 均确认前，对应 L1 总成 BOM 不能作为已锁定生效版本推进 L1 APQP。",
+          roles: ["SCM", "ME", "PM"],
           action: "查看BOM",
           tab: "bom"
         });
@@ -14774,7 +15159,7 @@
         return `<span class="inline-actions"><button class="blue-link" type="button" data-review-task="${escapeHtml(task.id)}">审核</button></span>`;
       }
       if (task.status === "approved" || task.status === "done") {
-        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
+        return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button><button class="blue-link" type="button" data-reopen-task="${escapeHtml(task.id)}">修改</button></span>`;
       }
       if (task.status === "cancelled") {
         return `<span class="inline-actions"><button class="blue-link" type="button" data-view-task="${escapeHtml(task.id)}">查看</button></span>`;
@@ -14871,10 +15256,9 @@
         button.classList.toggle("active", button.dataset.stageStatusFilter === activeStageStatusFilter);
       });
       if (submitStageTask) {
-        const canSubmitStandardGate = standardGateStages.includes(stage) && stageHasStatus(stage, "status-running");
-        const canSubmitGate4 = stage === "Gate4" && !stageHasStatus("Gate4", "status-done");
-        submitStageTask.hidden = !(stage === "QuoteReady" || stage === "CKO" || stage === "PKO" || (stage === "Gate1" && gate1ReviewState === "running") || canSubmitGate4 || canSubmitStandardGate);
+        submitStageTask.hidden = !stageCanSubmit(stage);
       }
+      document.getElementById("withdrawStageTask").hidden = !stageHasStatus(stage, "status-review");
       if (manageStageTask) {
         manageStageTask.hidden = stage !== "PKO";
       }
@@ -14884,7 +15268,7 @@
       if (gateReviewStatus) {
         const showReviewStatus = (stage === "Gate1" && gate1ReviewState !== "running") ||
           (stage === "Gate4" && gate4ReviewState !== "running") ||
-          (standardGateStages.includes(stage) && (stageHasStatus(stage, "status-review") || stageHasStatus(stage, "status-failed")));
+          ([...standardGateStages, "QuoteReady", "CKO", "PKO"].includes(stage) && (stageHasStatus(stage, "status-review") || stageHasStatus(stage, "status-failed")));
         gateReviewStatus.hidden = !showReviewStatus;
         if (stage === "Gate4") {
           gateReviewStatus.innerHTML = `
@@ -14901,7 +15285,7 @@
             <option value="rejected">拒绝</option>
             <option value="conditional">带条件通过</option>
           `;
-          if (standardGateStages.includes(stage)) {
+          if ([...standardGateStages, "QuoteReady", "CKO", "PKO"].includes(stage)) {
             gateReviewStatus.value = stageHasStatus(stage, "status-failed") ? "rejected" : "reviewing";
           } else {
             gateReviewStatus.value = gate1ReviewState === "rejected"
@@ -15008,6 +15392,7 @@
       stageStatusFilters.forEach((button) => {
         button.classList.toggle("active", button.dataset.stageStatusFilter === activeStageStatusFilter);
       });
+      document.getElementById("withdrawStageTask").hidden = true;
       if (submitStageTask) submitStageTask.hidden = handoverSubmitted;
       if (auditRecordButton) auditRecordButton.hidden = true;
       if (manageStageTask) manageStageTask.hidden = true;
@@ -15201,6 +15586,7 @@
         "AQE": "项目质量",
         "SQD": "供应商质量开发",
         "SCM": "供应链管理",
+        "ME": "制造工程",
         "Purchasing": "采购",
         "Quality": "质量",
         "Finance": "财务",
@@ -15254,10 +15640,10 @@
       taskFillDepartment.textContent = translateTaskBusinessText(task.department);
       taskFillDate.textContent = task.dateRange;
       taskFillDescription.innerHTML = task.description.split("\n").map((line) => `<div>${escapeHtml(line)}</div>`).join("");
-      taskFillNote.value = isReadOnlyMode ? (task.note || "") : "";
+      taskFillNote.value = task.note || "";
       taskFillNote.readOnly = isReadOnlyMode;
-      if (isReadOnlyMode) {
-        showTaskUploadFile(task.uploadFile || { name: "设计验证计划文档.pdf", size: 0 });
+      if (task.uploadFile) {
+        showTaskUploadFile(task.uploadFile);
       }
       taskFillModal.hidden = false;
       taskFillModal.querySelector(".task-fill-body").scrollTop = 0;
@@ -15597,6 +15983,59 @@
       }
     }
 
+    function stageCanSubmit(stage) {
+      return stageHasStatus(stage, "status-running") || stageHasStatus(stage, "status-failed") ||
+        (stage === "Gate4" && gate4ReviewState === "tempApproved");
+    }
+
+    function resetStageReview(stage) {
+      if (stage === "Gate1") gate1ReviewState = "running";
+      if (stage === "Gate4") gate4ReviewState = "running";
+      updateStagePill(stage, "进行中", "status-running");
+      setProjectStatus("inProgress");
+    }
+
+    async function withdrawStageReview() {
+      const stage = activeStage;
+      if (!stageHasStatus(stage, "status-review")) return;
+      const confirmed = await showBomConfirm({
+        title: "撤回阶段审核",
+        message: `确认撤回 ${stageDisplayName(stage)} 的审核申请吗？撤回后恢复为进行中，任务和附件保留，可重新提交审核。`
+      });
+      if (!confirmed || !stageHasStatus(stage, "status-review")) return;
+      resetStageReview(stage);
+      addProjectEvent({ category: "approval", type: "审批", title: `${stageDisplayName(stage)} 撤回审核`,
+        description: "审核申请已撤回，阶段恢复进行中，可重新提交审核；任务及附件保留。",
+        actor: currentOperatorName, role: "PM", scope: stage });
+      renderStageTasks(activeStage);
+    }
+
+    async function reopenCompletedTask(taskId) {
+      const task = findStageTask(taskId);
+      if (!task || !["done", "approved"].includes(task.status)) return;
+      const stage = Object.entries(stageTasks).find(([, rows]) => rows.includes(task))?.[0];
+      const reviewing = stageHasStatus(stage, "status-review");
+      const confirmed = await showBomConfirm({
+        title: "修改已完成任务",
+        message: `确认修改“${task.title}”吗？确认后任务恢复为待完成，之前上传的附件和填写内容保留。${reviewing ? "当前阶段审核将同时撤回，任务重新完成后可再次提交审核。" : ""}`
+      });
+      if (!confirmed || !["done", "approved"].includes(task.status)) return;
+      // 审核状态在确认期间发生变化时，要求重新确认，避免静默修改审核依据。
+      if (reviewing !== stageHasStatus(stage, "status-review")) return;
+      if (reviewing) {
+        resetStageReview(stage);
+        addProjectEvent({ category: "approval", type: "审批", title: `${stageDisplayName(stage)} 撤回审核`,
+          description: `因修改任务 ${task.kpac} 撤回审核，需重新提交。`, actor: currentOperatorName, role: "PM", scope: stage });
+      }
+      task.status = "todo";
+      task.operator = currentOperatorName;
+      addProjectEvent({ category: "task", type: "任务", title: `${stageDisplayName(stage)} 任务恢复待完成`,
+        description: `${task.kpac} · ${task.title}；原附件及填报内容保留。`,
+        actor: currentOperatorName, role: task.owner || task.department || "任务负责人", scope: stage });
+      activeStageStatusFilter = "all";
+      renderStageTasks(activeStage);
+    }
+
     function submitQuoteReadyStage() {
       stageTasks.QuoteReady.forEach((task) => {
         if (task.status === "todo") task.status = "done";
@@ -15920,11 +16359,11 @@
         updateSubmitConfirmMeta(pendingSubmitStage);
       }
       if (pendingSubmitStage === "QuoteReady") {
-        submitSimpleMessage.textContent = "确认提交 Quote Ready 阶段任务吗？提交后项目将进入 Commercial Kick Off 阶段。";
+        submitSimpleMessage.textContent = "确认提交 Quote Ready 阶段任务吗？提交后进入审核中，审核通过后进入 Commercial Kick Off 阶段；通过前可撤回。";
       } else if (pendingSubmitStage === "CKO") {
-        submitSimpleMessage.textContent = "确认提交 Commercial Kick Off 阶段任务吗？提交后项目将进入 Program Kick Off 阶段。";
+        submitSimpleMessage.textContent = "确认提交 Commercial Kick Off 阶段任务吗？提交后进入审核中，审核通过后进入 Program Kick Off 阶段；通过前可撤回。";
       } else if (pendingSubmitStage === "PKO") {
-        submitSimpleMessage.textContent = "确认提交 Program Kick Off 阶段任务吗？提交后项目将进入 AR Submission Ready 阶段。";
+        submitSimpleMessage.textContent = "确认提交 Program Kick Off 阶段任务吗？提交后进入审核中，审核通过后进入 AR Submission Ready 阶段；通过前可撤回。";
       } else if (pendingSubmitStage === "Gate6") {
         submitSimpleMessage.textContent = "确认提交 Handover 阶段交接信息吗？提交后项目交接闭环，项目状态将更新为完成。";
       } else if (pendingSubmitStage === "Gate1") {
@@ -16564,6 +17003,13 @@
 
     if (submitStageTask) {
       submitStageTask.addEventListener("click", () => {
+        if (!["Gate6", "HandOver"].includes(activeStage) && !stageCanSubmit(activeStage)) return;
+        const incomplete = allStageRows(activeStage).filter((task) => !["done", "approved", "cancelled"].includes(task.status));
+        if (incomplete.length && !["Gate6", "HandOver"].includes(activeStage)) {
+          showBomConfirm({ title: "阶段任务尚未完成", message: "请先完成当前阶段的项目任务及任务审批，再提交阶段审核。",
+            detail: incomplete.map((task) => ({ title: task.kpac, description: task.title })) });
+          return;
+        }
         const blockers = gateSubmitBlockers(activeStage);
         if (blockers.length) {
           showBomConfirm({
@@ -16576,6 +17022,8 @@
         openSubmitConfirmModal();
       });
     }
+
+    document.getElementById("withdrawStageTask")?.addEventListener("click", withdrawStageReview);
 
     addSubmitReviewer?.addEventListener("click", () => showMemberModal("review"));
 
@@ -16607,10 +17055,8 @@
           return;
         }
         closeSubmitConfirmModal();
-        if (stageToSubmit === "QuoteReady") {
-          submitQuoteReadyStage();
-        } else if (stageToSubmit === "CKO") {
-          submitCkoStage();
+        if (["QuoteReady", "CKO", "PKO"].includes(stageToSubmit)) {
+          submitStandardGateStage(stageToSubmit);
         } else if (stageToSubmit === "Gate1") {
           submitGate1Stage();
         } else if (stageToSubmit === "Gate6" || stageToSubmit === "HandOver") {
@@ -16627,6 +17073,7 @@
 
     if (gateReviewStatus) {
       gateReviewStatus.addEventListener("change", () => {
+        if (!stageHasStatus(activeStage, "status-review")) return;
         if (activeStage === "Gate4") {
           if (gateReviewStatus.value === "rejected") {
             gate4ReviewState = "rejected";
@@ -16647,7 +17094,7 @@
           renderStageTasks(activeStage);
           return;
         }
-        if (standardGateStages.includes(activeStage)) {
+        if ([...standardGateStages, "QuoteReady", "CKO", "PKO"].includes(activeStage)) {
           if (gateReviewStatus.value === "approved") {
             advanceStandardGate(activeStage, "approved");
             return;
@@ -16756,6 +17203,11 @@
         const deleteHandoverRowButton = event.target.closest("[data-delete-handover-row]");
         const handoverMemberButton = event.target.closest("[data-select-handover-members]");
         const completeButton = event.target.closest("[data-complete-stage-task]");
+        const reopenButton = event.target.closest("[data-reopen-task]");
+        if (reopenButton) {
+          reopenCompletedTask(reopenButton.dataset.reopenTask);
+          return;
+        }
         const viewButton = event.target.closest("[data-view-task]");
         const reviewButton = event.target.closest("[data-review-task]");
         const rejectReasonButton = event.target.closest("[data-view-reject]");
@@ -17163,12 +17615,18 @@
     function resetIssueForm() {
       issueForm.reset();
       issueError.hidden = true;
+      issueError.textContent = "Please complete all required fields.";
       issueDescriptionCount.textContent = "0";
-      issueMockFile.hidden = false;
+      issueFoundDate.value = new Date().toISOString().slice(0, 10);
+      draftIssueOwnerId = "";
+      issueAttachmentFiles = [];
+      issueAttachmentList.innerHTML = '<span class="upload-note">未选择文件</span>';
     }
 
     function showIssueModal() {
       resetIssueForm();
+      editingIssueRow = null;
+      issueModalTitle.textContent = "添加问题";
       issueModal.hidden = false;
       issueName.focus();
     }
@@ -17179,42 +17637,89 @@
 
     function createIssueRow(payload) {
       const row = document.createElement("tr");
-      row.dataset.status = payload.status;
-      row.dataset.type = payload.type;
-      row.dataset.severity = payload.severity;
-      const statusText = payload.status === "done" ? "已解决" : "待解决";
       row.innerHTML = `
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td><span class="issue-state ${payload.status}">${statusText}</span></td>
-        <td><div class="actions"><button class="link-button" type="button">详情</button><button class="link-button" type="button">编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        <td><div class="actions"><button class="link-button" type="button" data-view-issue>详情</button><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
       `;
-      row.children[0].textContent = payload.name;
-      row.children[1].textContent = payload.type;
-      row.children[2].textContent = payload.owner;
-      row.children[3].textContent = payload.foundDate || "-";
-      row.children[4].textContent = payload.planDate || "-";
-      row.children[5].textContent = getCurrentTime();
-      row.children[6].textContent = payload.severity;
+      applyIssueRow(row, payload);
       return row;
+    }
+
+    function applyIssueRow(row, payload) {
+      const statusText = { pending: "Pending", inprogress: "In Progress", done: "Closed" }[payload.status];
+      row.dataset.status = payload.status;
+      row.dataset.swimLane = payload.swimLane;
+      row.dataset.champion = payload.owner;
+      row._issueAttachments = payload.attachments || [];
+      row.children[0].innerHTML = `<span class="issue-state ${payload.status}">${statusText}</span>`;
+      row.children[1].textContent = payload.swimLane;
+      row.children[2].textContent = payload.name;
+      row.children[3].textContent = payload.owner;
+      row.children[4].textContent = payload.foundDate;
+      row.children[5].textContent = payload.planDate;
+      row.children[6].textContent = payload.closedDate || "-";
+      row.children[7].textContent = payload.updates;
+      if (row._issueAttachments.length) {
+        row.children[8].innerHTML = row._issueAttachments.map((file) => `<a class="link-button" href="${file.url}" download="${escapeHtml(file.name)}">${escapeHtml(file.name)}</a>`).join("<br>");
+      } else row.children[8].textContent = "-";
+    }
+
+    function issuePayloadFromRow(row) {
+      const status = row.dataset.status;
+      const anchors = Array.from(row.children[8].querySelectorAll("a"));
+      return {
+        status,
+        swimLane: row.children[1].textContent.trim(),
+        name: row.children[2].textContent.trim(),
+        owner: row.children[3].textContent.trim(),
+        foundDate: row.children[4].textContent.trim(),
+        planDate: row.children[5].textContent.trim(),
+        closedDate: row.children[6].textContent.trim() === "-" ? "" : row.children[6].textContent.trim(),
+        updates: row.children[7].textContent.trim(),
+        attachments: row._issueAttachments || anchors.map((anchor) => ({ name: anchor.textContent.trim(), url: anchor.href }))
+      };
+    }
+
+    function showIssueDetail(row) {
+      const issue = issuePayloadFromRow(row);
+      const fields = [["Status", { pending: "Pending", inprogress: "In Progress", done: "Closed" }[issue.status]], ["Swim Lane", issue.swimLane], ["Issue / Action Required", issue.name], ["Champion", issue.owner], ["Opened", issue.foundDate], ["Target", issue.planDate], ["Closed", issue.closedDate || "-"], ["Next Steps / Updates", issue.updates], ["Attachments", issue.attachments.length ? issue.attachments.map((file) => `<a class="link-button" href="${file.url}" download="${escapeHtml(file.name)}">${escapeHtml(file.name)}</a>`).join("<br>") : "-"]];
+      issueDetailBody.innerHTML = `<dl class="issue-detail-grid">${fields.map(([label, value]) => `<dt>${label}</dt><dd>${value}</dd>`).join("")}</dl>`;
+      issueDetailModal.hidden = false;
+    }
+
+    function showIssueEdit(row) {
+      const issue = issuePayloadFromRow(row);
+      resetIssueForm();
+      editingIssueRow = row;
+      issueModalTitle.textContent = "编辑问题";
+      issueStatus.value = issue.status;
+      issueSwimLane.value = issue.swimLane;
+      issueName.value = issue.name;
+      issueOwner.value = issue.owner;
+      issueFoundDate.value = issue.foundDate;
+      issuePlanDate.value = issue.planDate;
+      issueClosedDate.value = issue.closedDate;
+      issueDescription.value = issue.updates;
+      issueDescriptionCount.textContent = String(issue.updates.length);
+      issueAttachmentFiles = issue.attachments;
+      issueAttachmentList.innerHTML = issue.attachments.length ? issue.attachments.map((file) => `<span class="issue-attachment-item"><svg class="icon"><use href="#i-paperclip"></use></svg>${escapeHtml(file.name)}</span>`).join("") : '<span class="upload-note">未选择文件</span>';
+      issueModal.hidden = false;
+      issueName.focus();
     }
 
     function filterIssues() {
       const keyword = issueSearchTitle.value.trim().toLowerCase();
-      const type = issueTypeFilter.value;
-      const severity = issueSeverityFilter.value;
+      const status = issueStatusFilter.value;
+      const swimLane = issueSwimLaneFilter.value.trim().toLowerCase();
+      const champion = issueChampionFilter.value.trim().toLowerCase();
       Array.from(issueTableBody.querySelectorAll("tr")).forEach((row) => {
-        const title = row.children[0]?.textContent.toLowerCase() || "";
+        const title = row.children[2]?.textContent.toLowerCase() || "";
         const matchesStatus = activeIssueStatus === "all" || row.dataset.status === activeIssueStatus;
         const matchesKeyword = !keyword || title.includes(keyword);
-        const matchesType = !type || row.dataset.type === type;
-        const matchesSeverity = !severity || row.dataset.severity === severity;
-        row.hidden = !(matchesStatus && matchesKeyword && matchesType && matchesSeverity);
+        const matchesFilterStatus = !status || row.dataset.status === status;
+        const matchesSwimLane = !swimLane || row.dataset.swimLane.toLowerCase().includes(swimLane);
+        const matchesChampion = !champion || row.dataset.champion.toLowerCase().includes(champion);
+        row.hidden = !(matchesStatus && matchesFilterStatus && matchesKeyword && matchesSwimLane && matchesChampion);
       });
     }
 
@@ -17230,12 +17735,78 @@
       }
     });
 
+    function renderIssueOwnerList() {
+      const keyword = issueOwnerSearch.value.trim().toLowerCase();
+      const groups = memberCatalog.map((team) => ({
+        name: team.name,
+        id: team.id,
+        members: team.members.filter((member) => !keyword || memberSearchCorpus({ ...member, teamName: team.name }).includes(keyword))
+      })).filter((group) => group.members.length);
+      const available = memberCatalog.reduce((total, team) => total + team.members.length, 0);
+      issueOwnerAvailableCount.textContent = String(available);
+      issueOwnerList.innerHTML = groups.length ? groups.map((group) => {
+        const collapsed = collapsedIssueOwnerTeams.has(group.id);
+        return `<article class="member-group"><div class="member-group-head"><button type="button" data-toggle-issue-owner-team="${escapeHtml(group.id)}">${collapsed ? "›" : "⌄"}</button><span>${escapeHtml(group.name)}</span><span class="member-group-count">${group.members.length}</span></div><div class="group-member-list" ${collapsed ? "hidden" : ""}>${group.members.map((member) => `<label class="member-option"><input type="radio" name="issueOwnerCandidate" value="${escapeHtml(member.id)}" ${draftIssueOwnerId === member.id ? "checked" : ""}><span class="avatar-sm">${escapeHtml(member.initials)}</span><span><span class="member-name">${escapeHtml(member.name)} <span class="member-meta">${escapeHtml(member.role)}</span></span><span class="member-mail">${escapeHtml(member.email)}</span></span></label>`).join("")}</div></article>`;
+      }).join("") : '<div class="team-empty">暂无匹配团队或成员</div>';
+
+      const selected = memberMap.get(draftIssueOwnerId);
+      const selectedKeyword = issueOwnerSelectedSearch.value.trim().toLowerCase();
+      const visibleSelected = selected && (!selectedKeyword || memberSearchCorpus(selected).includes(selectedKeyword));
+      issueOwnerSelectedCount.textContent = selected ? "1" : "0";
+      issueOwnerSummary.textContent = selected ? `已选择 1 名负责人：${selected.name}` : "暂未选择负责人";
+      issueOwnerSelectedList.innerHTML = visibleSelected ? `<article class="selected-team-card"><div class="selected-team-head"><span>${escapeHtml(selected.teamName || "组织成员")}</span><span class="selected-team-count">1人</span></div><div class="issue-owner-selected-member"><input type="radio" checked aria-label="已选负责人"><span class="avatar-sm green">${escapeHtml(selected.initials)}</span><span><span class="member-name">${escapeHtml(selected.name)} <span class="member-meta">${escapeHtml(selected.role)}</span></span><span class="member-mail">${escapeHtml(selected.email)}</span></span></div></article>` : '<div class="team-empty">暂未选择负责人</div>';
+    }
+
+    function showIssueOwnerModal() {
+      draftIssueOwnerId = Array.from(memberMap.values()).find((member) => member.name === issueOwner.value)?.id || "";
+      issueOwnerSearch.value = "";
+      issueOwnerSelectedSearch.value = "";
+      collapsedIssueOwnerTeams.clear();
+      renderIssueOwnerList();
+      issueOwnerModal.hidden = false;
+      issueOwnerSearch.focus();
+    }
+
+    function hideIssueOwnerModal() { issueOwnerModal.hidden = true; }
+
+    openIssueOwnerModal.addEventListener("click", showIssueOwnerModal);
+    document.querySelectorAll("[data-close-issue-owner]").forEach((button) => button.addEventListener("click", hideIssueOwnerModal));
+    issueOwnerModal.addEventListener("click", (event) => { if (event.target === issueOwnerModal) hideIssueOwnerModal(); });
+    issueOwnerSearch.addEventListener("input", renderIssueOwnerList);
+    issueOwnerSelectedSearch.addEventListener("input", renderIssueOwnerList);
+    issueOwnerExpandAll.addEventListener("click", () => { collapsedIssueOwnerTeams.clear(); renderIssueOwnerList(); });
+    issueOwnerCollapseAll.addEventListener("click", () => { memberCatalog.forEach((team) => collapsedIssueOwnerTeams.add(team.id)); renderIssueOwnerList(); });
+    clearIssueOwner.addEventListener("click", () => { draftIssueOwnerId = ""; renderIssueOwnerList(); });
+    issueOwnerList.addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-toggle-issue-owner-team]");
+      if (!toggle) return;
+      const teamId = toggle.dataset.toggleIssueOwnerTeam;
+      if (collapsedIssueOwnerTeams.has(teamId)) collapsedIssueOwnerTeams.delete(teamId);
+      else collapsedIssueOwnerTeams.add(teamId);
+      renderIssueOwnerList();
+    });
+    issueOwnerList.addEventListener("change", (event) => {
+      const selection = event.target.closest("[name=issueOwnerCandidate]");
+      if (selection) { draftIssueOwnerId = selection.value; renderIssueOwnerList(); }
+    });
+    confirmIssueOwner.addEventListener("click", () => {
+      const owner = memberMap.get(draftIssueOwnerId);
+      if (!owner) return;
+      issueOwner.value = owner.name;
+      issueError.hidden = true;
+      hideIssueOwnerModal();
+    });
+
     issueDescription.addEventListener("input", () => {
       issueDescriptionCount.textContent = String(issueDescription.value.length);
     });
 
-    issueMockFile.querySelector(".file-remove").addEventListener("click", () => {
-      issueMockFile.hidden = true;
+    chooseIssueAttachments.addEventListener("click", () => issueAttachments.click());
+    issueAttachments.addEventListener("change", () => {
+      issueAttachmentFiles = Array.from(issueAttachments.files || []).map((file) => ({ name: file.name, url: URL.createObjectURL(file) }));
+      issueAttachmentList.innerHTML = issueAttachmentFiles.length
+        ? issueAttachmentFiles.map((file) => `<span class="issue-attachment-item"><svg class="icon"><use href="#i-paperclip"></use></svg>${escapeHtml(file.name)}</span>`).join("")
+        : '<span class="upload-note">未选择文件</span>';
     });
 
     issueForm.addEventListener("submit", (event) => {
@@ -17244,18 +17815,26 @@
         name: issueName.value.trim(),
         foundDate: issueFoundDate.value,
         planDate: issuePlanDate.value,
-        type: issueType.value,
-        severity: issueSeverity.value,
+        closedDate: issueClosedDate.value,
+        swimLane: issueSwimLane.value.trim(),
+        updates: issueDescription.value.trim(),
+        attachments: issueAttachmentFiles,
         status: issueStatus.value,
         owner: issueOwner.value
       };
-      const invalid = !payload.name || !payload.type || !payload.severity || !payload.status || !payload.owner;
+      const invalid = !payload.name || !payload.swimLane || !payload.foundDate || !payload.planDate || !payload.updates || !payload.status || !payload.owner || (payload.status === "done" && !payload.closedDate);
       if (invalid) {
+        issueError.textContent = payload.status === "done" && !payload.closedDate ? "Closed issues require a closed date." : "Please complete all required fields.";
         issueError.hidden = false;
+        [issueStatus, issueSwimLane, issueName, issueOwner, issueFoundDate, issuePlanDate, issueDescription, ...(payload.status === "done" ? [issueClosedDate] : [])].find((field) => !field.value.trim())?.focus();
         return;
       }
 
-      issueTableBody.appendChild(createIssueRow(payload));
+      if (editingIssueRow) {
+        applyIssueRow(editingIssueRow, payload);
+      } else {
+        issueTableBody.appendChild(createIssueRow(payload));
+      }
       hideIssueModal();
       filterIssues();
     });
@@ -17281,10 +17860,24 @@
       window.setTimeout(filterIssues, 0);
     });
 
-    issueTableBody.addEventListener("click", (event) => {
+    document.querySelectorAll("[data-close-issue-detail]").forEach((button) => button.addEventListener("click", () => { issueDetailModal.hidden = true; }));
+    issueDetailModal.addEventListener("click", (event) => { if (event.target === issueDetailModal) issueDetailModal.hidden = true; });
+
+    issueTableBody.addEventListener("click", async (event) => {
+      const row = event.target.closest("tr");
+      if (!row) return;
+      if (event.target.closest("[data-view-issue]")) {
+        showIssueDetail(row);
+        return;
+      }
+      if (event.target.closest("[data-edit-issue]")) {
+        showIssueEdit(row);
+        return;
+      }
       const deleteButton = event.target.closest("[data-delete-issue]");
       if (deleteButton) {
-        deleteButton.closest("tr").remove();
+        const confirmed = await showBomConfirm({ title: "删除问题", message: "确认删除该问题吗？", detail: [{ title: "问题 / 行动", description: row.children[2]?.textContent.trim() || "-" }], danger: true });
+        if (confirmed) row.remove();
       }
     });
 
@@ -18172,8 +18765,10 @@
       if (event.key === "Escape" && !requirementModal.hidden) {
         hideRequirementModal();
       }
-      if (event.key === "Escape" && !issueModal.hidden) {
-        hideIssueModal();
+      if (event.key === "Escape") {
+        if (!issueDetailModal.hidden) issueDetailModal.hidden = true;
+        else if (!issueOwnerModal.hidden) hideIssueOwnerModal();
+        else if (!issueModal.hidden) hideIssueModal();
       }
       if (event.key === "Escape" && !libraryUploadModal.hidden) {
         hideLibraryUploadModal();
@@ -18225,8 +18820,9 @@
       ["L1总成名称", "L1 Assembly Name"],
       ["当前生效版本", "Active Version"],
       ["最新工作版本", "Working Version"],
+      ["版本生成阶段", "Created in Stage"],
+      ["版本变更记录", "Version Change Record"],
       ["状态", "Status"],
-      ["草稿/待确认变更", "Open Changes"],
       ["供应类型", "Supply Type"],
       ["APQP状态", "APQP Status"],
       ["负责人", "Owner"],
@@ -18248,6 +18844,7 @@
       drawerMode: "",
       drawerParentId: null,
       scopedRootId: null,
+      reviewRootIds: [],
       historyViewing: false,
       selectedListVersion: "latest",
       detailRowId: "",
@@ -18378,6 +18975,7 @@
       normalized.startGate = normalized.startGate || normalized.primaryStartGate || normalized.secondaryStartGate || "Gate1";
       normalized.changeStatus = normalized.changeStatus || "无变更";
       normalized.apqpStatus = normalized.apqpStatus || (normalized.apqpCreated ? "已创建" : "未创建");
+      if (Number(normalized.level) === 1 && normalized.id) initializeAssemblyVersion(normalized);
       return normalized;
     }
 
@@ -18419,7 +19017,7 @@
 
     function currentVersion() {
       if (!bomState.rows.length && bomState.versionMajor === 0 && bomState.versionMinor === 0) return "-";
-      return `${bomState.stage}-V${bomState.versionMajor}.${bomState.versionMinor}`;
+      return `V${bomState.versionMajor}.${bomState.versionMinor}`;
     }
 
     function compactTimestamp(date = new Date()) {
@@ -18451,11 +19049,11 @@
     }
 
     function formatVersion(major, minor) {
-      return `${bomState.stage}-V${major}.${minor}`;
+      return `V${major}.${minor}`;
     }
 
     function statusText(status) {
-      return { empty: "未创建", locked: "锁定", draft: "草稿", review: "待SCM确认" }[status] || status;
+      return { empty: "未创建", locked: "锁定", draft: "草稿", review: "待确认" }[status] || status;
     }
 
     function statusClass(status) {
@@ -18465,9 +19063,11 @@
     function workflowText(status = bomState.workflowStatus) {
       return {
         aeEditing: "AE编辑中",
-        pendingScm: "待SCM确认",
+        pendingScm: "待确认",
+        pendingConfirm: "待确认",
         scmDraft: "SCM确认中",
-        confirmed: "SCM已确认"
+        meReview: "ME确认中",
+        confirmed: "已生效"
       }[status] || "AE编辑中";
     }
 
@@ -18478,11 +19078,40 @@
     }
 
     function cloneRows(rows) {
-      return normalizeBomRows(rows.map((row) => ({ ...row })));
+      return normalizeBomRows(structuredClone(rows));
     }
 
     function l1RootsFor(rows = bomState.rows) {
       return rows.filter((row) => Number(row.level) === 1);
+    }
+
+    function assemblyConfirmationStatus(root, role) {
+      if (!root) return "待确认";
+      if (root.assemblyStatus === "已生效") return "已确认";
+      return root[role === "ME" ? "meConfirmationStatus" : "scmConfirmationStatus"] === "已确认" ? "已确认" : "待确认";
+    }
+
+    function pendingAssemblyConfirmationRole(root) {
+      if (assemblyConfirmationStatus(root, "SCM") !== "已确认") return "SCM";
+      if (assemblyConfirmationStatus(root, "ME") !== "已确认") return "ME";
+      return "";
+    }
+
+    function resetAssemblyConfirmations(root) {
+      root.scmConfirmationStatus = "待确认";
+      root.meConfirmationStatus = "待确认";
+      root.scmConfirmedAt = "";
+      root.meConfirmedAt = "";
+    }
+
+    function assemblyConfirmationStatusHtml(root, meta) {
+      if (meta.status !== "待确认") {
+        return statusTag(meta.status, meta.status === "已生效" ? "is-ok" : "");
+      }
+      const scmStatus = assemblyConfirmationStatus(root, "SCM");
+      const meStatus = assemblyConfirmationStatus(root, "ME");
+      const step = (role, status) => `<span class="bom-confirmation-step ${status === "已确认" ? "is-done" : ""}"><i class="bom-confirmation-dot" aria-hidden="true"></i>${role}：${status}</span>`;
+      return `<div class="bom-confirmation-status">${statusTag("待确认", "is-warn")}<div class="bom-confirmation-steps">${step("SCM", scmStatus)}${step("ME", meStatus)}</div></div>`;
     }
 
     function assemblyCodeFor(root, rows = bomState.rows) {
@@ -18492,12 +19121,105 @@
     }
 
     function stageBomVersion(number = 1) {
-      return `${bomState.stage}_V${number}.0`;
+      return `V${number}.0`;
     }
 
     function bomVersionNumber(version = "") {
-      const match = String(version).match(/_V(\d+)\.0$/);
+      const match = String(version).match(/V(\d+)\.0$/);
       return match ? Number(match[1]) : 0;
+    }
+
+    function versionCreationStage() {
+      const current = stageCards.find((card) => card.querySelector(".status-running, .status-review, .status-failed"));
+      return current?.dataset.stageId || bomState.stage;
+    }
+
+    function fullStageDisplayName(stage) {
+      const labels = {
+        QuoteReady: "Phase Gate 0 QuoteReady",
+        CKO: "CKO Commercial Kick Off",
+        PKO: "PKO Program Kick Off",
+        Gate1: "Phase Gate 1 AR Submission Ready",
+        Gate2: "Phase Gate 2 Investment Ready",
+        Gate3: "Phase Gate 3 Off Tool Sample Ready",
+        Gate4: "Phase Gate 4 Production Ready",
+        Gate5: "Phase Gate 5 PPAP Ready",
+        Gate6: "Phase Gate 6 SOP Ready",
+        HandOver: "Hand Over"
+      };
+      return labels[stage] || stage || "未记录";
+    }
+
+    function plainBomVersion(version) {
+      return String(version || "-").match(/V\d+\.\d+$/)?.[0] || version || "-";
+    }
+
+    function initializeAssemblyVersion(root) {
+      const legacyStage = String(root.workingBomVersion || root.activeBomVersion || "").match(/^(.*?)[_-]V\d+/)?.[1];
+      root.activeBomVersion = plainBomVersion(root.activeBomVersion);
+      root.workingBomVersion = plainBomVersion(root.workingBomVersion || (root.activeBomVersion !== "-" ? root.activeBomVersion : "V1.0"));
+      if (root.assemblyStatus === "待SCM确认") root.assemblyStatus = "待确认";
+      if (root.assemblyStatus === "已生效") {
+        root.scmConfirmationStatus = "已确认";
+        root.meConfirmationStatus = "已确认";
+      } else if (root.assemblyStatus === "待确认") {
+        root.scmConfirmationStatus ||= "待确认";
+        root.meConfirmationStatus ||= "待确认";
+      }
+      root.workingVersionStage ||= legacyStage || versionCreationStage();
+      root.versionHistory ||= [];
+      root.versionHistory.forEach((item) => {
+        item.generatedStage ||= String(item.version).match(/^(.*?)[_-]V\d+/)?.[1] || root.workingVersionStage;
+        item.version = plainBomVersion(item.version);
+      });
+    }
+
+    function assemblyVersionChanges(root) {
+      const saved = root.versionHistory?.find((item) => item.version === root.workingBomVersion);
+      if (saved && root.workingBomVersion === root.activeBomVersion) return saved.changeRecordSource === "manual" ? saved.changeRecord || "未填写" : "未填写";
+      return root.workingVersionRecord || "未填写";
+    }
+
+    function renderVersionRecordFields() {
+      const container = document.querySelector("[data-bom-version-record-fields]");
+      if (!container) return;
+      const readOnly = bomState.mode === "detail" || bomState.mode === "me" || bomState.historyViewing;
+      bomState.versionRecordDrafts ||= {};
+      // V1.0 is the initial BOM baseline, so there is no previous version to compare with.
+      // Only show a change record after the L1 already has an active version.
+      const rootsRequiringVersionRecord = targetEditingRoots().filter((root) => {
+        initializeAssemblyVersion(root);
+        return root.activeBomVersion && root.activeBomVersion !== "-";
+      });
+      container.innerHTML = rootsRequiringVersionRecord.map((root) => {
+        const locked = root.workingBomVersion === root.activeBomVersion;
+        const value = readOnly ? assemblyVersionChanges(root)
+          : bomState.versionRecordDrafts[root.id] ?? (locked ? "" : root.workingVersionRecord || "");
+        const fieldId = `bom-version-record-${root.id}`;
+        return `<section class="bom-version-entry">
+          <div class="bom-version-entry-head">
+            <div>
+              <label class="bom-version-entry-title" for="${escapeHtml(fieldId)}">版本变更记录 <span class="bom-required-mark" aria-hidden="true">*</span></label>
+              <p class="bom-version-entry-help">请简要说明本版本相较上一版本的新增、删除或调整内容。</p>
+            </div>
+          </div>
+          <textarea class="field" id="${escapeHtml(fieldId)}" rows="3" maxlength="500" data-bom-version-record="${escapeHtml(root.id)}" aria-required="true" placeholder="例如：新增壳体零件；调整链条数量；更新一供供应商。" ${readOnly ? "readonly" : ""}>${escapeHtml(value)}</textarea>
+          <div class="bom-version-entry-foot">
+            <span>内容由用户手动填写，并随当前版本保存。</span>
+            <span class="bom-version-entry-count" data-bom-version-record-count="${escapeHtml(root.id)}">${String(value).length}/500</span>
+          </div>
+        </section>`;
+      }).join("");
+    }
+
+    function assemblyVersionDetails(root, version, rows = bomState.rows) {
+      const history = root?.versionHistory?.find((item) => item.version === version);
+      if (history) return { generatedStage: history.generatedStage || "未记录", changeRecord: history.changeRecordSource === "manual" ? history.changeRecord || "未填写" : "未填写" };
+      return { generatedStage: root?.workingVersionStage || "未记录", changeRecord: root ? assemblyVersionChanges(root, rows) : "未记录" };
+    }
+
+    function versionRecordHtml(details) {
+      return `<div class="bom-version-record"><strong>版本生成阶段</strong><div>${escapeHtml(fullStageDisplayName(details.generatedStage))}</div><strong>版本变更记录</strong><div class="bom-version-change-text">${escapeHtml(details.changeRecord)}</div></div>`;
     }
 
     function nextL1WorkingVersion(root) {
@@ -18507,22 +19229,40 @@
     }
 
     function ensureL1WorkingVersion(root, status = "draft") {
-      root.workingBomVersion = nextL1WorkingVersion(root);
+      initializeAssemblyVersion(root);
+      const baseline = root.versionHistory.find((item) => item.version === root.activeBomVersion)?.rows;
+      const manualRecord = bomState.versionRecordDrafts?.[root.id];
+      const recordChanged = manualRecord !== undefined && manualRecord.trim() !== "" && manualRecord !== (root.workingVersionRecord || "");
+      if (root.workingBomVersion === root.activeBomVersion && baseline && !recordChanged && !buildFieldChangeRecords(baseline, descendantsOf(root.id)).length) return root.workingBomVersion;
+      const next = nextL1WorkingVersion(root);
+      if (next !== root.workingBomVersion) {
+        root.workingVersionStage = versionCreationStage();
+        root.workingVersionRecord = "";
+      }
+      if (manualRecord !== undefined) root.workingVersionRecord = manualRecord;
+      root.workingBomVersion = next;
       root.assemblyStatus = status;
       root.updatedAt = getCurrentTime();
       return root.workingBomVersion;
     }
 
     function targetEditingRoots() {
+      if (["scm", "me"].includes(bomState.mode) && bomState.reviewRootIds?.length) {
+        return l1RootsFor(bomState.rows).filter((root) => bomState.reviewRootIds.includes(root.id));
+      }
       return bomState.scopedRootId
         ? l1RootsFor(bomState.rows).filter((root) => root.id === bomState.scopedRootId)
         : l1RootsFor(bomState.rows);
     }
 
-    function canConfirmAssemblyRoot(root, rows = bomState.rows, snapshot = latestBomSnapshot()) {
+    function canConfirmAssemblyRoot(root, rows = bomState.rows, snapshot = latestBomSnapshot(), role = "") {
       if (!root) return false;
       const meta = assemblyMeta(root, rows, snapshot);
-      return meta.status !== "已生效" && meta.workingVersion && meta.workingVersion !== "-";
+      const reviewer = role || pendingAssemblyConfirmationRole(root);
+      return meta.status === "待确认"
+        && Boolean(reviewer)
+        && assemblyConfirmationStatus(root, reviewer) !== "已确认"
+        && meta.workingVersion && meta.workingVersion !== "-";
     }
 
     function assemblyVersionFor(root, rows = bomState.rows, snapshot = latestBomSnapshot()) {
@@ -18537,57 +19277,30 @@
     }
 
     function pushAssemblyHistory(root, status, actor = "Chen Wei") {
-      root.versionHistory = root.versionHistory || [];
-      const version = root.activeBomVersion || root.workingBomVersion || "-";
-      if (version === "-") return;
-      const existingIndex = root.versionHistory.findIndex((item) => item.version === version);
-      const history = {
-        version,
-        status,
-        actor,
-        time: getCurrentTime(),
-        summary: `${root.name} BOM ${version} ${status}`
-      };
-      if (existingIndex >= 0) root.versionHistory[existingIndex] = history;
-      else root.versionHistory.unshift(history);
+      initializeAssemblyVersion(root);
+      const version = root.workingBomVersion;
+      if (version === "-" || root.versionHistory.some((item) => item.version === version)) return;
+      const changeRecord = root.workingVersionRecord || "";
+      // 每个 L1 版本独立保存明细快照；快照内不嵌套历史，避免后续编辑覆盖旧版本。
+      const rows = structuredClone(descendantsOf(root.id).map(({ versionHistory, ...row }) => row));
+      root.versionHistory.unshift({ version, status, actor, time: getCurrentTime(),
+        generatedStage: root.workingVersionStage, changeRecord, changeRecordSource: "manual", summary: changeRecord, rows });
     }
 
     async function confirmSelectedAssemblyVersions() {
       const selectedRoots = bomState.selectedAssemblyIds
         .map((id) => bomState.rows.find((row) => row.id === id && Number(row.level) === 1))
-        .filter(Boolean)
-        .filter((root) => canConfirmAssemblyRoot(root));
-      if (!selectedRoots.length) {
-        await showBomConfirm({ title: "无法确认BOM", message: "请先勾选需要 SCM 确认的 L1 BOM 工作版本。" });
+        .filter(Boolean);
+      const role = selectedRoots.some((root) => canConfirmAssemblyRoot(root, bomState.rows, latestBomSnapshot(), "SCM"))
+        ? "SCM"
+        : selectedRoots.some((root) => canConfirmAssemblyRoot(root, bomState.rows, latestBomSnapshot(), "ME")) ? "ME" : "";
+      const confirmableRoots = selectedRoots.filter((root) => canConfirmAssemblyRoot(root, bomState.rows, latestBomSnapshot(), role));
+      if (!confirmableRoots.length) {
+        await showBomConfirm({ title: "无法确认BOM", message: "请先勾选处于待确认状态的 L1 BOM 工作版本。" });
         return;
       }
-      const confirmed = await showBomConfirm({
-        title: "确认L1 BOM版本",
-        message: `确认将 ${selectedRoots.length} 个 L1 BOM 工作版本锁定为当前生效版本？`,
-        detail: selectedRoots.map((root) => ({
-          title: `${root.name} · ${root.workingBomVersion}`,
-          description: "确认后当前生效版本与最新工作版本保持一致，并写入该 L1 的历史版本。"
-        }))
-      });
-      if (!confirmed) return;
-      const confirmedAt = getCurrentTime();
-      selectedRoots.forEach((root) => {
-        root.activeBomVersion = root.workingBomVersion || stageBomVersion(1);
-        root.workingBomVersion = root.activeBomVersion;
-        root.assemblyStatus = "已生效";
-        root.updatedAt = confirmedAt;
-        descendantsOf(root.id).forEach((row) => {
-          if (row.changeStatus && !["无变更", "已取消"].includes(row.changeStatus)) row.changeStatus = "已生效";
-        });
-        pushAssemblyHistory(root, "已生效", "Chen Wei");
-      });
-      bomState.status = "locked";
-      bomState.workflowStatus = "confirmed";
-      bomState.lockedAt = confirmedAt;
-      bomState.selectedAssemblyIds = [];
-      snapshotBomHistory();
-      renderBomList();
-      renderProjectRecords();
+      bomState.selectedAssemblyIds = confirmableRoots.map((root) => root.id);
+      openWorkspace(role.toLowerCase(), confirmableRoots.length === 1 ? confirmableRoots[0].id : null);
     }
 
     function assemblyStatusFor(root, snapshot = latestBomSnapshot()) {
@@ -18610,6 +19323,7 @@
       const status = assemblyStatusFor(root, snapshot);
       return {
         ...version,
+        ...assemblyVersionDetails(root, version.workingVersion, rows),
         status,
         openChangeCount: version.openChanges.length,
         apqpStatus: assemblyApqpStatus(root),
@@ -18664,7 +19378,7 @@
     }
 
     function historyStage(version) {
-      return version?.split("-V")[0] || bomState.stage;
+      return String(version || "").match(/^(.*?)[_-]V\d+/)?.[1] || "未记录";
     }
 
     function selectedBomSnapshot() {
@@ -18717,6 +19431,20 @@
     }
 
     function snapshotRowsForAssemblyVersion(rowId, assemblyVersion = "") {
+      const liveRoot = bomState.rows.find((row) => row.id === rowId);
+      const saved = liveRoot?.versionHistory?.find((item) => item.version === assemblyVersion);
+      if (saved?.rows) {
+        const rows = structuredClone(saved.rows);
+        const root = rows.find((row) => row.id === rowId);
+        root.activeBomVersion = assemblyVersion;
+        root.workingBomVersion = assemblyVersion;
+        root.assemblyStatus = "已生效";
+        root.versionHistory = [{ ...saved, rows: undefined }];
+        return { rows, root, snapshot: { ...saved, stage: saved.generatedStage, submittedAt: saved.time } };
+      }
+      if (liveRoot && assemblyVersion === liveRoot.workingBomVersion && assemblyVersion !== liveRoot.activeBomVersion) {
+        return { rows: descendantsOf(rowId), root: liveRoot, snapshot: latestBomSnapshot() };
+      }
       const snapshotVersion = snapshotVersionForAssembly(rowId, assemblyVersion);
       const snapshot = snapshotVersion ? bomState.histories.find((item) => item.version === snapshotVersion) : null;
       const rows = snapshot?.rows || bomState.rows;
@@ -18739,7 +19467,8 @@
       const status = parsed.kind === "working" && meta?.workingVersion !== meta?.activeVersion ? "draft" : "locked";
       return {
         version: assemblyVersion || currentVersion(),
-        stage: bomState.stage,
+        ...assemblyVersionDetails(liveRoot, assemblyVersion),
+        stage: assemblyVersionDetails(liveRoot, assemblyVersion).generatedStage,
         status,
         workflowStatus: status === "locked" ? "confirmed" : "aeEditing",
         controlCode: status === "locked" ? controlCodeFor(assemblyVersion) : "",
@@ -18836,6 +19565,9 @@
     }
 
     function rowsForCurrentScope() {
+      if (["scm", "me"].includes(bomState.mode) && bomState.reviewRootIds?.length) {
+        return targetEditingRoots().flatMap((root) => descendantsOf(root.id));
+      }
       return bomState.scopedRootId ? descendantsOf(bomState.scopedRootId) : bomState.rows;
     }
 
@@ -18846,11 +19578,11 @@
     }
 
     function childLevelFor(row) {
-      return row ? Math.min(Number(row.level) + 1, 4) : 1;
+      return row ? Math.min(Number(row.level) + 1, 7) : 1;
     }
 
     function canAddChild(row) {
-      return row && Number(row.level) < 4;
+      return row && Number(row.level) < 7;
     }
 
     function seedBomFromProducts(products) {
@@ -18875,6 +19607,7 @@
       rows.forEach((row) => {
         if (Number(row.level) === 1) {
           row.workingBomVersion = stageBomVersion(1);
+          row.workingVersionStage = versionCreationStage();
           row.assemblyStatus = "AE编辑中";
           row.updatedAt = getCurrentTime();
         }
@@ -18885,6 +19618,392 @@
       bomState.versionMajor = 0;
       bomState.versionMinor = 1;
       bomState.status = "draft";
+    }
+
+    let bomImportPreviewRows = [];
+    let bomImportSupplyPlans = [];
+    let bomImportIssues = [];
+
+    function downloadBomImportTemplate() {
+      const link = document.createElement("a");
+      link.href = "./outputs/01a0a7a3-545c-7240-b75a-4a29849f8e5c/BOM初始版本导入模板_V3_完整模拟数据.xlsx";
+      link.download = "BOM初始版本导入模板_V3_完整模拟数据.xlsx";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+
+    function xlsxColumnIndex(reference = "") {
+      const letters = String(reference).match(/^[A-Z]+/i)?.[0]?.toUpperCase() || "A";
+      return [...letters].reduce((total, char) => total * 26 + char.charCodeAt(0) - 64, 0) - 1;
+    }
+
+    function normalizeZipPath(target = "") {
+      const parts = (target.startsWith("/") ? target.slice(1) : target.startsWith("xl/") ? target : `xl/${target}`).split("/");
+      const normalized = [];
+      parts.forEach((part) => {
+        if (!part || part === ".") return;
+        if (part === "..") normalized.pop();
+        else normalized.push(part);
+      });
+      return normalized.join("/");
+    }
+
+    function xmlNodes(documentNode, localName) {
+      return Array.from(documentNode.getElementsByTagNameNS("*", localName));
+    }
+
+    async function readXlsxSheets(file) {
+      if (!window.JSZip) throw new Error("Excel解析组件未加载，请刷新页面后重试。");
+      const zip = await window.JSZip.loadAsync(await file.arrayBuffer());
+      const readXml = async (path) => {
+        const entry = zip.file(path);
+        if (!entry) throw new Error(`Excel文件缺少必要内容：${path}`);
+        const xml = await entry.async("string");
+        const doc = new DOMParser().parseFromString(xml, "application/xml");
+        if (doc.querySelector("parsererror")) throw new Error("Excel文件结构无法识别，请重新下载模板填写。");
+        return doc;
+      };
+      const workbook = await readXml("xl/workbook.xml");
+      const relationships = await readXml("xl/_rels/workbook.xml.rels");
+      const relationMap = new Map(xmlNodes(relationships, "Relationship").map((node) => [node.getAttribute("Id"), normalizeZipPath(node.getAttribute("Target"))]));
+      const sharedStrings = [];
+      if (zip.file("xl/sharedStrings.xml")) {
+        const shared = await readXml("xl/sharedStrings.xml");
+        xmlNodes(shared, "si").forEach((node) => sharedStrings.push(xmlNodes(node, "t").map((textNode) => textNode.textContent || "").join("")));
+      }
+      const sheets = {};
+      for (const sheetNode of xmlNodes(workbook, "sheet")) {
+        const name = sheetNode.getAttribute("name") || "";
+        const relationId = sheetNode.getAttribute("r:id") || sheetNode.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id");
+        const path = relationMap.get(relationId);
+        if (!path || !zip.file(path)) continue;
+        const worksheet = await readXml(path);
+        const matrix = [];
+        xmlNodes(worksheet, "c").forEach((cell) => {
+          const reference = cell.getAttribute("r") || "A1";
+          const rowIndex = Math.max(0, Number(reference.match(/\d+$/)?.[0] || 1) - 1);
+          const columnIndex = xlsxColumnIndex(reference);
+          const type = cell.getAttribute("t") || "";
+          let value = "";
+          if (type === "inlineStr") value = xmlNodes(cell, "t").map((node) => node.textContent || "").join("");
+          else {
+            const raw = xmlNodes(cell, "v")[0]?.textContent || "";
+            value = type === "s" ? sharedStrings[Number(raw)] ?? "" : raw;
+          }
+          matrix[rowIndex] ||= [];
+          matrix[rowIndex][columnIndex] = value;
+        });
+        sheets[name] = matrix;
+      }
+      return sheets;
+    }
+
+    function sheetRecords(matrix = []) {
+      const keys = matrix[3] || [];
+      return matrix.slice(4).map((values, index) => {
+        const record = { __row: index + 5 };
+        keys.forEach((key, columnIndex) => {
+          if (key) record[String(key).trim()] = String(values?.[columnIndex] ?? "").trim();
+        });
+        return record;
+      });
+    }
+
+    function addBomImportIssue(issues, sheet, row, field, message) {
+      issues.push({ sheet, row, field, message });
+    }
+
+    function validateRequiredColumns(headerKeys, keys, sheet, issues) {
+      keys.forEach(([key, label]) => {
+        if (!headerKeys.has(key)) addBomImportIssue(issues, sheet, 4, label, `模板缺少字段编码“${key}”，请下载最新模板。`);
+      });
+    }
+
+    function planStrategyValue(plan) {
+      if (plan.supplierType === "二供") {
+        if (plan.supplyStrategy === "双供同步开发") return "同步开发";
+        if (plan.supplyStrategy === "二供后续导入") return "后续导入";
+        return "仅备案";
+      }
+      return plan.needDevelopment === "是" ? "需开发" : "仅备案";
+    }
+
+    function validateBomWorkbook(sheets) {
+      const issues = [];
+      if (!sheets["BOM行"]) addBomImportIssue(issues, "工作簿", 0, "工作表", "缺少“BOM行”工作表。");
+      if (!sheets["供应方案"]) addBomImportIssue(issues, "工作簿", 0, "工作表", "缺少“供应方案”工作表。");
+      if (issues.length) return { issues, rows: [], plans: [] };
+      const bomHeaderKeys = new Set((sheets["BOM行"][3] || []).map((key) => String(key || "").trim()).filter(Boolean));
+      const planHeaderKeys = new Set((sheets["供应方案"][3] || []).map((key) => String(key || "").trim()).filter(Boolean));
+      const bomRecords = sheetRecords(sheets["BOM行"]).filter((row) => row.partName || row.bwPartNo || row.l1AssemblyNo);
+      const planRecords = sheetRecords(sheets["供应方案"]).filter((row) => row.supplierName || row.bwPartNo || row.l1AssemblyNo);
+      validateRequiredColumns(bomHeaderKeys, [["l1AssemblyNo", "L1总成编号"], ["l1AssemblyName", "L1总成名称"], ["level", "层级"], ["productApplication", "产品应用"], ["partName", "零件/材料名称"], ["bwPartNo", "BW零件号"], ["quantity", "数量"], ["commonPart", "共用零件"]], "BOM行", issues);
+      validateRequiredColumns(planHeaderKeys, [["l1AssemblyNo", "L1总成编号"], ["bwPartNo", "BW零件号"], ["supplierName", "分供方名称"], ["supplierType", "供应类型"], ["supplyStrategy", "供应策略"], ["needDevelopment", "是否需要开发"], ["startGate", "起始Gate"], ["defaultOwner", "默认负责人"]], "供应方案", issues);
+      if (!bomRecords.length) addBomImportIssue(issues, "BOM行", 5, "数据", "没有可导入的BOM明细。");
+
+      const rows = [];
+      const stack = {};
+      const rootNumbers = new Set();
+      let currentRoot = null;
+      bomRecords.forEach((record, index) => {
+        const required = [["l1AssemblyNo", "L1总成编号"], ["l1AssemblyName", "L1总成名称"], ["level", "层级"], ["productApplication", "产品应用"], ["partName", "零件/材料名称"], ["bwPartNo", "BW零件号"], ["quantity", "数量"], ["commonPart", "共用零件"]];
+        required.forEach(([key, label]) => {
+          if (!record[key]) addBomImportIssue(issues, "BOM行", record.__row, label, "必填项不能为空。");
+        });
+        const level = Number(String(record.level || "").toUpperCase().replace("L", ""));
+        if (!Number.isInteger(level) || level < 1 || level > 7) {
+          addBomImportIssue(issues, "BOM行", record.__row, "层级", "请填写L1至L7。");
+          return;
+        }
+        const quantity = Number(record.quantity);
+        if (!Number.isFinite(quantity) || quantity <= 0) addBomImportIssue(issues, "BOM行", record.__row, "数量", "必须填写大于0的数字。");
+        if (record.commonPart && !["是", "否"].includes(record.commonPart)) addBomImportIssue(issues, "BOM行", record.__row, "共用零件", "只允许填写“是”或“否”。");
+        if (record.drawingReleaseLevel && !["R1", "R2", "R3"].includes(record.drawingReleaseLevel)) addBomImportIssue(issues, "BOM行", record.__row, "图纸释放状态", "只允许填写R1、R2、R3或留空。");
+        let parent = null;
+        if (level === 1) {
+          if (rootNumbers.has(record.l1AssemblyNo)) addBomImportIssue(issues, "BOM行", record.__row, "L1总成编号", "同一文件中L1总成编号不能重复出现两次。");
+          rootNumbers.add(record.l1AssemblyNo);
+          currentRoot = record;
+          Object.keys(stack).forEach((key) => delete stack[key]);
+        } else {
+          parent = stack[level - 1];
+          if (!currentRoot) addBomImportIssue(issues, "BOM行", record.__row, "层级", "该记录之前缺少L1总成行。");
+          if (!parent) addBomImportIssue(issues, "BOM行", record.__row, "层级", `L${level}之前缺少可归属的L${level - 1}记录。`);
+          if (currentRoot && record.l1AssemblyNo !== currentRoot.l1AssemblyNo) addBomImportIssue(issues, "BOM行", record.__row, "L1总成编号", `应与当前L1总成${currentRoot.l1AssemblyNo}一致。`);
+          if (parent && record.parentPartNo && record.parentPartNo !== parent.bwPartNo) addBomImportIssue(issues, "BOM行", record.__row, "父级零件号", `与系统推导的父级${parent.bwPartNo}不一致。`);
+        }
+        stack[level] = record;
+        for (let deeper = level + 1; deeper <= 7; deeper += 1) delete stack[deeper];
+        const normalized = normalizeBomRow({
+          id: `import-preview-${index}`,
+          no: index + 1,
+          level,
+          name: record.partName,
+          qty: record.quantity,
+          application: record.productApplication,
+          customerNo: record.customerPartNo || "-",
+          bwNo: record.bwPartNo,
+          drawingRev: record.drawingRev || "-",
+          sampleSapNo: record.sapProto || "-",
+          massSapNo: record.sapSop || "-",
+          rawNo: record.rawMaterialPartNo || "-",
+          rawMaterial: record.rawMaterial || "-",
+          weightPiece: record.weightPieceG || "-",
+          weightAssembly: record.weightAssemblyG || "-",
+          sharedPart: record.commonPart || "否",
+          borrowedProject: record.carriedOverProject || "-",
+          releaseStatus: record.drawingReleaseLevel || "-",
+          rawSupplier: record.rawMaterialSupplier || "-",
+          subSupplier: "-",
+          supplyType: "一供",
+          primarySupplier: "-",
+          secondarySupplier: "-",
+          primaryStrategy: "无",
+          secondaryStrategy: "无",
+          primaryApqpPolicy: "不生成",
+          secondaryApqpPolicy: "不生成",
+          importedRootNo: record.l1AssemblyNo,
+          importedRootName: record.l1AssemblyName,
+          productKey: `import-${record.l1AssemblyNo}`,
+          parentPartNo: record.parentPartNo || "",
+          bomPosition: record.bomPosition || "",
+          remark: record.note || "模板导入"
+        }, index);
+        rows.push({ record, normalized });
+      });
+
+      const allowedTypes = ["一供", "二供"];
+      const allowedStrategies = ["单一供应", "双供备案", "双供同步开发", "二供后续导入"];
+      const allowedDevelopment = ["是", "否"];
+      const usedPlanKeys = new Set();
+      const plans = [];
+      planRecords.forEach((plan) => {
+        [["l1AssemblyNo", "L1总成编号"], ["bwPartNo", "BW零件号"], ["supplierName", "分供方名称"], ["supplierType", "供应类型"], ["supplyStrategy", "供应策略"], ["needDevelopment", "是否需要开发"], ["startGate", "起始Gate"], ["defaultOwner", "默认负责人"]].forEach(([key, label]) => {
+          if (!plan[key]) addBomImportIssue(issues, "供应方案", plan.__row, label, "必填项不能为空。");
+        });
+        if (plan.supplierType && !allowedTypes.includes(plan.supplierType)) addBomImportIssue(issues, "供应方案", plan.__row, "供应类型", "只允许填写“一供”或“二供”。");
+        if (plan.supplyStrategy && !allowedStrategies.includes(plan.supplyStrategy)) addBomImportIssue(issues, "供应方案", plan.__row, "供应策略", "请使用模板下拉列表中的供应策略。");
+        if (plan.needDevelopment && !allowedDevelopment.includes(plan.needDevelopment)) addBomImportIssue(issues, "供应方案", plan.__row, "是否需要开发", "只允许填写“是”或“否”。");
+        let candidates = rows.filter(({ record }) => record.l1AssemblyNo === plan.l1AssemblyNo && record.bwPartNo === plan.bwPartNo);
+        if (plan.parentPartNo) candidates = candidates.filter(({ record }) => record.parentPartNo === plan.parentPartNo);
+        if (plan.bomPosition) candidates = candidates.filter(({ record }) => record.bomPosition === plan.bomPosition);
+        if (!candidates.length) {
+          addBomImportIssue(issues, "供应方案", plan.__row, "BOM匹配", "找不到对应BOM行，请检查L1总成编号和BW零件号。");
+          return;
+        }
+        if (candidates.length > 1) {
+          addBomImportIssue(issues, "供应方案", plan.__row, "BOM匹配", `匹配到${candidates.length}条BOM行，请补充父级零件号或BOM位置编号。`);
+          return;
+        }
+        const target = candidates[0];
+        const planKey = `${target.record.__row}|${plan.supplierType}`;
+        if (usedPlanKeys.has(planKey)) addBomImportIssue(issues, "供应方案", plan.__row, "供应类型", `该BOM行已存在${plan.supplierType}方案。`);
+        usedPlanKeys.add(planKey);
+        const prefix = plan.supplierType === "二供" ? "secondary" : "primary";
+        target.normalized[`${prefix}Supplier`] = plan.supplierName;
+        target.normalized[`${prefix}Strategy`] = planStrategyValue(plan);
+        target.normalized[`${prefix}StartGate`] = plan.startGate;
+        target.normalized[`${prefix}Owner`] = plan.defaultOwner;
+        target.normalized[`${prefix}ApqpPolicy`] = "不生成";
+        if (prefix === "primary") target.normalized.subSupplier = plan.supplierName;
+        plans.push({ ...plan, targetRow: target.record.__row });
+      });
+      rows.forEach(({ normalized }) => {
+        normalized.supplyType = normalized.primarySupplier !== "-" ? "一供" : normalized.secondarySupplier !== "-" ? "二供" : "一供";
+        normalized.importSupplyLabel = [normalized.primarySupplier !== "-" ? "一供" : "", normalized.secondarySupplier !== "-" ? "二供" : ""].filter(Boolean).join("、") || "未配置";
+        normalized.supplyStrategy = supplyStrategyText(normalized);
+      });
+      return { issues, rows: rows.map(({ normalized }) => normalized), plans };
+    }
+
+    function setBomImportError(message = "") {
+      setBomImportIssues(message ? [{ sheet: "文件", row: 0, field: "", message }] : []);
+    }
+
+    function setBomImportIssues(issues = []) {
+      bomImportIssues = issues;
+      const box = document.querySelector("[data-bom-import-error]");
+      const title = document.querySelector("[data-bom-import-error-title]");
+      const list = document.querySelector("[data-bom-import-error-list]");
+      const success = document.querySelector("[data-bom-import-validation]");
+      if (!box || !title || !list) return;
+      box.hidden = !issues.length;
+      if (success) success.hidden = true;
+      if (!issues.length) {
+        title.textContent = "";
+        list.innerHTML = "";
+        return;
+      }
+      title.textContent = `发现 ${issues.length} 个问题，请修正后重新上传`;
+      const shown = issues.slice(0, 10);
+      list.innerHTML = shown.map((issue) => `<li><b>${escapeHtml(issue.sheet)}${issue.row ? ` · 第${issue.row}行` : ""}${issue.field ? ` · ${escapeHtml(issue.field)}` : ""}</b>：${escapeHtml(issue.message)}</li>`).join("") + (issues.length > shown.length ? `<li>另有 ${issues.length - shown.length} 个问题未展示。</li>` : "");
+    }
+
+    function renderBomImportPreview() {
+      const preview = document.querySelector("[data-bom-import-preview]");
+      const meta = document.querySelector("[data-bom-import-preview-meta]");
+      const body = document.querySelector("[data-bom-import-preview-body]");
+      const confirm = document.querySelector("[data-confirm-bom-import]");
+      const success = document.querySelector("[data-bom-import-validation]");
+      if (!preview || !meta || !body || !confirm) return;
+      const valid = bomImportPreviewRows.length && !bomImportIssues.length;
+      preview.hidden = !valid;
+      confirm.disabled = !valid;
+      if (success) {
+        success.hidden = !valid;
+        success.textContent = valid ? `校验通过：${bomImportPreviewRows.length}条BOM行、${bomImportSupplyPlans.length}条供应方案，可以确认导入。` : "";
+      }
+      if (!valid) {
+        meta.innerHTML = "";
+        body.innerHTML = "";
+        return;
+      }
+      const rootCount = bomImportPreviewRows.filter((row) => Number(row.level) === 1).length;
+      meta.innerHTML = `<span>L1总成：${rootCount}</span><span>BOM行：${bomImportPreviewRows.length}</span><span>供应方案：${bomImportSupplyPlans.length}</span><span>层级：L1-L${Math.max(...bomImportPreviewRows.map((row) => Number(row.level)))}</span><span>初始版本：V1.0</span>`;
+      body.innerHTML = bomImportPreviewRows.slice(0, 10).map((row) => `<tr><td>L${row.level}</td><td>${escapeHtml(row.bwNo)}</td><td>${escapeHtml(row.name)}</td><td>${escapeHtml(row.qty)}</td><td>${escapeHtml(row.application)}</td><td>${escapeHtml(row.importSupplyLabel)}</td></tr>`).join("");
+    }
+
+    function resetBomImport() {
+      bomImportPreviewRows = [];
+      bomImportSupplyPlans = [];
+      setBomImportIssues([]);
+      renderBomImportPreview();
+    }
+
+    function openBomImportModal() {
+      const modal = document.getElementById("bomImportModal");
+      const input = document.querySelector("[data-bom-import-file]");
+      const fileName = document.querySelector("[data-bom-import-file-name]");
+      if (input) input.value = "";
+      if (fileName) fileName.textContent = "尚未选择文件";
+      resetBomImport();
+      if (modal) modal.hidden = false;
+    }
+
+    function closeBomImportModal() {
+      const modal = document.getElementById("bomImportModal");
+      if (modal) modal.hidden = true;
+    }
+
+    async function readBomImportFile(file) {
+      const fileName = document.querySelector("[data-bom-import-file-name]");
+      if (fileName) fileName.textContent = file?.name || "尚未选择文件";
+      resetBomImport();
+      if (!file) return;
+      if (!file.name.toLowerCase().endsWith(".xlsx")) {
+        setBomImportError("文件格式不正确，请上传通过最新标准模板填写的.xlsx文件。");
+        renderBomImportPreview();
+        return;
+      }
+      try {
+        const result = validateBomWorkbook(await readXlsxSheets(file));
+        bomImportPreviewRows = result.rows;
+        bomImportSupplyPlans = result.plans;
+        setBomImportIssues(result.issues);
+        renderBomImportPreview();
+      } catch (error) {
+        setBomImportError(error.message || "文件解析失败，请检查模板内容。");
+        renderBomImportPreview();
+      }
+    }
+
+    function confirmBomImport() {
+      if (!bomImportPreviewRows.length || bomImportIssues.length) {
+        setBomImportError("请先选择并通过校验的Excel文件。");
+        renderBomImportPreview();
+        return;
+      }
+      const existingRootNos = new Set(l1RootsFor(bomState.rows).map((row) => row.bwNo));
+      const groups = [];
+      bomImportPreviewRows.forEach((row) => {
+        if (Number(row.level) === 1) groups.push([]);
+        groups.at(-1)?.push(row);
+      });
+      const importGroups = groups.filter((rows) => rows[0] && !existingRootNos.has(rows[0].bwNo));
+      const skipped = groups.length - importGroups.length;
+      if (!importGroups.length) {
+        setBomImportError("模板中的L1总成编号均已存在，没有可导入的数据。");
+        renderBomImportPreview();
+        return;
+      }
+      const importedAt = Date.now();
+      const importedRows = importGroups.flatMap((rows, groupIndex) => rows.map((row, rowIndex) => normalizeBomRow({
+        ...structuredClone(row),
+        id: `import-${importedAt}-${groupIndex}-${rowIndex}`,
+        no: 0,
+        changeStatus: "新增",
+        ...(Number(row.level) === 1 ? {
+          activeBomVersion: "-",
+          workingBomVersion: "V1.0",
+          workingVersionStage: versionCreationStage(),
+          workingVersionRecord: "",
+          versionHistory: [],
+          assemblyStatus: "AE编辑中",
+          updatedAt: getCurrentTime()
+        } : {})
+      }, bomState.rows.length + rowIndex)));
+      bomState.rows.push(...importedRows);
+      renumberRows();
+      bomState.status = "draft";
+      bomState.workflowStatus = "aeEditing";
+      bomState.versionMajor = 0;
+      bomState.versionMinor = 1;
+      bomState.controlCode = "";
+      bomState.lockedAt = "";
+      bomState.selectedAssemblyIds = importGroups.map((rows, index) => importedRows.find((row) => row.id === `import-${importedAt}-${index}-0`)?.id).filter(Boolean);
+      addProjectEvent({
+        category: "bom",
+        type: "BOM",
+        title: "AE通过Excel模板导入BOM初始版本",
+        description: `已导入 ${importGroups.length} 个L1总成、${importedRows.length} 条BOM数据及 ${bomImportSupplyPlans.length} 条供应方案，生成V1.0工作版本${skipped ? `；跳过 ${skipped} 个重复L1` : ""}。`,
+        actor: "Li Ming",
+        role: "AE",
+        scope: "V1.0"
+      });
+      closeBomImportModal();
+      renderBomList();
+      renderProjectRecords();
     }
 
     function rootRecipeKey(row) {
@@ -19046,7 +20165,10 @@
         name: index === 0 ? `${row.name} / 二供复制` : row.name,
         bwNo: index === 0 ? `${row.bwNo || "L1"}-B` : row.bwNo,
         activeBomVersion: index === 0 ? "-" : row.activeBomVersion,
-        workingBomVersion: index === 0 ? nextAssemblyVersion(baseRoot) : row.workingBomVersion,
+        workingBomVersion: index === 0 ? "V1.0" : row.workingBomVersion,
+        workingVersionStage: index === 0 ? versionCreationStage() : row.workingVersionStage,
+        workingVersionRecord: index === 0 ? "" : row.workingVersionRecord,
+        versionHistory: index === 0 ? [] : row.versionHistory,
         apqpCreated: false,
         apqpStatus: "未创建",
         apqpNo: "",
@@ -19248,7 +20370,14 @@
       `;
     }
 
+    function syncBomRoleActions() {
+      const editButton = document.querySelector("[data-bom-create]");
+      if (editButton) editButton.hidden = ["scm", "me"].includes(bomState.mode);
+    }
+
     function renderBomList() {
+      syncBomRoleActions();
+      document.querySelector("[data-bom-current-stage]").textContent = `当前阶段：${fullStageDisplayName(versionCreationStage())}`;
       const l1NoKeyword = document.querySelector("[data-bom-l1-no-filter]")?.value.trim().toLowerCase() || "";
       const l1NameKeyword = document.querySelector("[data-bom-l1-name-filter]")?.value.trim().toLowerCase() || "";
       const versionKeyword = document.querySelector("[data-bom-version-filter]")?.value.trim().toLowerCase() || "";
@@ -19303,13 +20432,16 @@
       bomListBody.innerHTML = assemblyRows.join("") || `<tr><td colspan="${colSpan}" class="bom-empty-tip">${sourceRows.length ? "未找到匹配的L1总成BOM" : "暂无L1总成BOM，请点击“编辑BOM”后搜索零件生成模拟数据"}</td></tr>`;
       document.querySelector("[data-bom-l1-count]").textContent = allL1Rows.length;
       document.querySelector("[data-bom-all-count]").textContent = assemblyMetas.filter((meta) => meta.status === "已生效").length;
-      document.querySelector("[data-bom-blocking-count]").textContent = assemblyMetas.filter((meta) => meta.status === "待SCM确认").length;
+      document.querySelector("[data-bom-blocking-count]").textContent = assemblyMetas.filter((meta) => meta.status === "待确认").length;
       document.querySelector("[data-bom-change-count]").textContent = assemblyMetas.filter((meta) => meta.openChangeCount > 0).length;
-      const canScmConfirm = bomState.selectedAssemblyIds.some((id) => {
-        const root = allL1Rows.find((row) => row.id === id);
-        return canConfirmAssemblyRoot(root, sourceRows, selectedSnapshot);
-      });
-      document.querySelector("[data-bom-scm-edit]")?.toggleAttribute("disabled", !canScmConfirm);
+      const selectedRoots = bomState.selectedAssemblyIds.map((id) => allL1Rows.find((row) => row.id === id)).filter(Boolean);
+      const nextReviewer = selectedRoots.some((root) => canConfirmAssemblyRoot(root, sourceRows, selectedSnapshot, "SCM"))
+        ? "SCM"
+        : selectedRoots.some((root) => canConfirmAssemblyRoot(root, sourceRows, selectedSnapshot, "ME")) ? "ME" : "";
+      const canConfirm = Boolean(nextReviewer);
+      const confirmButton = document.querySelector("[data-bom-scm-edit]");
+      confirmButton?.toggleAttribute("disabled", !canConfirm);
+      if (confirmButton) confirmButton.innerHTML = `<svg class="icon"><use href="#i-check"></use></svg>${nextReviewer ? `${nextReviewer}确认BOM` : "确认BOM"}`;
       const copySecondaryButton = document.querySelector("[data-copy-selected-l1-secondary]");
       if (copySecondaryButton) {
         const selectedRoot = allL1Rows.find((row) => row.id === bomState.selectedAssemblyIds[0]);
@@ -19337,6 +20469,7 @@
     }
 
     function renderBomEditor() {
+      renderVersionRecordFields();
       const keyword = document.querySelector("[data-row-search]")?.value.trim() || "";
       const application = document.querySelector("[data-row-application]")?.value || "";
       const supplyType = document.querySelector("[data-row-supply-type]")?.value || "";
@@ -19383,30 +20516,32 @@
         return;
       }
       const isScmMode = bomState.mode === "scm";
+      const isMeMode = bomState.mode === "me";
+      const isReviewMode = isScmMode || isMeMode;
       if (selected.length === 1) {
         const row = selected[0];
         const childLevel = childLevelFor(row);
-        selectionInfo.innerHTML = isScmMode
-          ? `已选择：${escapeHtml(row.name)} <span>L${row.level} / SCM仅可编辑基础信息</span>`
+        selectionInfo.innerHTML = isReviewMode
+          ? `已选择：${escapeHtml(row.name)} <span>L${row.level} / ${isMeMode ? "ME确认模式为只读" : "SCM仅可编辑基础信息"}</span>`
           : `已选择：${escapeHtml(row.name)} <span>L${row.level} / 将添加 L${childLevel} 子项</span>`;
         addButtons.forEach((button) => {
-          button.hidden = isScmMode || !canAddChild(row);
+          button.hidden = isReviewMode || !canAddChild(row);
           button.textContent = button.dataset.bomDrawerOpen === "library" ? `从零件库添加 L${childLevel}` : `手动添加 L${childLevel}`;
         });
-        if (editButton) editButton.hidden = false;
+        if (editButton) editButton.hidden = isMeMode;
         secondaryButtons.forEach((button) => {
-          button.hidden = isScmMode || Number(row.level) !== 1 || recipeLabel(row).includes("二供");
+          button.hidden = isReviewMode || Number(row.level) !== 1 || recipeLabel(row).includes("二供");
         });
       } else {
-        selectionInfo.innerHTML = isScmMode
-          ? `已选择 ${selected.length} 项 <span>SCM确认模式不支持批量操作</span>`
+        selectionInfo.innerHTML = isReviewMode
+          ? `已选择 ${selected.length} 项 <span>${isMeMode ? "ME" : "SCM"}确认模式不支持批量操作</span>`
           : `已选择 ${selected.length} 项 <span>多选仅支持批量删除</span>`;
         addButtons.forEach((button) => { button.hidden = true; });
         if (editButton) editButton.hidden = true;
         secondaryButtons.forEach((button) => { button.hidden = true; });
         closeBomInlineDrawer();
       }
-      document.querySelector("[data-bom-delete-selection]")?.toggleAttribute("hidden", isScmMode);
+      document.querySelector("[data-bom-delete-selection]")?.toggleAttribute("hidden", isReviewMode);
     }
 
     function renderBomDetail(rowId = null, version = "") {
@@ -19420,6 +20555,7 @@
         : sourceRows).filter(rowMatchesDetailFilter);
       const rootRow = rowId ? sourceRows.find((row) => row.id === rowId) : null;
       const detailMeta = rootRow ? assemblyMeta(rootRow, sourceRows, historyItem || latestBomSnapshot()) : null;
+      document.querySelector("[data-bom-detail-version-record]").innerHTML = detailMeta ? versionRecordHtml(detailMeta) : "";
       document.querySelector("[data-bom-detail-title]").textContent = rootRow
         ? `${rootRow.name} BOM明细 · ${detailMeta.activeVersion} ${detailMeta.status}`
         : historyItem ? `查看历史L1 BOM ${historyItem.version}` : "项目BOM容器明细";
@@ -19544,7 +20680,7 @@
     }
 
     function gateSubmitBlockers(stage) {
-      if (!stage || stage === "CKO" || stage === "PKO" || stage === "HandOver") return [];
+      if (!stage || stage === "QuoteReady" || stage === "CKO" || stage === "PKO" || stage === "HandOver") return [];
       return l1RootsFor(bomState.rows).flatMap((root) => {
         const meta = assemblyMeta(root, bomState.rows, latestBomSnapshot());
         const blockers = [];
@@ -19568,6 +20704,7 @@
       const readonly = context === "detail";
       if (readonly || context === "historyList") return `<span class="bom-op"><span>只读</span></span>`;
       if (context === "workspace") {
+        if (bomState.mode === "me") return `<span class="bom-op"><span>只读</span></span>`;
         return `<span class="bom-op"><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button>${bomState.mode === "scm" ? "" : `<button class="blue-link" type="button" data-remove-row="${row.id}">删除</button>`}</span>`;
       }
       return `<span class="bom-op"><button class="blue-link" type="button" data-detail-row="${row.id}">查看</button><button class="blue-link" type="button" data-edit-row="${row.id}">编辑</button></span>`;
@@ -19665,7 +20802,7 @@
       const { context = "list", selectable = false } = options;
       normalizeBomRow(row);
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
-      const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
+      const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 7 ? `<span class="tree-toggle">+</span>` : ""}${row.name}</span>`;
       const operation = bomOperationHtml(row, context);
       const cells = [
         row.no, row.application, level, partName, row.qty, row.customerNo, bomPartTaskLinkHtml(row), row.drawingRev,
@@ -19694,7 +20831,6 @@
       const { context = "list", rows = bomState.rows, snapshot = latestBomSnapshot() } = options;
       normalizeBomRow(row);
       const meta = assemblyMeta(row, rows, snapshot);
-      const statusVariant = meta.status === "已生效" ? "is-ok" : meta.status === "待SCM确认" ? "is-warn" : "";
       const apqpVariant = meta.apqpStatus === "未创建" ? "" : meta.apqpStatus === "已取消" ? "is-risk" : "is-ok";
       const checked = bomState.selectedAssemblyIds.includes(row.id) ? "checked" : "";
       const cells = [
@@ -19703,23 +20839,30 @@
         row.name || "-",
         meta.activeVersion === "-" ? "-" : statusTag(meta.activeVersion, "is-ok"),
         meta.workingVersion === "-" ? "-" : statusTag(meta.workingVersion, meta.status === "已生效" ? "is-ok" : "is-warn"),
-        statusTag(meta.status, statusVariant),
-        meta.openChangeCount ? `${meta.openChangeCount} 项` : "0 项",
+        escapeHtml(fullStageDisplayName(meta.generatedStage)),
+        `<div class="bom-version-change-text">${escapeHtml(meta.changeRecord)}</div>`,
+        assemblyConfirmationStatusHtml(row, meta),
         statusTag(assemblySupplyType(row), assemblySupplyType(row) === "一供" ? "is-ok" : "is-warn"),
         statusTag(meta.apqpStatus, apqpVariant),
         meta.owner,
         meta.updatedAt,
         bomAssemblyOperationHtml(row, context)
       ];
-      const body = cells.map((cell, index) => `<td class="${index === cells.length - 1 ? "fixed-op" : ""}">${cell}</td>`).join("");
+      const body = cells.map((cell, index) => `<td class="${index === 7 ? "bom-confirmation-cell " : ""}${index === cells.length - 1 ? "fixed-op" : ""}">${cell}</td>`).join("");
       return `<tr data-row-id="${escapeHtml(row.id)}">${body}</tr>`;
     }
 
     function openWorkspace(mode, rowId = null, historyVersion = null) {
       if (mode !== "create" && !historyVersion && !bomState.rows.length) return;
       bomState.mode = mode;
+      bomState.versionRecordDrafts = {};
+      syncBomRoleActions();
+      bomState.reviewRootIds = ["scm", "me"].includes(mode)
+        ? (rowId ? [rowId] : [...bomState.selectedAssemblyIds]) : [];
       const isCreate = mode === "create";
       const isScm = mode === "scm";
+      const isMe = mode === "me";
+      const isReviewer = isScm || isMe;
       const isDetail = mode === "detail";
       const historyItem = historyVersion ? bomState.histories.find((item) => item.version === historyVersion) : null;
 
@@ -19734,15 +20877,15 @@
         bomState.historyViewing = true;
       } else if (isCreate) {
         if (!bomState.rows.length) resetBomCreateWorkspace();
-        if (!["pendingScm", "scmDraft"].includes(bomState.workflowStatus) && bomState.status !== "locked") {
+        if (!["pendingScm", "pendingConfirm", "scmDraft", "meReview"].includes(bomState.workflowStatus) && bomState.status !== "locked") {
           bomState.workflowStatus = "aeEditing";
         }
         bomState.scopedRootId = null;
         bomState.historyViewing = false;
-      } else if (isScm) {
+      } else if (isReviewer) {
         if (!bomState.rows.length) return;
         bomState.status = "draft";
-        bomState.workflowStatus = "scmDraft";
+        bomState.workflowStatus = isScm ? "scmDraft" : "meReview";
         bomState.historyViewing = false;
       } else {
         bomState.historyViewing = false;
@@ -19756,23 +20899,26 @@
       document.querySelector("[data-bom-work-title]").textContent = historyItem
         ? `查看历史L1 BOM ${historyItem.version}`
         : scopedRoot
-          ? `${scopedRoot.name} L1 BOM · ${nextL1WorkingVersion(scopedRoot)}`
-          : isCreate ? "编辑项目BOM容器" : isScm ? "确认L1 BOM（SCM）" : "项目BOM容器详情";
+          ? `${isReviewer ? "确认" : "编辑"}总成BOM · ${scopedRoot.bwNo || "-"} · ${nextL1WorkingVersion(scopedRoot)}`
+          : isCreate ? "编辑项目BOM容器" : isReviewer ? `确认L1 BOM（${isScm ? "SCM" : "ME"}）` : "项目BOM容器详情";
       const workRole = document.querySelector("[data-bom-work-role]");
-      if (workRole) workRole.textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate ? "AE" : isScm ? "SCM" : "PM / 查看"}`;
+      if (workRole) workRole.textContent = historyItem ? `提交时间：${historyItem.submittedAt}` : `当前角色：${isCreate ? "AE" : isScm ? "SCM" : isMe ? "ME" : "PM / 查看"}`;
       const headerSubmitButton = document.querySelector("[data-bom-submit]");
       const footerSubmitButton = document.querySelector("[data-bom-submit-foot]");
       const detailButton = document.querySelector("[data-bom-view-detail]");
       if (headerSubmitButton) headerSubmitButton.hidden = isDetail || Boolean(historyItem);
       if (footerSubmitButton) footerSubmitButton.hidden = isDetail || Boolean(historyItem);
-      if (footerSubmitButton) footerSubmitButton.textContent = isScm ? "确认并锁定" : "提交至SCM";
+      if (footerSubmitButton) footerSubmitButton.textContent = isScm ? "保存并确认" : isMe ? "确认BOM" : "提交确认";
+      if (headerSubmitButton) headerSubmitButton.textContent = isScm ? "保存并确认" : isMe ? "确认BOM" : "提交确认";
+      const saveDraftButton = document.querySelector("[data-bom-save-draft]");
+      if (saveDraftButton) saveDraftButton.hidden = isReviewer || isDetail || Boolean(historyItem);
       document.querySelector("[data-bom-create-options]").hidden = !isCreate || Boolean(historyItem) || Boolean(scopedRoot);
       if (detailButton) detailButton.hidden = isDetail;
-      document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
-      document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
-      document.querySelector("[data-delete-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
-      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
-      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
+      document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || isMe || Boolean(historyItem));
+      document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || isMe || Boolean(historyItem));
+      document.querySelector("[data-delete-selected]")?.toggleAttribute("disabled", isDetail || isMe || Boolean(historyItem));
+      document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", isDetail || isMe || Boolean(historyItem) || !bomState.undoStack.length);
+      document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", isDetail || isMe || Boolean(historyItem) || !bomState.undoStack.length);
       bomModal.hidden = false;
       renderBomEditor();
     }
@@ -19791,77 +20937,109 @@
 
     async function submitBom() {
       if (!bomState.rows.length) return;
-      if (bomState.mode === "scm") {
+      const missingVersionRecord = targetEditingRoots().find((root) => {
+        initializeAssemblyVersion(root);
+        if (!root.activeBomVersion || root.activeBomVersion === "-") return false;
+        const draft = bomState.versionRecordDrafts?.[root.id];
+        return !(draft ?? root.workingVersionRecord ?? "").trim();
+      });
+      if (missingVersionRecord) {
+        await showBomConfirm({
+          title: "请填写版本变更记录",
+          message: `${missingVersionRecord.name} 的版本变更记录尚未填写。请手动录入本版本的变更内容后再${["scm", "me"].includes(bomState.mode) ? "确认" : "提交确认"}。`
+        });
+        document.querySelector(`[data-bom-version-record="${CSS.escape(missingVersionRecord.id)}"]`)?.focus();
+        return;
+      }
+      if (["scm", "me"].includes(bomState.mode)) {
+        const reviewerRole = bomState.mode === "scm" ? "SCM" : "ME";
+        const reviewerActor = reviewerRole === "SCM" ? "Chen Wei" : "Eric Li";
         const previousRows = bomState.histories[0]?.rows || [];
-        const impacts = detectBomImpacts(previousRows, bomState.rows);
+        const impacts = reviewerRole === "SCM" ? detectBomImpacts(previousRows, bomState.rows) : [];
+        const confirmableRoots = targetEditingRoots().filter((root) => canConfirmAssemblyRoot(root, bomState.rows, latestBomSnapshot(), reviewerRole));
+        if (!confirmableRoots.length) {
+          await showBomConfirm({ title: "无需重复确认", message: `所选 L1 BOM 已完成 ${reviewerRole} 确认，请返回列表查看最新状态。` });
+          return;
+        }
         const confirmed = await showBomConfirm({
-          title: "确认并锁定BOM",
-          message: "确认提交并锁定 BOM 版本？锁定后再次编辑将生成新版本，并保留本次变更影响。",
+          title: `${reviewerRole}确认BOM`,
+          message: reviewerRole === "SCM"
+            ? "确认保存 SCM 的审核结果？完成后仍需 ME 确认；SCM 与 ME 均确认后，工作版本自动转为生效版本。"
+            : "确认提交 ME 的审核结果？SCM 与 ME 均确认后，工作版本将自动转为生效版本。",
           detail: impacts.slice(0, 5).map((impact) => ({
             title: `${impact.type} · ${impact.row.name || "-"}`,
             description: `${impact.blocksGate ? "影响项目级准入，需人工确认" : "仅作风险提示，不默认阻塞项目 Gate"}；${impact.action}`
           }))
         });
         if (!confirmed) return;
-        const nextVersion = nextVersionNumber();
-        bomState.versionMajor = nextVersion.major;
-        bomState.versionMinor = nextVersion.minor;
-        bomState.status = "locked";
-        bomState.workflowStatus = "confirmed";
-        bomState.lockedAt = getCurrentTime();
-        bomState.controlCode = controlCodeFor(currentVersion());
-        const scopedRoot = bomState.scopedRootId ? bomState.rows.find((row) => row.id === bomState.scopedRootId && row.level === 1) : null;
-        if (scopedRoot) {
-          scopedRoot.activeBomVersion = nextAssemblyVersion(scopedRoot);
-          scopedRoot.workingBomVersion = "-";
-          scopedRoot.updatedAt = bomState.lockedAt;
-          descendantsOf(scopedRoot.id).forEach((row) => {
-            if (row.changeStatus && !["无变更", "已取消"].includes(row.changeStatus)) row.changeStatus = "已生效";
-          });
-        } else {
-          l1RootsFor(bomState.rows).forEach((root) => {
-            root.activeBomVersion = root.activeBomVersion || `${assemblyCodeFor(root)}-V1`;
-            root.updatedAt = bomState.lockedAt;
-          });
-        }
-        if (previousRows.length) {
+        const confirmedAt = getCurrentTime();
+        let activatedCount = 0;
+        confirmableRoots.forEach((root) => {
+          if (reviewerRole === "SCM") ensureL1WorkingVersion(root, "待确认");
+          root[reviewerRole === "SCM" ? "scmConfirmationStatus" : "meConfirmationStatus"] = "已确认";
+          root[reviewerRole === "SCM" ? "scmConfirmedAt" : "meConfirmedAt"] = confirmedAt;
+          root.assemblyStatus = "待确认";
+          root.updatedAt = confirmedAt;
+          if (assemblyConfirmationStatus(root, "SCM") === "已确认" && assemblyConfirmationStatus(root, "ME") === "已确认") {
+            pushAssemblyHistory(root, "已生效", "SCM / ME");
+            root.activeBomVersion = root.workingBomVersion;
+            root.assemblyStatus = "已生效";
+            activatedCount += 1;
+            descendantsOf(root.id).forEach((row) => {
+              if (row.changeStatus && !["无变更", "已取消"].includes(row.changeStatus)) row.changeStatus = "已生效";
+            });
+          }
+        });
+        if (reviewerRole === "SCM" && previousRows.length) {
           bomState.changeRecords.unshift(...buildFieldChangeRecords(previousRows, bomState.rows, {
             version: currentVersion(),
-            actor: "Chen Wei",
-            time: bomState.lockedAt,
-            reason: "SCM确认并锁定BOM形成新版本"
+            actor: reviewerActor,
+            time: confirmedAt,
+            reason: "SCM确认BOM变更"
           }));
         }
-        snapshotBomHistory();
+        const allEffective = l1RootsFor(bomState.rows).length > 0 && l1RootsFor(bomState.rows).every((root) => assemblyStatusFor(root) === "已生效");
+        bomState.status = allEffective ? "locked" : "draft";
+        bomState.workflowStatus = allEffective ? "confirmed" : "pendingConfirm";
+        bomState.lockedAt = allEffective ? confirmedAt : "";
+        if (allEffective && bomState.versionMajor === 0) {
+          bomState.versionMajor = 1;
+          bomState.versionMinor = 0;
+        }
+        bomState.controlCode = allEffective ? controlCodeFor(currentVersion()) : "";
+        if (activatedCount) snapshotBomHistory();
         addProjectEvent({
           category: "bom",
           type: "BOM",
-          title: `SCM 确认 BOM ${currentVersion()}`,
-          description: `SCM 确认并锁定 BOM，共 ${bomState.rows.length} 条零件数据，识别 ${impacts.length} 条变更影响。`,
-          actor: "Chen Wei",
-          role: "SCM",
+          title: `${reviewerRole} 确认 L1 BOM`,
+          description: `${reviewerRole} 已确认 ${confirmableRoots.length} 个 L1 BOM 工作版本${activatedCount ? `；其中 ${activatedCount} 个版本已完成 SCM 与 ME 双确认并生效` : "；版本继续等待另一方确认"}。`,
+          actor: reviewerActor,
+          role: reviewerRole,
           scope: currentVersion()
         });
       } else {
         const confirmed = await showBomConfirm({
-          title: "提交至SCM确认",
-          message: "确认提交至 SCM 进行 L1 BOM 确认？提交后对应工作版本将进入待 SCM 确认状态。"
+          title: "提交BOM确认",
+          message: "确认提交 L1 BOM 工作版本供 SCM 与 ME 确认？提交后对应工作版本将进入待确认状态。"
         });
         if (!confirmed) return;
         if (bomState.versionMajor === 0 && bomState.versionMinor === 0) {
           bomState.versionMinor = 1;
         }
         bomState.status = "draft";
-        bomState.workflowStatus = "pendingScm";
+        bomState.workflowStatus = "pendingConfirm";
         bomState.controlCode = "";
         bomState.lockedAt = "";
         const targetRoots = targetEditingRoots();
-        targetRoots.forEach((root) => ensureL1WorkingVersion(root, "待SCM确认"));
+        targetRoots.forEach((root) => {
+          ensureL1WorkingVersion(root, "待确认");
+          resetAssemblyConfirmations(root);
+        });
         addProjectEvent({
           category: "bom",
           type: "BOM",
-          title: "AE 提交 L1 BOM 至 SCM",
-          description: `AE 已提交 ${targetRoots.length} 个 L1 BOM 工作版本至 SCM 确认。`,
+          title: "AE 提交 L1 BOM 确认",
+          description: `AE 已提交 ${targetRoots.length} 个 L1 BOM 工作版本，等待 SCM 与 ME 确认。`,
           actor: "Li Ming",
           role: "AE",
           scope: targetRoots.map((root) => root.workingBomVersion).join(" / ")
@@ -19876,12 +21054,12 @@
     }
 
     function saveBomDraft() {
-      if (!bomState.rows.length) return;
+      if (!bomState.rows.length || ["scm", "me", "detail"].includes(bomState.mode) || bomState.historyViewing) return;
       if (bomState.versionMajor === 0 && bomState.versionMinor === 0) {
         bomState.versionMinor = 1;
       }
       bomState.status = "draft";
-      bomState.workflowStatus = bomState.mode === "scm" ? "scmDraft" : "aeEditing";
+      bomState.workflowStatus = "aeEditing";
       bomState.controlCode = "";
       bomState.lockedAt = "";
       targetEditingRoots().forEach((root) => ensureL1WorkingVersion(root, "AE编辑中"));
@@ -20025,7 +21203,7 @@
       const confirmButton = document.querySelector("[data-confirm-bom-apqp-create]");
       if (tip) {
         tip.textContent = bomState.status !== "locked" || bomState.workflowStatus !== "confirmed"
-          ? "对应 L1 总成 BOM 必须经 SCM 确认并锁定后，才能生成正式 APQP / 子零件开发任务。"
+          ? "对应 L1 总成 BOM 必须经 SCM 与 ME 均确认并生效后，才能生成正式 APQP / 子零件开发任务。"
           : candidates.length
           ? `以下 ${candidates.length} 条候选任务可按 L1 BOM 行选择创建；请先选择负责人部门，再从当前项目团队中选择一名对应职能成员。`
           : "当前 L1 BOM 集合没有符合条件的供应方案，可能已全部创建、为共用件或二供仅备案。";
@@ -20238,6 +21416,7 @@
       const head = document.querySelector("[data-assembly-history-head]");
       const body = document.querySelector("[data-assembly-history-body]");
 
+      document.querySelector("[data-assembly-version-record]").innerHTML = versionRecordHtml(snapshot);
       if (l1Input) l1Input.value = root ? `${root.bwNo || "-"} / ${root.name || "-"}` : "-";
       if (statusInput) statusInput.value = optionMeta?.status || snapshot.status || "-";
       if (timeInput) timeInput.value = optionMeta?.time || snapshot.submittedAt || "-";
@@ -20245,7 +21424,6 @@
         summary.innerHTML = [
           ["BOM版本", snapshot.version || "-"],
           ["状态", optionMeta?.status || meta?.status || "-"],
-          ["草稿/待确认变更", `${meta?.openChangeCount ?? 0} 项`],
           ["APQP状态", meta?.apqpStatus || "-"],
           ["负责人", meta?.owner || "-"]
         ].map(([label, value]) => `<div class="bom-summary-item"><span>${escapeHtml(label)}</span><b>${escapeHtml(value)}</b></div>`).join("");
@@ -20306,6 +21484,8 @@
         ["项目名称", "EA888 E5 VCT"],
         ["L1总成", root ? `${root.bwNo || "-"} / ${root.name || "-"}` : "-"],
         ["BOM版本", snapshot.version || "-"],
+        ["版本生成阶段", fullStageDisplayName(snapshot.generatedStage)],
+        ["版本变更记录", snapshot.changeRecord || "未记录"],
         ["版本状态", optionMeta?.status || snapshot.status || "-"],
         ["更新时间", optionMeta?.time || snapshot.submittedAt || "-"],
         ["导出时间", exportedAt.toLocaleString("zh-CN", { hour12: false })]
@@ -20324,8 +21504,6 @@
 
     function snapshotVersionForAssembly(rowId, assemblyVersion = "") {
       if (!assemblyVersion) return "";
-      const direct = bomState.histories.find((item) => item.version === assemblyVersion);
-      if (direct) return direct.version;
       const snapshot = bomState.histories.find((item) => {
         const root = (item.rows || []).find((row) => row.id === rowId);
         return root && (root.activeBomVersion === assemblyVersion || root.workingBomVersion === assemblyVersion);
@@ -20489,6 +21667,9 @@
       subSupplier: "分供方名称",
       primarySupplier: "一供供应商",
       secondarySupplier: "二供供应商",
+      primaryStrategy: "一供供应策略", secondaryStrategy: "二供供应策略",
+      primaryStartGate: "一供起始Gate", secondaryStartGate: "二供起始Gate",
+      primaryOwner: "一供负责人", secondaryOwner: "二供负责人",
       apqpPolicy: "是否需要 APQP",
       blockGate: "是否影响项目风险提示",
       remark: "备注"
@@ -20516,7 +21697,7 @@
       const beforeMap = new Map(beforeRows.map((row) => [rowTraceKey(row), row]));
       const afterMap = new Map(afterRows.map((row) => [rowTraceKey(row), row]));
       const keys = [...new Set([...beforeMap.keys(), ...afterMap.keys()])];
-      const fields = ["application", "level", "name", "qty", "customerNo", "bwNo", "drawingRev", "sampleSapNo", "massSapNo", "rawNo", "rawMaterial", "weightPiece", "weightAssembly", "sharedPart", "borrowedProject", "releaseStatus", "rawSupplier", "subSupplier", "supplyType", "parentId", "primarySupplier", "secondarySupplier", "apqpPolicy", "blockGate", "remark"];
+      const fields = ["application", "level", "name", "qty", "customerNo", "bwNo", "drawingRev", "sampleSapNo", "massSapNo", "rawNo", "rawMaterial", "weightPiece", "weightAssembly", "sharedPart", "borrowedProject", "releaseStatus", "rawSupplier", "subSupplier", "supplyType", "parentId", "primarySupplier", "secondarySupplier", "primaryStrategy", "secondaryStrategy", "primaryStartGate", "secondaryStartGate", "primaryOwner", "secondaryOwner", "apqpPolicy", "blockGate", "remark"];
       return keys.flatMap((key) => {
         const beforeRow = beforeMap.get(key);
         const afterRow = afterMap.get(key);
@@ -20629,7 +21810,7 @@
         record.field === "零件行" &&
         record.before === "无" &&
         record.after === "存在" &&
-        String(record.reason || "").includes("SCM确认并锁定BOM")
+        String(record.reason || "").includes("SCM确认BOM")
       ));
     }
 
@@ -20853,7 +22034,7 @@
     function exportConfigRowHtml(row, snapshot, checked, exportSupplyType, options) {
       normalizeBomRow(row);
       const level = `<span class="level-badge level-${row.level}">L${row.level}</span>`;
-      const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 4 ? `<span class="tree-toggle">+</span>` : ""}${escapeHtml(row.name)}</span>`;
+      const partName = `<span class="part-name tree-indent-${row.level}">${row.level < 7 ? `<span class="tree-toggle">+</span>` : ""}${escapeHtml(row.name)}</span>`;
       const cells = [
         row.no || "", row.application, level, partName, row.qty, row.customerNo, bomPartTaskLinkHtml(row), row.drawingRev,
         row.sampleSapNo, row.massSapNo, row.rawNo, row.rawMaterial, row.weightPiece, row.weightAssembly,
@@ -21358,14 +22539,37 @@
       renderBomList();
     }
 
-    document.querySelector("[data-bom-create]").addEventListener("click", () => openWorkspace("create"));
-    document.querySelector("[data-bom-scm-edit]").addEventListener("click", confirmSelectedAssemblyVersions);
+    document.querySelector("[data-bom-version-record-fields]")?.addEventListener("input", (event) => {
+      const field = event.target.closest("[data-bom-version-record]");
+      if (!field || field.readOnly) return;
+      bomState.versionRecordDrafts ||= {};
+      bomState.versionRecordDrafts[field.dataset.bomVersionRecord] = field.value;
+      const count = document.querySelector(`[data-bom-version-record-count="${CSS.escape(field.dataset.bomVersionRecord)}"]`);
+      if (count) count.textContent = `${field.value.length}/500`;
+    });
+
+    document.querySelector("[data-bom-create]").addEventListener("click", () => {
+      if (["scm", "me"].includes(bomState.mode)) return;
+      const selectedRootId = bomState.selectedAssemblyIds.length === 1
+        ? bomState.selectedAssemblyIds[0]
+        : null;
+      openWorkspace("create", selectedRootId);
+    });
+    document.querySelector("[data-bom-scm-edit]").addEventListener("click", () => {
+      confirmSelectedAssemblyVersions();
+    });
     document.querySelector("[data-generate-secondary-recipe]")?.addEventListener("click", generateSecondaryRecipe);
     document.querySelector("[data-bom-change-trace]")?.addEventListener("click", openChangeTraceModal);
     document.querySelector("[data-add-manual-trace]")?.addEventListener("click", addManualChangeRecord);
     document.querySelector("[data-bom-create-apqp]")?.addEventListener("click", openApqpCreateModal);
     document.querySelector("[data-bom-apqp-tasks]")?.addEventListener("click", openApqpTasksModal);
     document.querySelector("[data-bom-export-template]")?.addEventListener("click", openBomExportModal);
+    document.querySelector("[data-bom-import-template]")?.addEventListener("click", openBomImportModal);
+    document.querySelectorAll("[data-close-bom-import]").forEach((button) => button.addEventListener("click", closeBomImportModal));
+    document.querySelector("[data-download-bom-import-template]")?.addEventListener("click", downloadBomImportTemplate);
+    document.querySelector("[data-choose-bom-import-file]")?.addEventListener("click", () => document.querySelector("[data-bom-import-file]")?.click());
+    document.querySelector("[data-bom-import-file]")?.addEventListener("change", (event) => readBomImportFile(event.target.files?.[0]));
+    document.querySelector("[data-confirm-bom-import]")?.addEventListener("click", confirmBomImport);
     document.querySelector("[data-copy-selected-l1-secondary]")?.addEventListener("click", () => {
       const selectedRootId = bomState.selectedAssemblyIds[0];
       if (selectedRootId) copyL1Assembly(selectedRootId);
@@ -21645,7 +22849,9 @@
         const rowId = event.target.closest("[data-detail-row]").dataset.detailRow;
         const selectedSnapshot = selectedBomSnapshot();
         if (selectedSnapshot.isLatest) {
-          openWorkspace("create", rowId);
+          const root = bomState.rows.find((row) => row.id === rowId);
+          const reviewerRole = root?.assemblyStatus === "待确认" ? pendingAssemblyConfirmationRole(root) : "";
+          openWorkspace(reviewerRole ? reviewerRole.toLowerCase() : "create", rowId);
         } else {
           openBomDetail(rowId, selectedSnapshot.version);
         }
@@ -21676,7 +22882,6 @@
     updateStageScrollState();
     renderStageTasks(activeStage);
     renderProjectRecords();
-    refreshProgress();
     validatePlan(false);
   </script>
 </body>

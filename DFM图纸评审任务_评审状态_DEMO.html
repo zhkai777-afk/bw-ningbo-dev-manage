@@ -43,6 +43,13 @@
       overflow: hidden;
     }
 
+    /* 详情页包含图纸、问题清单和签核等连续内容，需由页面整体纵向滚动。 */
+    body:not(.list-mode) .app-shell {
+      height: auto;
+      min-height: 100vh;
+      overflow: visible;
+    }
+
     .topbar {
       height: 64px;
       padding: 0 28px;
@@ -151,6 +158,47 @@
       margin: 0;
       padding-left: 10px;
       padding-right: 10px;
+      height: auto;
+      min-height: calc(100vh - 64px);
+      overflow: auto;
+    }
+
+    .page[data-detail-view] .record-header {
+      margin-bottom: 16px;
+    }
+
+    .page[data-detail-view] .workspace {
+      height: auto;
+      min-height: 560px;
+      overflow: visible;
+      align-items: stretch;
+    }
+
+    .page[data-detail-view] .drawing-panel,
+    .page[data-detail-view] .form-panel {
+      height: 100%;
+      overflow: visible;
+      overscroll-behavior: auto;
+    }
+
+    .page[data-detail-view] .drawing-panel {
+      position: sticky;
+      top: 76px;
+      align-self: stretch;
+    }
+
+    .page[data-detail-view] .form-panel {
+      align-self: stretch;
+      padding: 0 0 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface);
+      box-shadow: 0 6px 18px rgba(15, 23, 42, .05);
+    }
+
+    .standalone-section {
+      width: 100%;
+      margin-top: 16px;
     }
 
     .record-header {
@@ -844,6 +892,45 @@
       margin-top: 16px;
     }
 
+    .review-tabs {
+      display: flex;
+      align-items: end;
+      gap: 4px;
+      padding: 0 10px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 10px 10px 0 0;
+    }
+
+    .review-tabs-container {
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .review-tab {
+      min-height: 38px;
+      padding: 0 14px;
+      border: 0;
+      border-bottom: 3px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 900;
+    }
+
+    .review-tab:hover { color: var(--primary); background: #f8fbff; }
+    .review-tab.active { color: var(--primary); border-bottom-color: var(--primary); background: var(--primary-soft); }
+    .review-tab-count { margin-left: 5px; color: inherit; font-size: 12px; }
+
+    .form-panel .review-tab-panel {
+      margin-top: 0;
+    }
+
+    .review-tabs-container .issue-section .panel-head {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
     .section {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -861,6 +948,32 @@
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 12px;
     }
+
+    .field-grid .field-full {
+      grid-column: 1 / -1;
+    }
+
+    .review-focus-input {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      min-height: 94px;
+      resize: vertical;
+      padding: 11px 12px;
+      border-color: #b8d3ff;
+      background: #f8fbff;
+      line-height: 1.65;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+    }
+
+    .review-focus-field { gap: 7px; }
+    .review-focus-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .review-focus-label small { color: var(--muted); font-size: 11px; font-weight: 700; }
+    .review-focus-input:focus { background: #fff; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(31, 95, 191, .12); }
+    .review-focus-input::placeholder { color: #98a2b3; font-weight: 600; }
 
     .field {
       display: grid;
@@ -942,9 +1055,10 @@
 
     .filter-bar {
       display: grid;
-      grid-template-columns: minmax(220px, 1fr) 160px 160px auto;
+      grid-template-columns: minmax(260px, 380px) 160px 160px auto;
       gap: 10px;
       align-items: end;
+      justify-content: start;
       padding: 14px;
       border-bottom: 1px solid var(--line);
       background: #fff;
@@ -1005,6 +1119,28 @@
     .issue-action-cell {
       padding: 10px 8px;
       text-align: center;
+    }
+
+    /* 开放问题表横向滚动时，删除等操作始终可用。 */
+    .issue-section table th:last-child {
+      position: sticky;
+      right: 0;
+      z-index: 5;
+      background: #eef3f9;
+      box-shadow: -8px 0 14px rgba(15, 23, 42, .08);
+    }
+
+    .issue-section table td:last-child {
+      position: sticky;
+      right: 0;
+      z-index: 2;
+      background: #fff;
+      box-shadow: -8px 0 14px rgba(15, 23, 42, .08);
+    }
+
+    .issue-section table tbody tr:nth-child(even) td:last-child,
+    .issue-section table tbody tr:hover td:last-child {
+      background: #f7fbff;
     }
 
     .issue-delete-btn {
@@ -1558,7 +1694,66 @@
     .reviewer-department-list {
       display: grid;
       gap: 10px;
+      max-height: 286px;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-right: 4px;
     }
+
+    .reviewer-summary {
+      margin: 0 0 12px;
+      padding: 9px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #c9dcff;
+      border-radius: 8px;
+      background: #f8fbff;
+      color: #214a83;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .reviewer-department-row.is-collapsed {
+      display: none;
+    }
+
+    body.reviewer-mode .reviewer-department-row.is-collapsed.is-current {
+      display: grid;
+    }
+
+    .reviewer-batch-dialog {
+      width: min(720px, calc(100vw - 32px));
+      padding: 0;
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, .24);
+    }
+
+    .reviewer-batch-dialog::backdrop { background: rgba(15, 23, 42, .45); }
+    .reviewer-batch-content { padding: 20px; }
+    .reviewer-batch-content h3 { margin: 0; font-size: 18px; }
+    .reviewer-batch-content > p { margin: 6px 0 16px; color: var(--muted); font-size: 13px; }
+    .reviewer-candidate-list { display: grid; gap: 8px; max-height: 360px; overflow: auto; }
+    .reviewer-candidate {
+      display: grid;
+      grid-template-columns: 20px minmax(130px, .9fr) minmax(140px, 1fr) minmax(160px, 1.1fr);
+      align-items: center;
+      gap: 10px;
+      min-height: 48px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface-soft);
+      cursor: pointer;
+    }
+    .reviewer-candidate:has(input:checked) { border-color: #8db8fa; background: var(--primary-soft); }
+    .reviewer-candidate input { margin: 0; }
+    .reviewer-candidate strong { font-size: 13px; }
+    .reviewer-candidate span { color: #475467; font-size: 12px; font-weight: 700; }
+    .reviewer-candidate select { height: 34px; border: 1px solid var(--line-strong); border-radius: 7px; background: #fff; padding: 0 8px; }
+    .reviewer-batch-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
 
     .reviewer-table-head {
       display: none;
@@ -1922,6 +2117,11 @@
 
     .view-page.active {
       display: grid;
+    }
+
+    /* 详情与列表是互斥视图。详情采用文档流布局，确保独占区块只出现在详情页内。 */
+    .page[data-detail-view].active {
+      display: block;
     }
 
     .list-page {
@@ -3611,6 +3811,7 @@
         height: auto;
         padding-right: 0;
       }
+      .page[data-detail-view] .drawing-panel { position: static; }
       .field-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .decision-grid { grid-template-columns: 1fr; }
       .two-column { grid-template-columns: 1fr; }
@@ -4529,52 +4730,6 @@
               </svg>
             </div>
           </div>
-          <div class="side-summary">
-            <div class="review-card">
-              <div class="review-card-head">
-                <h3>评审关注点</h3>
-                <button class="mini-btn primary" type="button" data-add-review-point>新增</button>
-              </div>
-              <ul class="review-list" data-review-list>
-                <li>
-                  <span>尺寸公差风险</span>
-                  <div class="point-actions">
-                    <strong data-point-code>D13</strong>
-                    <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
-                    </button>
-                    <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
-                    </button>
-                  </div>
-                </li>
-                <li>
-                  <span>夹具干涉风险</span>
-                  <div class="point-actions">
-                    <strong data-point-code>C4</strong>
-                    <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
-                    </button>
-                    <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
-                    </button>
-                  </div>
-                </li>
-                <li>
-                  <span>去毛刺优化</span>
-                  <div class="point-actions">
-                    <strong data-point-code>A-A</strong>
-                    <button class="mini-btn icon-only" type="button" title="编辑" aria-label="编辑">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg>
-                    </button>
-                    <button class="mini-btn icon-only" type="button" title="删除" aria-label="删除" data-remove-review-point>
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="M19 6l-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path></svg>
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </div>
         </aside>
 
         <section class="form-panel">
@@ -4611,6 +4766,11 @@
                 <label class="field">零件编号
                   <input value="TH-2024-001" readonly data-detail-part-no-input>
                 </label>
+                <label class="field field-full review-focus-field"><span class="review-focus-label"><span>评审关注点</span><small>建议每项单独换行，便于评审追溯</small></span>
+                  <textarea class="review-focus-input" data-review-focus-input placeholder="请输入本次评审需重点关注的尺寸、公差、装夹、工艺、成本或图纸优化事项">尺寸公差风险：D13 孔位加工余量及能力风险；
+夹具干涉风险：C4 区域装夹空间与定位方案确认；
+去毛刺优化：A-A 圆角优化，减少人工去毛刺。</textarea>
+                </label>
               </div>
             </div>
           </section>
@@ -4629,6 +4789,10 @@
                 <div class="reviewer-publish-actions">
                   <button class="mini-btn" type="button" data-edit-reviewers hidden>编辑评审人员</button>
                 </div>
+              </div>
+              <div class="reviewer-summary" data-reviewer-summary>
+                <span data-reviewer-summary-text>评审人员：3 人（3 人已确认）</span>
+                <button class="mini-btn" type="button" data-toggle-reviewers hidden>展开全部</button>
               </div>
               <div class="reviewer-retention-note">
                 已提交评审意见的人员不可改名或覆盖。移除后将标记为“已移除（记录保留）”，其评审结论、已登记问题、附件和处理记录继续保留并参与问题闭环。
@@ -4751,12 +4915,35 @@
                 </div>
               </div>
               <div class="reviewer-section-actions">
-                <button class="mini-btn primary" type="button" data-add-reviewer-department>新增评审人员</button>
+                <button class="mini-btn primary" type="button" data-add-reviewer-department>添加评审人员</button>
               </div>
             </div>
           </section>
 
-          <section class="section issue-section" aria-label="开放问题清单">
+          <section class="section" aria-label="小组结论和签核">
+            <div class="panel-head">
+              <div class="panel-title">
+                <strong>小组结论与签核</strong>
+                <span>提交前需要完成结论、说明和责任人确认</span>
+              </div>
+              <span class="tag green">自动保存成功</span>
+            </div>
+            <div class="section-body">
+              <div>
+                <div class="radio-group">
+                  <label class="radio-chip red"><input type="radio" name="conclusion"> 不可行</label>
+                  <label class="radio-chip yellow"><input type="radio" name="conclusion" checked> 可行（未优化 / 降本）</label>
+                  <label class="radio-chip green"><input type="radio" name="conclusion"> 可行</label>
+                </div>
+                <textarea class="comment-box">结论说明：当前设计整体可制造，但需完成 D13 公差调整、C4 夹具间隙确认及 A-A 圆角优化后再释放图纸。</textarea>
+              </div>
+            </div>
+          </section>
+
+        </section>
+      </div>
+
+      <section class="section issue-section standalone-section" aria-label="开放问题清单">
             <div class="panel-head">
               <div class="panel-title">
                 <strong>开放问题清单</strong>
@@ -4844,30 +5031,21 @@
             </div>
           </section>
 
-          <section class="section" aria-label="小组结论和签核">
-            <div class="panel-head">
-              <div class="panel-title">
-                <strong>小组结论与签核</strong>
-                <span>提交前需要完成结论、说明和责任人确认</span>
-              </div>
-              <span class="tag green">自动保存成功</span>
-            </div>
-            <div class="section-body">
-              <div>
-                <div class="radio-group">
-                  <label class="radio-chip red"><input type="radio" name="conclusion"> 不可行</label>
-                  <label class="radio-chip yellow"><input type="radio" name="conclusion" checked> 可行（未优化 / 降本）</label>
-                  <label class="radio-chip green"><input type="radio" name="conclusion"> 可行</label>
-                </div>
-                <textarea class="comment-box">结论说明：当前设计整体可制造，但需完成 D13 公差调整、C4 夹具间隙确认及 A-A 圆角优化后再释放图纸。</textarea>
-              </div>
-            </div>
-          </section>
-        </section>
-      </div>
     </main>
 
   </div>
+
+  <dialog class="reviewer-batch-dialog" data-reviewer-batch-dialog aria-labelledby="reviewerBatchTitle">
+    <form class="reviewer-batch-content" method="dialog" data-reviewer-batch-form>
+      <h3 id="reviewerBatchTitle">批量添加评审人员</h3>
+      <p>勾选需要参与本次图纸评审的人员，并为每位人员指定职责。系统会拦截同一“人员 + 职责”的重复记录。</p>
+      <div class="reviewer-candidate-list" data-reviewer-candidate-list></div>
+      <div class="reviewer-batch-actions">
+        <button class="btn" type="button" data-close-reviewer-batch>取消</button>
+        <button class="btn primary" type="submit">添加已选人员</button>
+      </div>
+    </form>
+  </dialog>
 
   <dialog class="create-dialog" data-create-dfm-dialog>
     <form class="create-dialog-content" method="dialog" data-create-dfm-form novalidate>
@@ -5277,6 +5455,18 @@
     const detailReviewDateInput = document.querySelector('[data-detail-review-date-input]');
     const detailPartNameInput = document.querySelector('[data-detail-part-name-input]');
     const detailPartNoInput = document.querySelector('[data-detail-part-no-input]');
+    const formPanel = document.querySelector('.form-panel');
+    const workspace = document.querySelector('.workspace');
+    const projectInfoSection = document.querySelector('section[aria-label="项目信息"]');
+    const reviewerSection = document.querySelector('section[aria-label="评审人员"]');
+    const conclusionSection = document.querySelector('section[aria-label="小组结论和签核"]');
+    const issueSection = document.querySelector('.issue-section');
+    const reviewerSummaryText = document.querySelector('[data-reviewer-summary-text]');
+    const toggleReviewersButton = document.querySelector('[data-toggle-reviewers]');
+    const reviewerBatchDialog = document.querySelector('[data-reviewer-batch-dialog]');
+    const reviewerBatchForm = document.querySelector('[data-reviewer-batch-form]');
+    const reviewerCandidateList = document.querySelector('[data-reviewer-candidate-list]');
+    const closeReviewerBatchButton = document.querySelector('[data-close-reviewer-batch]');
     const reviewList = document.querySelector('[data-review-list]');
     const addReviewPointButton = document.querySelector('[data-add-review-point]');
     const reviewerDepartmentList = document.querySelector('[data-reviewer-department-list]');
@@ -6297,22 +6487,25 @@
       window.setTimeout(() => window.print(), 60);
     }
 
-    function reviewerDepartmentOptions(selectedDepartment = '制造工程部') {
+    function reviewerDepartmentOptions(selectedDepartment = '') {
       const departments = ['制造工程部', '产品工程部', '质量工程部', '项目管理部', '供应链管理部', '供应商质量开发部'];
-      return departments.map((department) => `<option${department === selectedDepartment ? ' selected' : ''}>${department}</option>`).join('');
+      const placeholder = selectedDepartment ? '' : '<option value="" selected disabled>-- 请选择 --</option>';
+      return placeholder + departments.map((department) => `<option${department === selectedDepartment ? ' selected' : ''}>${department}</option>`).join('');
     }
 
     function reviewerPeopleOptions(selectedPerson = '') {
       const people = ['Alex Wang', 'Mia Chen', 'Kevin Liu', 'Sophia Zhang', 'Peter Zhou', 'Grace Huang', 'Leo Shen', 'Nina Xu', 'Olivia Sun', 'Eric Gao', 'Daniel Wu', 'Amy Lin'];
-      return people.map((person) => `<option${person === selectedPerson ? ' selected' : ''}>${person}</option>`).join('');
+      const placeholder = selectedPerson ? '' : '<option value="" selected disabled>-- 请选择 --</option>';
+      return placeholder + people.map((person) => `<option${person === selectedPerson ? ' selected' : ''}>${person}</option>`).join('');
     }
 
-    function reviewerRoleOptions(selectedRole = '制造可行性') {
+    function reviewerRoleOptions(selectedRole = '') {
       const roles = ['制造可行性', '产品设计确认', '质量风险评审', '项目节点评审', '供应方案评审'];
-      return roles.map((role) => `<option${role === selectedRole ? ' selected' : ''}>${role}</option>`).join('');
+      const placeholder = selectedRole ? '' : '<option value="" selected disabled>-- 请选择 --</option>';
+      return placeholder + roles.map((role) => `<option${role === selectedRole ? ' selected' : ''}>${role}</option>`).join('');
     }
 
-    function reviewerDepartmentRowTemplate(selectedDepartment = '制造工程部', people = '') {
+    function reviewerDepartmentRowTemplate(selectedDepartment = '', people = '', selectedRole = '') {
       return `
         <div class="reviewer-department-row" data-reviewer-row>
           <label class="field">部门
@@ -6322,7 +6515,7 @@
             <select data-reviewer-people>${reviewerPeopleOptions(people)}</select>
           </label>
           <label class="field">角色/职责
-            <select data-reviewer-role>${reviewerRoleOptions()}</select>
+            <select data-reviewer-role>${reviewerRoleOptions(selectedRole)}</select>
           </label>
           <label class="field" data-reviewer-status-field>状态
             <span class="reviewer-status-pill pending" data-reviewer-status>待确认</span>
@@ -6368,6 +6561,89 @@
 
     function syncAllReviewerReadonlyValues() {
       reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]').forEach(syncReviewerReadonlyValues);
+    }
+
+    let reviewersExpanded = false;
+    const reviewerCandidates = [
+      ['制造工程部', 'Peter Zhou', '制造可行性'],
+      ['制造工程部', 'Grace Huang', '制造可行性'],
+      ['产品工程部', 'Leo Shen', '产品设计确认'],
+      ['产品工程部', 'Nina Xu', '产品设计确认'],
+      ['质量工程部', 'Olivia Sun', '质量风险评审'],
+      ['供应链管理部', 'Eric Gao', '供应方案评审'],
+      ['项目管理部', 'Daniel Wu', '项目节点评审'],
+      ['供应商质量开发部', 'Amy Lin', '供应方案评审']
+    ];
+
+    function updateReviewerSummary() {
+      const activeRows = Array.from(reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]') || [])
+        .filter((row) => row.dataset.reviewerInactive !== 'true');
+      const confirmed = activeRows.filter((row) => row.querySelector('[data-reviewer-status]')?.textContent.trim() === '已确认').length;
+      if (reviewerSummaryText) reviewerSummaryText.textContent = `评审人员：${activeRows.length} 人（${confirmed} 人已确认，${activeRows.length - confirmed} 人待处理）`;
+      const canCollapse = activeRows.length > 3;
+      activeRows.forEach((row, index) => row.classList.toggle('is-collapsed', canCollapse && !reviewersExpanded && index >= 3));
+      if (toggleReviewersButton) {
+        toggleReviewersButton.hidden = !canCollapse;
+        toggleReviewersButton.textContent = reviewersExpanded ? '收起列表' : `展开其余 ${activeRows.length - 3} 人`;
+      }
+    }
+
+    function renderReviewerCandidates() {
+      if (!reviewerCandidateList) return;
+      reviewerCandidateList.innerHTML = reviewerCandidates.map(([department, person, role], index) => `
+        <label class="reviewer-candidate">
+          <input type="checkbox" value="${index}" data-candidate-check>
+          <strong>${person}</strong>
+          <span>${department}</span>
+          <select data-candidate-role>${reviewerRoleOptions(role)}</select>
+        </label>`).join('');
+    }
+
+    function hasDuplicateReviewer(person, role) {
+      return Array.from(reviewerDepartmentList?.querySelectorAll('[data-reviewer-row]') || []).some((row) =>
+        row.dataset.reviewerInactive !== 'true'
+        && row.querySelector('[data-reviewer-people]')?.value === person
+        && row.querySelector('[data-reviewer-role]')?.value === role);
+    }
+
+    let activeReviewTab = 'info';
+    function setActiveReviewTab(tabName) {
+      if (!projectInfoSection || !reviewerSection || !conclusionSection) return;
+      activeReviewTab = tabName;
+      projectInfoSection.hidden = tabName !== 'info';
+      reviewerSection.hidden = tabName !== 'reviewers';
+      conclusionSection.hidden = tabName !== 'conclusion';
+      document.querySelectorAll('[data-review-tab]').forEach((button) => {
+        const isActive = button.dataset.reviewTab === tabName;
+        button.classList.toggle('active', isActive);
+        button.setAttribute('aria-selected', String(isActive));
+      });
+    }
+
+    function setupReviewTabs() {
+      if (!workspace || !formPanel || !projectInfoSection || !reviewerSection || !conclusionSection || !issueSection || document.querySelector('[data-review-tabs]')) return;
+      const container = document.createElement('div');
+      container.className = 'review-tabs-container';
+      const tabs = document.createElement('div');
+      tabs.className = 'review-tabs';
+      tabs.dataset.reviewTabs = '';
+      tabs.setAttribute('role', 'tablist');
+      tabs.setAttribute('aria-label', '评审任务详情');
+      tabs.innerHTML = `
+        <button class="review-tab active" type="button" role="tab" aria-selected="true" data-review-tab="info">项目信息</button>
+        <button class="review-tab" type="button" role="tab" aria-selected="false" data-review-tab="reviewers">评审人员</button>
+        <button class="review-tab" type="button" role="tab" aria-selected="false" data-review-tab="conclusion">小组结论</button>`;
+      formPanel.insertBefore(tabs, projectInfoSection);
+      projectInfoSection.classList.add('review-tab-panel');
+      reviewerSection.classList.add('review-tab-panel');
+      conclusionSection.classList.add('review-tab-panel');
+      container.append(issueSection);
+      workspace.insertAdjacentElement('afterend', container);
+      tabs.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-review-tab]');
+        if (button) setActiveReviewTab(button.dataset.reviewTab);
+      });
+      setActiveReviewTab(activeReviewTab);
     }
 
     function currentReviewerRow() {
@@ -6521,6 +6797,12 @@
       document.body.classList.toggle('reviewer-mode', isReviewer);
       document.body.classList.toggle('review-published', reviewTasksPublished);
       document.body.classList.toggle('review-editing', reviewEditMode && reviewTasksPublished && !isReviewer);
+      if ((isReviewer || !reviewTasksPublished) && activeReviewTab === 'conclusion') setActiveReviewTab('info');
+      if (isReviewer && activeReviewTab === 'reviewers') setActiveReviewTab('info');
+      const reviewerTabButton = document.querySelector('[data-review-tab="reviewers"]');
+      if (reviewerTabButton) reviewerTabButton.hidden = isReviewer;
+      const conclusionTabButton = document.querySelector('[data-review-tab="conclusion"]');
+      if (conclusionTabButton) conclusionTabButton.hidden = isReviewer || !reviewTasksPublished;
       syncAllReviewerReadonlyValues();
       reviewViewButtons.forEach((button) => {
         button.classList.toggle('active', button.dataset.reviewView === currentReviewView);
@@ -6618,6 +6900,7 @@
       syncDrawingLockState();
       refreshLockButton();
       applyLockedView();
+      updateReviewerSummary();
     }
 
     function currentDrawingInfo() {
@@ -7000,11 +7283,50 @@
 
     addReviewerDepartmentButton?.addEventListener('click', () => {
       const wrapper = document.createElement('div');
-      wrapper.innerHTML = reviewerDepartmentRowTemplate('制造工程部', '');
+      wrapper.innerHTML = reviewerDepartmentRowTemplate();
       const row = wrapper.firstElementChild;
       reviewerDepartmentList?.appendChild(row);
+      reviewersExpanded = true;
       applyReviewView();
       row?.querySelector('[data-reviewer-department]')?.focus();
+    });
+
+    closeReviewerBatchButton?.addEventListener('click', () => reviewerBatchDialog?.close());
+    reviewerBatchDialog?.addEventListener('click', (event) => {
+      if (event.target === reviewerBatchDialog) reviewerBatchDialog.close();
+    });
+    toggleReviewersButton?.addEventListener('click', () => {
+      reviewersExpanded = !reviewersExpanded;
+      updateReviewerSummary();
+    });
+    reviewerBatchForm?.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const selected = Array.from(reviewerCandidateList?.querySelectorAll('[data-candidate-check]:checked') || []);
+      if (!selected.length) {
+        openAppDialog({ title: '请选择评审人员', message: '请至少勾选一名人员后再添加。', confirmText: '知道了', hideCancel: true });
+        return;
+      }
+      const duplicates = [];
+      const rows = [];
+      selected.forEach((checkbox) => {
+        const [department, person, defaultRole] = reviewerCandidates[Number(checkbox.value)];
+        const role = checkbox.closest('.reviewer-candidate')?.querySelector('[data-candidate-role]')?.value || defaultRole;
+        if (hasDuplicateReviewer(person, role) || rows.some((item) => item.person === person && item.role === role)) duplicates.push(`${person} / ${role}`);
+        else rows.push({ department, person, role });
+      });
+      if (duplicates.length) {
+        openAppDialog({ title: '存在重复评审人员', message: `以下“人员 + 职责”已在本次评审中存在：${duplicates.join('；')}。请调整职责或取消勾选后重试。`, confirmText: '知道了', hideCancel: true });
+        return;
+      }
+      rows.forEach(({ department, person, role }) => {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = reviewerDepartmentRowTemplate(department, person, role);
+        reviewerDepartmentList?.appendChild(wrapper.firstElementChild);
+      });
+      reviewersExpanded = rows.length > 0;
+      reviewerBatchDialog?.close();
+      applyReviewView();
+      if (saveMessage) saveMessage.textContent = `已添加 ${rows.length} 名评审人员`;
     });
 
     reviewViewButtons.forEach((button) => button.addEventListener('click', () => {
@@ -7979,6 +8301,7 @@
     syncDrawingZoom();
     syncAllStatusColors();
     prepareAllUploadCells();
+    setupReviewTabs();
     applyReviewView();
     refreshLockButton();
     refreshIssueSummary();

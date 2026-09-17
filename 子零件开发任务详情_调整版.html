@@ -2332,7 +2332,7 @@
       min-height: 88px;
       padding: 26px 22px;
       display: grid;
-      grid-template-columns: minmax(260px, 1fr) minmax(260px, 1fr) minmax(260px, 1fr) auto;
+      grid-template-columns: minmax(220px, 1fr) minmax(180px, .75fr) minmax(200px, .85fr) minmax(200px, .85fr) auto;
       align-items: center;
       gap: 24px;
       background: #f2f5f9;
@@ -2395,16 +2395,19 @@
     }
 
     .issue-table {
-      min-width: 1420px;
+      min-width: 1840px;
       table-layout: fixed;
     }
 
     .issue-table th,
     .issue-table td {
       height: 53px;
-      padding: 0 20px;
+      padding: 12px 20px;
       font-weight: 500;
       color: #252a34;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      vertical-align: top;
     }
 
     .issue-table th {
@@ -2437,6 +2440,28 @@
     .issue-state.done::before {
       background: #25b33f;
     }
+
+    .issue-state.inprogress::before { background: #f59e0b; }
+
+    /* 问题清单与项目开发页保持同一弹窗信息架构 */
+    #issueModal .issue-modal { width: min(920px, calc(100vw - 28px)); }
+    #issueModal .issue-form { padding: 30px 42px 20px 48px; }
+    #issueModal .issue-form .form-row { grid-template-columns: 170px minmax(0, 1fr); margin-bottom: 18px; }
+    #issueModal .issue-form .form-row > label { justify-self: end; text-align: right; }
+    #issueModal .issue-form .issue-input,
+    #issueModal .issue-form .issue-select { height: 44px; border-radius: 6px; }
+    #issueModal .issue-form .issue-textarea { min-height: 134px; border-radius: 6px; padding: 12px; line-height: 1.6; }
+    #issueModal .issue-form .form-editor .issue-textarea { min-height: 110px; }
+    #issueModal .issue-form .form-upload { align-items: center; }
+    #issueModal .issue-form .upload-note { margin-top: 4px; }
+    .issue-owner-picker { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; }
+    .issue-owner-picker .issue-input[readonly] { background:#f8fafc; cursor:default; }
+    .issue-owner-member-modal .member-picker { grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:32px; }
+    .issue-owner-member-modal .member-group-head { grid-template-columns:18px minmax(0,1fr) auto; }
+    .issue-owner-member-modal .picker-box { min-height:500px; }
+    .issue-owner-member-modal .group-list,.issue-owner-member-modal .selected-group-list { height:436px; }
+    .issue-owner-member-modal .member-option:has(input:checked) { background:#eff6ff; }
+    .issue-owner-selected-member { min-height:50px; display:grid; grid-template-columns:20px 28px minmax(0,1fr); align-items:center; gap:10px; padding:8px 12px; }
 
     .issue-empty {
       text-align: center;
@@ -5583,29 +5608,28 @@
 
           <div class="issue-status-tabs" aria-label="问题状态筛选">
             <button class="active" type="button" data-issue-status="all">全部</button>
-            <button type="button" data-issue-status="pending">待解决</button>
-            <button type="button" data-issue-status="done">已解决</button>
+            <button type="button" data-issue-status="pending">待处理</button>
+            <button type="button" data-issue-status="inprogress">进行中</button>
+            <button type="button" data-issue-status="done">已完成</button>
           </div>
 
           <form class="bom-filter issue-filter" id="issueFilter">
-            <label>问题标题
-              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题描述">
+            <label>问题 / 行动
+              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题或行动内容">
             </label>
-            <label>问题类型
-              <select class="select-field issue-select" id="issueTypeFilter">
-                <option value="">请选择问题类型</option>
-                <option>尺寸精度</option>
-                <option>精度</option>
-                <option>性能</option>
+            <label>状态
+              <select class="select-field issue-select" id="issueStatusFilter">
+                <option value="">全部状态</option>
+                <option value="pending">待处理</option>
+                <option value="inprogress">进行中</option>
+                <option value="done">已完成</option>
               </select>
             </label>
-            <label>严重程度
-              <select class="select-field issue-select" id="issueSeverityFilter">
-                <option value="">请选择严重程度</option>
-                <option>高</option>
-                <option>中</option>
-                <option>低</option>
-              </select>
+            <label>责任领域
+              <input class="field issue-input" id="issueSwimLaneFilter" type="search" placeholder="输入部门、模块或分类">
+            </label>
+            <label>负责人
+              <input class="field issue-input" id="issueChampionFilter" type="search" placeholder="输入负责人姓名">
             </label>
             <div class="issue-filter-actions">
               <button class="btn btn-soft-primary" type="submit">查询</button>
@@ -5616,61 +5640,33 @@
           <div class="bom-table-wrap issue-table-wrap">
             <table class="issue-table" aria-label="问题清单列表">
               <colgroup>
-                <col style="width:24%">
-                <col style="width:9%">
-                <col style="width:8%">
-                <col style="width:10%">
-                <col style="width:12%">
-                <col style="width:12%">
-                <col style="width:7%">
-                <col style="width:7%">
-                <col style="width:11%">
+                <col style="width:140px"><col style="width:170px"><col style="width:300px"><col style="width:140px"><col style="width:120px"><col style="width:120px"><col style="width:120px"><col style="width:260px"><col style="width:160px"><col style="width:220px">
               </colgroup>
               <thead>
                 <tr>
-                  <th>问题标题</th>
-                  <th>问题类型</th>
-                  <th>责任人</th>
+                  <th>状态</th>
+                  <th>责任领域</th>
+                  <th>问题 / 所需行动</th>
+                  <th>负责人</th>
                   <th>发现日期</th>
-                  <th>计划解决日期</th>
-                  <th>添加时间</th>
-                  <th>严重程度</th>
-                  <th>问题状态</th>
+                  <th>目标日期</th>
+                  <th>关闭日期</th>
+                  <th>下一步 / 更新说明</th>
+                  <th>附件</th>
                   <th>操作</th>
                 </tr>
               </thead>
               <tbody id="issueTableBody">
-                <tr data-status="pending" data-type="尺寸精度" data-severity="高">
-                  <td>发动机缸体缸孔圆度超差</td>
-                  <td>尺寸精度</td>
-                  <td>李工</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td>高</td>
-                  <td><span class="issue-state pending">待解决</span></td>
+                <tr data-status="pending" data-type="Manufacturing Engineering" data-severity="高" data-swim-lane="Manufacturing Engineering" data-champion="Li" data-description="Complete tooling-parameter review, then arrange trial validation.">
+                  <td><span class="issue-state pending">Pending</span></td><td>Manufacturing Engineering</td><td>Engine cylinder-bore roundness is out of tolerance; confirm tooling compensation.</td><td>Li</td><td>2025-10-10</td><td>2025-10-18</td><td>-</td><td>Complete tooling-parameter review, then arrange trial validation.</td><td>-</td>
                   <td><div class="actions"><button class="link-button" type="button" data-resolve-issue>解决</button><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
                 </tr>
-                <tr data-status="done" data-type="精度" data-severity="中">
-                  <td>悬挂控制臂盐雾测试 720 小时出现局部红锈</td>
-                  <td>精度</td>
-                  <td>李工</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td>中</td>
-                  <td><span class="issue-state done">已解决</span></td>
+                <tr data-status="inprogress" data-type="Quality" data-severity="中" data-swim-lane="Quality" data-champion="Zhang" data-description="Supplier submitted improved samples; await the 480-hour retest result.">
+                  <td><span class="issue-state inprogress">In Progress</span></td><td>Quality</td><td>Red rust occurred during the salt-spray test; validate the corrosion-protection plan.</td><td>Zhang</td><td>2025-10-10</td><td>2025-10-22</td><td>-</td><td>Supplier submitted improved samples; await the 480-hour retest result.</td><td>Test Report</td>
                   <td><div class="actions"><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
                 </tr>
-                <tr data-status="done" data-type="性能" data-severity="低">
-                  <td>上盖气密性测试压力衰减 85Pa/min</td>
-                  <td>性能</td>
-                  <td>李工</td>
-                  <td>-</td>
-                  <td>-</td>
-                  <td>2025-10-10 11:34:19</td>
-                  <td>低</td>
-                  <td><span class="issue-state done">已解决</span></td>
+                <tr data-status="done" data-type="Product Engineering" data-severity="低" data-swim-lane="Product Engineering" data-champion="Wang" data-description="The optimized plan passed validation and drawings were archived.">
+                  <td><span class="issue-state done">Closed</span></td><td>Product Engineering</td><td>Cover leak-test pressure decay exceeded the limit; optimize the sealing structure.</td><td>Wang</td><td>2025-10-10</td><td>2025-10-15</td><td>2025-10-14</td><td>The optimized plan passed validation and drawings were archived.</td><td>-</td>
                   <td><div class="actions"><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
                 </tr>
               </tbody>
@@ -6147,65 +6143,49 @@
       <form id="issueForm">
         <div class="issue-form">
           <div class="form-row">
-            <label for="issueName"><span class="required">*</span>问题名称:</label>
-            <input class="issue-input" id="issueName" name="issueName" type="text" placeholder="请输入问题名称" autocomplete="off">
-          </div>
-          <div class="form-row">
-            <label for="issueFoundDate">发现日期:</label>
-            <input class="issue-input" id="issueFoundDate" name="issueFoundDate" type="date">
-          </div>
-          <div class="form-row">
-            <label for="issuePlanDate">计划解决时间:</label>
-            <input class="issue-input" id="issuePlanDate" name="issuePlanDate" type="date">
-          </div>
-          <div class="form-row">
-            <label for="issueType"><span class="required">*</span>问题类型:</label>
-            <select class="issue-select" id="issueType" name="issueType">
-              <option value="">请选择</option>
-              <option>尺寸精度</option>
-              <option>精度</option>
-              <option>性能</option>
-              <option>材料</option>
-              <option>供应商</option>
+            <label for="issueStatus"><span class="required">*</span>Status:</label>
+            <select class="issue-select" id="issueStatus" name="issueStatus">
+              <option value="">Select status</option><option value="pending">Pending</option><option value="inprogress">In Progress</option><option value="done">Closed</option>
             </select>
           </div>
           <div class="form-row">
-            <label for="issueSeverity"><span class="required">*</span>严重程度:</label>
+            <label for="issueType"><span class="required">*</span>Swim Lane:</label>
+            <input class="issue-input" id="issueType" name="issueType" type="text" placeholder="e.g. Quality, Manufacturing Engineering" autocomplete="off">
+          </div>
+          <div class="form-row">
+            <label for="issueName"><span class="required">*</span>Issue / Action Required:</label>
+            <textarea class="issue-textarea" id="issueName" name="issueName" maxlength="500" placeholder="Describe the issue or action required"></textarea>
+          </div>
+          <div class="form-row" hidden>
+            <label for="issueSeverity">严重程度:</label>
             <select class="issue-select" id="issueSeverity" name="issueSeverity">
               <option value="">请选择</option>
-              <option>高</option>
+              <option selected>高</option>
               <option>中</option>
               <option>低</option>
             </select>
           </div>
           <div class="form-row">
-            <label for="issueStatus"><span class="required">*</span>当前状态:</label>
-            <select class="issue-select" id="issueStatus" name="issueStatus">
-              <option value="">请选择</option>
-              <option value="pending">待解决</option>
-              <option value="done">已解决</option>
-            </select>
-          </div>
-          <div class="form-row">
-            <label for="issueOwner"><span class="required">*</span>责任人:</label>
-            <select class="issue-select" id="issueOwner" name="issueOwner">
-              <option value="">请选择</option>
-              <option>李工</option>
-              <option>张工</option>
-              <option>王工</option>
-              <option>AQE</option>
-              <option>SQD</option>
-            </select>
+            <label for="issueOwner"><span class="required">*</span>Champion:</label>
+            <div class="issue-owner-picker"><input class="issue-input" id="issueOwner" name="issueOwner" type="text" placeholder="Select from the organization" readonly><button class="btn" id="openIssueOwnerModal" type="button">选择</button></div>
           </div>
           <div class="form-row form-editor">
-            <label for="issueDescription">问题描述:</label>
+            <label for="issueDescription"><span class="required">*</span>Next Steps / Updates:</label>
             <div>
-              <textarea class="issue-textarea" id="issueDescription" name="issueDescription" maxlength="100" placeholder="请输入内容"></textarea>
-              <div class="issue-counter"><span id="issueDescriptionCount">0</span>/100</div>
+              <textarea class="issue-textarea" id="issueDescription" name="issueDescription" maxlength="500" placeholder="Enter follow-up plan or latest progress"></textarea>
+              <div class="issue-counter"><span id="issueDescriptionCount">0</span>/500</div>
             </div>
           </div>
+          <div class="form-row">
+            <label for="issueFoundDate"><span class="required">*</span>Opened:</label>
+            <input class="issue-input" id="issueFoundDate" name="issueFoundDate" type="date">
+          </div>
+          <div class="form-row">
+            <label for="issuePlanDate"><span class="required">*</span>Target:</label>
+            <input class="issue-input" id="issuePlanDate" name="issuePlanDate" type="date">
+          </div>
           <div class="form-row form-upload">
-            <label>上传附件:</label>
+            <label>Attachments:</label>
             <div class="issue-upload">
               <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-plus"></use></svg>上传文件</button>
               <div class="upload-note">支持扩展名：.doc .docx .pdf .jpg...</div>
@@ -6219,6 +6199,17 @@
           <button class="btn btn-primary" id="issueSubmitButton" type="submit">确定</button>
         </div>
       </form>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="issueOwnerModal" hidden>
+    <section class="member-modal issue-owner-member-modal" role="dialog" aria-modal="true" aria-labelledby="issueOwnerModalTitle">
+      <header class="modal-head"><div><h3 class="member-modal-title" id="issueOwnerModalTitle">选择负责人</h3><p class="member-modal-subtitle">从左侧组织架构中选择一名负责人</p></div><button class="modal-close" type="button" data-close-issue-owner aria-label="关闭">×</button></header>
+      <div class="member-picker">
+        <section class="picker-column"><div class="picker-column-head"><span class="picker-label"><span class="picker-dot"></span>可选团队及成员 <span class="picker-count" id="issueOwnerAvailableCount">0</span></span><span class="picker-mini-actions"><button type="button" id="issueOwnerExpandAll">全部展开</button><span>|</span><button type="button" id="issueOwnerCollapseAll">全部收起</button></span></div><div class="picker-box"><div class="picker-search"><svg class="icon"><use href="#i-search"></use></svg><input id="issueOwnerSearch" type="search" placeholder="搜索团队或成员..."></div><div class="group-list" id="issueOwnerList"></div></div></section>
+        <section class="picker-column selected"><div class="picker-column-head"><span class="picker-label"><span class="picker-dot green"></span>已选负责人 <span class="picker-count" id="issueOwnerSelectedCount">0</span></span><button class="clear-selected" type="button" id="clearIssueOwner">清空</button></div><div class="picker-box"><div class="picker-search"><svg class="icon"><use href="#i-search"></use></svg><input id="issueOwnerSelectedSearch" type="search" placeholder="搜索已选负责人..."></div><div class="selected-group-list" id="issueOwnerSelectedList"></div></div></section>
+      </div>
+      <footer class="member-modal-foot"><span id="issueOwnerSummary">暂未选择负责人</span><div class="member-modal-actions"><button class="btn" type="button" data-close-issue-owner>取消</button><button class="btn btn-primary" id="confirmIssueOwner" type="button">确认选择</button></div></footer>
     </section>
   </div>
 
@@ -10789,12 +10780,28 @@
     const issueTableBody = document.getElementById("issueTableBody");
     const issueFilter = document.getElementById("issueFilter");
     const issueSearchTitle = document.getElementById("issueSearchTitle");
-    const issueTypeFilter = document.getElementById("issueTypeFilter");
-    const issueSeverityFilter = document.getElementById("issueSeverityFilter");
+    const issueStatusFilter = document.getElementById("issueStatusFilter");
+    const issueSwimLaneFilter = document.getElementById("issueSwimLaneFilter");
+    const issueChampionFilter = document.getElementById("issueChampionFilter");
     const issueMockFile = document.getElementById("issueMockFile");
+    const issueOwnerModal = document.getElementById("issueOwnerModal");
+    const openIssueOwnerModal = document.getElementById("openIssueOwnerModal");
+    const issueOwnerSearch = document.getElementById("issueOwnerSearch");
+    const issueOwnerList = document.getElementById("issueOwnerList");
+    const issueOwnerSelectedSearch = document.getElementById("issueOwnerSelectedSearch");
+    const issueOwnerSelectedList = document.getElementById("issueOwnerSelectedList");
+    const issueOwnerAvailableCount = document.getElementById("issueOwnerAvailableCount");
+    const issueOwnerSelectedCount = document.getElementById("issueOwnerSelectedCount");
+    const issueOwnerSummary = document.getElementById("issueOwnerSummary");
+    const issueOwnerExpandAll = document.getElementById("issueOwnerExpandAll");
+    const issueOwnerCollapseAll = document.getElementById("issueOwnerCollapseAll");
+    const clearIssueOwner = document.getElementById("clearIssueOwner");
+    const confirmIssueOwner = document.getElementById("confirmIssueOwner");
     const issueStatusTabs = Array.from(document.querySelectorAll("[data-issue-status]"));
     let activeIssueStatus = "all";
     let editingIssueRow = null;
+    let draftIssueOwnerId = "";
+    const collapsedIssueOwnerTeams = new Set();
     const teamTableBody = document.getElementById("teamTableBody");
     const teamMemberCount = document.getElementById("teamMemberCount");
     const teamResultCount = document.getElementById("teamResultCount");
@@ -12574,11 +12581,11 @@
       editingIssueRow = row;
       issueModalTitle.textContent = "编辑问题";
       issueSubmitButton.textContent = "保存";
-      issueName.value = row.children[0]?.textContent.trim() || "";
+      issueName.value = row.children[2]?.textContent.trim() || "";
       issueType.value = row.dataset.type || "";
-      issueOwner.value = row.children[2]?.textContent.trim() || "";
-      issueFoundDate.value = row.children[3]?.textContent.trim() === "-" ? "" : row.children[3]?.textContent.trim() || "";
-      issuePlanDate.value = row.children[4]?.textContent.trim() === "-" ? "" : row.children[4]?.textContent.trim() || "";
+      issueOwner.value = row.children[3]?.textContent.trim() || "";
+      issueFoundDate.value = row.children[4]?.textContent.trim() === "-" ? "" : row.children[4]?.textContent.trim() || "";
+      issuePlanDate.value = row.children[5]?.textContent.trim() === "-" ? "" : row.children[5]?.textContent.trim() || "";
       issueSeverity.value = row.dataset.severity || "";
       issueStatus.value = row.dataset.status || "";
       issueDescription.value = row.dataset.description || "";
@@ -12597,39 +12604,42 @@
       row.dataset.type = payload.type;
       row.dataset.severity = payload.severity;
       row.dataset.description = payload.description || "";
-      const statusText = payload.status === "done" ? "已解决" : "待解决";
+      const statusText = payload.status === "done" ? "已完成" : payload.status === "inprogress" ? "进行中" : "待处理";
       row.innerHTML = `
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
         <td><span class="issue-state ${payload.status}">${statusText}</span></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>${payload.status === "done" ? getCurrentTime().slice(0, 10) : "-"}</td>
+        <td></td>
+        <td>-</td>
         <td>${issueActionMarkup(payload.status)}</td>
       `;
-      row.children[0].textContent = payload.name;
+      row.dataset.swimLane = payload.type;
+      row.dataset.champion = payload.owner;
       row.children[1].textContent = payload.type;
-      row.children[2].textContent = payload.owner;
-      row.children[3].textContent = payload.foundDate || "-";
-      row.children[4].textContent = payload.planDate || "-";
-      row.children[5].textContent = getCurrentTime();
-      row.children[6].textContent = payload.severity;
+      row.children[2].textContent = payload.name;
+      row.children[3].textContent = payload.owner;
+      row.children[4].textContent = payload.foundDate || "-";
+      row.children[5].textContent = payload.planDate || "-";
+      row.children[7].textContent = payload.description || "-";
       return row;
     }
 
     function filterIssues() {
       const keyword = issueSearchTitle.value.trim().toLowerCase();
-      const type = issueTypeFilter.value;
-      const severity = issueSeverityFilter.value;
+      const status = issueStatusFilter.value;
+      const swimLane = issueSwimLaneFilter.value.trim().toLowerCase();
+      const champion = issueChampionFilter.value.trim().toLowerCase();
       Array.from(issueTableBody.querySelectorAll("tr")).forEach((row) => {
-        const title = row.children[0]?.textContent.toLowerCase() || "";
-        const matchesStatus = activeIssueStatus === "all" || row.dataset.status === activeIssueStatus;
+        const title = row.children[2]?.textContent.toLowerCase() || "";
+        const matchesStatus = (activeIssueStatus === "all" || row.dataset.status === activeIssueStatus) && (!status || row.dataset.status === status);
         const matchesKeyword = !keyword || title.includes(keyword);
-        const matchesType = !type || row.dataset.type === type;
-        const matchesSeverity = !severity || row.dataset.severity === severity;
-        row.hidden = !(matchesStatus && matchesKeyword && matchesType && matchesSeverity);
+        const matchesSwimLane = !swimLane || (row.dataset.swimLane || "").toLowerCase().includes(swimLane);
+        const matchesChampion = !champion || (row.dataset.champion || "").toLowerCase().includes(champion);
+        row.hidden = !(matchesStatus && matchesKeyword && matchesSwimLane && matchesChampion);
       });
     }
 
@@ -12665,7 +12675,7 @@
         owner: issueOwner.value,
         description: issueDescription.value.trim()
       };
-      const invalid = !payload.name || !payload.type || !payload.severity || !payload.status || !payload.owner;
+      const invalid = !payload.name || !payload.type || !payload.status || !payload.owner || !payload.foundDate || !payload.planDate || !payload.description;
       if (invalid) {
         issueError.hidden = false;
         return;
@@ -12676,15 +12686,17 @@
         editingIssueRow.dataset.type = payload.type;
         editingIssueRow.dataset.severity = payload.severity;
         editingIssueRow.dataset.description = payload.description;
-        editingIssueRow.children[0].textContent = payload.name;
+        editingIssueRow.dataset.swimLane = payload.type;
+        editingIssueRow.dataset.champion = payload.owner;
+        editingIssueRow.children[0].innerHTML = `<span class="issue-state ${payload.status}">${payload.status === "done" ? "已完成" : payload.status === "inprogress" ? "进行中" : "待处理"}</span>`;
         editingIssueRow.children[1].textContent = payload.type;
-        editingIssueRow.children[2].textContent = payload.owner;
-        editingIssueRow.children[3].textContent = payload.foundDate || "-";
-        editingIssueRow.children[4].textContent = payload.planDate || "-";
-        editingIssueRow.children[6].textContent = payload.severity;
-        const statusText = payload.status === "done" ? "已解决" : "待解决";
-        editingIssueRow.children[7].innerHTML = `<span class="issue-state ${payload.status}">${statusText}</span>`;
-        editingIssueRow.children[8].innerHTML = issueActionMarkup(payload.status);
+        editingIssueRow.children[2].textContent = payload.name;
+        editingIssueRow.children[3].textContent = payload.owner;
+        editingIssueRow.children[4].textContent = payload.foundDate || "-";
+        editingIssueRow.children[5].textContent = payload.planDate || "-";
+        editingIssueRow.children[6].textContent = payload.status === "done" ? getCurrentTime().slice(0, 10) : "-";
+        editingIssueRow.children[7].textContent = payload.description || "-";
+        editingIssueRow.children[9].innerHTML = issueActionMarkup(payload.status);
       } else {
         issueTableBody.appendChild(createIssueRow(payload));
       }
@@ -12720,8 +12732,9 @@
       if (resolveButton) {
         const row = resolveButton.closest("tr");
         row.dataset.status = "done";
-        row.children[7].innerHTML = '<span class="issue-state done">已解决</span>';
-        row.children[8].innerHTML = issueActionMarkup("done");
+        row.children[0].innerHTML = '<span class="issue-state done">已完成</span>';
+        row.children[6].textContent = getCurrentTime().slice(0, 10);
+        row.children[9].innerHTML = issueActionMarkup("done");
         filterIssues();
         return;
       }
@@ -12838,6 +12851,33 @@
     function memberSearchCorpus(member) {
       return [member.name, member.department, member.role, member.employeeNo, member.email, member.phone, member.teamName].join(" ").toLowerCase();
     }
+
+    function renderIssueOwnerList() {
+      const keyword = issueOwnerSearch.value.trim().toLowerCase();
+      const groups = memberCatalog.map((team) => ({ id: team.id, name: team.name, members: team.members.filter((member) => !keyword || memberSearchCorpus({ ...member, teamName: team.name }).includes(keyword)) })).filter((group) => group.members.length);
+      issueOwnerAvailableCount.textContent = String(memberCatalog.reduce((total, team) => total + team.members.length, 0));
+      issueOwnerList.innerHTML = groups.length ? groups.map((group) => {
+        const collapsed = collapsedIssueOwnerTeams.has(group.id);
+        return `<article class="member-group"><div class="member-group-head"><button type="button" data-toggle-issue-owner-team="${escapeHtml(group.id)}">${collapsed ? "›" : "⌄"}</button><span>${escapeHtml(group.name)}</span><span class="member-group-count">${group.members.length}</span></div><div class="group-member-list" ${collapsed ? "hidden" : ""}>${group.members.map((member) => `<label class="member-option"><input type="radio" name="issueOwnerCandidate" value="${escapeHtml(member.id)}" ${draftIssueOwnerId === member.id ? "checked" : ""}><span class="avatar-sm">${escapeHtml(member.initials)}</span><span><span class="member-name">${escapeHtml(member.name)} <span class="member-meta">${escapeHtml(member.role)}</span></span><span class="member-mail">${escapeHtml(member.email)}</span></span></label>`).join("")}</div></article>`;
+      }).join("") : '<div class="team-empty">暂无匹配团队或成员</div>';
+      const selected = memberMap.get(draftIssueOwnerId);
+      const visible = selected && (!issueOwnerSelectedSearch.value.trim() || memberSearchCorpus(selected).includes(issueOwnerSelectedSearch.value.trim().toLowerCase()));
+      issueOwnerSelectedCount.textContent = selected ? "1" : "0";
+      issueOwnerSummary.textContent = selected ? `已选择 1 名负责人：${selected.name}` : "暂未选择负责人";
+      issueOwnerSelectedList.innerHTML = visible ? `<article class="selected-team-card"><div class="selected-team-head"><span>${escapeHtml(selected.teamName || "组织成员")}</span><span class="selected-team-count">1人</span></div><div class="issue-owner-selected-member"><input type="radio" checked aria-label="已选负责人"><span class="avatar-sm green">${escapeHtml(selected.initials)}</span><span><span class="member-name">${escapeHtml(selected.name)} <span class="member-meta">${escapeHtml(selected.role)}</span></span><span class="member-mail">${escapeHtml(selected.email)}</span></span></div></article>` : '<div class="team-empty">暂未选择负责人</div>';
+    }
+
+    openIssueOwnerModal.addEventListener("click", () => { draftIssueOwnerId = Array.from(memberMap.values()).find((member) => member.name === issueOwner.value)?.id || ""; issueOwnerSearch.value = ""; issueOwnerSelectedSearch.value = ""; collapsedIssueOwnerTeams.clear(); renderIssueOwnerList(); issueOwnerModal.hidden = false; });
+    document.querySelectorAll("[data-close-issue-owner]").forEach((button) => button.addEventListener("click", () => { issueOwnerModal.hidden = true; }));
+    issueOwnerModal.addEventListener("click", (event) => { if (event.target === issueOwnerModal) issueOwnerModal.hidden = true; });
+    issueOwnerSearch.addEventListener("input", renderIssueOwnerList);
+    issueOwnerSelectedSearch.addEventListener("input", renderIssueOwnerList);
+    issueOwnerExpandAll.addEventListener("click", () => { collapsedIssueOwnerTeams.clear(); renderIssueOwnerList(); });
+    issueOwnerCollapseAll.addEventListener("click", () => { memberCatalog.forEach((team) => collapsedIssueOwnerTeams.add(team.id)); renderIssueOwnerList(); });
+    clearIssueOwner.addEventListener("click", () => { draftIssueOwnerId = ""; renderIssueOwnerList(); });
+    issueOwnerList.addEventListener("click", (event) => { const toggle = event.target.closest("[data-toggle-issue-owner-team]"); if (!toggle) return; const id = toggle.dataset.toggleIssueOwnerTeam; if (collapsedIssueOwnerTeams.has(id)) collapsedIssueOwnerTeams.delete(id); else collapsedIssueOwnerTeams.add(id); renderIssueOwnerList(); });
+    issueOwnerList.addEventListener("change", (event) => { const selection = event.target.closest("[name=issueOwnerCandidate]"); if (selection) { draftIssueOwnerId = selection.value; renderIssueOwnerList(); } });
+    confirmIssueOwner.addEventListener("click", () => { const owner = memberMap.get(draftIssueOwnerId); if (!owner) return; issueOwner.value = owner.name; issueOwnerModal.hidden = true; issueError.hidden = true; });
 
     function currentTeamMemberIds() {
       return new Set(teamMembers.map((member) => member.id));

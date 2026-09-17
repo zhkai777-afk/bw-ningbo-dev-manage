@@ -8,3 +8,9 @@ node_modules/
 
 # Excel 临时锁文件
 .~*
+
+# 工具生成的检查报告
+*.inspect.ndjson
+
+# 工具生成的临时导出目录
+outputs/01a0a7a3-545c-7240-b75a-4a29849f8e5c/
