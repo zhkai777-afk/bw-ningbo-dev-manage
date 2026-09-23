@@ -1431,11 +1431,6 @@
         <section class="form-card">
           <h3 class="form-section-title">基本信息 <span>Basic Information</span></h3>
           <div class="form-grid">
-            <div class="form-field">
-              <label class="required" for="taskNo">任务编号</label>
-              <input class="field" id="taskNo" name="taskNo" value="APQP-260803-011" data-required="任务编号">
-              <div class="error-text" data-error-for="taskNo"></div>
-            </div>
             <div class="form-field full">
               <label class="required" for="partSourceMode">零件名称</label>
               <div class="inline-grid">
@@ -1864,7 +1859,7 @@
 
     function collectTask(statusOverride) {
       return {
-        id: valueOf("#taskNo"),
+        id: generateTaskNumber(),
         partName: valueOf("#partName"),
         project: valueOf("#projectName") || "-",
         quality: valueOf("#qualityProcess"),
@@ -1877,8 +1872,7 @@
       };
     }
 
-    function resetForm() {
-      taskForm.reset();
+    function generateTaskNumber() {
       const now = new Date();
       const dateCode = `${String(now.getFullYear()).slice(-2)}${String(now.getMonth() + 1).padStart(2, "0")}${String(now.getDate()).padStart(2, "0")}`;
       const prefix = `APQP-${dateCode}-`;
@@ -1886,7 +1880,11 @@
         .map((task) => task.id || "")
         .filter((id) => id.startsWith(prefix))
         .reduce((max, id) => Math.max(max, Number(id.slice(prefix.length)) || 0), 0);
-      document.querySelector("#taskNo").value = `${prefix}${String(dailyMax + 1).padStart(3, "0")}`;
+      return `${prefix}${String(dailyMax + 1).padStart(3, "0")}`;
+    }
+
+    function resetForm() {
+      taskForm.reset();
       document.querySelector("#qualityProcess").value = "Full APQP process";
       document.querySelector("#partSourceMode").value = "sap";
       document.querySelector("#sapPartSelect").value = "";

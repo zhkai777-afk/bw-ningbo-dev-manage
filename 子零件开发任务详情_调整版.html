@@ -290,9 +290,9 @@
     }
 
     .status-running {
-      color: #fff;
-      background: #32a532;
-      box-shadow: 0 12px 22px rgba(50, 165, 50, .22);
+      color: #b54708;
+      background: #fffaeb;
+      box-shadow: none;
     }
 
     .status-done {
@@ -306,13 +306,13 @@
     }
 
     .status-paused {
-      color: #b54708;
-      background: var(--warning-weak);
+      color: #667085;
+      background: #eef2f6;
     }
 
     .status-ended {
-      color: #b42318;
-      background: var(--danger-weak);
+      color: #667085;
+      background: #eef2f6;
     }
 
     .status-failed {
@@ -321,8 +321,8 @@
     }
 
     .status-conditional {
-      color: #b54708;
-      background: var(--warning-weak);
+      color: var(--success);
+      background: var(--success-weak);
     }
 
     .health-control {
@@ -1234,7 +1234,7 @@
       content: "";
       width: 7px;
       height: 7px;
-      background: var(--warning);
+      background: #98a2b3;
       border-radius: 50%;
     }
 
@@ -1243,7 +1243,7 @@
     }
 
     .approval-dot::before {
-      background: var(--primary);
+      background: var(--success);
     }
 
     .reject-dot {
@@ -1432,20 +1432,16 @@
       margin-bottom: 5px;
     }
 
-    .task-fill-title {
-      margin: 0 0 26px;
-      font-size: 28px;
-      line-height: 1.2;
-      font-weight: 500;
-      color: #2b2f36;
-    }
-
     .task-fill-grid {
       display: grid;
-      grid-template-columns: 82px minmax(0, 1fr) 92px minmax(0, 1fr);
-      gap: 28px 22px;
+      grid-template-columns: 94px minmax(0, 1fr) 118px minmax(0, 1fr);
+      gap: 14px 18px;
       align-items: start;
-      margin-bottom: 34px;
+      margin: 14px 0 22px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
     }
 
     .task-fill-label {
@@ -1457,6 +1453,11 @@
     .task-fill-value {
       color: #252a34;
       line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .task-fill-wide {
+      grid-column: 2 / -1;
     }
 
     .task-fill-desc {
@@ -1924,40 +1925,72 @@
 
     .bom-summary {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
+      grid-template-columns: minmax(230px, 1.45fr) repeat(5, minmax(112px, 1fr));
+      gap: 1px;
+      margin-bottom: 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--line);
     }
 
     .bom-summary-item {
-      border: 1px solid var(--line);
       background: var(--surface-muted);
-      padding: 12px;
-      border-radius: var(--radius-sm);
-      min-height: 76px;
+      padding: 8px 11px;
+      min-height: 58px;
+      min-width: 0;
+      display: grid;
+      align-content: center;
     }
 
-    .bom-summary-item span {
+    .bom-summary-item > span {
       display: block;
       color: var(--text-secondary);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 800;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
+      line-height: 1.2;
     }
 
     .bom-summary-item b {
       color: #1d2939;
-      font-size: 18px;
+      font-size: 16px;
       line-height: 1.2;
+    }
+
+    .bom-summary-version-row {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
     }
 
     .bom-summary-item .select-field {
       width: 100%;
       min-width: 0;
-      margin-top: 10px;
-      height: 32px;
-      font-size: 13px;
+      margin-top: 0;
+      height: 28px;
+      padding-left: 8px;
+      font-size: 12px;
     }
+
+    .bom-confirmation-progress { display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+    .confirmation-chip { display:inline-flex; align-items:center; gap:4px; min-height:24px; padding:2px 7px; border:1px solid #d0d5dd; border-radius:999px; background:#f2f4f7; color:#667085; font-size:11px; font-weight:900; white-space:nowrap; }
+    .confirmation-chip.is-confirmed { border-color:#abefc6; background:#ecfdf3; color:#067647; }
+    .confirmation-chip svg { width:14px; height:14px; }
+    .field-error { color:#b42318; font-size:12px; font-weight:800; }
+    .bom-edit-version-record { margin:0 0 16px; padding:14px 16px; border:1px solid #b8d3ff; border-radius:5px; background:#f8fbff; }
+    .bom-edit-version-record[hidden] { display:none; }
+    .bom-edit-version-record label { display:block; color:#1d2939; font-size:13px; font-weight:900; }
+    .bom-edit-version-record .required-mark { color:#d92d20; }
+    .bom-edit-version-record-help { margin:5px 0 9px; color:#667085; font-size:12px; font-weight:700; line-height:1.5; }
+    .bom-edit-version-record .textarea { width:100%; min-height:86px; padding:10px 12px; resize:vertical; border-color:#84adf7; background:#fff; line-height:1.6; }
+    .bom-edit-version-record .textarea:focus { outline:2px solid rgba(37,99,235,.18); outline-offset:1px; border-color:var(--primary); }
+    .bom-edit-version-record-meta { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-top:8px; color:#667085; font-size:12px; font-weight:700; }
+    .bom-edit-version-record-count { flex:0 0 auto; white-space:nowrap; }
+    .bom-edit-version-record.is-error { border-color:#fda29b; background:#fff8f7; }
+    .bom-edit-version-record.is-error .textarea { border-color:#f04438; }
 
     .bom-table-wrap {
       width: 100%;
@@ -2147,18 +2180,18 @@
     }
 
     .status-locked {
-      color: #475467;
-      background: #eef2f6;
+      color: var(--success);
+      background: var(--success-weak);
     }
 
     .status-draft {
-      color: #b54708;
-      background: var(--warning-weak);
+      color: #667085;
+      background: #eef2f6;
     }
 
     .status-review {
-      color: var(--primary);
-      background: var(--primary-weak);
+      color: #b54708;
+      background: #fffaeb;
     }
 
     .bom-modal {
@@ -2434,7 +2467,7 @@
       width: 12px;
       height: 12px;
       border-radius: 50%;
-      background: var(--primary);
+      background: #98a2b3;
     }
 
     .issue-state.done::before {
@@ -4077,6 +4110,10 @@
       grid-column: 1 / -1;
     }
 
+    .project-edit-field.full {
+      grid-column: 1 / -1;
+    }
+
     .project-edit-field label {
       display: block;
       min-height: 24px;
@@ -4118,6 +4155,99 @@
     .project-edit-drawer .select {
       height: 36px;
       padding: 0 10px;
+    }
+
+    .project-edit-drawer .field[readonly] {
+      background: #f7f9fc;
+      color: #596274;
+    }
+
+    .project-edit-inline-grid {
+      display: grid;
+      grid-template-columns: minmax(140px, .55fr) minmax(0, 1.45fr);
+      gap: 10px;
+    }
+
+    .project-edit-note {
+      margin-top: 7px;
+      color: #7a8495;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .project-edit-error {
+      min-height: 18px;
+      margin-top: 4px;
+      color: #b42318;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .project-edit-owner-picker {
+      width: 100%;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 10px;
+      border: 1px solid #d9dee7;
+      border-radius: 4px;
+      background: #fff;
+      color: #333945;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .project-edit-owner-picker:hover,
+    .project-edit-owner-picker:focus-visible {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .project-edit-drawer .is-invalid,
+    .project-edit-owner-picker.is-invalid {
+      border-color: #d92d20;
+      box-shadow: 0 0 0 2px rgba(217, 45, 32, .08);
+    }
+
+    .edit-owner-options {
+      display: grid;
+      gap: 8px;
+      padding: 18px 22px 6px;
+    }
+
+    #editOwnerModal {
+      z-index: 120;
+    }
+
+    .edit-owner-option {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .edit-owner-option:hover,
+    .edit-owner-option:has(input:checked) {
+      border-color: #84adff;
+      background: #f5f8ff;
+    }
+
+    .edit-owner-option strong,
+    .edit-owner-option span {
+      display: block;
+    }
+
+    .edit-owner-option span {
+      margin-top: 3px;
+      color: var(--text-secondary);
+      font-size: 12px;
     }
 
     .project-edit-drawer .textarea {
@@ -4865,6 +4995,14 @@
         grid-template-columns: 1fr;
       }
 
+      .task-fill-grid {
+        grid-template-columns: 104px minmax(0, 1fr);
+      }
+
+      .task-fill-wide {
+        grid-column: 2;
+      }
+
       .approval-member-row {
         grid-template-columns: 1fr;
         gap: 6px;
@@ -4928,6 +5066,38 @@
 
     .confirm-body p {
       margin: 0;
+    }
+
+    .bom-role-confirm-body {
+      display: grid;
+      gap: 16px;
+    }
+
+    .bom-role-confirm-body > p {
+      color: #475467;
+      font-weight: 750;
+    }
+
+    .bom-confirm-change {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f8fafc;
+    }
+
+    .bom-confirm-change > span {
+      display: block;
+      margin-bottom: 6px;
+      color: #667085;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .bom-confirm-change p {
+      color: #1d2939;
+      font-weight: 750;
+      white-space: normal;
+      word-break: break-word;
     }
 
     .audit-record-body {
@@ -5062,6 +5232,10 @@
       .stage-card {
         flex-basis: 220px;
       }
+
+      .bom-summary {
+        grid-template-columns: minmax(220px, 1.35fr) repeat(5, minmax(100px, 1fr));
+      }
     }
 
     @media (max-width: 900px) {
@@ -5141,7 +5315,6 @@
         flex-direction: column;
       }
 
-      .bom-summary,
       .form-grid,
       .bom-product-picker,
       .record-hero,
@@ -5152,6 +5325,18 @@
       .score-grid,
       .bom-product-options {
         grid-template-columns: 1fr;
+      }
+
+      .project-edit-field.full {
+        grid-column: auto;
+      }
+
+      .project-edit-inline-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .bom-summary {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
       .project-edit-drawer {
@@ -5489,7 +5674,8 @@
               <button class="btn btn-primary" type="button" data-create-dfm><svg class="icon"><use href="#i-edit"></use></svg>创建DFM</button>
               <button class="btn" type="button" data-bom-export-template><svg class="icon"><use href="#i-download"></use></svg>导出BOM</button>
               <button class="btn btn-primary" type="button" data-bom-create><svg class="icon"><use href="#i-edit"></use></svg>编辑BOM</button>
-              <button class="btn btn-primary" type="button" data-bom-scm-edit><svg class="icon"><use href="#i-lock"></use></svg>确认BOM</button>
+              <button class="btn btn-primary" type="button" data-bom-confirm-role="scm"><svg class="icon"><use href="#i-lock"></use></svg>SCM确认</button>
+              <button class="btn btn-primary" type="button" data-bom-confirm-role="me"><svg class="icon"><use href="#i-lock"></use></svg>ME确认</button>
             </div>
           </div>
 
@@ -5505,11 +5691,15 @@
 
           <div class="bom-summary">
             <div class="bom-summary-item">
-              <span>当前生效版本</span>
-              <b data-bom-effective-version>Gate1-V1.0</b>
-              <select class="select-field" data-bom-version-switch aria-label="切换BOM版本"></select>
+              <span>生效版本</span>
+              <div class="bom-summary-version-row">
+                <b data-bom-effective-version>V1.0</b>
+                <select class="select-field" data-bom-version-switch aria-label="切换BOM版本"></select>
+              </div>
             </div>
-            <div class="bom-summary-item"><span>当前工作版本</span><b data-bom-working-version>Gate1-V1.1</b></div>
+            <div class="bom-summary-item"><span>生成阶段</span><b data-bom-generated-stage>Gate1</b></div>
+            <div class="bom-summary-item"><span>当前工作版本</span><b data-bom-working-version>V2.0</b></div>
+            <div class="bom-summary-item"><span>双确认进度</span><div class="bom-confirmation-progress" data-bom-confirmation-progress></div></div>
             <div class="bom-summary-item"><span>完整层级零件</span><b data-bom-all-count>4</b></div>
             <div class="bom-summary-item"><span>工作版本变更</span><b data-bom-work-change-count>2</b></div>
           </div>
@@ -5948,6 +6138,15 @@
         <button class="close-btn" type="button" data-close-bom-modal aria-label="关闭"><svg class="icon"><use href="#i-stop"></use></svg></button>
       </header>
       <div class="bom-modal-body">
+        <section class="bom-edit-version-record" data-bom-edit-version-record-section>
+          <label for="bomEditVersionRecord">版本变更记录 <span class="required-mark">*</span></label>
+          <p class="bom-edit-version-record-help">请简要说明本版本相较上一版本的新增、删除或调整内容。</p>
+          <textarea class="textarea" id="bomEditVersionRecord" maxlength="500" data-bom-edit-version-record placeholder="例如：新增壳体零件；调整链条数量；更新一供供应商。"></textarea>
+          <div class="bom-edit-version-record-meta">
+            <span class="field-error" data-bom-edit-version-record-error hidden>请填写版本变更记录后再提交确认。</span>
+            <span class="bom-edit-version-record-count"><span data-bom-edit-version-record-count>0</span>/500</span>
+          </div>
+        </section>
         <section class="bom-part-search-wrap" data-bom-create-options>
           <h3>搜索零件</h3>
           <div class="bom-part-search">
@@ -5985,7 +6184,7 @@
           </aside>
         </div>
       </div>
-      <footer class="bom-modal-foot"><button class="btn" type="button" data-close-bom-modal>关闭</button><button class="btn" type="button" data-bom-save-draft>保存草稿</button><button class="btn btn-primary" type="button" data-bom-submit-foot>提交至SCM</button></footer>
+      <footer class="bom-modal-foot"><button class="btn" type="button" data-close-bom-modal>关闭</button><button class="btn" type="button" data-bom-save-draft>保存草稿</button><button class="btn btn-primary" type="button" data-bom-submit-foot>提交确认</button></footer>
     </section>
   </div>
 
@@ -6238,27 +6437,17 @@
       <form id="taskFillForm">
         <div class="task-fill-body">
           <div class="task-fill-id">
-            <span>K-PAC ID：<span id="taskFillKpac">GPM_GR-12</span></span>
             <span class="tag tag-orange" id="taskFillType">关键任务</span>
           </div>
-          <h2 class="task-fill-title" id="taskFillTitle">Customer Requirements (Volumes, Key dates, others)</h2>
           <div class="task-fill-grid">
-            <div class="task-fill-label">状态标识：</div>
-            <div class="task-fill-value">V2</div>
-            <div class="task-fill-label">职能：</div>
-            <div class="task-fill-value" id="taskFillFunction">客户</div>
-            <div class="task-fill-label">文档或证据：</div>
-            <div class="task-fill-value" id="taskFillEvidence">客户文件</div>
-            <div class="task-fill-label">负责人：</div>
-            <div class="task-fill-value" id="taskFillResponsible">销售</div>
-            <div class="task-fill-label">负责部门：</div>
-            <div class="task-fill-value" id="taskFillDepartment">部门A</div>
-            <div class="task-fill-label">起止时间：</div>
-            <div class="task-fill-value" id="taskFillDate">2025-05-12 ~ 2025-05-18</div>
-          </div>
-          <div class="task-fill-desc">
+            <div class="task-fill-label">任务标题：</div>
+            <div class="task-fill-value task-fill-wide" id="taskFillTitle">Customer Requirements (Volumes, Key dates, others)</div>
             <div class="task-fill-label">任务描述：</div>
-            <div class="task-fill-desc-lines" id="taskFillDescription"></div>
+            <div class="task-fill-value task-fill-wide task-fill-desc-lines" id="taskFillDescription"></div>
+            <div class="task-fill-label">责任部门：</div>
+            <div class="task-fill-value" id="taskFillDepartment">销售</div>
+            <div class="task-fill-label">计划完成时间：</div>
+            <div class="task-fill-value" id="taskFillDate">2025-04-21</div>
           </div>
           <h4 class="task-upload-title"><span class="required">*</span>设计验证计划文档上传</h4>
           <div class="task-upload-zone">
@@ -6403,130 +6592,52 @@
       <section class="project-edit-card">
         <h2 class="project-edit-title">基本信息 <span>Basic Information</span></h2>
         <div class="project-edit-grid">
-          <div class="project-edit-field">
-            <label class="required" for="editTaskNo">任务编号</label>
-            <input class="field" id="editTaskNo" value="APQP-260803-011" placeholder="请输入任务编号">
-          </div>
-          <div class="project-edit-field">
-            <label class="required" for="editPartName">零件名称</label>
-            <input class="field" id="editPartName" value="PHASER INSERT" placeholder="请输入零件名称">
+          <div class="project-edit-field full">
+            <label class="required" for="editPartSourceMode">零件名称</label>
+            <div class="project-edit-inline-grid">
+              <select class="select" id="editPartSourceMode" aria-label="零件选择方式">
+                <option value="sap" selected>从 SAP 选择</option>
+                <option value="manual">手动添加</option>
+              </select>
+              <select class="select" id="editSapPartSelect">
+                <option value="">请选择 SAP 零件</option>
+                <option value="PHASER INSERT" selected>PHASER INSERT / 5069999</option>
+                <option value="FACE GUIDE">FACE GUIDE / 5050607</option>
+                <option value="GUIDE SECONDARY">GUIDE SECONDARY / 5054770</option>
+                <option value="TIMING CHAIN GUIDE">TIMING CHAIN GUIDE / 5071024</option>
+              </select>
+              <input class="field" id="editPartName" value="PHASER INSERT" placeholder="请输入零件名称" hidden>
+            </div>
+            <div class="project-edit-note">可从 SAP 选择已有零件，或切换为手动添加并填写零件名称。</div>
+            <div class="project-edit-error" data-edit-error-for="partName"></div>
           </div>
           <div class="project-edit-field">
             <label for="editProjectName">所属项目</label>
             <input class="field" id="editProjectName" value="PRJ-260803-001 / EA888 E5 VCT" placeholder="请输入所属项目">
+            <div class="project-edit-error"></div>
           </div>
           <div class="project-edit-field">
             <label class="required" for="editQualityProcess">产品质量流程</label>
             <select class="select" id="editQualityProcess">
-              <option>请选择</option>
+              <option value="">请选择</option>
               <option selected>Full APQP process</option>
               <option>Simplified APQP process</option>
             </select>
+            <div class="project-edit-error" data-edit-error-for="qualityProcess"></div>
           </div>
           <div class="project-edit-field">
-            <label class="required" for="editOwner">负责人</label>
-            <select class="select" id="editOwner">
-              <option>请选择</option>
-              <option>Li Ming</option>
-              <option>Zhang Ning</option>
-              <option>Xu Lulu</option>
-              <option>Zhang Nan</option>
-              <option selected>Zack</option>
-            </select>
+            <label class="required" for="editOwnerPicker">负责人</label>
+            <button class="project-edit-owner-picker" id="editOwnerPicker" type="button" aria-haspopup="dialog" aria-controls="editOwnerModal" aria-expanded="false">
+              <span id="editOwnerPickerText">Zack</span>
+              <span aria-hidden="true">›</span>
+            </button>
+            <input type="hidden" id="editOwner" value="Zack">
+            <div class="project-edit-error" data-edit-error-for="owner"></div>
           </div>
           <div class="project-edit-field">
             <label class="required" for="editDepartment">负责部门</label>
-            <input class="field" id="editDepartment" value="DMS China-547" placeholder="请输入负责部门">
-          </div>
-        </div>
-      </section>
-
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">开发与供应 <span>Development and Supply</span></h2>
-        <div class="project-edit-grid">
-          <div class="project-edit-field">
-            <label class="required" for="editCurrentGate">当前阶段</label>
-            <select class="select" id="editCurrentGate">
-              <option>请选择</option>
-              <option selected>Program Kick Off</option>
-              <option>AR Submission Ready</option>
-              <option>Investment Ready</option>
-              <option>Off Tool Sample Ready</option>
-              <option>Launch Ready</option>
-              <option>Launch Completion &amp; Handoff Ready</option>
-              <option>Handover</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label class="required" for="editTaskStatus">当前状态</label>
-            <select class="select" id="editTaskStatus">
-              <option>请选择</option>
-              <option>未启动</option>
-              <option selected>进行中</option>
-              <option>当前 Gate 待完成</option>
-              <option>待影响分析</option>
-              <option>变更待确认</option>
-              <option>已完成</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label for="editSupplier">供应商</label>
-            <input class="field" id="editSupplier" value="A-Supplier" placeholder="请输入供应商">
-          </div>
-          <div class="project-edit-field">
-            <label for="editSupplierType">供应商类型</label>
-            <select class="select" id="editSupplierType">
-              <option selected>一供</option>
-              <option>二供</option>
-              <option>其他</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label for="editSupplyStrategy">供应策略</label>
-            <select class="select" id="editSupplyStrategy">
-              <option>单一供应</option>
-              <option>双供备案</option>
-              <option selected>双供同步开发</option>
-              <option>二供后续导入</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label for="editRiskFlag">项目风险提示</label>
-            <select class="select" id="editRiskFlag">
-              <option>不影响项目风险提示</option>
-              <option selected>作为风险提醒展示</option>
-              <option>待项目团队人工判断</option>
-            </select>
-          </div>
-        </div>
-      </section>
-
-      <section class="project-edit-card">
-        <h2 class="project-edit-title">来源追溯 <span>Traceability</span></h2>
-        <div class="project-edit-grid">
-          <div class="project-edit-field">
-            <label class="required" for="editSourceType">创建来源</label>
-            <select class="select" id="editSourceType">
-              <option>请选择</option>
-              <option>手动新增</option>
-              <option selected>BOM 创建</option>
-            </select>
-          </div>
-          <div class="project-edit-field">
-            <label for="editSourceBomVersion">来源 BOM 版本</label>
-            <input class="field" id="editSourceBomVersion" value="Gate1-V1.0" placeholder="例如 PKO_V1.0">
-          </div>
-          <div class="project-edit-field">
-            <label for="editSourceBomLine">来源 BOM 行</label>
-            <input class="field" id="editSourceBomLine" value="phaser-insert-1 / PHASER INSERT" placeholder="例如 BOM-L2-003">
-          </div>
-          <div class="project-edit-field">
-            <label for="editSourceSupplyPlan">来源供应方案</label>
-            <input class="field" id="editSourceSupplyPlan" value="A-Supplier / 一供同步开发" placeholder="例如 P1-A 一供开发">
-          </div>
-          <div class="project-edit-field wide">
-            <label for="editRemarks">备注</label>
-            <textarea class="textarea" id="editRemarks" placeholder="请输入">PHASER INSERT 子零件开发任务，来源于 Gate1 锁定生产 BOM。</textarea>
+            <input class="field" id="editDepartment" value="DMS China-547" placeholder="选择负责人后自动带入" readonly aria-readonly="true">
+            <div class="project-edit-error" data-edit-error-for="department"></div>
           </div>
         </div>
       </section>
@@ -6538,6 +6649,20 @@
       <button class="btn btn-primary" type="button" id="confirmProjectEdit">确定</button>
     </footer>
   </aside>
+
+  <div class="modal-backdrop" id="editOwnerModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="editOwnerModalTitle">
+      <div class="modal-head">
+        <h3 id="editOwnerModalTitle">选择负责人</h3>
+        <button class="modal-close" type="button" data-close-edit-owner aria-label="关闭">×</button>
+      </div>
+      <div class="edit-owner-options" id="editOwnerOptions"></div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-edit-owner>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmEditOwner">确定</button>
+      </div>
+    </section>
+  </div>
 
   <div class="modal-backdrop" id="partStatusModal" hidden>
     <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="partStatusTitle">
@@ -6602,6 +6727,23 @@
       <div class="confirm-body" id="messageModalBody"></div>
       <div class="modal-foot">
         <button class="btn btn-primary" type="button" data-close-message>知道了</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="bomRoleConfirmModal" hidden>
+    <section class="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="bomRoleConfirmTitle">
+      <div class="modal-head">
+        <h3 id="bomRoleConfirmTitle">BOM确认</h3>
+        <button class="modal-close" type="button" data-close-bom-role-confirm aria-label="关闭">×</button>
+      </div>
+      <div class="confirm-body bom-role-confirm-body">
+        <p id="bomRoleConfirmMessage">确认后将记录当前角色的确认结果，请确认是否继续。</p>
+        <div class="bom-confirm-change"><span>版本变更记录</span><p id="bomConfirmChangeContent">-</p></div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-bom-role-confirm>取消</button>
+        <button class="btn btn-primary" type="button" id="confirmBomRoleAction">确认</button>
       </div>
     </section>
   </div>
@@ -10905,16 +11047,23 @@
     const closeProjectEditDrawer = document.getElementById("closeProjectEditDrawer");
     const confirmProjectEdit = document.getElementById("confirmProjectEdit");
     const saveProjectEditDraft = document.getElementById("saveProjectEditDraft");
+    const editPartSourceMode = document.getElementById("editPartSourceMode");
+    const editSapPartSelect = document.getElementById("editSapPartSelect");
+    const editPartName = document.getElementById("editPartName");
+    const editQualityProcess = document.getElementById("editQualityProcess");
+    const editOwnerPicker = document.getElementById("editOwnerPicker");
+    const editOwnerPickerText = document.getElementById("editOwnerPickerText");
+    const editOwner = document.getElementById("editOwner");
+    const editDepartment = document.getElementById("editDepartment");
+    const editOwnerModal = document.getElementById("editOwnerModal");
+    const editOwnerOptions = document.getElementById("editOwnerOptions");
+    const confirmEditOwner = document.getElementById("confirmEditOwner");
     const editSystemValue = document.getElementById("editSystemValue");
     const currentStageLabel = document.querySelector("[data-current-stage-label]");
     const taskFillModal = document.getElementById("taskFillModal");
     const taskFillForm = document.getElementById("taskFillForm");
-    const taskFillKpac = document.getElementById("taskFillKpac");
     const taskFillType = document.getElementById("taskFillType");
     const taskFillTitle = document.getElementById("taskFillTitle");
-    const taskFillFunction = document.getElementById("taskFillFunction");
-    const taskFillEvidence = document.getElementById("taskFillEvidence");
-    const taskFillResponsible = document.getElementById("taskFillResponsible");
     const taskFillDepartment = document.getElementById("taskFillDepartment");
     const taskFillDate = document.getElementById("taskFillDate");
     const taskFillDescription = document.getElementById("taskFillDescription");
@@ -10934,12 +11083,22 @@
     let partTaskStatus = "inProgress";
     let partTaskHealth = "green";
     let pendingPartStatus = "";
+    let pendingBomConfirmRole = "";
+    let pendingEditOwner = "Zack";
     let currentRecordRole = "PM";
     let currentRecordFilter = "all";
     const partStatusRecords = [];
     const partHealthRecords = [];
+    const editOwnerDirectory = [
+      { name: "Zack", department: "DMS China-547" },
+      { name: "Li Ming", department: "DMS China-547" },
+      { name: "Zhang Ning", department: "Engineering China-546" },
+      { name: "Xu Lulu", department: "Quality China-548" },
+      { name: "Zhang Nan", department: "Supply Chain China-549" }
+    ];
     const partTaskMeta = {
-      sourceBomVersion: "Gate1-V1.0",
+      sourceBomVersion: "V1.0",
+      sourceBomStage: "Gate1",
       sourceBomLine: "phaser-insert-1 / PHASER INSERT",
       supplier: "A-Supplier",
       supplierType: "一供",
@@ -10958,7 +11117,7 @@
         category: "task",
         type: "任务",
         title: "子零件开发任务创建",
-        description: "AQE 基于 Gate1-V1.0 BOM 行 PHASER INSERT 创建一供供应商开发任务。",
+        description: "AQE 基于 BOM V1.0（生成阶段：Gate1）的 PHASER INSERT 行创建一供供应商开发任务。",
         actor: "Sophia Qin",
         role: "AQE",
         scope: "Gate1 / BOM"
@@ -10980,10 +11139,10 @@
         category: "bom",
         type: "BOM",
         title: "关联生产 BOM 版本锁定",
-        description: "SCM 确认 Gate1-V1.0，当前子零件开发任务以该锁定版本作为追溯来源。",
+        description: "SCM 与 ME 共同确认 BOM V1.0（生成阶段：Gate1），当前子零件开发任务以该锁定版本作为追溯来源。",
         actor: "Chen Wei",
         role: "SCM",
-        scope: "Gate1-V1.0"
+        scope: "V1.0 / Gate1"
       }
     ];
     const gate1RejectRecords = [
@@ -11041,8 +11200,84 @@
     function setProjectEditDrawer(open) {
       document.body.classList.toggle("part-drawer-open", open);
       if (open) {
+        syncEditPartSourceMode();
+        clearProjectEditErrors();
         projectEditDrawer?.querySelector("input, select, textarea, button")?.focus();
+      } else {
+        closeEditOwnerModal();
       }
+    }
+
+    function setProjectEditError(key, message, control) {
+      const error = projectEditDrawer?.querySelector(`[data-edit-error-for="${key}"]`);
+      if (error) error.textContent = message;
+      control?.classList.toggle("is-invalid", Boolean(message));
+    }
+
+    function clearProjectEditErrors() {
+      projectEditDrawer?.querySelectorAll("[data-edit-error-for]").forEach((item) => {
+        item.textContent = "";
+      });
+      projectEditDrawer?.querySelectorAll(".is-invalid").forEach((item) => item.classList.remove("is-invalid"));
+    }
+
+    function syncEditPartSourceMode() {
+      if (!editPartSourceMode || !editSapPartSelect || !editPartName) return;
+      const manual = editPartSourceMode.value === "manual";
+      editSapPartSelect.hidden = manual;
+      editPartName.hidden = !manual;
+      if (!manual) editPartName.value = editSapPartSelect.value;
+      setProjectEditError("partName", "", manual ? editPartName : editSapPartSelect);
+    }
+
+    function validateProjectEdit() {
+      clearProjectEditErrors();
+      const partControl = editPartSourceMode?.value === "manual" ? editPartName : editSapPartSelect;
+      const checks = [
+        { key: "partName", value: partControl?.value.trim(), message: "请选择或填写零件名称", control: partControl },
+        { key: "qualityProcess", value: editQualityProcess?.value, message: "请选择产品质量流程", control: editQualityProcess },
+        { key: "owner", value: editOwner?.value, message: "请选择负责人", control: editOwnerPicker },
+        { key: "department", value: editDepartment?.value, message: "请选择负责人以带入负责部门", control: editDepartment }
+      ];
+      const firstInvalid = checks.find((item) => !item.value);
+      checks.forEach((item) => {
+        if (!item.value) setProjectEditError(item.key, item.message, item.control);
+      });
+      firstInvalid?.control?.focus();
+      return !firstInvalid;
+    }
+
+    function openEditOwnerModal() {
+      if (!editOwnerModal || !editOwnerOptions) return;
+      pendingEditOwner = editOwner?.value || "";
+      editOwnerOptions.innerHTML = editOwnerDirectory.map((item) => `
+        <label class="edit-owner-option">
+          <input type="radio" name="editOwnerChoice" value="${escapeHtml(item.name)}" ${item.name === pendingEditOwner ? "checked" : ""}>
+          <span><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.department)}</span></span>
+        </label>
+      `).join("");
+      editOwnerModal.hidden = false;
+      editOwnerPicker?.setAttribute("aria-expanded", "true");
+      editOwnerOptions.querySelector("input:checked, input")?.focus();
+    }
+
+    function closeEditOwnerModal() {
+      if (editOwnerModal) editOwnerModal.hidden = true;
+      editOwnerPicker?.setAttribute("aria-expanded", "false");
+    }
+
+    function applyEditOwner() {
+      const selected = editOwnerOptions?.querySelector('input[name="editOwnerChoice"]:checked');
+      if (!selected) return;
+      const person = editOwnerDirectory.find((item) => item.name === selected.value);
+      if (!person) return;
+      if (editOwner) editOwner.value = person.name;
+      if (editOwnerPickerText) editOwnerPickerText.textContent = person.name;
+      if (editDepartment) editDepartment.value = person.department;
+      setProjectEditError("owner", "", editOwnerPicker);
+      setProjectEditError("department", "", editDepartment);
+      closeEditOwnerModal();
+      editOwnerPicker?.focus();
     }
 
     function syncEditSystemValue() {
@@ -11750,15 +11985,12 @@
       }
       activeFillTaskId = taskId;
       taskFillForm.reset();
-      taskFillKpac.textContent = task.kpac;
       taskFillType.textContent = task.type;
       taskFillType.className = `tag ${task.typeClass}`;
       taskFillTitle.textContent = task.title;
-      taskFillFunction.textContent = task.functionName;
-      taskFillEvidence.textContent = task.documentOrEvidence || "-";
-      taskFillResponsible.textContent = task.owner;
       taskFillDepartment.textContent = task.department;
-      taskFillDate.textContent = task.dateRange;
+      const dateParts = String(task.dateRange || "").split("~").map((item) => item.trim()).filter(Boolean);
+      taskFillDate.textContent = dateParts.length ? dateParts[dateParts.length - 1] : "-";
       taskFillDescription.innerHTML = task.description.split("\n").map((line) => `<div>${escapeHtml(line)}</div>`).join("");
       taskFillModal.hidden = false;
       taskFillModal.querySelector(".task-fill-body").scrollTop = 0;
@@ -13493,6 +13725,15 @@
       if (event.key === "Escape" && !document.getElementById("dfmModal")?.hidden) {
         closeDfmModal();
       }
+      const bomRoleConfirmModal = document.getElementById("bomRoleConfirmModal");
+      if (event.key === "Escape" && bomRoleConfirmModal && !bomRoleConfirmModal.hidden) {
+        closeBomRoleConfirm();
+      }
+      if (event.key === "Escape" && editOwnerModal && !editOwnerModal.hidden) {
+        closeEditOwnerModal();
+      } else if (event.key === "Escape" && document.body.classList.contains("part-drawer-open")) {
+        setProjectEditDrawer(false);
+      }
     });
 
     const bomHeaders = [
@@ -13521,18 +13762,18 @@
     ];
 
     const bomState = {
-      stage: "Gate1",
-      versionMajor: 1,
+      stage: "Gate2",
+      versionMajor: 2,
       versionMinor: 0,
-      status: "locked",
+      status: "review",
       syncStatus: "synced",
-      syncedVersion: "Gate1-V1.0",
-      effectiveVersion: "Gate1-V1.0",
-      lockedVersion: "Gate1-V1.0",
-      workingVersion: "Gate1-V1.1",
-      workingStatus: "待SCM确认",
-      previousVersion: "Gate1-V0.9",
-      syncedFrom: "项目生产BOM / SCM确认版本",
+      syncedVersion: "V1.0",
+      effectiveVersion: "V1.0",
+      lockedVersion: "V1.0",
+      workingVersion: "V2.0",
+      workingStatus: "待SCM与ME确认",
+      previousVersion: "-",
+      syncedFrom: "项目生产BOM / SCM与ME确认版本",
       syncedAt: "2025-05-20 16:00",
       syncedBy: "系统同步",
       mode: "detail",
@@ -13547,6 +13788,10 @@
       searchMatches: [],
       dfmRecords: [],
       histories: [],
+      confirmations: {
+        scm: { confirmed: false, owner: "SCM / Chen Wei", time: "-" },
+        me: { confirmed: false, owner: "ME / Alex Li", time: "-" }
+      },
       rows: [
         { id: "phaser-insert-1", no: 1, level: 1, name: "PHASER INSERT", application: "VCT", qty: "1", customerNo: "1006060-A02", bwNo: "5069999", drawingRev: "R1", dfmNo: "DFM-260803-001", sampleSapNo: "SAP-P-9001", massSapNo: "SAP-S-9001", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "8.7", weightAssembly: "8.7", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 双供同步开发", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", childTaskDone: true, remark: "当前开发零件" },
         { id: "phaser-insert-2", no: 2, level: 2, name: "INSERT BODY", application: "VCT", qty: "1", customerNo: "-", bwNo: "5070001", drawingRev: "R1", sampleSapNo: "SAP-P-9001-01", massSapNo: "SAP-S-9001-01", rawNo: "RM-PA66-GF30", rawMaterial: "PA66 GF30", weightPiece: "6.2", weightAssembly: "6.2", sharedPart: "否", borrowedProject: "-", releaseStatus: "已释放", rawSupplier: "Ningbo Material", subSupplier: "A-Supplier", needApqp: "是", createTask: "是", apqpOwner: "SQD / Zack", supplyPlan: "一供 · 单一供应", startGate: "Gate1", blockGate: "是", changeStatus: "无变更", impactAction: "-", remark: "注塑主体" },
@@ -13554,20 +13799,19 @@
         { id: "phaser-insert-4", no: 4, level: 3, name: "STEEL PIN", application: "VCT", qty: "2", customerNo: "-", bwNo: "5070003", drawingRev: "A", sampleSapNo: "SAP-P-9001-03", massSapNo: "SAP-S-9001-03", rawNo: "RM-SUS304", rawMaterial: "SUS304", weightPiece: "0.35", weightAssembly: "0.7", sharedPart: "是", borrowedProject: "EA888 E5", releaseStatus: "已释放", rawSupplier: "Ningbo Steel", subSupplier: "C-Supplier", needApqp: "否", createTask: "否", apqpOwner: "-", supplyPlan: "共用件 · 备案", startGate: "-", blockGate: "否", changeStatus: "无变更", impactAction: "共用件不生成开发任务", remark: "定位销" }
       ],
       diffRows: [
-        { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "PHASER INSERT", bwNo: "5069999", supplyPlan: "一供 · 双供同步开发", diffResult: "无变更", action: "沿用原开发任务" },
-        { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "INSERT BODY", bwNo: "5070001", supplyPlan: "一供 · 单一供应", diffResult: "无变更", action: "沿用原开发任务" },
-        { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "WEAR PAD", bwNo: "5070002", supplyPlan: "二供 · 后续导入", diffResult: "新增", action: "按项目端确认结果同步，Gate3启动" },
-        { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "OLD GUIDE PIN", bwNo: "5068801", supplyPlan: "一供 · 单一供应", diffResult: "删除", action: "项目端已关闭/取消对应任务" },
-        { version: "Gate1-V1.0", previousVersion: "Gate1-V0.9", name: "STEEL PIN", bwNo: "5070003", supplyPlan: "共用件 · 备案", diffResult: "无变更", action: "保留备案，不生成开发任务" }
+        { version: "V1.0", previousVersion: "-", name: "PHASER INSERT", bwNo: "5069999", supplyPlan: "一供 · 双供同步开发", diffResult: "无变更", action: "沿用原开发任务" },
+        { version: "V1.0", previousVersion: "-", name: "INSERT BODY", bwNo: "5070001", supplyPlan: "一供 · 单一供应", diffResult: "无变更", action: "沿用原开发任务" },
+        { version: "V1.0", previousVersion: "-", name: "WEAR PAD", bwNo: "5070002", supplyPlan: "二供 · 后续导入", diffResult: "新增", action: "按项目端确认结果同步，Gate3启动" },
+        { version: "V1.0", previousVersion: "-", name: "OLD GUIDE PIN", bwNo: "5068801", supplyPlan: "一供 · 单一供应", diffResult: "删除", action: "项目端已关闭/取消对应任务" },
+        { version: "V1.0", previousVersion: "-", name: "STEEL PIN", bwNo: "5070003", supplyPlan: "共用件 · 备案", diffResult: "无变更", action: "保留备案，不生成开发任务" }
       ],
       workingDiffRows: [
-        { version: "Gate1-V1.1", previousVersion: "Gate1-V1.0", name: "WEAR PAD", bwNo: "5070002", supplyPlan: "二供 · 同步开发", diffResult: "供应策略变化", action: "二供由后续导入调整为同步开发，待 SCM 确认后生效" },
-        { version: "Gate1-V1.1", previousVersion: "Gate1-V1.0", name: "SEAL RING", bwNo: "5070004", supplyPlan: "一供 · 单一供应", diffResult: "新增", action: "工作版本新增，确认后同步子零件开发判断" }
+        { version: "V2.0", previousVersion: "V1.0", name: "WEAR PAD", bwNo: "5070002", supplyPlan: "二供 · 同步开发", diffResult: "供应策略变化", action: "二供由后续导入调整为同步开发，待 SCM 与 ME 确认后生效" },
+        { version: "V2.0", previousVersion: "V1.0", name: "SEAL RING", bwNo: "5070004", supplyPlan: "一供 · 单一供应", diffResult: "新增", action: "工作版本新增，双确认后同步子零件开发判断" }
       ],
       versionRecords: [
-        { version: "Gate1-V1.1", status: "工作版本", relation: "即将生效", owner: "SCM / Chen Wei", time: "2025-05-22 09:30", compareTo: "Gate1-V1.0", changeCount: 2 },
-        { version: "Gate1-V1.0", status: "已锁定生效", relation: "当前生效版本", owner: "SCM / Chen Wei", time: "2025-05-20 16:00", compareTo: "Gate1-V0.9", changeCount: 2 },
-        { version: "Gate1-V0.9", status: "历史版本", relation: "上一版本", owner: "AE / Li Ming", time: "2025-05-18 14:20", compareTo: "-", changeCount: 0 }
+        { version: "V2.0", stage: "Gate2", status: "待双确认", content: "新增 SEAL RING；WEAR PAD 二供策略由后续导入调整为同步开发。", scmStatus: "待确认", scmOwner: "SCM / Chen Wei", meStatus: "待确认", meOwner: "ME / Alex Li", effectiveAt: "-", owner: "AE / Li Ming", time: "2025-05-22 09:30" },
+        { version: "V1.0", stage: "Gate1", status: "已锁定生效", content: "首次建立 PHASER INSERT 子零件 BOM，完成零件层级及供应方案初始化。", scmStatus: "已确认", scmOwner: "SCM / Chen Wei", meStatus: "已确认", meOwner: "ME / Alex Li", effectiveAt: "2025-05-20 16:00", owner: "AE / Li Ming", time: "2025-05-20 14:20" }
       ]
     };
 
@@ -13589,11 +13833,16 @@
       const status = params.get("status") || "";
       const displayName = partName || document.querySelector(".project-title")?.textContent?.trim() || "子零件开发任务";
       if (partName) document.querySelector(".project-title").textContent = displayName;
+      if (partName && editPartName && editSapPartSelect && editPartSourceMode) {
+        const hasSapOption = Array.from(editSapPartSelect.options).some((option) => option.value === partName);
+        editPartSourceMode.value = hasSapOption ? "sap" : "manual";
+        editSapPartSelect.value = hasSapOption ? partName : "";
+        editPartName.value = partName;
+        syncEditPartSourceMode();
+      }
       const displayTaskNo = taskId || partTaskNo || apqpId;
       if (displayTaskNo) {
         document.querySelector(".project-code").textContent = displayTaskNo;
-        const editTaskNo = document.querySelector("#editTaskNo");
-        if (editTaskNo) editTaskNo.value = displayTaskNo;
       }
       const projectButton = document.querySelector("[data-open-project]");
       const projectCodeEmpty = document.querySelector("[data-project-code-empty]");
@@ -13621,15 +13870,20 @@
         bomState.versionMinor = version.minor;
       }
       if (bomVersion) {
-        bomState.syncedVersion = bomVersion;
-        bomState.effectiveVersion = bomVersion;
-        bomState.lockedVersion = bomVersion;
+        const normalizedVersion = `V${version.major}.${version.minor}`;
+        bomState.syncedVersion = normalizedVersion;
+        bomState.effectiveVersion = normalizedVersion;
+        bomState.lockedVersion = normalizedVersion;
         if (!params.get("workingVersion")) {
-          bomState.workingVersion = formatVersion(version.major || bomState.versionMajor, (version.minor || bomState.versionMinor) + 1);
+          bomState.workingVersion = formatVersion((version.major || bomState.versionMajor) + 1, 0);
         }
       }
-      if (params.get("workingVersion")) bomState.workingVersion = params.get("workingVersion");
-      partTaskMeta.sourceBomVersion = bomVersion || partTaskMeta.sourceBomVersion;
+      if (params.get("workingVersion")) {
+        const working = parseVersionNumber(params.get("workingVersion"));
+        bomState.workingVersion = formatVersion(working.major, working.minor);
+      }
+      partTaskMeta.sourceBomVersion = bomVersion ? formatVersion(version.major, version.minor) : partTaskMeta.sourceBomVersion;
+      partTaskMeta.sourceBomStage = stageMatch?.[1] || params.get("bomStage") || partTaskMeta.sourceBomStage;
       partTaskMeta.creationSource = source === "manual" ? "手动新增" : source === "apqp" ? "项目 APQP 关联" : "BOM 创建";
       partTaskMeta.projectImpact = "风险提示";
       partTaskMeta.blockingGate = false;
@@ -13717,7 +13971,7 @@
 
     function currentVersion() {
       if (!bomState.rows.length && bomState.versionMajor === 0 && bomState.versionMinor === 0) return "-";
-      return `${bomState.stage}-V${bomState.versionMajor}.${bomState.versionMinor}`;
+      return `V${bomState.versionMajor}.${bomState.versionMinor}`;
     }
 
     function parseVersionNumber(version) {
@@ -13734,11 +13988,11 @@
       const current = { major: bomState.versionMajor, minor: bomState.versionMinor };
       if (!bomState.histories.length && current.major === 0) return { major: 1, minor: 0 };
       if (compareVersionNumber(current, latest) > 0) return current;
-      return { major: latest.major || 1, minor: latest.major ? latest.minor + 1 : 0 };
+      return { major: Math.max(current.major, latest.major || 1) + 1, minor: 0 };
     }
 
     function formatVersion(major, minor) {
-      return `${bomState.stage}-V${major}.${minor}`;
+      return `V${major}.${minor}`;
     }
 
     function statusText(status) {
@@ -13746,7 +14000,7 @@
     }
 
     function statusClass(status) {
-      return { empty: "status-locked", locked: "status-locked", draft: "status-draft", review: "status-review" }[status] || "status-pending";
+      return { empty: "status-pending", locked: "status-locked", draft: "status-draft", review: "status-review" }[status] || "status-pending";
     }
 
     function cloneRows(rows) {
@@ -13895,12 +14149,47 @@
       return rows.filter((row) => row.diffResult && row.diffResult !== "无变更").length;
     }
 
+    function versionRecord(version) {
+      return bomState.versionRecords.find((record) => record.version === version) || null;
+    }
+
+    function confirmationText(status, owner) {
+      return `${status || "待确认"}${owner ? ` · ${owner}` : ""}`;
+    }
+
+    function renderVersionRecords() {
+      const body = document.querySelector("[data-bom-version-record-body]");
+      if (!body) return;
+      body.innerHTML = bomState.versionRecords.map((record) => `
+        <tr>
+          <td><b>${escapeHtml(record.version)}</b></td>
+          <td>${escapeHtml(record.stage || "-")}</td>
+          <td><span class="status-pill ${record.status === "已锁定生效" ? "status-locked" : "status-review"}">${escapeHtml(record.status)}</span></td>
+          <td class="version-record-content">${escapeHtml(record.content || "-")}</td>
+          <td>${escapeHtml(confirmationText(record.scmStatus, record.scmOwner))}</td>
+          <td>${escapeHtml(confirmationText(record.meStatus, record.meOwner))}</td>
+          <td>${escapeHtml(record.effectiveAt || "-")}</td>
+          <td>${escapeHtml(record.owner || "-")}<br>${escapeHtml(record.time || "-")}</td>
+        </tr>`).join("") || `<tr><td colspan="8" class="bom-empty-tip">暂无版本变更记录</td></tr>`;
+    }
+
+    function renderConfirmationProgress() {
+      const box = document.querySelector("[data-bom-confirmation-progress]");
+      if (!box) return;
+      const confirmationVersion = bomState.workingVersion || bomState.effectiveVersion;
+      const record = versionRecord(confirmationVersion);
+      const scmConfirmed = record?.scmStatus === "已确认";
+      const meConfirmed = record?.meStatus === "已确认";
+      box.innerHTML = `
+        <span class="confirmation-chip ${scmConfirmed ? "is-confirmed" : ""}">SCM ${scmConfirmed ? "已确认" : "待确认"}</span>
+        <span class="confirmation-chip ${meConfirmed ? "is-confirmed" : ""}">ME ${meConfirmed ? "已确认" : "待确认"}</span>`;
+    }
+
     function bomHistoryOptions() {
-      return [
-        { value: bomState.workingVersion, label: `${bomState.workingVersion} · 当前工作版本` },
-        { value: bomState.effectiveVersion || currentVersion(), label: `${bomState.effectiveVersion || currentVersion()} · 当前生效版本` },
-        { value: bomState.previousVersion, label: `${bomState.previousVersion} · 历史版本` }
-      ].filter((item, index, list) => item.value && list.findIndex((other) => other.value === item.value) === index);
+      return bomState.versionRecords.map((record) => ({
+        value: record.version,
+        label: `${record.version} · ${record.stage} · ${record.version === bomState.effectiveVersion ? "当前生效版本" : record.status}`
+      }));
     }
 
     function rowsForHistoryVersion(version) {
@@ -13911,7 +14200,7 @@
         if (wearPad) {
           wearPad.supplyPlan = "二供 · 同步开发";
           wearPad.changeStatus = "供应策略变化";
-          wearPad.remark = "工作版本调整二供策略，待 SCM 确认后生效";
+          wearPad.remark = "工作版本调整二供策略，待 SCM 与 ME 双确认后生效";
         }
         rows.push({
           id: "working-seal-ring",
@@ -14010,11 +14299,27 @@
       bomListBody.innerHTML = l1Rows.map((row) => bomRowHtml(row, false)).join("") || `<tr><td colspan="${bomHeaders.length + 1}" class="bom-empty-tip">${versionRows.length ? "未找到匹配的BOM信息" : "暂无该版本BOM数据"}</td></tr>`;
       const effectiveVersion = bomState.effectiveVersion || currentVersion();
       const workingVersion = bomState.workingVersion || "-";
+      const selectedRecord = versionRecord(selectedVersion);
       document.querySelector("[data-bom-effective-version]").textContent = effectiveVersion;
+      document.querySelector("[data-bom-generated-stage]").textContent = selectedRecord?.stage || "-";
       document.querySelector("[data-bom-working-version]").textContent = workingVersion;
       document.querySelector("[data-bom-all-count]").textContent = versionRows.length;
       const changeCount = document.querySelector("[data-bom-work-change-count]");
       if (changeCount) changeCount.textContent = workingBomChangeCount();
+      renderConfirmationProgress();
+      renderVersionRecords();
+      const workingRecord = versionRecord(bomState.workingVersion);
+      document.querySelectorAll("[data-bom-confirm-role]").forEach((button) => {
+        const role = button.dataset.bomConfirmRole;
+        const hasWorkingVersion = Boolean(bomState.workingVersion && workingRecord);
+        const confirmed = workingRecord?.[`${role}Status`] === "已确认";
+        button.disabled = !hasWorkingVersion || confirmed;
+        button.title = !hasWorkingVersion
+          ? "当前没有待确认的工作版本"
+          : confirmed
+            ? `${role.toUpperCase()} 已确认 ${bomState.workingVersion}`
+            : `确认当前工作版本 ${bomState.workingVersion}`;
+      });
     }
 
     function renderBomEditor() {
@@ -14167,6 +14472,16 @@
         bomState.scopedRootId = null;
         bomState.historyViewing = false;
       } else if (isEdit) {
+        if (!bomState.workingVersion) {
+          const effective = parseVersionNumber(bomState.effectiveVersion);
+          bomState.versionMajor = (effective.major || bomState.versionMajor || 1) + 1;
+          bomState.versionMinor = 0;
+          bomState.workingVersion = currentVersion();
+          bomState.confirmations = {
+            scm: { confirmed: false, owner: "SCM / Chen Wei", time: "-" },
+            me: { confirmed: false, owner: "ME / Alex Li", time: "-" }
+          };
+        }
         bomState.status = "draft";
         bomState.historyViewing = false;
       } else if (isScm && bomState.status === "locked") {
@@ -14199,6 +14514,13 @@
       document.querySelector("[data-delete-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
       document.querySelector("[data-undo-delete]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
       document.querySelector("[data-bom-restore]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem) || !bomState.undoStack.length);
+      const versionRecordSection = document.querySelector("[data-bom-edit-version-record-section]");
+      const versionRecordInput = document.querySelector("[data-bom-edit-version-record]");
+      if (versionRecordSection) versionRecordSection.hidden = isDetail || Boolean(historyItem);
+      if (versionRecordInput && !versionRecordSection?.hidden) {
+        versionRecordInput.value = versionRecord(bomState.workingVersion)?.content || "";
+        updateBomEditVersionRecordState();
+      }
       bomModal.hidden = false;
       renderBomEditor();
     }
@@ -14217,17 +14539,56 @@
 
     function submitBom() {
       if (!bomState.rows.length) return;
-      const nextVersion = nextVersionNumber();
-      bomState.versionMajor = nextVersion.major;
-      bomState.versionMinor = nextVersion.minor;
-      bomState.status = "locked";
+      const input = document.querySelector("[data-bom-edit-version-record]");
+      const content = input?.value.trim() || "";
+      if (!content) {
+        updateBomEditVersionRecordState(true);
+        input?.focus();
+        input?.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+      const version = bomState.workingVersion || currentVersion();
+      persistBomVersionRecord(version, bomState.stage || "Gate1", content);
+      bomModal.hidden = true;
+      renderBomList();
+      showMessage("已提交确认", `<p>${escapeHtml(version)} 的版本变更记录已保存，并已提交 SCM 与 ME 确认。两方均确认后才会生成生效版本。</p>`);
+    }
+
+    function updateBomEditVersionRecordState(forceError = false) {
+      const section = document.querySelector("[data-bom-edit-version-record-section]");
+      const input = document.querySelector("[data-bom-edit-version-record]");
+      const count = document.querySelector("[data-bom-edit-version-record-count]");
+      const error = document.querySelector("[data-bom-edit-version-record-error]");
+      const length = input?.value.length || 0;
+      if (count) count.textContent = length;
+      const hasError = forceError && !input?.value.trim();
+      section?.classList.toggle("is-error", hasError);
+      if (error) error.hidden = !hasError;
+    }
+
+    function persistBomVersionRecord(version, stage, content) {
+      let record = versionRecord(version);
+      if (!record) {
+        record = { version, scmStatus: "待确认", scmOwner: "SCM / Chen Wei", meStatus: "待确认", meOwner: "ME / Alex Li", effectiveAt: "-" };
+        bomState.versionRecords.unshift(record);
+      }
+      Object.assign(record, {
+        stage,
+        status: "待双确认",
+        content,
+        owner: "当前用户",
+        time: new Date().toLocaleString("zh-CN", { hour12: false }),
+        scmStatus: record.scmStatus === "已确认" ? "已确认" : "待确认",
+        meStatus: record.meStatus === "已确认" ? "已确认" : "待确认"
+      });
+      bomState.stage = stage;
+      bomState.status = "review";
+      bomState.workingStatus = "待SCM与ME确认";
       snapshotBomHistory();
       bomState.scopedRootId = null;
       bomState.undoStack = [];
-      bomModal.hidden = true;
-      renderBomList();
+      return record;
     }
-
 
     function selectedBomRows() { return bomState.rows.filter((row) => bomState.selectedRowIds.includes(row.id)); }
     function childLevelFor(row) { return Math.min(Number(row && row.level || 1) + 1, 4); }
@@ -14323,7 +14684,15 @@
     function openBomInlineDrawer(mode) { const selected = selectedBomRows(); if (!selected.length) return; const row = selected[0]; const drawer = document.querySelector("[data-bom-inline-drawer]"); const layout = document.querySelector("[data-bom-workspace-layout]"); if (!drawer || !layout) return; bomState.drawerParentId = row.id; bomState.drawerEditId = mode === "edit" ? row.id : null; drawer.hidden = false; layout.classList.add("has-drawer"); document.querySelector("[data-bom-drawer-title]").textContent = mode === "edit" ? "编辑BOM项" : "添加 L" + childLevelFor(row) + " 子项"; document.querySelector("[data-bom-drawer-context]").textContent = mode === "edit" ? "正在编辑：" + row.name : "将添加为：" + row.name + " 下的 L" + childLevelFor(row) + " 子项"; document.querySelector("[data-bom-drawer-mode]").hidden = mode === "edit"; fillInlineDrawer(row, mode); setBomDrawerMode(mode === "library" ? "library" : "manual"); renderBomLibraryResults(); }
     function closeBomInlineDrawer() { document.querySelector("[data-bom-inline-drawer]")?.setAttribute("hidden", ""); document.querySelector("[data-bom-workspace-layout]")?.classList.remove("has-drawer"); bomState.drawerParentId = null; bomState.drawerEditId = null; }
     function saveInlineDrawer() { const target = bomState.rows.find((row) => row.id === bomState.drawerEditId); const parent = bomState.rows.find((row) => row.id === bomState.drawerParentId); const payload = { level: Number(inlineFieldValue("level")), name: inlineFieldValue("name"), application: inlineFieldValue("application"), qty: inlineFieldValue("qty"), customerNo: inlineFieldValue("customerNo"), bwNo: inlineFieldValue("bwNo"), drawingRev: inlineFieldValue("drawingRev"), sampleSapNo: inlineFieldValue("sampleSapNo"), massSapNo: inlineFieldValue("massSapNo"), rawNo: inlineFieldValue("rawNo"), rawMaterial: inlineFieldValue("rawMaterial"), weightPiece: inlineFieldValue("weightPiece"), sharedPart: inlineFieldValue("sharedPart"), borrowedProject: inlineFieldValue("borrowedProject"), releaseStatus: inlineFieldValue("releaseStatus"), rawSupplier: inlineFieldValue("rawSupplier"), subSupplier: inlineFieldValue("subSupplier"), supplyPlan: inlineFieldValue("supplyType") + " · 手动维护", apqpOwner: inlineFieldValue("apqpOwner"), changeStatus: inlineFieldValue("changeStatus"), remark: inlineFieldValue("remark") }; if (!payload.name || payload.name === "-") { showMessage("无法保存", "<p>请填写零件 / 材料名称。</p>"); return; } bomState.undoStack.push(cloneRows(bomState.rows)); if (target) Object.assign(target, payload); else if (parent) bomState.rows.splice(bomState.rows.findIndex((row) => row.id === parent.id) + 1, 0, { id: "inline-" + Date.now(), no: bomState.rows.length + 1, productKey: parent.productKey, needApqp: "是", createTask: "是", startGate: "Gate1", blockGate: "是", impactAction: "手动维护新增", ...payload }); bomState.status = "draft"; renumberRows(); closeBomInlineDrawer(); renderBomEditor(); renderBomList(); }
-    function saveBomDraft() { bomState.status = "draft"; renderBomEditor(); renderBomList(); showMessage("保存草稿", "<p>BOM 草稿已保存，当前包含 " + bomState.rows.length + " 条零件数据。</p>"); }
+    function saveBomDraft() {
+      bomState.status = "draft";
+      const content = document.querySelector("[data-bom-edit-version-record]")?.value.trim() || "";
+      const record = versionRecord(bomState.workingVersion);
+      if (record && content) record.content = content;
+      renderBomEditor();
+      renderBomList();
+      showMessage("保存草稿", "<p>BOM 草稿及版本变更记录已保存，当前包含 " + bomState.rows.length + " 条零件数据。</p>");
+    }
 
     function fieldValue(name) {
       return document.querySelector(`[data-part-field="${name}"]`).value.trim() || "-";
@@ -14586,23 +14955,88 @@
       showMessage("导出成功", `<p>已导出 ${rows.length} 条 BOM 数据。</p>`);
     }
 
-    function confirmBom() {
+    function openBomRoleConfirm(role) {
+      const version = bomState.workingVersion;
+      const record = versionRecord(version);
+      const roleName = role === "me" ? "ME" : "SCM";
+      if (!version || !record) {
+        showMessage("暂无待确认版本", "<p>请先编辑 BOM 并填写版本变更记录，再提交 SCM 与 ME 双确认。</p>");
+        return;
+      }
+      if (record[`${role}Status`] === "已确认") {
+        showMessage("无需重复确认", `<p>${roleName} 已确认 ${escapeHtml(version)}。</p>`);
+        return;
+      }
+      pendingBomConfirmRole = role;
+      document.getElementById("bomRoleConfirmTitle").textContent = `${roleName}确认`;
+      document.getElementById("bomRoleConfirmMessage").textContent = `确认后将记录 ${roleName} 对当前工作版本的确认结果，请确认是否继续。`;
+      document.getElementById("bomConfirmChangeContent").textContent = record.content || "-";
+      document.getElementById("confirmBomRoleAction").textContent = `确认${roleName}`;
+      document.getElementById("bomRoleConfirmModal").hidden = false;
+      document.getElementById("confirmBomRoleAction").focus();
+    }
+
+    function closeBomRoleConfirm() {
+      const modal = document.getElementById("bomRoleConfirmModal");
+      if (modal) modal.hidden = true;
+      pendingBomConfirmRole = "";
+    }
+
+    function executeBomRoleConfirm() {
+      const role = pendingBomConfirmRole;
+      if (!role) return;
+      const modal = document.getElementById("bomRoleConfirmModal");
+      if (modal) modal.hidden = true;
+      pendingBomConfirmRole = "";
+      confirmBom(role);
+    }
+
+    function confirmBom(role) {
       if (!bomState.rows.length) {
         showMessage("无法确认BOM", "<p>当前没有可确认的 BOM 数据。</p>");
         return;
       }
-      snapshotBomHistory();
-      bomState.status = "locked";
-      bomState.effectiveVersion = currentVersion();
-      bomState.lockedVersion = currentVersion();
-      bomState.syncedVersion = currentVersion();
-      bomState.workingStatus = "已确认";
+      const version = bomState.workingVersion;
+      const record = versionRecord(version);
+      const roleName = role === "me" ? "ME" : "SCM";
+      if (!version || !record) {
+        showMessage("暂无待确认版本", "<p>请先编辑 BOM 并填写版本变更记录，再提交 SCM 与 ME 双确认。</p>");
+        return;
+      }
+      const statusKey = `${role}Status`;
+      const ownerKey = `${role}Owner`;
+      if (record[statusKey] === "已确认") {
+        showMessage("无需重复确认", `<p>${roleName} 已确认 ${escapeHtml(version)}。</p>`);
+        return;
+      }
+      const now = new Date().toLocaleString("zh-CN", { hour12: false });
+      record[statusKey] = "已确认";
+      record[ownerKey] = `${roleName} / 当前用户 · ${now}`;
+      bomState.confirmations[role] = { confirmed: true, owner: `${roleName} / 当前用户`, time: now };
+      const allConfirmed = record.scmStatus === "已确认" && record.meStatus === "已确认";
+      if (allConfirmed) {
+        const effectiveRows = rowsForHistoryVersion(version);
+        bomState.rows = cloneRows(effectiveRows);
+        bomState.status = "locked";
+        bomState.effectiveVersion = version;
+        bomState.lockedVersion = version;
+        bomState.syncedVersion = version;
+        bomState.workingVersion = "";
+        bomState.workingStatus = "已锁定生效";
+        record.status = "已锁定生效";
+        record.effectiveAt = now;
+        snapshotBomHistory();
+        const versionSwitch = document.querySelector("[data-bom-version-switch]");
+        if (versionSwitch) versionSwitch.value = version;
+      }
       renderBomList();
-      showMessage("确认成功", `<p>BOM 已确认并锁定为 ${currentVersion()}，子零件开发任务将按当前版本同步。</p>`);
+      showMessage(allConfirmed ? "版本已生效" : `${roleName}确认成功`, allConfirmed
+        ? `<p>${escapeHtml(version)} 已完成 SCM、ME 双确认并锁定生效，子零件开发任务可按该版本同步。</p>`
+        : `<p>${roleName} 已确认 ${escapeHtml(version)}；仍需另一方确认后才会生成生效版本。</p>`);
     }
 
     document.querySelector("[data-bom-create]")?.addEventListener("click", () => openWorkspace("edit"));
-    document.querySelector("[data-bom-scm-edit]")?.addEventListener("click", confirmBom);
+    document.querySelectorAll("[data-bom-confirm-role]").forEach((button) => button.addEventListener("click", () => openBomRoleConfirm(button.dataset.bomConfirmRole)));
     document.querySelector("[data-bom-export-template]")?.addEventListener("click", exportBomTemplate);
     document.querySelector("[data-create-dfm]")?.addEventListener("click", openDfmModal);
     document.querySelector("[data-save-dfm]")?.addEventListener("click", saveDfm);
@@ -14701,6 +15135,11 @@
         closeMessage();
       }
     });
+    document.querySelectorAll("[data-close-bom-role-confirm]").forEach((button) => button.addEventListener("click", closeBomRoleConfirm));
+    document.getElementById("confirmBomRoleAction")?.addEventListener("click", executeBomRoleConfirm);
+    document.getElementById("bomRoleConfirmModal")?.addEventListener("click", (event) => {
+      if (event.target === event.currentTarget) closeBomRoleConfirm();
+    });
     libraryUploadModal?.addEventListener("click", (event) => {
       if (event.target === libraryUploadModal) {
         hideLibraryUploadModal();
@@ -14715,13 +15154,31 @@
     document.querySelectorAll("[data-close-project-edit]").forEach((button) => {
       button.addEventListener("click", () => setProjectEditDrawer(false));
     });
+    editPartSourceMode?.addEventListener("change", syncEditPartSourceMode);
+    editSapPartSelect?.addEventListener("change", () => {
+      if (editPartName) editPartName.value = editSapPartSelect.value;
+      setProjectEditError("partName", "", editSapPartSelect);
+    });
+    editPartName?.addEventListener("input", () => setProjectEditError("partName", "", editPartName));
+    editQualityProcess?.addEventListener("change", () => setProjectEditError("qualityProcess", "", editQualityProcess));
+    editOwnerPicker?.addEventListener("click", openEditOwnerModal);
+    editOwnerOptions?.addEventListener("change", (event) => {
+      if (event.target.matches('input[name="editOwnerChoice"]')) pendingEditOwner = event.target.value;
+    });
+    document.querySelectorAll("[data-close-edit-owner]").forEach((button) => button.addEventListener("click", closeEditOwnerModal));
+    confirmEditOwner?.addEventListener("click", applyEditOwner);
+    editOwnerModal?.addEventListener("click", (event) => {
+      if (event.target === editOwnerModal) closeEditOwnerModal();
+    });
     document.querySelectorAll("[data-edit-product]").forEach((input) => {
       input.addEventListener("change", syncEditSystemValue);
     });
     saveProjectEditDraft?.addEventListener("click", () => {
+      if (!validateProjectEdit()) return;
       showMessage("保存草稿", "<p>子零件开发任务信息草稿已保存。</p>");
     });
     confirmProjectEdit?.addEventListener("click", () => {
+      if (!validateProjectEdit()) return;
       setProjectEditDrawer(false);
       addPartEvent({
         category: "status",
@@ -14773,6 +15230,7 @@
     document.querySelectorAll("[data-close-part-modal]").forEach((button) => button.addEventListener("click", closePartModal));
     document.querySelector("[data-add-part-confirm]")?.addEventListener("click", savePart);
     document.querySelector("[data-bom-save-draft]")?.addEventListener("click", saveBomDraft);
+    document.querySelector("[data-bom-edit-version-record]")?.addEventListener("input", () => updateBomEditVersionRecordState(false));
     document.querySelector("[data-bom-part-search-confirm]")?.addEventListener("click", searchBomPart);
     document.querySelectorAll("[data-bom-part-search-name], [data-bom-part-search-no]").forEach((input) => input.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); searchBomPart(); } }));
     document.querySelector("[data-bom-search-results]")?.addEventListener("click", (event) => { const addButton = event.target.closest("[data-bom-add-product]"); if (addButton) addBomSearchResult(addButton.dataset.bomAddProduct); });
