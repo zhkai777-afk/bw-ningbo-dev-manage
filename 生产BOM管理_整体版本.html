@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>生产 BOM 管理（整体版本）</title>
+  <style>
+    :root{
+      --primary:#1769ff;--primary-dark:#0f56d9;--primary-soft:#edf4ff;
+      --teal:#087f83;--bg:#f5f7fb;--panel:#fff;--line:#dfe5ee;
+      --text:#172033;--muted:#667085;--success:#087443;--success-bg:#e9f8f0;
+      --warning:#b86700;--warning-bg:#fff4dc;--danger:#d92d20;--danger-bg:#fff0ee;
+      --shadow:0 18px 48px rgba(16,24,40,.18);--radius:8px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif}
+    button,input,select,textarea{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #93baff;outline-offset:2px}
+    .app{max-width:1680px;margin:auto;padding:22px 24px 48px}
+    .page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin-bottom:16px}
+    h1{margin:0 0 5px;font-size:22px;letter-spacing:-.2px}h2,h3,p{margin-top:0}
+    .page-head p{margin-bottom:0;color:var(--muted)}
+    .role-box{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:13px}
+    .role-box select,.input,.select,.textarea{border:1px solid #cfd7e3;border-radius:5px;background:#fff;color:#344054;outline:0}
+    .role-box select,.input,.select{height:36px;padding:0 10px}.textarea{width:100%;min-height:78px;padding:9px 10px;resize:vertical}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 2px 7px rgba(16,24,40,.03);overflow:hidden}
+    .tabs{display:flex;gap:26px;height:48px;align-items:flex-end;padding:0 18px;border-bottom:1px solid var(--line)}
+    .tab{height:48px;border:0;border-bottom:2px solid transparent;background:transparent;color:var(--muted);font-weight:700;padding:0 2px}
+    .tab.active{color:var(--primary);border-color:var(--primary)}
+    .overview{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8fafc;border-bottom:1px solid var(--line);overflow:auto}
+    .overview-title{font-weight:800;margin-right:6px;white-space:nowrap}.metric{display:flex;align-items:center;gap:12px;min-width:126px;padding:7px 10px;border:1px solid #d8e0eb;border-radius:6px;background:#fff;color:#475467;text-align:left}
+    .metric strong{margin-left:auto;font-size:17px;color:var(--text)}.metric.active{border-color:var(--primary);background:var(--primary-soft);color:#175cd3}
+    .filters{display:grid;grid-template-columns:170px 190px minmax(220px,1fr) 160px auto auto;gap:9px;padding:12px 14px;border-bottom:1px solid var(--line)}
+    .btn{height:36px;border:1px solid #cfd7e3;border-radius:5px;background:#fff;color:#344054;padding:0 13px;font-weight:700;white-space:nowrap;transition:color .18s,border-color .18s,background .18s}
+    .btn:hover{border-color:var(--primary);color:var(--primary)}.btn.primary{color:#fff;background:var(--primary);border-color:var(--primary)}.btn.primary:hover{background:var(--primary-dark)}
+    .btn.teal{color:#fff;background:var(--teal);border-color:var(--teal)}.btn.danger{color:var(--danger)}.btn.link{height:auto;padding:2px 3px;border:0;background:transparent;color:var(--primary)}
+    .btn:disabled{opacity:.42;cursor:not-allowed}.table-wrap{overflow:auto}.main-table{width:100%;min-width:1450px;border-collapse:collapse}
+    th,td{padding:11px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:anywhere}
+    th{background:#f7f9fc;color:#475467;font-size:12px;white-space:nowrap}tbody tr:hover td{background:#fbfcff}
+    .code{color:var(--primary);font-weight:800}.sub{display:block;margin-top:3px;color:var(--muted);font-size:12px;line-height:1.45}
+    .tag{display:inline-flex;align-items:center;min-height:23px;padding:2px 8px;border-radius:4px;background:#eef2f6;color:#475467;font-size:12px;font-weight:800}
+    .tag.success{background:var(--success-bg);color:var(--success)}.tag.warn{background:var(--warning-bg);color:var(--warning)}.tag.danger{background:var(--danger-bg);color:var(--danger)}.tag.blue{background:var(--primary-soft);color:#175cd3}
+    .actions{display:flex;gap:8px 11px;align-items:center;flex-wrap:wrap;min-width:190px}.footer-row{display:flex;justify-content:space-between;padding:11px 14px;color:var(--muted);font-size:12px}
+    .source-alert{display:inline-flex;align-items:center;gap:5px;color:var(--warning);font-size:12px;font-weight:700}
+    .modal-layer{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(15,23,42,.47)}.modal-layer[hidden]{display:none}
+    .modal{display:flex;flex-direction:column;width:min(720px,100%);max-height:calc(100vh - 32px);border-radius:9px;background:#fff;box-shadow:var(--shadow);overflow:hidden}.modal.wide{width:min(1560px,100%)}.modal.medium{width:min(1020px,100%)}
+    .modal-head,.modal-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid var(--line)}.modal-head h2{margin:0;font-size:17px}.modal-foot{border-top:1px solid var(--line);border-bottom:0;justify-content:flex-end;background:#fff}
+    .modal-body{padding:16px 18px;overflow:auto}.close{width:32px;height:32px;border:0;background:transparent;color:#667085;font-size:24px;line-height:1}
+    .detail-toolbar{display:flex;gap:14px;align-items:end;padding:12px;border:1px solid #cadcff;background:#f3f7ff}.field{display:grid;gap:6px;min-width:0}.field label{color:#475467;font-size:12px;font-weight:800}.field.version{width:150px}.field.status{width:180px}.field.grow{flex:1}.readonly{background:#f7f9fc}
+    .detail-meta{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));border:1px solid var(--line);border-top:0}.kv{padding:10px 12px;border-right:1px solid var(--line)}.kv:last-child{border-right:0}.kv span{display:block;color:var(--muted);font-size:12px}.kv b{display:block;margin-top:4px;color:#344054}
+    .detail-layout{display:grid;grid-template-columns:245px minmax(0,1fr);gap:14px;margin-top:14px}.l1-panel{border:1px solid var(--line);border-radius:6px;overflow:hidden;height:max-content}.l1-panel h3{margin:0;padding:11px 12px;background:#f7f9fc;font-size:13px}.l1-item{display:block;width:100%;padding:11px 12px;border:0;border-top:1px solid var(--line);background:#fff;text-align:left;color:#344054}.l1-item.active{background:var(--primary-soft);box-shadow:inset 3px 0 var(--primary)}.l1-item b,.l1-item span{display:block}.l1-item span{margin-top:3px;color:var(--muted);font-size:12px}
+    .content-card{border:1px solid var(--line);border-radius:6px;overflow:hidden}.version-note{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:10px 12px;border-bottom:1px solid var(--line)}.version-note span{color:var(--muted);font-size:12px;font-weight:800}.version-note p{margin:0;white-space:pre-wrap;overflow-wrap:anywhere}
+    .detail-table{width:max-content;min-width:1900px;border-collapse:collapse}.detail-table th{position:sticky;top:0;z-index:2}.detail-table td{white-space:normal;min-width:100px}.tree{font-weight:750}.indent{display:inline-block;width:calc((var(--level) - 1) * 20px)}.level{display:inline-flex;align-items:center;justify-content:center;width:27px;height:23px;border-radius:4px;color:#fff;font-size:11px;font-weight:900}.level-1{background:#7299dc}.level-2{background:#cf9b62}.level-3{background:#62a974}
+    .section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:16px 0 9px}.section-head h3{margin:0;font-size:14px}.approval-table,.version-table{width:100%;min-width:850px;border-collapse:collapse}.approval-table td:last-child{min-width:260px;white-space:normal}
+    .notice{margin:0 0 14px;padding:10px 12px;border-left:3px solid var(--primary);background:#f3f7ff;color:#475467}.notice.warn{border-color:#f79009;background:#fffaeb}.notice.danger{border-color:var(--danger);background:var(--danger-bg)}
+    .editor-head{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}.editor-table{width:max-content;min-width:1750px;border-collapse:collapse}.editor-table input,.editor-table select{width:100%;min-width:95px;height:32px;border:1px solid #cfd7e3;border-radius:4px;padding:0 8px}.editor-table .name-input{min-width:220px}.editor-table .supplier-input{min-width:170px}
+    .confirm-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);margin-bottom:14px}.confirm-grid .kv:nth-child(4n){border-right:0}.confirm-detail{max-height:280px;border:1px solid var(--line);overflow:auto}.confirm-detail table{width:100%;min-width:900px;border-collapse:collapse}
+    .dialog-card{padding:14px;border:1px solid var(--line);border-radius:6px;background:#f8fafc}.dialog-card b{display:block;margin-bottom:5px}.error{min-height:20px;margin-top:7px;color:var(--danger);font-size:12px;font-weight:700}.toast{position:fixed;top:22px;left:50%;z-index:100;transform:translateX(-50%);padding:10px 16px;border-radius:6px;background:#173b2d;color:#fff;box-shadow:var(--shadow);font-weight:700;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}
+    .empty{text-align:center;color:var(--muted);padding:28px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:900px){.app{padding:16px}.page-head{flex-direction:column}.filters{grid-template-columns:1fr 1fr}.detail-layout{grid-template-columns:1fr}.l1-panel{display:flex;overflow:auto}.l1-panel h3{display:none}.l1-item{min-width:220px;border-top:0;border-left:1px solid var(--line)}.detail-meta{grid-template-columns:1fr 1fr}.kv{border-bottom:1px solid var(--line)}.detail-toolbar{flex-wrap:wrap}.confirm-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.filters,.editor-head{grid-template-columns:1fr}.overview-title{display:none}.metric{min-width:118px}.field.version,.field.status,.field.grow{width:100%}.detail-meta,.confirm-grid{grid-template-columns:1fr}.role-box{width:100%;justify-content:space-between}}
+    @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="page-head">
+      <div>
+        <h1>生产 BOM 管理</h1>
+        <p>来源 BOM 已确认并锁定；进入本模块后按项目或零件 APQP 整体维护生产 BOM 版本。</p>
+      </div>
+      <label class="role-box">当前角色
+        <select id="roleSelect" aria-label="当前角色">
+          <option value="AE">Li Ming · AE</option>
+          <option value="SCM">Chen Wei · SCM</option>
+          <option value="ME">Zhou Lin · ME</option>
+        </select>
+      </label>
+    </header>
+
+    <section class="panel">
+      <nav class="tabs" aria-label="BOM 来源分类">
+        <button class="tab active" type="button" data-tab="项目开发">项目开发 BOM</button>
+        <button class="tab" type="button" data-tab="零件 APQP">零件 APQP BOM</button>
+      </nav>
+      <div class="overview" id="overview" aria-label="生产 BOM 状态概览"></div>
+      <div class="filters">
+        <input class="input" id="numberFilter" placeholder="项目 / APQP 编号" aria-label="项目或 APQP 编号">
+        <input class="input" id="nameFilter" placeholder="名称 / 客户" aria-label="名称或客户">
+        <input class="input" id="keywordFilter" placeholder="L1 总成编号或名称" aria-label="L1 总成编号或名称">
+        <select class="select" id="versionFilter" aria-label="版本状态">
+          <option value="">全部版本状态</option>
+          <option>当前生效版本</option><option>当前工作版本</option><option>待 SCM/ME 确认</option><option>已退回</option>
+        </select>
+        <button class="btn primary" id="queryBtn" type="button">查询</button>
+        <button class="btn" id="resetBtn" type="button">重置</button>
+      </div>
+      <div class="table-wrap">
+        <table class="main-table">
+          <thead id="listHead"></thead>
+          <tbody id="listRows"></tbody>
+        </table>
+      </div>
+      <div class="footer-row"><span id="listCount"></span><span>版本以项目或零件 APQP 对象整体维护；L1 总成不在本模块独立升版。</span></div>
+    </section>
+  </main>
+
+  <div class="modal-layer" id="modalLayer" hidden>
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><h2 id="modalTitle"></h2><button class="close" id="modalClose" aria-label="关闭弹窗">×</button></div>
+      <div class="modal-body" id="modalBody"></div>
+      <div class="modal-foot" id="modalFoot"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const clone=value=>JSON.parse(JSON.stringify(value));
+    const now=()=>new Date().toLocaleString('zh-CN',{hour12:false}).replaceAll('/','-');
+    const esc=value=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    const roles={AE:'Li Ming',SCM:'Chen Wei',ME:'Zhou Lin'};
+    const line=(id,level,name,no,parent,qty,supplier,change='无变更')=>({id,level,name,no,parent,qty,application:'VFS',customerNo:'—',drawing:'A',sampleSap:`P-${no}`,massSap:`S-${no}`,rawNo:'RM-AL-6061',supplier,change});
+    const db=[
+      {
+        id:'PBOM-PRJ-001',type:'项目开发',sourceNo:'PRJ-2026-001',name:'吉利 VFS 电磁阀开发',customer:'吉利汽车',customerProject:'VFS Gen2 电磁阀平台',product:'VFS 电磁阀总成',system:'VT · VFS',effectiveStage:'Gate2',owner:'Li Ming',updated:'2026-09-23 10:47',sourceChanged:false,
+        l1Sources:[{no:'ASSY-001',name:'VFS 电磁阀总成',version:'V3.0',stage:'Gate2'},{no:'ASSY-003',name:'OCV 控制阀总成',version:'V2.0',stage:'Gate2'}],
+        versions:[
+          {no:'V2.0',status:'待 SCM/ME 确认',changeNote:'增加 VARIABLE FORCE SOLENOID ASSY；调整阀芯一供供应商。',createdAt:'2026-09-23 10:47',createdBy:'Li Ming',confirmations:{SCM:false,ME:false},approval:[{time:'2026-09-23 10:47',role:'AE',user:'Li Ming',action:'提交确认',opinion:'增加新零件并调整供应方案'}],l1s:[
+            {no:'ASSY-001',name:'VFS 电磁阀总成',sourceVersion:'V3.0',lines:[line('p1',1,'VFS 电磁阀总成','ASSY-001','—',1,'BW Ningbo'),line('p2',2,'阀体 / 导轨零件','PART-001','ASSY-001',1,'Ningbo Alloy'),line('p3',2,'VARIABLE FORCE SOLENOID ASSY','5006426','ASSY-001',1,'Suzhou Motion','新增') ]},
+            {no:'ASSY-003',name:'OCV 控制阀总成',sourceVersion:'V2.0',lines:[line('p4',1,'OCV 控制阀总成','ASSY-003','—',1,'BW Ningbo'),line('p5',2,'OIL CONTROL VALVE ASSY','5006642','ASSY-003',2,'Hangzhou Valve','供应商变更')]}
+          ]},
+          {no:'V1.0',status:'当前生效版本',changeNote:'从项目开发导入全部已确认并锁定的 L1 BOM，形成首个整体生产 BOM。',createdAt:'2026-09-14 09:30',createdBy:'Li Ming',effectiveAt:'2026-09-15 16:20',confirmations:{SCM:true,ME:true},approval:[{time:'2026-09-15 16:20',role:'ME',user:'Zhou Lin',action:'确认通过',opinion:'制造可行性确认'},{time:'2026-09-15 14:12',role:'SCM',user:'Chen Wei',action:'确认通过',opinion:'供应方案确认'},{time:'2026-09-14 09:30',role:'AE',user:'Li Ming',action:'创建初始版本',opinion:'来源 BOM 已锁定'}],l1s:[
+            {no:'ASSY-001',name:'VFS 电磁阀总成',sourceVersion:'V3.0',lines:[line('a1',1,'VFS 电磁阀总成','ASSY-001','—',1,'BW Ningbo'),line('a2',2,'阀体 / 导轨零件','PART-001','ASSY-001',1,'Ningbo Precision')]},
+            {no:'ASSY-003',name:'OCV 控制阀总成',sourceVersion:'V2.0',lines:[line('a3',1,'OCV 控制阀总成','ASSY-003','—',1,'BW Ningbo'),line('a4',2,'OIL CONTROL VALVE ASSY','5006642','ASSY-003',2,'Ningbo Valve')]}
+          ]}
+        ]
+      },
+      {
+        id:'PBOM-PRJ-002',type:'项目开发',sourceNo:'PRJ-2026-002',name:'大众 EA888 正时链系统',customer:'大众汽车',customerProject:'EA888 Evo5',product:'正时链系统',system:'TD · Timing',effectiveStage:'Gate2',owner:'Li Ming',updated:'2026-09-20 15:10',sourceChanged:true,
+        l1Sources:[{no:'ASSY-002',name:'正时链系统总成',version:'V2.0',stage:'Gate2'},{no:'ASSY-006',name:'张紧器总成',version:'V1.0',stage:'Gate2'},{no:'ASSY-007',name:'导轨总成',version:'V1.0',stage:'Gate2'}],
+        versions:[{no:'V1.0',status:'当前生效版本',changeNote:'首次汇总项目下 3 个已锁定 L1 BOM。',createdAt:'2026-09-14 09:30',createdBy:'Li Ming',effectiveAt:'2026-09-15 11:05',confirmations:{SCM:true,ME:true},approval:[{time:'2026-09-15 11:05',role:'ME',user:'Zhou Lin',action:'确认通过',opinion:'确认'},{time:'2026-09-15 10:20',role:'SCM',user:'Chen Wei',action:'确认通过',opinion:'确认'}],l1s:[
+          {no:'ASSY-002',name:'正时链系统总成',sourceVersion:'V2.0',lines:[line('b1',1,'正时链系统总成','ASSY-002','—',1,'BW Ningbo'),line('b2',2,'TIMING CHAIN','CHAIN-882','ASSY-002',1,'IWIS')]},
+          {no:'ASSY-006',name:'张紧器总成',sourceVersion:'V1.0',lines:[line('b3',1,'张紧器总成','ASSY-006','—',1,'BW Ningbo'),line('b4',2,'TENSIONER BODY','TEN-201','ASSY-006',1,'Ningbo Casting')]},
+          {no:'ASSY-007',name:'导轨总成',sourceVersion:'V1.0',lines:[line('b5',1,'导轨总成','ASSY-007','—',1,'BW Ningbo')]}
+        ]}]
+      },
+      {
+        id:'PBOM-APQP-001',type:'零件 APQP',sourceNo:'PAPQP-2026-015',apqpNo:'APQP-P-240315',name:'精密阀芯组件',linkedProject:'-',qualityProcess:'PPAP Level 3',supplier:'Suzhou Precision',effectiveStage:'Gate2',customer:'内部开发',product:'Valve Spool',owner:'Wang Fang',updated:'2026-09-18 13:26',sourceChanged:false,
+        l1Sources:[{no:'PART-5688',name:'精密阀芯组件',version:'V1.0',stage:'样件开发'}],
+        versions:[{no:'V1.0',status:'当前生效版本',changeNote:'导入已确认的零件 APQP BOM。',createdAt:'2026-09-17 10:00',createdBy:'Wang Fang',effectiveAt:'2026-09-18 13:26',confirmations:{SCM:true,ME:true},approval:[{time:'2026-09-18 13:26',role:'ME',user:'Zhou Lin',action:'确认通过',opinion:'确认'},{time:'2026-09-18 11:18',role:'SCM',user:'Chen Wei',action:'确认通过',opinion:'确认'}],l1s:[{no:'PART-5688',name:'精密阀芯组件',sourceVersion:'V1.0',lines:[line('c1',1,'精密阀芯组件','PART-5688','—',1,'Suzhou Precision'),line('c2',2,'VALVE SPOOL','SP-201','PART-5688',1,'Suzhou Precision')]}]}]
+      }
+    ];
+
+    let activeTab='项目开发',workflow='all',currentBom=null,currentVersion=null,currentL1='all',editing=null,pendingAction=null;
+    const $=(selector,root=document)=>root.querySelector(selector);const $$=(selector,root=document)=>[...root.querySelectorAll(selector)];
+    const overview=$('#overview'),listHead=$('#listHead'),listRows=$('#listRows'),listCount=$('#listCount'),numberFilter=$('#numberFilter'),nameFilter=$('#nameFilter'),keywordFilter=$('#keywordFilter'),versionFilter=$('#versionFilter'),queryBtn=$('#queryBtn'),resetBtn=$('#resetBtn'),roleSelect=$('#roleSelect'),modalLayer=$('#modalLayer'),modal=$('#modal'),modalTitle=$('#modalTitle'),modalBody=$('#modalBody'),modalFoot=$('#modalFoot'),modalClose=$('#modalClose'),toast=$('#toast');
+    const role=()=>$('#roleSelect').value;
+    const effective=bom=>bom.versions.find(version=>version.status==='当前生效版本');
+    const work=bom=>bom.versions.find(version=>['当前工作版本','待 SCM/ME 确认','已退回'].includes(version.status));
+    const latest=bom=>work(bom)||effective(bom)||bom.versions[0];
+    const statusTag=status=>`<span class="tag ${status==='当前生效版本'?'success':status==='已退回'?'danger':status.includes('确认')||status==='当前工作版本'?'warn':''}">${esc(status)}</span>`;
+    const nextVersion=bom=>`V${Math.max(...bom.versions.map(item=>Number(item.no.match(/V(\d+)/)?.[1]||0)))+1}.0`;
+    function visibleBoms(){
+      const q=[numberFilter.value,nameFilter.value,keywordFilter.value].map(value=>value.trim().toLowerCase());
+      const status=versionFilter.value;
+      return db.filter(bom=>bom.type===activeTab)
+        .filter(bom=>!q[0]||bom.sourceNo.toLowerCase().includes(q[0]))
+        .filter(bom=>!q[1]||[bom.name,bom.customer,bom.customerProject,bom.product,bom.system,bom.linkedProject,bom.qualityProcess,bom.supplier].join(' ').toLowerCase().includes(q[1]))
+        .filter(bom=>!q[2]||bom.l1Sources.some(item=>[item.no,item.name].join(' ').toLowerCase().includes(q[2])))
+        .filter(bom=>!status||latest(bom).status===status);
+    }
+    function renderOverview(){
+      const rows=db.filter(bom=>bom.type===activeTab),counts={all:rows.length,work:rows.filter(bom=>work(bom)?.status==='当前工作版本'||work(bom)?.status==='已退回').length,pending:rows.filter(bom=>work(bom)?.status==='待 SCM/ME 确认').length,effective:rows.filter(bom=>effective(bom)).length};
+      overview.innerHTML=`<span class="overview-title">版本状态</span>${[['all','全部'],['work','待提交（AE）'],['pending','待确认（SCM / ME）'],['effective','已生效']].map(([key,label])=>`<button class="metric ${workflow===key?'active':''}" type="button" data-workflow="${key}"><span>${label}</span><strong>${counts[key]}</strong></button>`).join('')}`;
+    }
+    function renderList(){
+      renderOverview();let rows=visibleBoms();
+      if(workflow==='work')rows=rows.filter(bom=>['当前工作版本','已退回'].includes(work(bom)?.status));
+      if(workflow==='pending')rows=rows.filter(bom=>work(bom)?.status==='待 SCM/ME 确认');
+      if(workflow==='effective')rows=rows.filter(bom=>effective(bom));
+      const projectTab=activeTab==='项目开发';
+      listHead.innerHTML=projectTab
+        ?'<tr><th>项目编号</th><th>项目名称</th><th>客户</th><th>客户项目</th><th>产品</th><th>系统</th><th>生效版本所出阶段</th><th>当前生效版本</th><th>最新工作版本</th><th>状态</th><th>版本变更记录</th><th>更新时间</th><th>操作</th></tr>'
+        :'<tr><th>项目编号</th><th>零件名称</th><th>所属项目</th><th>产品质量流程</th><th>供应商</th><th>生效版本所出阶段</th><th>当前生效版本</th><th>最新工作版本</th><th>状态</th><th>版本变更记录</th><th>更新时间</th><th>操作</th></tr>';
+      listRows.innerHTML=rows.map(bom=>{
+        const live=effective(bom),draft=work(bom),shown=draft||live,canEdit=role()==='AE'||(['SCM','ME'].includes(role())&&draft?.status==='待 SCM/ME 确认');
+        const confirm=draft?.confirmations||{};
+        const businessCells=projectTab
+          ?`<td><button class="btn link code" data-action="detail" data-id="${bom.id}">${esc(bom.sourceNo)}</button></td><td><b>${esc(bom.name)}</b></td><td>${esc(bom.customer)}</td><td>${esc(bom.customerProject)}</td><td>${esc(bom.product)}</td><td>${esc(bom.system)}</td><td><span class="tag blue">${esc(bom.effectiveStage)}</span></td>`
+          :`<td><button class="btn link code" data-action="detail" data-id="${bom.id}">${esc(bom.sourceNo)}</button><span class="sub">${esc(bom.apqpNo)}</span></td><td><b>${esc(bom.name)}</b></td><td>${esc(bom.linkedProject||'—')}</td><td>${esc(bom.qualityProcess)}</td><td>${esc(bom.supplier)}</td><td><span class="tag blue">${esc(bom.effectiveStage)}</span></td>`;
+        return `<tr>${businessCells}
+          <td>${live?`<span class="code">${live.no}</span><span class="sub">${esc(live.effectiveAt||'')}</span>`:'—'}</td>
+          <td>${draft?`<span class="code">${draft.no}</span><span class="sub">${esc(draft.createdAt)}</span>`:'—'}</td>
+          <td>${statusTag(shown.status)}${draft?.status==='待 SCM/ME 确认'?`<span class="sub">SCM ${confirm.SCM?'已确认':'待确认'} · ME ${confirm.ME?'已确认':'待确认'}</span>`:''}${bom.sourceChanged?'<span class="source-alert">来源 BOM 有更新</span>':''}</td>
+          <td>${esc(shown.changeNote||'—')}</td><td>${esc(bom.updated)}</td>
+          <td><div class="actions">
+            <button class="btn link" data-action="detail" data-id="${bom.id}">查看 BOM</button>
+            <button class="btn link" data-action="edit" data-id="${bom.id}" ${canEdit?'':'disabled'}>编辑</button>
+            ${draft?.status==='当前工作版本'||draft?.status==='已退回'?`<button class="btn link" data-action="submit" data-id="${bom.id}" ${role()==='AE'?'':'disabled'}>提交确认</button>`:''}
+            ${draft?.status==='待 SCM/ME 确认'?`<button class="btn link" data-action="review" data-id="${bom.id}" ${['SCM','ME'].includes(role())&&!confirm[role()]?'':'disabled'}>确认</button>`:''}
+            <button class="btn link" data-action="history" data-id="${bom.id}">历史确认记录</button>
+            ${bom.sourceChanged?`<button class="btn link" data-action="sync" data-id="${bom.id}" ${role()==='AE'&&!draft?'':'disabled'}>同步来源变更</button>`:''}
+          </div></td></tr>`;
+      }).join('')||`<tr><td colspan="${projectTab?13:12}" class="empty">没有符合条件的生产 BOM</td></tr>`;
+      listCount.textContent=`共 ${rows.length} 个${activeTab==='项目开发'?'项目':'零件 APQP'}生产 BOM`;
+    }
+    function openModal(title,body,foot='',size='wide'){
+      modalTitle.textContent=title;modalBody.innerHTML=body;modalFoot.innerHTML=foot;modal.className=`modal ${size}`;modalLayer.hidden=false;document.body.style.overflow='hidden';setTimeout(()=>modalClose.focus(),0);
+    }
+    function closeModal(){modalLayer.hidden=true;document.body.style.overflow='';editing=null;pendingAction=null}
+    function toastMessage(message){toast.textContent=message;toast.classList.add('show');clearTimeout(toast._timer);toast._timer=setTimeout(()=>toast.classList.remove('show'),2400)}
+    function flatLines(version,l1Filter='all'){return version.l1s.filter(l1=>l1Filter==='all'||l1.no===l1Filter).flatMap(l1=>l1.lines.map(row=>({...row,l1No:l1.no,l1Name:l1.name})));}
+    function lineRows(version,l1Filter='all',compact=false){
+      return flatLines(version,l1Filter).map((row,index)=>`<tr><td>${index+1}</td><td>${esc(row.l1No)}</td><td><span class="level level-${Math.min(row.level,3)}">L${row.level}</span></td><td class="tree"><span class="indent" style="--level:${row.level}"></span>${esc(row.name)}<span class="sub">${esc(row.no)}</span></td><td>${esc(row.parent)}</td><td>${esc(row.qty)}</td>${compact?'':`<td>${esc(row.application)}</td><td>${esc(row.drawing)}</td><td>${esc(row.sampleSap)}</td><td>${esc(row.massSap)}</td><td>${esc(row.rawNo)}</td>`}<td>${esc(row.supplier)}</td><td>${statusTag(row.change||'无变更')}</td></tr>`).join('');
+    }
+    function detailTable(version,l1Filter='all',compact=false){return `<div class="table-wrap"><table class="${compact?'approval-table':'detail-table'}"><thead><tr><th>序号</th><th>所属 L1</th><th>层级</th><th>零件 / 材料名称</th><th>父级零件</th><th>数量</th>${compact?'':'<th>产品应用</th><th>图纸版本</th><th>样件 SAP 零件号</th><th>量产 SAP 零件号</th><th>原材料零件号</th>'}<th>供应商</th><th>变更状态</th></tr></thead><tbody>${lineRows(version,l1Filter,compact)}</tbody></table></div>`}
+    function showDetail(bom,versionNo){
+      currentBom=bom;currentVersion=bom.versions.find(item=>item.no===versionNo)||latest(bom);currentL1='all';
+      openModal(`${bom.name} · 生产 BOM`,detailMarkup(bom,currentVersion),`<button class="btn" data-action="export">导出当前版本</button><button class="btn teal" data-action="close">关闭</button>`,'wide');bindDetail();
+    }
+    function detailMarkup(bom,version){
+      return `<div class="detail-toolbar"><div class="field version"><label>查看版本</label><select class="select" id="detailVersion">${bom.versions.map(item=>`<option ${item.no===version.no?'selected':''}>${item.no}</option>`).join('')}</select></div><div class="field status"><label>版本状态</label><input class="input readonly" value="${esc(version.status)}" readonly></div><div class="field grow"><label>版本范围</label><input class="input readonly" value="${version.l1s.length} 个 L1 总成 · ${flatLines(version).length} 条 BOM 行" readonly></div></div>
+        <div class="detail-meta"><div class="kv"><span>来源对象</span><b>${esc(bom.sourceNo)}</b></div><div class="kv"><span>客户 / 产品</span><b>${esc(bom.customer)} · ${esc(bom.product)}</b></div><div class="kv"><span>版本创建人</span><b>${esc(version.createdBy)}</b></div><div class="kv"><span>创建时间</span><b>${esc(version.createdAt)}</b></div><div class="kv"><span>生效时间</span><b>${esc(version.effectiveAt||'尚未生效')}</b></div></div>
+        <div class="detail-layout"><aside class="l1-panel"><h3>L1 总成范围</h3><button class="l1-item active" data-l1="all"><b>全部 L1 总成</b><span>${version.l1s.length} 个 L1 · ${flatLines(version).length} 条明细</span></button>${version.l1s.map(l1=>`<button class="l1-item" data-l1="${l1.no}"><b>${esc(l1.no)}</b><span>${esc(l1.name)} · 来源 ${esc(l1.sourceVersion)}</span></button>`).join('')}</aside>
+        <section class="content-card"><div class="version-note"><span>版本变更记录</span><p>${esc(version.changeNote||'—')}</p></div><div id="detailLines">${detailTable(version)}</div></section></div>
+        <div class="section-head"><h3>版本确认摘要</h3><button class="btn link" data-action="history-inline">查看完整历史确认记录</button></div>
+        <div class="detail-meta"><div class="kv"><span>SCM</span><b>${version.confirmations?.SCM?'已确认':'待确认'}</b></div><div class="kv"><span>ME</span><b>${version.confirmations?.ME?'已确认':'待确认'}</b></div><div class="kv"><span>确认记录</span><b>${version.approval?.length||0} 条</b></div><div class="kv"><span>来源 L1 版本</span><b>${version.l1s.map(l1=>`${l1.no} / ${l1.sourceVersion}`).join('；')}</b></div><div class="kv"><span>版本规则</span><b>整体项目版本</b></div></div>`;
+    }
+    function bindDetail(){
+      $('#detailVersion').onchange=e=>{currentVersion=currentBom.versions.find(item=>item.no===e.target.value);modalBody.innerHTML=detailMarkup(currentBom,currentVersion);bindDetail()};
+      $$('[data-l1]',modalBody).forEach(button=>button.onclick=()=>{currentL1=button.dataset.l1;$$('[data-l1]',modalBody).forEach(item=>item.classList.toggle('active',item===button));detailLines.innerHTML=detailTable(currentVersion,currentL1)});
+    }
+    function ensureWorkVersion(bom){
+      let draft=work(bom);if(draft)return draft;
+      const base=effective(bom);draft=clone(base);draft.no=nextVersion(bom);draft.status='当前工作版本';draft.changeNote='';draft.createdAt=now();draft.createdBy=roles[role()];delete draft.effectiveAt;draft.confirmations={SCM:false,ME:false};draft.approval=[];draft.l1s.forEach(l1=>l1.lines.forEach(row=>row.change='无变更'));bom.versions.unshift(draft);return draft;
+    }
+    function showEditor(bom){
+      const existing=work(bom),reviewer=['SCM','ME'].includes(role());
+      if(reviewer&&existing?.status!=='待 SCM/ME 确认')return toastMessage('当前没有待确认的工作版本。');
+      const draft=reviewer?existing:(existing||(()=>{const provisional=clone(effective(bom));provisional.no=nextVersion(bom);provisional.status='当前工作版本';provisional.changeNote='';provisional.createdAt=now();provisional.createdBy=roles[role()];delete provisional.effectiveAt;provisional.confirmations={SCM:false,ME:false};provisional.approval=[];provisional.l1s.forEach(l1=>l1.lines.forEach(row=>row.change='无变更'));return provisional})());editing={bom,draft,data:clone(draft),isNew:!existing};
+      openModal(`${reviewer?role()+' 编辑待确认版本':'编辑生产 BOM 工作版本'} · ${bom.name}`,editorMarkup(editing.data),`<button class="btn" data-action="close">取消</button><button class="btn primary" data-action="save-edit">保存工作版本</button>`,'wide');bindEditor();
+    }
+    function editorMarkup(version){
+      const rows=flatLines(version);return `<p class="notice">本次编辑作用于整体生产 BOM ${esc(version.no)}，保存后仍包含项目下全部 L1 总成。L1 来源版本仅用于追溯。</p><div class="editor-head"><div class="field"><label>整体生产 BOM 版本</label><input class="input readonly" value="${esc(version.no)}" readonly></div><div class="field"><label>版本变更记录 *</label><textarea class="textarea" id="editChangeNote" placeholder="请手动填写本版本的新增、删除、替换或供应方案调整">${esc(version.changeNote)}</textarea></div></div>
+        <div class="section-head"><h3>BOM 明细（${version.l1s.length} 个 L1）</h3><button class="btn" type="button" data-action="add-line">新增零件</button></div><div class="table-wrap"><table class="editor-table"><thead><tr><th>所属 L1</th><th>层级</th><th>零件号</th><th>零件 / 材料名称</th><th>父级零件</th><th>数量</th><th>供应商</th><th>变更状态</th><th>操作</th></tr></thead><tbody id="editorRows">${rows.map(row=>editorRow(row)).join('')}</tbody></table></div><div class="error" id="editorError"></div>`;
+    }
+    function editorRow(row){return `<tr data-row="${row.id}"><td>${esc(row.l1No)}</td><td><select data-key="level"><option ${row.level===1?'selected':''}>1</option><option ${row.level===2?'selected':''}>2</option><option ${row.level===3?'selected':''}>3</option></select></td><td><input value="${esc(row.no)}" data-key="no"></td><td><input class="name-input" value="${esc(row.name)}" data-key="name"></td><td><input value="${esc(row.parent)}" data-key="parent"></td><td><input type="number" min="0.01" step="0.01" value="${esc(row.qty)}" data-key="qty"></td><td><input class="supplier-input" value="${esc(row.supplier)}" data-key="supplier"></td><td>${esc(row.change)}</td><td><button class="btn link danger" data-remove="${row.id}">删除</button></td></tr>`}
+    function bindEditor(){
+      $$('[data-remove]',modalBody).forEach(button=>button.onclick=()=>{const rowId=button.dataset.remove;editing.data.l1s.forEach(l1=>l1.lines=l1.lines.filter(row=>row.id!==rowId));modalBody.innerHTML=editorMarkup(editing.data);bindEditor()});
+    }
+    function captureEditor(){
+      const note=$('#editChangeNote').value.trim();if(!note){editorError.textContent='请填写版本变更记录。';return false}editing.data.changeNote=note;
+      $$('#editorRows tr').forEach(tr=>{const row=editing.data.l1s.flatMap(l1=>l1.lines).find(item=>item.id===tr.dataset.row);if(!row)return;$$('[data-key]',tr).forEach(input=>row[input.dataset.key]=input.dataset.key==='qty'?Number(input.value):input.dataset.key==='level'?Number(input.value):input.value.trim());if(row.change==='无变更')row.change='已调整'});return true;
+    }
+    function addEditorLine(){
+      if(!captureEditor())return;const l1=editing.data.l1s[0],id='n'+Date.now();l1.lines.push(line(id,2,'新零件','NEW-'+String(Date.now()).slice(-4),l1.no,1,'待选择','新增'));modalBody.innerHTML=editorMarkup(editing.data);bindEditor();$('#editorRows tr:last-child input[data-key="no"]')?.focus();
+    }
+    function saveEditor(){
+      if(!captureEditor())return;Object.assign(editing.draft,clone(editing.data));if(editing.isNew)editing.bom.versions.unshift(editing.draft);editing.bom.updated=now();const reviewer=['SCM','ME'].includes(role());
+      if(reviewer){editing.draft.confirmations={SCM:false,ME:false};editing.draft.confirmations[role()]=true;editing.draft.approval.unshift({time:now(),role:role(),user:roles[role()],action:'编辑并确认',opinion:editing.draft.changeNote});activateIfComplete(editing.bom,editing.draft)}
+      closeModal();renderList();toastMessage(reviewer?'已保存修改并记录当前角色确认。':'工作版本已保存。');
+    }
+    function showSubmit(bom){
+      const draft=work(bom);if(!draft||!['当前工作版本','已退回'].includes(draft.status))return;
+      openModal('提交 SCM / ME 确认',`<p class="notice">提交后 ${draft.no} 将锁定编辑，等待 SCM 与 ME 分别确认；当前生效版本继续有效。</p><div class="confirm-grid"><div class="kv"><span>生产 BOM</span><b>${esc(bom.name)}</b></div><div class="kv"><span>工作版本</span><b>${draft.no}</b></div><div class="kv"><span>L1 范围</span><b>${draft.l1s.length} 个</b></div><div class="kv"><span>BOM 行</span><b>${flatLines(draft).length} 条</b></div></div><div class="field"><label>版本变更记录</label><textarea class="textarea readonly" readonly>${esc(draft.changeNote)}</textarea></div>`,`<button class="btn" data-action="close">取消</button><button class="btn primary" data-action="do-submit">提交确认</button>`,'medium');currentBom=bom;currentVersion=draft;
+    }
+    function showReview(bom){
+      const draft=work(bom);currentBom=bom;currentVersion=draft;
+      openModal(`${role()} 确认生产 BOM 工作版本`,`${draft.status==='已退回'?'<p class="notice danger">该版本已退回。</p>':''}<div class="confirm-grid"><div class="kv"><span>来源对象</span><b>${esc(bom.sourceNo)}</b></div><div class="kv"><span>整体版本</span><b>${draft.no}</b></div><div class="kv"><span>L1 总成</span><b>${draft.l1s.length} 个</b></div><div class="kv"><span>BOM 行</span><b>${flatLines(draft).length} 条</b></div></div><div class="field"><label>版本变更记录</label><textarea class="textarea readonly" readonly>${esc(draft.changeNote)}</textarea></div><div class="section-head"><h3>BOM 信息</h3></div><div class="confirm-detail">${detailTable(draft,'all',true)}</div><div class="field" style="margin-top:14px"><label>确认意见 / 退回原因 *</label><textarea class="textarea" id="reviewOpinion" placeholder="请输入确认意见；退回时请说明原因"></textarea><div class="error" id="reviewError"></div></div>`,`<button class="btn" data-action="close">关闭</button><button class="btn danger" data-action="return-review">退回 AE 修改</button><button class="btn primary" data-action="approve-review">确认当前版本</button>`,'wide');
+    }
+    function secondConfirm(action){
+      const opinion=$('#reviewOpinion').value.trim();if(!opinion){reviewError.textContent='请填写确认意见或退回原因。';return}pendingAction={action,opinion,bom:currentBom,version:currentVersion};
+      const approve=action==='approve';openModal(approve?'二次确认生产 BOM 版本':'确认退回 AE 修改',`<p>${approve?'确认以 '+role()+' 身份确认该整体生产 BOM 工作版本？':'确认退回该整体生产 BOM 工作版本？'}</p><div class="dialog-card"><b>${esc(currentBom.name)} · ${currentVersion.no}</b><span>${approve?'SCM 与 ME 均确认后，将自动生成新的当前生效版本。':'版本号保持不变，AE 修改后可重新提交。'}</span></div>`,`<button class="btn" data-action="cancel-second">取消</button><button class="btn ${approve?'primary':'danger'}" data-action="commit-review">${approve?'确认':'退回修改'}</button>`,'');
+    }
+    function commitReview(){
+      const {action,opinion,bom,version}=pendingAction,stamp=now();
+      if(action==='approve'){version.confirmations[role()]=true;version.approval.unshift({time:stamp,role:role(),user:roles[role()],action:'确认通过',opinion});activateIfComplete(bom,version)}else{version.status='已退回';version.confirmations={SCM:false,ME:false};version.approval.unshift({time:stamp,role:role(),user:roles[role()],action:'退回修改',opinion})}
+      bom.updated=stamp;closeModal();renderList();toastMessage(action==='approve'?(version.status==='当前生效版本'?`${version.no} 已完成双确认并生效。`:`已记录 ${role()} 确认，等待另一角色确认。`):'工作版本已退回 AE 修改。');
+    }
+    function activateIfComplete(bom,version){
+      if(!version.confirmations.SCM||!version.confirmations.ME)return;const old=effective(bom);if(old)old.status='历史生效版本';version.status='当前生效版本';version.effectiveAt=now();version.l1s.forEach(l1=>l1.lines.forEach(row=>row.change='已生效'));bom.updated=version.effectiveAt;
+    }
+    function showHistory(bom){
+      const records=bom.versions.flatMap(version=>(version.approval||[]).map(item=>({...item,version:version.no,versionStatus:version.status}))).sort((a,b)=>b.time.localeCompare(a.time));
+      openModal(`历史确认记录 · ${bom.name}`,`<p class="notice">确认、退回和再次提交均按整体生产 BOM 版本保留，退回原因仅在此查看。</p><div class="table-wrap"><table class="approval-table"><thead><tr><th>版本</th><th>版本状态</th><th>时间</th><th>角色 / 人员</th><th>操作</th><th>确认意见 / 退回原因</th></tr></thead><tbody>${records.map(item=>`<tr><td><b>${item.version}</b></td><td>${statusTag(item.versionStatus)}</td><td>${esc(item.time)}</td><td>${esc(item.role)}<span class="sub">${esc(item.user)}</span></td><td>${esc(item.action)}</td><td>${esc(item.opinion||'—')}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">暂无历史确认记录</td></tr>'}</tbody></table></div>`,`<button class="btn teal" data-action="close">关闭</button>`,'medium');
+    }
+    function showSync(bom){
+      openModal('同步来源 BOM 变更',`<p class="notice warn">检测到项目开发模块中已有 L1 BOM 形成新的已锁定版本。同步后将基于当前生效版本生成 ${nextVersion(bom)} 工作版本，不覆盖历史版本。</p><table class="version-table"><thead><tr><th>L1 总成</th><th>当前生产 BOM 来源</th><th>来源模块最新锁定版本</th><th>处理</th></tr></thead><tbody>${bom.l1Sources.map((item,index)=>`<tr><td>${esc(item.no)}<span class="sub">${esc(item.name)}</span></td><td>${esc(effective(bom).l1s.find(l1=>l1.no===item.no)?.sourceVersion||'—')}</td><td><b>${index===0?'V3.0':item.version}</b></td><td>${index===0?'<span class="tag warn">待同步</span>':'<span class="tag success">无变化</span>'}</td></tr>`).join('')}</tbody></table>`,`<button class="btn" data-action="close">取消</button><button class="btn primary" data-action="do-sync">生成下一工作版本</button>`,'medium');currentBom=bom;
+    }
+    function doSync(){const draft=ensureWorkVersion(currentBom);draft.changeNote='同步来源模块已确认并锁定的 L1 BOM 变更，待 AE 完成影响分析。';draft.l1s[0].sourceVersion='V3.0';draft.l1s[0].lines.push(line('s'+Date.now(),2,'来源新增零件','SRC-NEW',draft.l1s[0].no,1,'待确认','新增'));currentBom.sourceChanged=false;currentBom.updated=now();closeModal();renderList();toastMessage(`已生成 ${draft.no} 工作版本。`)}
+
+    document.addEventListener('click',event=>{
+      const button=event.target.closest('[data-action]');if(!button)return;const bom=db.find(item=>item.id===button.dataset.id);const action=button.dataset.action;
+      if(action==='detail')showDetail(bom);if(action==='edit')showEditor(bom);if(action==='submit')showSubmit(bom);if(action==='review')showReview(bom);if(action==='history'||action==='history-inline')showHistory(bom||currentBom);if(action==='sync')showSync(bom);
+      if(action==='close')closeModal();if(action==='add-line')addEditorLine();if(action==='save-edit')saveEditor();
+      if(action==='do-submit'){currentVersion.status='待 SCM/ME 确认';currentVersion.confirmations={SCM:false,ME:false};currentVersion.approval.unshift({time:now(),role:'AE',user:roles.AE,action:'提交确认',opinion:currentVersion.changeNote});currentBom.updated=now();closeModal();renderList();toastMessage(`${currentVersion.no} 已提交 SCM 与 ME 确认。`)}
+      if(action==='approve-review')secondConfirm('approve');if(action==='return-review')secondConfirm('return');if(action==='commit-review')commitReview();if(action==='cancel-second')showReview(pendingAction.bom);if(action==='do-sync')doSync();if(action==='export')toastMessage(`已生成 ${currentBom.name} ${currentVersion.no} 导出文件（演示）。`);
+    });
+    overview.addEventListener('click',event=>{const button=event.target.closest('[data-workflow]');if(!button)return;workflow=button.dataset.workflow;renderList()});
+    $$('.tab').forEach(button=>button.onclick=()=>{activeTab=button.dataset.tab;workflow='all';$$('.tab').forEach(item=>item.classList.toggle('active',item===button));renderList()});
+    queryBtn.onclick=renderList;resetBtn.onclick=()=>{numberFilter.value='';nameFilter.value='';keywordFilter.value='';versionFilter.value='';workflow='all';renderList()};
+    roleSelect.onchange=()=>{workflow='all';renderList()};modalClose.onclick=closeModal;modalLayer.onclick=event=>{if(event.target===modalLayer)closeModal()};
+    document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!modalLayer.hidden)closeModal()});
+    renderList();
+  </script>
+</body>
+</html>
