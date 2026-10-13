@@ -2428,7 +2428,7 @@
     }
 
     .issue-table {
-      min-width: 1840px;
+      min-width: 2260px;
       table-layout: fixed;
     }
 
@@ -2478,6 +2478,7 @@
 
     /* 问题清单与项目开发页保持同一弹窗信息架构 */
     #issueModal .issue-modal { width: min(920px, calc(100vw - 28px)); }
+    #issueModal form { overflow-y: auto; }
     #issueModal .issue-form { padding: 30px 42px 20px 48px; }
     #issueModal .issue-form .form-row { grid-template-columns: 170px minmax(0, 1fr); margin-bottom: 18px; }
     #issueModal .issue-form .form-row > label { justify-self: end; text-align: right; }
@@ -5804,8 +5805,8 @@
           </div>
 
           <form class="bom-filter issue-filter" id="issueFilter">
-            <label>问题 / 行动
-              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题或行动内容">
+            <label>问题标题
+              <input class="field issue-input" id="issueSearchTitle" type="search" placeholder="输入问题标题">
             </label>
             <label>状态
               <select class="select-field issue-select" id="issueStatusFilter">
@@ -5815,8 +5816,8 @@
                 <option value="done">已完成</option>
               </select>
             </label>
-            <label>责任领域
-              <input class="field issue-input" id="issueSwimLaneFilter" type="search" placeholder="输入部门、模块或分类">
+            <label>问题类型
+              <input class="field issue-input" id="issueSwimLaneFilter" type="search" placeholder="输入问题类型">
             </label>
             <label>负责人
               <input class="field issue-input" id="issueChampionFilter" type="search" placeholder="输入负责人姓名">
@@ -5830,34 +5831,32 @@
           <div class="bom-table-wrap issue-table-wrap">
             <table class="issue-table" aria-label="问题清单列表">
               <colgroup>
-                <col style="width:140px"><col style="width:170px"><col style="width:300px"><col style="width:140px"><col style="width:120px"><col style="width:120px"><col style="width:120px"><col style="width:260px"><col style="width:160px"><col style="width:220px">
+                <col style="width:210px"><col style="width:150px"><col style="width:250px"><col style="width:130px"><col style="width:120px"><col style="width:130px"><col style="width:150px"><col style="width:140px"><col style="width:300px"><col style="width:250px"><col style="width:280px">
               </colgroup>
               <thead>
                 <tr>
-                  <th>状态</th>
-                  <th>责任领域</th>
-                  <th>问题 / 所需行动</th>
-                  <th>负责人</th>
+                  <th>问题标题</th>
+                  <th>发生来源</th>
+                  <th>问题类型</th>
+                  <th>严重程度</th>
+                  <th>责任人</th>
                   <th>发现日期</th>
-                  <th>目标日期</th>
-                  <th>关闭日期</th>
-                  <th>下一步 / 更新说明</th>
-                  <th>附件</th>
-                  <th>操作</th>
+                  <th>计划解决日期</th>
+                  <th>问题状态</th>
+                  <th>问题描述</th>
+                  <th>原因分析</th>
+                  <th>解决方案</th>
                 </tr>
               </thead>
               <tbody id="issueTableBody">
-                <tr data-status="pending" data-type="Manufacturing Engineering" data-severity="高" data-swim-lane="Manufacturing Engineering" data-champion="Li" data-description="Complete tooling-parameter review, then arrange trial validation.">
-                  <td><span class="issue-state pending">Pending</span></td><td>Manufacturing Engineering</td><td>Engine cylinder-bore roundness is out of tolerance; confirm tooling compensation.</td><td>Li</td><td>2025-10-10</td><td>2025-10-18</td><td>-</td><td>Complete tooling-parameter review, then arrange trial validation.</td><td>-</td>
-                  <td><div class="actions"><button class="link-button" type="button" data-resolve-issue>解决</button><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+                <tr data-status="pending" data-source="试验验证" data-type="尺寸" data-severity="高" data-swim-lane="尺寸" data-champion="李工" data-description="轴承内径尺寸超出公差范围。" data-cause="测量工装补偿参数设置偏差。" data-solution="复核工装参数并完成试制验证。">
+                  <td>轴承尺寸超差</td><td>试验验证</td><td>尺寸</td><td>高</td><td>李工</td><td>2026-08-01</td><td>2026-08-15</td><td><span class="issue-state pending">待处理</span></td><td>轴承内径尺寸超出公差范围。</td><td>测量工装补偿参数设置偏差。</td><td>复核工装参数并完成试制验证。</td>
                 </tr>
-                <tr data-status="inprogress" data-type="Quality" data-severity="中" data-swim-lane="Quality" data-champion="Zhang" data-description="Supplier submitted improved samples; await the 480-hour retest result.">
-                  <td><span class="issue-state inprogress">In Progress</span></td><td>Quality</td><td>Red rust occurred during the salt-spray test; validate the corrosion-protection plan.</td><td>Zhang</td><td>2025-10-10</td><td>2025-10-22</td><td>-</td><td>Supplier submitted improved samples; await the 480-hour retest result.</td><td>Test Report</td>
-                  <td><div class="actions"><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+                <tr data-status="inprogress" data-source="供应商反馈" data-type="材料" data-severity="中" data-swim-lane="材料" data-champion="王工" data-description="供应商提供的材料硬度不达标。" data-cause="热处理工艺参数波动。" data-solution="供应商调整工艺并提交复测报告。">
+                  <td>材料硬度不足</td><td>供应商反馈</td><td>材料</td><td>中</td><td>王工</td><td>2026-08-02</td><td>2026-08-20</td><td><span class="issue-state inprogress">进行中</span></td><td>供应商提供的材料硬度不达标。</td><td>热处理工艺参数波动。</td><td>供应商调整工艺并提交复测报告。</td>
                 </tr>
-                <tr data-status="done" data-type="Product Engineering" data-severity="低" data-swim-lane="Product Engineering" data-champion="Wang" data-description="The optimized plan passed validation and drawings were archived.">
-                  <td><span class="issue-state done">Closed</span></td><td>Product Engineering</td><td>Cover leak-test pressure decay exceeded the limit; optimize the sealing structure.</td><td>Wang</td><td>2025-10-10</td><td>2025-10-15</td><td>2025-10-14</td><td>The optimized plan passed validation and drawings were archived.</td><td>-</td>
-                  <td><div class="actions"><button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div></td>
+                <tr data-status="done" data-source="内部审核" data-type="性能" data-severity="低" data-swim-lane="性能" data-champion="张工" data-description="产品性能测试未通过，已重新调整参数。" data-cause="初始性能参数匹配不足。" data-solution="完成参数调整与复测，验证通过。">
+                  <td>性能测试未通过</td><td>内部审核</td><td>性能</td><td>低</td><td>张工</td><td>2026-08-03</td><td>2026-08-18</td><td><span class="issue-state done">已完成</span></td><td>产品性能测试未通过，已重新调整参数。</td><td>初始性能参数匹配不足。</td><td>完成参数调整与复测，验证通过。</td>
                 </tr>
               </tbody>
             </table>
@@ -6342,54 +6341,59 @@
       <form id="issueForm">
         <div class="issue-form">
           <div class="form-row">
-            <label for="issueStatus"><span class="required">*</span>Status:</label>
-            <select class="issue-select" id="issueStatus" name="issueStatus">
-              <option value="">Select status</option><option value="pending">Pending</option><option value="inprogress">In Progress</option><option value="done">Closed</option>
+            <label for="issueName"><span class="required">*</span>问题标题：</label>
+            <input class="issue-input" id="issueName" name="issueName" type="text" maxlength="100" placeholder="请输入问题标题" autocomplete="off">
+          </div>
+          <div class="form-row">
+            <label for="issueSource"><span class="required">*</span>发生来源：</label>
+            <select class="issue-select" id="issueSource" name="issueSource">
+              <option value="">请选择发生来源</option><option>Excel下拉选项</option><option>客户反馈</option><option>内部审核</option><option>供应商反馈</option><option>试验验证</option><option>生产现场</option><option>其他</option>
             </select>
           </div>
           <div class="form-row">
-            <label for="issueType"><span class="required">*</span>Swim Lane:</label>
-            <input class="issue-input" id="issueType" name="issueType" type="text" placeholder="e.g. Quality, Manufacturing Engineering" autocomplete="off">
+            <label for="issueType"><span class="required">*</span>问题类型：</label>
+            <select class="issue-select" id="issueType" name="issueType">
+              <option value="">请选择问题类型</option><option>尺寸</option><option>外观</option><option>装配</option><option>材料</option><option>功能</option><option>性能</option><option>供应商</option><option>其他</option>
+            </select>
           </div>
           <div class="form-row">
-            <label for="issueName"><span class="required">*</span>Issue / Action Required:</label>
-            <textarea class="issue-textarea" id="issueName" name="issueName" maxlength="500" placeholder="Describe the issue or action required"></textarea>
-          </div>
-          <div class="form-row" hidden>
-            <label for="issueSeverity">严重程度:</label>
+            <label for="issueSeverity"><span class="required">*</span>严重程度：</label>
             <select class="issue-select" id="issueSeverity" name="issueSeverity">
-              <option value="">请选择</option>
-              <option selected>高</option>
+              <option value="">请选择严重程度</option>
+              <option>高</option>
               <option>中</option>
               <option>低</option>
             </select>
           </div>
           <div class="form-row">
-            <label for="issueOwner"><span class="required">*</span>Champion:</label>
-            <div class="issue-owner-picker"><input class="issue-input" id="issueOwner" name="issueOwner" type="text" placeholder="Select from the organization" readonly><button class="btn" id="openIssueOwnerModal" type="button">选择</button></div>
-          </div>
-          <div class="form-row form-editor">
-            <label for="issueDescription"><span class="required">*</span>Next Steps / Updates:</label>
-            <div>
-              <textarea class="issue-textarea" id="issueDescription" name="issueDescription" maxlength="500" placeholder="Enter follow-up plan or latest progress"></textarea>
-              <div class="issue-counter"><span id="issueDescriptionCount">0</span>/500</div>
-            </div>
+            <label for="issueOwner"><span class="required">*</span>责任人：</label>
+            <div class="issue-owner-picker"><input class="issue-input" id="issueOwner" name="issueOwner" type="text" placeholder="请选择责任人" readonly><button class="btn" id="openIssueOwnerModal" type="button">选择</button></div>
           </div>
           <div class="form-row">
-            <label for="issueFoundDate"><span class="required">*</span>Opened:</label>
+            <label for="issueFoundDate"><span class="required">*</span>发现日期：</label>
             <input class="issue-input" id="issueFoundDate" name="issueFoundDate" type="date">
           </div>
           <div class="form-row">
-            <label for="issuePlanDate"><span class="required">*</span>Target:</label>
+            <label for="issuePlanDate"><span class="required">*</span>计划解决日期：</label>
             <input class="issue-input" id="issuePlanDate" name="issuePlanDate" type="date">
           </div>
-          <div class="form-row form-upload">
-            <label>Attachments:</label>
-            <div class="issue-upload">
-              <button class="btn btn-primary" type="button"><svg class="icon"><use href="#i-plus"></use></svg>上传文件</button>
-              <div class="upload-note">支持扩展名：.doc .docx .pdf .jpg...</div>
-              <div class="mock-file" id="issueMockFile"><svg class="icon"><use href="#i-paperclip"></use></svg><span>文档.docx</span><button class="file-remove" type="button" aria-label="移除附件">×</button></div>
-            </div>
+          <div class="form-row">
+            <label for="issueStatus"><span class="required">*</span>问题状态：</label>
+            <select class="issue-select" id="issueStatus" name="issueStatus">
+              <option value="">请选择问题状态</option><option value="pending">待处理</option><option value="inprogress">进行中</option><option value="done">已完成</option>
+            </select>
+          </div>
+          <div class="form-row form-editor">
+            <label for="issueDescription"><span class="required">*</span>问题描述：</label>
+            <div><textarea class="issue-textarea" id="issueDescription" name="issueDescription" maxlength="500" placeholder="请描述问题现象及影响"></textarea><div class="issue-counter"><span id="issueDescriptionCount">0</span>/500</div></div>
+          </div>
+          <div class="form-row form-editor">
+            <label for="issueCause">原因分析：</label>
+            <textarea class="issue-textarea" id="issueCause" name="issueCause" maxlength="500" placeholder="请填写原因分析"></textarea>
+          </div>
+          <div class="form-row form-editor">
+            <label for="issueSolution">解决方案：</label>
+            <textarea class="issue-textarea" id="issueSolution" name="issueSolution" maxlength="500" placeholder="请填写解决方案"></textarea>
           </div>
           <div class="form-error" id="issueError" hidden>请完整填写必填项</div>
         </div>
@@ -10912,12 +10916,15 @@
     const issueName = document.getElementById("issueName");
     const issueFoundDate = document.getElementById("issueFoundDate");
     const issuePlanDate = document.getElementById("issuePlanDate");
+    const issueSource = document.getElementById("issueSource");
     const issueType = document.getElementById("issueType");
     const issueSeverity = document.getElementById("issueSeverity");
     const issueStatus = document.getElementById("issueStatus");
     const issueOwner = document.getElementById("issueOwner");
     const issueDescription = document.getElementById("issueDescription");
     const issueDescriptionCount = document.getElementById("issueDescriptionCount");
+    const issueCause = document.getElementById("issueCause");
+    const issueSolution = document.getElementById("issueSolution");
     const issueError = document.getElementById("issueError");
     const issueTableBody = document.getElementById("issueTableBody");
     const issueFilter = document.getElementById("issueFilter");
@@ -10925,7 +10932,6 @@
     const issueStatusFilter = document.getElementById("issueStatusFilter");
     const issueSwimLaneFilter = document.getElementById("issueSwimLaneFilter");
     const issueChampionFilter = document.getElementById("issueChampionFilter");
-    const issueMockFile = document.getElementById("issueMockFile");
     const issueOwnerModal = document.getElementById("issueOwnerModal");
     const openIssueOwnerModal = document.getElementById("openIssueOwnerModal");
     const issueOwnerSearch = document.getElementById("issueOwnerSearch");
@@ -12791,7 +12797,6 @@
       issueForm.reset();
       issueError.hidden = true;
       issueDescriptionCount.textContent = "0";
-      issueMockFile.hidden = false;
     }
 
     function showIssueModal() {
@@ -12813,21 +12818,20 @@
       editingIssueRow = row;
       issueModalTitle.textContent = "编辑问题";
       issueSubmitButton.textContent = "保存";
-      issueName.value = row.children[2]?.textContent.trim() || "";
+      issueName.value = row.children[0]?.textContent.trim() || "";
+      issueSource.value = row.dataset.source || "";
       issueType.value = row.dataset.type || "";
-      issueOwner.value = row.children[3]?.textContent.trim() || "";
-      issueFoundDate.value = row.children[4]?.textContent.trim() === "-" ? "" : row.children[4]?.textContent.trim() || "";
-      issuePlanDate.value = row.children[5]?.textContent.trim() === "-" ? "" : row.children[5]?.textContent.trim() || "";
+      issueOwner.value = row.children[4]?.textContent.trim() || "";
+      issueFoundDate.value = row.children[5]?.textContent.trim() === "-" ? "" : row.children[5]?.textContent.trim() || "";
+      issuePlanDate.value = row.children[6]?.textContent.trim() === "-" ? "" : row.children[6]?.textContent.trim() || "";
       issueSeverity.value = row.dataset.severity || "";
       issueStatus.value = row.dataset.status || "";
       issueDescription.value = row.dataset.description || "";
       issueDescriptionCount.textContent = String(issueDescription.value.length);
+      issueCause.value = row.dataset.cause || "";
+      issueSolution.value = row.dataset.solution || "";
       issueModal.hidden = false;
       issueName.focus();
-    }
-
-    function issueActionMarkup(status) {
-      return `<div class="actions">${status === "pending" ? '<button class="link-button" type="button" data-resolve-issue>解决</button>' : ""}<button class="link-button" type="button" data-edit-issue>编辑</button><button class="link-button" type="button" data-delete-issue>删除</button></div>`;
     }
 
     function createIssueRow(payload) {
@@ -12835,28 +12839,36 @@
       row.dataset.status = payload.status;
       row.dataset.type = payload.type;
       row.dataset.severity = payload.severity;
+      row.dataset.source = payload.source;
       row.dataset.description = payload.description || "";
+      row.dataset.cause = payload.cause || "";
+      row.dataset.solution = payload.solution || "";
       const statusText = payload.status === "done" ? "已完成" : payload.status === "inprogress" ? "进行中" : "待处理";
       row.innerHTML = `
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
         <td><span class="issue-state ${payload.status}">${statusText}</span></td>
         <td></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td>${payload.status === "done" ? getCurrentTime().slice(0, 10) : "-"}</td>
-        <td></td>
-        <td>-</td>
-        <td>${issueActionMarkup(payload.status)}</td>
       `;
       row.dataset.swimLane = payload.type;
       row.dataset.champion = payload.owner;
-      row.children[1].textContent = payload.type;
-      row.children[2].textContent = payload.name;
-      row.children[3].textContent = payload.owner;
-      row.children[4].textContent = payload.foundDate || "-";
-      row.children[5].textContent = payload.planDate || "-";
-      row.children[7].textContent = payload.description || "-";
+      row.children[0].textContent = payload.name;
+      row.children[1].textContent = payload.source;
+      row.children[2].textContent = payload.type;
+      row.children[3].textContent = payload.severity;
+      row.children[4].textContent = payload.owner;
+      row.children[5].textContent = payload.foundDate || "-";
+      row.children[6].textContent = payload.planDate || "-";
+      row.children[8].textContent = payload.description || "-";
+      row.children[9].textContent = payload.cause || "-";
+      row.children[10].textContent = payload.solution || "-";
       return row;
     }
 
@@ -12866,7 +12878,7 @@
       const swimLane = issueSwimLaneFilter.value.trim().toLowerCase();
       const champion = issueChampionFilter.value.trim().toLowerCase();
       Array.from(issueTableBody.querySelectorAll("tr")).forEach((row) => {
-        const title = row.children[2]?.textContent.toLowerCase() || "";
+        const title = row.children[0]?.textContent.toLowerCase() || "";
         const matchesStatus = (activeIssueStatus === "all" || row.dataset.status === activeIssueStatus) && (!status || row.dataset.status === status);
         const matchesKeyword = !keyword || title.includes(keyword);
         const matchesSwimLane = !swimLane || (row.dataset.swimLane || "").toLowerCase().includes(swimLane);
@@ -12891,23 +12903,22 @@
       issueDescriptionCount.textContent = String(issueDescription.value.length);
     });
 
-    issueMockFile.querySelector(".file-remove").addEventListener("click", () => {
-      issueMockFile.hidden = true;
-    });
-
     issueForm.addEventListener("submit", (event) => {
       event.preventDefault();
       const payload = {
         name: issueName.value.trim(),
+        source: issueSource.value,
         foundDate: issueFoundDate.value,
         planDate: issuePlanDate.value,
         type: issueType.value,
         severity: issueSeverity.value,
         status: issueStatus.value,
         owner: issueOwner.value,
-        description: issueDescription.value.trim()
+        description: issueDescription.value.trim(),
+        cause: issueCause.value.trim(),
+        solution: issueSolution.value.trim()
       };
-      const invalid = !payload.name || !payload.type || !payload.status || !payload.owner || !payload.foundDate || !payload.planDate || !payload.description;
+      const invalid = !payload.name || !payload.source || !payload.type || !payload.severity || !payload.status || !payload.owner || !payload.foundDate || !payload.planDate || !payload.description;
       if (invalid) {
         issueError.hidden = false;
         return;
@@ -12917,18 +12928,23 @@
         editingIssueRow.dataset.status = payload.status;
         editingIssueRow.dataset.type = payload.type;
         editingIssueRow.dataset.severity = payload.severity;
+        editingIssueRow.dataset.source = payload.source;
         editingIssueRow.dataset.description = payload.description;
+        editingIssueRow.dataset.cause = payload.cause;
+        editingIssueRow.dataset.solution = payload.solution;
         editingIssueRow.dataset.swimLane = payload.type;
         editingIssueRow.dataset.champion = payload.owner;
-        editingIssueRow.children[0].innerHTML = `<span class="issue-state ${payload.status}">${payload.status === "done" ? "已完成" : payload.status === "inprogress" ? "进行中" : "待处理"}</span>`;
-        editingIssueRow.children[1].textContent = payload.type;
-        editingIssueRow.children[2].textContent = payload.name;
-        editingIssueRow.children[3].textContent = payload.owner;
-        editingIssueRow.children[4].textContent = payload.foundDate || "-";
-        editingIssueRow.children[5].textContent = payload.planDate || "-";
-        editingIssueRow.children[6].textContent = payload.status === "done" ? getCurrentTime().slice(0, 10) : "-";
-        editingIssueRow.children[7].textContent = payload.description || "-";
-        editingIssueRow.children[9].innerHTML = issueActionMarkup(payload.status);
+        editingIssueRow.children[0].textContent = payload.name;
+        editingIssueRow.children[1].textContent = payload.source;
+        editingIssueRow.children[2].textContent = payload.type;
+        editingIssueRow.children[3].textContent = payload.severity;
+        editingIssueRow.children[4].textContent = payload.owner;
+        editingIssueRow.children[5].textContent = payload.foundDate || "-";
+        editingIssueRow.children[6].textContent = payload.planDate || "-";
+        editingIssueRow.children[7].innerHTML = `<span class="issue-state ${payload.status}">${payload.status === "done" ? "已完成" : payload.status === "inprogress" ? "进行中" : "待处理"}</span>`;
+        editingIssueRow.children[8].textContent = payload.description || "-";
+        editingIssueRow.children[9].textContent = payload.cause || "-";
+        editingIssueRow.children[10].textContent = payload.solution || "-";
       } else {
         issueTableBody.appendChild(createIssueRow(payload));
       }
@@ -12955,28 +12971,6 @@
 
     issueFilter.addEventListener("reset", () => {
       window.setTimeout(filterIssues, 0);
-    });
-
-    issueTableBody.addEventListener("click", (event) => {
-      const resolveButton = event.target.closest("[data-resolve-issue]");
-      const editButton = event.target.closest("[data-edit-issue]");
-      const deleteButton = event.target.closest("[data-delete-issue]");
-      if (resolveButton) {
-        const row = resolveButton.closest("tr");
-        row.dataset.status = "done";
-        row.children[0].innerHTML = '<span class="issue-state done">已完成</span>';
-        row.children[6].textContent = getCurrentTime().slice(0, 10);
-        row.children[9].innerHTML = issueActionMarkup("done");
-        filterIssues();
-        return;
-      }
-      if (editButton) {
-        showIssueEditModal(editButton.closest("tr"));
-        return;
-      }
-      if (deleteButton) {
-        deleteButton.closest("tr").remove();
-      }
     });
 
     const memberCatalog = [
