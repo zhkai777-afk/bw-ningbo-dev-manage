@@ -4105,34 +4105,6 @@
       font-size: 18px;
     }
 
-    .print-sign-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      border: 1px solid #111827;
-      border-top: 0;
-    }
-
-    .print-sign-cell {
-      min-height: 72px;
-      border-right: 1px solid #111827;
-      padding: 8px;
-      display: grid;
-      align-content: space-between;
-      gap: 8px;
-    }
-
-    .print-sign-cell:last-child {
-      border-right: 0;
-    }
-
-    .print-sign-line {
-      border-top: 1px solid #111827;
-      padding-top: 6px;
-      color: #475467;
-      font-size: 11px;
-    }
-
     .print-appendix-title {
       margin: 0 0 10px;
       padding: 8px 0;
@@ -4177,13 +4149,14 @@
 
     .print-drawing-block-head {
       display: grid;
-      grid-template-columns: 1fr auto;
+      grid-template-columns: minmax(0, 1fr) auto;
       gap: 12px;
       align-items: center;
       padding: 8px 10px;
       border-bottom: 1px solid #111827;
       background: #eef2f7;
       font-weight: 900;
+      overflow-wrap: anywhere;
     }
 
     .print-drawing-block-meta {
@@ -4883,14 +4856,6 @@
                 <th>评审日期</th>
                 <td data-print-cover-review-date>2024/12/25</td>
               </tr>
-              <tr>
-                <th>零件编号</th>
-                <td data-print-cover-part-no>TH-2024-001</td>
-                <th>零件名称</th>
-                <td data-print-cover-part-name>涡轮增压器壳体</td>
-                <th>图纸版本</th>
-                <td data-print-cover-drawing>Rev.A</td>
-              </tr>
             </tbody>
           </table>
         </div>
@@ -4931,23 +4896,6 @@
             </thead>
             <tbody data-print-cover-reviewers></tbody>
           </table>
-        </div>
-        <div class="print-section">
-          <div class="print-section-title">五、签核确认</div>
-          <div class="print-sign-grid">
-            <div class="print-sign-cell">
-              <strong>AE 确认</strong>
-              <div class="print-sign-line">签名 / 日期</div>
-            </div>
-            <div class="print-sign-cell">
-              <strong>PM 确认</strong>
-              <div class="print-sign-line">签名 / 日期</div>
-            </div>
-            <div class="print-sign-cell">
-              <strong>质量确认</strong>
-              <div class="print-sign-line">签名 / 日期</div>
-            </div>
-          </div>
         </div>
       </section>
       <section class="print-drawing-issues" data-print-drawing-issues aria-label="PDF 图纸与问题明细">
@@ -5214,9 +5162,6 @@
                 </label>
                 <label class="field">评审日期
                   <input type="date" value="2024-12-25" data-detail-review-date-input>
-                </label>
-                <label class="field">零件名称/描述
-                  <input value="涡轮增压器壳体" readonly data-detail-part-name-input>
                 </label>
                 <label class="field">零件编号
                   <input value="TH-2024-001" readonly data-detail-part-no-input>
@@ -5921,10 +5866,7 @@
     const printCoverProject = document.querySelector('[data-print-cover-project]');
     const printCoverCustomer = document.querySelector('[data-print-cover-customer]');
     const printCoverReviewDate = document.querySelector('[data-print-cover-review-date]');
-    const printCoverPartNo = document.querySelector('[data-print-cover-part-no]');
-    const printCoverPartName = document.querySelector('[data-print-cover-part-name]');
     const printCoverPart = document.querySelector('[data-print-cover-part]');
-    const printCoverDrawing = document.querySelector('[data-print-cover-drawing]');
     const printCoverDate = document.querySelector('[data-print-cover-date]');
     const printCoverConclusion = document.querySelector('[data-print-cover-conclusion]');
     const printCoverConclusionNote = document.querySelector('[data-print-cover-conclusion-note]');
@@ -5943,7 +5885,6 @@
     const detailProjectInput = document.querySelector('[data-detail-project-input]');
     const detailCustomerInput = document.querySelector('[data-detail-customer-input]');
     const detailReviewDateInput = document.querySelector('[data-detail-review-date-input]');
-    const detailPartNameInput = document.querySelector('[data-detail-part-name-input]');
     const detailPartNoInput = document.querySelector('[data-detail-part-no-input]');
     const formPanel = document.querySelector('.form-panel');
     const workspace = document.querySelector('.workspace');
@@ -6710,7 +6651,6 @@
       if (detailProjectInput) detailProjectInput.value = record.project;
       if (detailCustomerInput) detailCustomerInput.value = record.customer;
       if (detailReviewDateInput) detailReviewDateInput.value = record.reviewDate || '2024-12-25';
-      if (detailPartNameInput) detailPartNameInput.value = record.partName;
       if (detailPartNoInput) detailPartNoInput.value = record.partNo;
       refreshIssueSummary();
       syncDrawingPage();
@@ -6980,15 +6920,15 @@
       if (!printDrawingIssueList) return;
       const issues = issueRowsForPrint();
       if (printDrawingIssueMeta) {
-        printDrawingIssueMeta.textContent = `${detailPartNoInput?.value || '-'} / ${detailPartNameInput?.value || '-'} / ${currentDetailRecord?.drawing || '-'}`;
+        printDrawingIssueMeta.textContent = `${detailPartNoInput?.value || '-'} / ${currentDetailRecord?.partName || '-'} / ${currentDetailRecord?.drawing || '-'}`;
       }
       printDrawingIssueList.innerHTML = drawingFiles.map((drawing, index) => {
         const relatedIssues = issues.filter((issue) => issue.drawingId === drawing.id);
         return `
           <article class="print-drawing-block">
             <div class="print-drawing-block-head">
-              <div>${drawing.version} / 第 ${drawing.sheetNo} 张 / ${drawing.name}</div>
-              <div class="print-drawing-block-meta">负责人：${drawing.owner}　状态：${drawing.status}</div>
+              <div>${escapeOwnerHtml(drawingMetaText(drawing))}</div>
+              <div class="print-drawing-block-meta">负责人：${escapeOwnerHtml(drawing.owner || '-')}　评审状态：${escapeOwnerHtml(drawing.status || '-')}</div>
             </div>
             <div class="print-drawing-sheet">${clonedDrawingSvgHtml(index)}</div>
             ${renderPrintIssueTable(relatedIssues)}
@@ -7003,10 +6943,7 @@
       if (printCoverProject) printCoverProject.textContent = detailProjectInput?.value || (detailProjectText?.textContent || '').replace('项目：', '') || '-';
       if (printCoverCustomer) printCoverCustomer.textContent = detailCustomerInput?.value || (detailCustomerText?.textContent || '').replace('客户：', '') || '-';
       if (printCoverReviewDate) printCoverReviewDate.textContent = document.querySelector('section[aria-label="项目信息"] input[type="date"]')?.value || '-';
-      if (printCoverPartNo) printCoverPartNo.textContent = detailPartNoInput?.value || '-';
-      if (printCoverPartName) printCoverPartName.textContent = detailPartNameInput?.value || '-';
-      if (printCoverPart) printCoverPart.textContent = `零件：${detailPartNoInput?.value || '-'} / ${detailPartNameInput?.value || '-'}`;
-      if (printCoverDrawing) printCoverDrawing.textContent = currentDetailRecord?.drawing || (detailDrawingText?.textContent || '').replace(/(?:图纸|评审)版本：/, '') || '-';
+      if (printCoverPart) printCoverPart.textContent = `零件：${detailPartNoInput?.value || '-'} / ${currentDetailRecord?.partName || '-'}`;
       if (printCoverDate) printCoverDate.textContent = `导出时间：${exportedAt}`;
       if (printCoverConclusion) printCoverConclusion.textContent = selectedConclusionText();
       if (printCoverConclusionNote) printCoverConclusionNote.textContent = conclusionNoteText();
