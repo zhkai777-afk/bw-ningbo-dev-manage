@@ -2120,6 +2120,10 @@
             <input class="field" id="customer" data-required="客户" placeholder="请输入客户名称" maxlength="100">
           </div>
           <div class="form-field">
+            <label class="required" for="customerProgram">客户项目<span class="en">Customer Program</span></label>
+            <input class="field" id="customerProgram" data-required="客户项目" placeholder="请输入客户项目名称" maxlength="120">
+          </div>
+          <div class="form-field">
             <label class="required" for="product">产品<span class="en">Product</span></label>
             <div class="multi-select" id="productMultiSelect" data-multi-select="product">
               <button class="multi-select-trigger" id="product" type="button" data-multi-trigger="product" data-required="产品" data-value="" data-placeholder="请选择产品" aria-haspopup="listbox" aria-expanded="false" aria-controls="productMultiSelectMenu">
@@ -2833,6 +2837,7 @@
         name: fieldValue("#programName", "未命名项目"),
         stage: status === "草稿" ? "草稿" : "CKO",
         customer: fieldValue("#customer"),
+        customerProgram: fieldValue("#customerProgram"),
         products: multiSelectValues("product"),
         product: multiSelectValues("product").join("、") || "-",
         systems: multiSelectValues("system"),
@@ -2868,7 +2873,7 @@
         <td class="sticky-left sticky-code">${escapeHtml(project.code)}</td>
         <td class="sticky-left sticky-project">${escapeHtml(project.name)}</td>
         <td>${escapeHtml(project.customer)}</td>
-        <td>${escapeHtml(project.customerProgram || "—")}</td>
+        <td>${escapeHtml(project.customerProgram)}</td>
         <td>${escapeHtml(project.product)}</td>
         <td>${escapeHtml(project.system)}</td>
         <td>${escapeHtml(project.pm)}</td>

@@ -13809,20 +13809,6 @@
       ]
     };
 
-    // 业务创建来源和零件录入方式分别判断；SAP 手动建任务仍属于“手动新增”。
-    function resolveBomEditorStructure(params, creationSource) {
-      const source = params.get("source") || "";
-      if (["bom", "apqp"].includes(source)) return "linked";
-      if (params.get("partInputMode") === "sap") return "linked";
-      if (source === "manual") return "manual";
-      // 兼容原演示列表只带 taskId 的入口。
-      if (["APQP-260803-002", "APQP-260803-004", "APQP-260803-006", "APQP-260803-008", "APQP-260803-010"].includes(params.get("taskId"))) return "manual";
-      return creationSource === "手动新增" ? "manual" : "linked";
-    }
-    function usesManualBomEditor() {
-      return resolveBomEditorStructure(new URLSearchParams(window.location.search), partTaskMeta.creationSource) === "manual";
-    }
-
     function applyIncomingBomTaskContext() {
       const params = new URLSearchParams(window.location.search);
       const source = params.get("source") || "";
@@ -14515,7 +14501,7 @@
       const detailButton = document.querySelector("[data-bom-view-detail]");
       if (headerSubmitButton) headerSubmitButton.hidden = isDetail || Boolean(historyItem);
       if (footerSubmitButton) footerSubmitButton.hidden = isDetail || Boolean(historyItem);
-      document.querySelector("[data-bom-create-options]").hidden = isDetail || Boolean(historyItem) || !usesManualBomEditor();
+      document.querySelector("[data-bom-create-options]").hidden = isDetail || Boolean(historyItem);
       if (detailButton) detailButton.hidden = isDetail;
       document.querySelector("[data-open-part-modal]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
       document.querySelector("[data-copy-selected]")?.toggleAttribute("disabled", isDetail || Boolean(historyItem));
@@ -14559,7 +14545,7 @@
       persistBomVersionRecord(version, bomState.stage || "Gate1", content);
       bomModal.hidden = true;
       renderBomList();
-      showMessage("已提交确认", `<p>${escapeHtml(version)} 的 BOM 已提交 SCM 与 ME 确认。两方均确认后才会生成生效版本。</p>`);
+      showMessage("已提交确认", `<p>${escapeHtml(version)} 的版本变更记录已保存，并已提交 SCM 与 ME 确认。两方均确认后才会生成生效版本。</p>`);
     }
 
     function updateBomEditVersionRecordState(forceError = false) {
