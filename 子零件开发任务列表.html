@@ -1297,6 +1297,30 @@
         margin-top: 8px;
       }
     }
+
+    .sap-part-picker { width:100%; min-height:36px; display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid var(--line-strong); background:white; padding:8px 12px; text-align:left; color:var(--secondary); font:inherit; cursor:pointer; }
+    .sap-part-picker[hidden] { display:none; }
+    #sapSelectedText { overflow-wrap:anywhere; }
+    .sap-picker-action { color:var(--primary); flex-shrink:0; }
+    .sap-modal { width:min(920px,100%); }
+    .sap-modal .org-modal-body { padding:20px 24px; }
+    .sap-search { display:grid; grid-template-columns:1fr 1fr auto; align-items:end; gap:16px; margin-bottom:18px; }
+    .sap-search label { display:block; margin-bottom:8px; }
+    .sap-search .field { width:100%; }
+    .sap-actions { display:flex; gap:10px; }
+    .sap-table-wrap { max-height:380px; overflow:auto; border:1px solid var(--line); }
+    .sap-table { width:100%; min-width:460px; table-layout:fixed; border-collapse:collapse; }
+    .sap-table th,.sap-table td { padding:12px; white-space:normal; overflow-wrap:anywhere; text-overflow:clip; text-align:left; border-bottom:1px solid var(--line); }
+    .sap-table th { position:sticky; top:0; background:#f3f5f8; z-index:1; }
+    .sap-table tr[data-sap-row] { cursor:pointer; }
+    .sap-table tr[data-sap-row]:hover,.sap-table tr.sap-selected { background:#edf4ff; }
+    .sap-table input { accent-color:var(--primary); }
+    .sap-empty { padding:48px 12px !important; text-align:center !important; color:var(--secondary); }
+    .sap-pagination { display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; margin-top:16px; }
+    .sap-selection { color:var(--secondary); overflow-wrap:anywhere; flex:1; min-width:0; }
+    .sap-modal button:disabled { opacity:.45; cursor:not-allowed; }
+    .sap-modal :focus-visible,.sap-part-picker:focus-visible { outline:2px solid var(--primary); outline-offset:2px; }
+    @media(max-width:640px) { #sapModal { padding:12px; } .sap-modal { max-height:calc(100dvh - 24px); } .sap-search { grid-template-columns:1fr; gap:12px; } .sap-modal .org-modal-head,.sap-modal .org-modal-body,.sap-modal .org-modal-foot { padding:14px; } .sap-modal .org-modal-foot { flex-wrap:wrap; } .sap-selection { flex-basis:100%; } }
   </style>
 </head>
 <body>
@@ -1373,6 +1397,7 @@
         <thead>
           <tr>
             <th>项目 ID</th>
+            <th>零件号</th>
             <th>零件名称</th>
             <th>所属项目</th>
             <th>产品质量流程</th>
@@ -1432,22 +1457,27 @@
           <h3 class="form-section-title">基本信息 <span>Basic Information</span></h3>
           <div class="form-grid">
             <div class="form-field full">
-              <label class="required" for="partSourceMode">零件名称</label>
+              <label for="partSourceMode">零件录入方式</label>
               <div class="inline-grid">
                 <select class="select" id="partSourceMode" name="partSourceMode" aria-label="零件选择方式">
                   <option value="sap" selected>从 SAP 选择</option>
                   <option value="manual">手动添加</option>
                 </select>
-                <select class="select" id="sapPartSelect" name="sapPartSelect">
-                  <option value="">请选择 SAP 零件</option>
-                  <option value="PHASER INSERT">PHASER INSERT / 5069999</option>
-                  <option value="FACE GUIDE">FACE GUIDE / 5050607</option>
-                  <option value="GUIDE SECONDARY">GUIDE SECONDARY / 5054770</option>
-                  <option value="TIMING CHAIN GUIDE">TIMING CHAIN GUIDE / 5071024</option>
-                </select>
-                <input class="field" id="partName" name="partName" placeholder="请输入零件名称" data-required="零件名称" hidden>
+                <button class="sap-part-picker" id="sapPartSelect" type="button" value="" aria-haspopup="dialog" aria-controls="sapModal" aria-expanded="false">
+                  <span id="sapSelectedText">请选择 SAP 零件</span><span class="sap-picker-action" id="sapPickerAction">选择零件</span>
+                </button>
+
               </div>
-              <div class="field-note">可从 SAP 选择已有零件，或切换为手动添加并填写零件名称。</div>
+              <div class="field-note" id="partSourceNote">选择 SAP 零件后自动带入零件号和名称。</div>
+            </div>
+            <div class="form-field">
+              <label class="required" for="partNumber">零件号</label>
+              <input class="field" id="partNumber" name="partNumber" placeholder="选择 SAP 零件后自动带入" data-required="零件号" readonly aria-readonly="true">
+              <div class="error-text" data-error-for="partNumber"></div>
+            </div>
+            <div class="form-field">
+              <label class="required" for="partName">零件名称</label>
+              <input class="field" id="partName" name="partName" placeholder="选择 SAP 零件后自动带入" data-required="零件名称" readonly aria-readonly="true">
               <div class="error-text" data-error-for="partName"></div>
             </div>
             <div class="form-field">
@@ -1492,6 +1522,22 @@
     </form>
   </aside>
 
+
+  <div class="org-modal-layer" id="sapModal" hidden>
+    <section class="org-modal sap-modal" role="dialog" aria-modal="true" aria-labelledby="sapModalTitle">
+      <header class="org-modal-head"><div><h3 id="sapModalTitle">选择 SAP 零件</h3><p>按零件号或名称查询，选择一条零件后确认</p></div><button class="org-modal-close" type="button" id="closeSapModal" aria-label="关闭 SAP 零件选择">×</button></header>
+      <div class="org-modal-body">
+        <form class="sap-search" id="sapSearchForm">
+          <div><label for="sapNumberQuery">零件号</label><input class="field" id="sapNumberQuery" placeholder="输入完整编号或编号前缀"></div>
+          <div><label for="sapNameQuery">零件名称</label><input class="field" id="sapNameQuery" placeholder="输入名称关键词"></div>
+          <div class="sap-actions"><button class="btn btn-primary" id="sapQueryButton" type="submit">查询</button><button class="btn btn-plain" id="sapReset" type="button">重置</button></div>
+        </form>
+        <div class="sap-table-wrap" id="sapResults" aria-busy="false"><table class="sap-table"><colgroup><col style="width:64px"><col style="width:160px"><col></colgroup><thead><tr><th>选择</th><th>零件号</th><th>零件名称</th></tr></thead><tbody id="sapRows"></tbody></table></div>
+        <div class="sap-pagination"><span id="sapResultCount" role="status" aria-live="polite"></span><div class="sap-actions"><button class="btn btn-plain" id="sapPrev" type="button">上一页</button><span id="sapPageInfo" style="align-self:center">—</span><button class="btn btn-plain" id="sapNext" type="button">下一页</button></div></div>
+      </div>
+      <footer class="org-modal-foot"><span class="sap-selection" id="sapPendingSummary">尚未选择零件</span><div class="sap-actions"><button class="btn btn-plain" id="cancelSapModal" type="button">取消</button><button class="btn btn-primary" id="confirmSapPart" type="button" disabled>确认选择</button></div></footer>
+    </section>
+  </div>
   <div class="org-modal-layer" id="orgModal" hidden>
     <section class="org-modal" role="dialog" aria-modal="true" aria-labelledby="orgModalTitle">
       <header class="org-modal-head">
@@ -1584,7 +1630,8 @@
       ["APQP-260803-010", "D20-TSC/5050607/SINTEX-BAPL", "Bumper", "Full APQP process", "Zhang Ning", "DMS China-547", "Ningbo Supplier B", "手动新增", "Gate6", "进行中"]
     ].map(([id, partName, project, quality, owner, department, supplier, source, gate, status]) => ({
       id,
-      partName,
+      partNumber: partName.split("/")[1] || "",
+      partName: ({"5050607":"FACE GUIDE", "5054770":"GUIDE SECONDARY"})[partName.split("/")[1]] || partName,
       project,
       quality,
       owner,
@@ -1603,6 +1650,9 @@
     const partSourceMode = document.querySelector("#partSourceMode");
     const sapPartSelect = document.querySelector("#sapPartSelect");
     const partNameInput = document.querySelector("#partName");
+    const partNumberInput = document.querySelector("#partNumber");
+    const manualPartDraft = {number:"", name:""};
+    let previousPartSource = "sap";
     const ownerInput = document.querySelector("#owner");
     const ownerPicker = document.querySelector("#ownerPicker");
     const ownerPickerText = document.querySelector("#ownerPickerText");
@@ -1670,6 +1720,7 @@
       taskTableBody.innerHTML = rows.map((task) => `
         <tr>
           <td>${escapeHtml(task.id)}</td>
+          <td>${escapeHtml(task.partNumber || "-")}</td>
           <td>${escapeHtml(task.partName)}</td>
           <td>${escapeHtml(task.project)}</td>
           <td>${escapeHtml(task.quality)}</td>
@@ -1794,21 +1845,151 @@
       setOrganizationModal(false);
     }
 
+
+    const sapModal = document.querySelector("#sapModal");
+    const sapRows = document.querySelector("#sapRows");
+    let selectedSapPart = null, pendingSapPart = null, sapPage = 1, sapTotal = 0, sapSearched = false, sapLoading = false, sapRequest = 0;
+    let sapFilters = { number: "", name: "" }, sapPageItems = [], sapRequestedPage = 1;
+    const sapPageSize = 20;
+    // 原型示例数据，仅用于交互演示，不代表已连接 SAP 或拥有真实的 5 万条数据。
+    const sapDemoParts = [
+      { id:"5069999", name:"PHASER INSERT" }, { id:"5050607", name:"FACE GUIDE" },
+      { id:"5054770", name:"GUIDE SECONDARY" }, { id:"5071024", name:"TIMING CHAIN GUIDE" },
+      ...Array.from({length:57}, (_,i)=>({id:String(5080000+i), name:["CHAIN GUIDE", "PHASER INSERT", "FACE GUIDE"][i%3]+" / 示例规格 "+(i+1)}))
+    ];
+    // 接入时提供 window.searchSapParts({number,name,page,pageSize})，返回 Promise<{items:[{id,name}],total}>。
+    // 筛选、总数和分页均由服务端完成；此本地回退只演示相同的返回契约。
+    async function querySapParts(params) {
+      if (typeof window.searchSapParts === "function") return window.searchSapParts(params);
+      const matches = sapDemoParts.filter(p => p.id.startsWith(params.number) && p.name.toLowerCase().includes(params.name.toLowerCase()));
+      return {items:matches.slice((params.page-1)*params.pageSize, params.page*params.pageSize), total:matches.length};
+    }
+    function renderSapSelection() {
+      document.querySelector("#sapPendingSummary").textContent = pendingSapPart ? `已选：${pendingSapPart.id} / ${pendingSapPart.name}` : "尚未选择零件";
+      document.querySelector("#confirmSapPart").disabled = !pendingSapPart || sapLoading;
+    }
+    function renderSapResults(message, failed = false) {
+      sapRows.innerHTML = message ? `<tr><td colspan="3" class="sap-empty">${escapeHtml(message)}${failed ? '<br><button type="button" class="btn btn-plain" id="sapRetry">重新查询</button>' : ''}</td></tr>` : sapPageItems.map(p=>`<tr data-sap-row="${escapeHtml(p.id)}" class="${pendingSapPart?.id === p.id ? 'sap-selected' : ''}"><td><input type="radio" name="sapCandidate" value="${escapeHtml(p.id)}" aria-label="选择 ${escapeHtml(p.id)} ${escapeHtml(p.name)}" ${pendingSapPart?.id === p.id ? 'checked' : ''}></td><td>${escapeHtml(p.id)}</td><td>${escapeHtml(p.name)}</td></tr>`).join("");
+      document.querySelector("#sapResultCount").textContent = sapLoading ? "正在查询" : sapSearched && !failed ? `共 ${sapTotal} 条，每页 ${sapPageSize} 条` : "";
+      document.querySelector("#sapPageInfo").textContent = sapSearched && sapTotal && !failed ? `${sapPage} / ${Math.ceil(sapTotal/sapPageSize)}` : "—";
+      document.querySelector("#sapPrev").disabled = sapLoading || failed || !sapSearched || sapPage <= 1;
+      document.querySelector("#sapNext").disabled = sapLoading || failed || !sapSearched || sapPage*sapPageSize >= sapTotal;
+      renderSapSelection();
+    }
+    async function loadSapPage(page) {
+      sapRequestedPage = page;
+      const request = ++sapRequest;
+      sapLoading = true;
+      document.querySelector("#sapResults").setAttribute("aria-busy", "true");
+      renderSapResults("正在查询，请稍候");
+      try {
+        const result = await querySapParts({...sapFilters,page,pageSize:sapPageSize});
+        if (request !== sapRequest) return;
+        if (!Array.isArray(result.items) || !Number.isFinite(result.total)) throw new Error("Invalid SAP response");
+        sapPage = page; sapPageItems = result.items; sapTotal = result.total; sapSearched = true; sapLoading = false;
+        renderSapResults(sapTotal ? "" : "未找到匹配零件，请调整编号或名称后重新查询");
+      } catch(error) {
+        if (request !== sapRequest) return;
+        sapLoading = false;
+        renderSapResults("查询失败，请重试；已选零件和表单内容已保留", true);
+      } finally {
+        if (request === sapRequest) document.querySelector("#sapResults").setAttribute("aria-busy", "false");
+      }
+    }
+    function setSapModal(open) {
+      sapModal.hidden = !open;
+      document.querySelector(".drawer").inert = open;
+      document.querySelector("main").inert = open;
+      sapPartSelect.setAttribute("aria-expanded", String(open));
+      if (open) {
+        pendingSapPart = selectedSapPart ? {...selectedSapPart} : null;
+        renderSapResults(sapSearched ? (sapTotal ? "" : "未找到匹配零件，请调整查询条件") : "请输入零件号或名称查询");
+        document.querySelector("#sapNumberQuery").focus();
+      } else {
+        ++sapRequest; sapLoading = false;
+        document.querySelector("#sapResults").setAttribute("aria-busy", "false");
+        sapPartSelect.focus();
+      }
+    }
+    sapPartSelect.addEventListener("click", () => setSapModal(true));
+    ["closeSapModal", "cancelSapModal"].forEach(id => document.getElementById(id).addEventListener("click", () => setSapModal(false)));
+    document.querySelector("#sapSearchForm").addEventListener("submit", event => {
+      event.preventDefault();
+      sapFilters = {number:document.querySelector("#sapNumberQuery").value.trim(), name:document.querySelector("#sapNameQuery").value.trim()};
+      if (!sapFilters.number && !sapFilters.name) { resetSapSearch(); return; }
+      loadSapPage(1);
+    });
+    function resetSapSearch() {
+      ++sapRequest; sapLoading=false; sapSearched=false; sapTotal=0; sapPage=1; sapPageItems=[];
+      sapFilters={number:"",name:""}; document.querySelector("#sapSearchForm").reset();
+      document.querySelector("#sapResults").setAttribute("aria-busy", "false");
+      renderSapResults("请输入零件号或名称查询"); document.querySelector("#sapNumberQuery").focus();
+    }
+    document.querySelector("#sapReset").addEventListener("click",resetSapSearch);
+    document.querySelector("#sapPrev").addEventListener("click",()=>loadSapPage(sapPage-1));
+    document.querySelector("#sapNext").addEventListener("click",()=>loadSapPage(sapPage+1));
+    sapRows.addEventListener("click",event=>{
+      if(event.target.closest("#sapRetry")) { loadSapPage(sapRequestedPage); return; }
+      const row=event.target.closest("[data-sap-row]"); if(!row) return;
+      pendingSapPart=sapPageItems.find(p=>p.id===row.dataset.sapRow); renderSapResults();
+    });
+    sapRows.addEventListener("change",event=>{
+      if(event.target.name!=="sapCandidate") return;
+      pendingSapPart=sapPageItems.find(p=>p.id===event.target.value); renderSapResults();
+    });
+    document.querySelector("#confirmSapPart").addEventListener("click",()=>{
+      if(!pendingSapPart || sapLoading) return;
+      selectedSapPart={...pendingSapPart}; sapPartSelect.value=selectedSapPart.name;
+      document.querySelector("#sapSelectedText").textContent=`${selectedSapPart.id} / ${selectedSapPart.name}`;
+      document.querySelector("#sapPickerAction").textContent="更换";
+      syncSapPartSelection(); sapPartSelect.style.borderColor="";
+      [partNumberInput, partNameInput].forEach(field => {
+        field.style.borderColor="";
+        taskForm.querySelector(`[data-error-for="${field.id}"]`).textContent="";
+      });
+      setSapModal(false);
+    });
+    sapModal.addEventListener("keydown",event=>{
+      if(event.key==="Escape") { event.preventDefault(); event.stopPropagation(); setSapModal(false); }
+      if(event.key==="Tab") {
+        const focusable=[...sapModal.querySelectorAll('button:not(:disabled), input:not(:disabled)')];
+        const first=focusable[0], last=focusable[focusable.length-1];
+        if(event.shiftKey && document.activeElement===first) { event.preventDefault(); last.focus(); }
+        else if(!event.shiftKey && document.activeElement===last) { event.preventDefault(); first.focus(); }
+      }
+    });
+
     function syncPartSourceMode() {
       const isSap = partSourceMode.value === "sap";
-      sapPartSelect.hidden = !isSap;
-      sapPartSelect.toggleAttribute("disabled", !isSap);
-      partNameInput.hidden = isSap;
-      if (isSap) {
-        partNameInput.value = sapPartSelect.value || "";
-      } else {
-        sapPartSelect.value = "";
+      if (previousPartSource === "manual") {
+        manualPartDraft.number = partNumberInput.value;
+        manualPartDraft.name = partNameInput.value;
       }
+      sapPartSelect.hidden = !isSap;
+      sapPartSelect.disabled = !isSap;
+      [partNumberInput, partNameInput].forEach(field => {
+        field.hidden = false;
+        field.readOnly = isSap;
+        field.setAttribute("aria-readonly", String(isSap));
+        field.style.borderColor = "";
+        taskForm.querySelector(`[data-error-for="${field.id}"]`).textContent = "";
+      });
+      partNumberInput.placeholder = isSap ? "选择 SAP 零件后自动带入" : "请输入零件号";
+      partNameInput.placeholder = isSap ? "选择 SAP 零件后自动带入" : "请输入零件名称";
+      document.querySelector("#partSourceNote").textContent = isSap ? "选择 SAP 零件后自动带入零件号和名称。" : "请分别填写零件号和零件名称。";
+      if (isSap) syncSapPartSelection();
+      else {
+        partNumberInput.value = manualPartDraft.number;
+        partNameInput.value = manualPartDraft.name;
+      }
+      sapPartSelect.style.borderColor = "";
+      previousPartSource = partSourceMode.value;
     }
 
     function syncSapPartSelection() {
       if (partSourceMode.value !== "sap") return;
-      partNameInput.value = sapPartSelect.value || "";
+      partNumberInput.value = selectedSapPart?.id || "";
+      partNameInput.value = selectedSapPart?.name || "";
     }
 
     function setDrawer(open) {
@@ -1849,11 +2030,11 @@
         }
         valid = valid && !isEmpty;
       });
-      const partError = taskForm.querySelector('[data-error-for="partName"]');
-      if (partError) {
-        partError.textContent = partNameInput.value.trim() ? "" : "请选择或填写零件名称";
+      if (partSourceMode.value === "sap" && !selectedSapPart) {
+        [partNumberInput, partNameInput].forEach(field => taskForm.querySelector(`[data-error-for="${field.id}"]`).textContent = "请先选择 SAP 零件");
+        valid = false;
       }
-      sapPartSelect.style.borderColor = !partNameInput.value.trim() && partSourceMode.value === "sap" ? "var(--danger)" : "";
+      sapPartSelect.style.borderColor = !selectedSapPart && partSourceMode.value === "sap" ? "var(--danger)" : "";
       return valid;
     }
 
@@ -1861,6 +2042,9 @@
       return {
         id: generateTaskNumber(),
         partName: valueOf("#partName"),
+        partNumber: valueOf("#partNumber"),
+        partInputMode: partSourceMode.value,
+        sapPartNumber: partSourceMode.value === "sap" ? selectedSapPart?.id || "" : "",
         project: valueOf("#projectName") || "-",
         quality: valueOf("#qualityProcess"),
         owner: valueOf("#owner"),
@@ -1885,11 +2069,17 @@
 
     function resetForm() {
       taskForm.reset();
+      previousPartSource = "sap";
+      manualPartDraft.number = "";
+      manualPartDraft.name = "";
+      selectedSapPart = null;
+      document.querySelector("#sapSelectedText").textContent = "请选择 SAP 零件";
+      document.querySelector("#sapPickerAction").textContent = "选择零件";
       document.querySelector("#qualityProcess").value = "Full APQP process";
       document.querySelector("#partSourceMode").value = "sap";
       document.querySelector("#sapPartSelect").value = "";
       document.querySelector("#partName").value = "";
-      document.querySelector("#partName").hidden = true;
+      document.querySelector("#partName").hidden = false;
       document.querySelector("#sapPartSelect").hidden = false;
       ownerInput.value = "";
       ownerPickerText.textContent = "请选择负责人";
@@ -1903,6 +2093,7 @@
         field.style.borderColor = "";
       });
       sapPartSelect.style.borderColor = "";
+      syncPartSourceMode();
     }
 
     function submitTask(statusOverride) {
@@ -2013,7 +2204,16 @@
     taskTableBody.addEventListener("click", (event) => {
       const detailButton = event.target.closest("[data-detail]");
       if (detailButton) {
-        window.location.href = `${detailUrl}?taskId=${encodeURIComponent(detailButton.dataset.detail)}`;
+        const task = tasks.find(item => item.id === detailButton.dataset.detail);
+        if (!task) return;
+        const params = new URLSearchParams({
+          taskId: task.id,
+          source: task.source === "BOM 创建" ? "bom" : "manual",
+          partInputMode: task.partInputMode || (task.sapPartNumber ? "sap" : "manual"),
+          partNo: task.partNumber || "", partName: task.partName,
+          projectCode: task.project || "", owner: task.owner || "", status: task.status || ""
+        });
+        window.location.href = `${detailUrl}?${params.toString()}`;
       }
     });
     document.addEventListener("keydown", (event) => {
