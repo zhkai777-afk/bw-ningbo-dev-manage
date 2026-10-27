@@ -1,0 +1,1365 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>子任务库管理</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --surface-muted: #f8fafc;
+      --line: #dee3ea;
+      --line-strong: #cfd7e3;
+      --text: #1f2329;
+      --secondary: #646a73;
+      --tertiary: #8f959e;
+      --primary: #3370ff;
+      --primary-hover: #2860e0;
+      --primary-weak: #f2f5ff;
+      --success: #00a870;
+      --success-weak: #e8f7f1;
+      --warning: #f79009;
+      --warning-weak: #fff4df;
+      --danger: #f04438;
+      --danger-weak: #fff1f0;
+      --disabled: #eef1f5;
+      --shadow: 0 8px 24px rgba(31, 35, 41, .08);
+      --radius: 8px;
+      --radius-sm: 4px;
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-width: 1180px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 22px 28px 30px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .title-block {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-mark {
+      width: 4px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--primary);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      color: var(--tertiary);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 330px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .panel-head {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcff;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .panel-subtitle {
+      color: var(--tertiary);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .btn {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      padding: 0 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: .18s ease;
+    }
+
+    .btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 6px 16px rgba(51, 112, 255, .12);
+    }
+
+    .btn-primary {
+      color: #fff;
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover {
+      color: #fff;
+      background: var(--primary-hover);
+    }
+
+    .btn-danger {
+      color: #b42318;
+      border-color: #fecdca;
+      background: #fff;
+    }
+
+    .btn-sm {
+      min-height: 28px;
+      padding: 0 9px;
+      font-size: 12px;
+    }
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      display: inline-grid;
+      place-items: center;
+      font-size: 15px;
+      line-height: 1;
+    }
+
+    .stage-list {
+      padding: 10px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .stage-item {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      padding: 12px;
+      text-align: left;
+      display: grid;
+      gap: 10px;
+      transition: .18s ease;
+    }
+
+    .stage-item:hover {
+      border-color: var(--primary);
+      background: #fbfdff;
+    }
+
+    .stage-item.active {
+      border-color: var(--primary);
+      background: var(--primary-weak);
+      box-shadow: inset 3px 0 0 var(--primary);
+    }
+
+    .stage-item.disabled {
+      background: var(--disabled);
+      color: var(--tertiary);
+    }
+
+    .stage-top,
+    .stage-meta,
+    .action-row,
+    .toolbar,
+    .task-name,
+    .chips,
+    .status-line,
+    .checkbox-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .stage-top {
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .stage-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+      font-weight: 800;
+    }
+
+    .stage-order {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #fff;
+      background: var(--primary);
+      font-size: 12px;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .stage-item.disabled .stage-order {
+      background: var(--tertiary);
+    }
+
+    .stage-meta {
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .action-row {
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--success);
+      background: var(--success-weak);
+    }
+
+    .status::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status.off {
+      color: var(--tertiary);
+      background: #f0f2f5;
+    }
+
+    .toolbar {
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search {
+      position: relative;
+      width: 260px;
+    }
+
+    .search input {
+      width: 100%;
+      height: 34px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      padding: 0 11px 0 32px;
+      background: #fff;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .search::before {
+      content: "⌕";
+      position: absolute;
+      left: 11px;
+      top: 5px;
+      color: var(--tertiary);
+      font-size: 18px;
+    }
+
+    .filter {
+      height: 34px;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      padding: 0 10px;
+      font-weight: 600;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: var(--surface-muted);
+    }
+
+    .metric-label {
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .metric-value {
+      margin-top: 6px;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 800;
+    }
+
+    .table-shell {
+      overflow-x: auto;
+      background: #fff;
+    }
+
+    table {
+      width: 100%;
+      min-width: 1180px;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 10px;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #fafbfc;
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    td {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    tr.disabled-row td {
+      color: var(--tertiary);
+      background: #fafbfc;
+    }
+
+    .task-name {
+      gap: 8px;
+      min-width: 0;
+      font-weight: 700;
+    }
+
+    .task-code {
+      color: var(--secondary);
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .task-desc {
+      color: var(--secondary);
+      font-size: 12px;
+      margin-top: 4px;
+      white-space: normal;
+    }
+
+    .chips {
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      max-width: 180px;
+      padding: 0 8px;
+      border-radius: 4px;
+      color: #475467;
+      background: #eef2f6;
+      font-size: 12px;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .chip-blue {
+      color: var(--primary);
+      background: var(--primary-weak);
+    }
+
+    .chip-orange {
+      color: #b54708;
+      background: var(--warning-weak);
+    }
+
+    .chip-green {
+      color: var(--success);
+      background: var(--success-weak);
+    }
+
+    .empty {
+      padding: 58px 24px;
+      text-align: center;
+      color: var(--tertiary);
+      font-weight: 600;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      background: rgba(15, 23, 42, .38);
+    }
+
+    .modal-backdrop[hidden] {
+      display: none;
+    }
+
+    .modal {
+      width: min(760px, 100%);
+      max-height: min(90vh, 900px);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background: #fff;
+      box-shadow: 0 24px 64px rgba(15, 23, 42, .22);
+    }
+
+    .modal.stage-modal {
+      width: min(560px, 100%);
+    }
+
+    .modal-head,
+    .modal-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .modal-head h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .modal-body {
+      overflow-y: auto;
+      padding: 20px 22px 8px;
+    }
+
+    .modal-foot {
+      justify-content: flex-end;
+      border-top: 1px solid var(--line);
+      border-bottom: 0;
+    }
+
+    .close-button {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--tertiary);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .close-button:hover {
+      background: var(--surface-muted);
+      color: var(--text);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .form-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .form-group.wide {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--text);
+      font-weight: 700;
+    }
+
+    .required::after {
+      content: "*";
+      color: var(--danger);
+      margin-left: 3px;
+    }
+
+    .form-input,
+    .form-select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--text);
+      padding: 8px 10px;
+      font-weight: 500;
+    }
+
+    .form-input,
+    .form-select {
+      height: 38px;
+    }
+
+    textarea {
+      min-height: 84px;
+      resize: vertical;
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    textarea:focus,
+    .search input:focus,
+    .filter:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(51, 112, 255, .15);
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .checkbox-line {
+      min-height: 34px;
+      gap: 8px;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      background: var(--surface-muted);
+      color: var(--secondary);
+      font-weight: 600;
+    }
+
+    .checkbox-line input {
+      width: 15px;
+      height: 15px;
+      accent-color: var(--primary);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 22px;
+      z-index: 70;
+      transform: translateX(-50%);
+      min-width: 260px;
+      max-width: min(720px, calc(100vw - 32px));
+      padding: 11px 16px;
+      border-radius: 6px;
+      color: #fff;
+      background: #1f2329;
+      box-shadow: var(--shadow);
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .toast[hidden] {
+      display: none;
+    }
+
+    @media (max-width: 980px) {
+      body {
+        min-width: 0;
+      }
+
+      .page {
+        padding: 16px;
+      }
+
+      .header,
+      .panel-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .layout,
+      .summary-strip,
+      .form-grid,
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="title-block">
+        <span class="brand-mark"></span>
+        <div>
+          <h1>子任务库管理</h1>
+          <div class="subtitle">维护新产品开发各阶段默认任务、系统适用范围、关键任务和任务分类</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="button" id="saveAllButton"><span class="icon">✓</span>保存配置</button>
+    </header>
+
+    <section class="layout">
+      <aside class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">阶段管理</div>
+            <div class="panel-subtitle">默认阶段：CKO、PKO、Gate1 至 Gate6</div>
+          </div>
+          <button class="btn btn-primary" type="button" id="addStageButton"><span class="icon">＋</span>新建阶段</button>
+        </div>
+        <div class="stage-list" id="stageList"></div>
+      </aside>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title" id="taskPanelTitle">任务管理</div>
+            <div class="panel-subtitle" id="taskPanelSubtitle">配置当前阶段下的默认展示任务</div>
+          </div>
+          <div class="toolbar">
+            <div class="search">
+              <input id="taskKeyword" type="search" placeholder="搜索任务名称、编码、分类">
+            </div>
+            <select class="filter" id="statusFilter" aria-label="状态筛选">
+              <option value="all">全部状态</option>
+              <option value="enabled">启用</option>
+              <option value="disabled">禁用</option>
+            </select>
+            <select class="filter" id="categoryFilter" aria-label="分类筛选"></select>
+            <button class="btn btn-primary" type="button" id="addTaskButton"><span class="icon">＋</span>新建任务</button>
+          </div>
+        </div>
+
+        <div class="summary-strip" id="summaryStrip"></div>
+
+        <div class="table-shell">
+          <table aria-label="阶段任务管理表">
+            <colgroup>
+              <col style="width: 270px">
+              <col style="width: 170px">
+              <col style="width: 210px">
+              <col style="width: 260px">
+              <col style="width: 100px">
+              <col style="width: 92px">
+              <col style="width: 190px">
+            </colgroup>
+            <thead>
+              <tr>
+                <th>任务</th>
+                <th>分类</th>
+                <th>默认展示规则</th>
+                <th>适用系统类型</th>
+                <th>关键任务</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="taskTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="stageModal" hidden>
+    <section class="modal stage-modal" role="dialog" aria-modal="true" aria-labelledby="stageModalTitle">
+      <div class="modal-head">
+        <h2 id="stageModalTitle">新建阶段</h2>
+        <button class="close-button" type="button" data-close-modal="stageModal" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="required" for="stageNameInput">阶段名称</label>
+            <input class="form-input" id="stageNameInput" placeholder="例如 Gate7">
+          </div>
+          <div class="form-group">
+            <label class="required" for="stageOrderInput">排序</label>
+            <input class="form-input" id="stageOrderInput" type="number" min="1">
+          </div>
+          <div class="form-group wide">
+            <label for="stageDescInput">阶段说明</label>
+            <textarea id="stageDescInput" placeholder="请输入阶段管理说明"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="stageStatusInput">状态</label>
+            <select class="form-select" id="stageStatusInput">
+              <option value="enabled">启用</option>
+              <option value="disabled">停用</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-modal="stageModal">取消</button>
+        <button class="btn btn-primary" type="button" id="confirmStageButton">确定</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="taskModal" hidden>
+    <section class="modal" role="dialog" aria-modal="true" aria-labelledby="taskModalTitle">
+      <div class="modal-head">
+        <h2 id="taskModalTitle">新建任务</h2>
+        <button class="close-button" type="button" data-close-modal="taskModal" aria-label="关闭">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="required" for="taskCodeInput">任务编码</label>
+            <input class="form-input" id="taskCodeInput" placeholder="例如 CKO-001">
+          </div>
+          <div class="form-group">
+            <label class="required" for="taskNameInput">任务名称</label>
+            <input class="form-input" id="taskNameInput" placeholder="请输入任务名称">
+          </div>
+          <div class="form-group">
+            <label class="required" for="taskCategoryInput">所属分类</label>
+            <select class="form-select" id="taskCategoryInput"></select>
+          </div>
+          <div class="form-group">
+            <label for="taskStatusInput">状态</label>
+            <select class="form-select" id="taskStatusInput">
+              <option value="enabled">启用</option>
+              <option value="disabled">禁用</option>
+            </select>
+          </div>
+          <div class="form-group wide">
+            <label for="taskDescInput">任务说明</label>
+            <textarea id="taskDescInput" placeholder="请输入任务要求、交付物或业务说明"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="taskDefaultInput">默认系统展示</label>
+            <select class="form-select" id="taskDefaultInput">
+              <option value="yes">默认展示</option>
+              <option value="no">默认不展示</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="taskCriticalInput">关键任务</label>
+            <select class="form-select" id="taskCriticalInput">
+              <option value="yes">是</option>
+              <option value="no">否</option>
+            </select>
+          </div>
+          <div class="form-group wide">
+            <label>不同类型系统下默认展示任务</label>
+            <div class="checkbox-grid" id="systemCheckboxes"></div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" type="button" data-close-modal="taskModal">取消</button>
+        <button class="btn btn-primary" type="button" id="confirmTaskButton">确定</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script>
+    const defaultCategories = [
+      "Customer",
+      "Plan and Define",
+      "Process Design and Development",
+      "Product Design and Development",
+      "Production and Logistic",
+      "Quality Plan",
+      "Supply Chain Definition"
+    ];
+
+    const systemTypes = [
+      { id: "vt-phaser", label: "VT / Phaser" },
+      { id: "vt-vfs", label: "VT / VFS" },
+      { id: "vt-cb", label: "VT / CB" },
+      { id: "vt-ccv", label: "VT / CCV" },
+      { id: "td-chain", label: "TD / Chain" },
+      { id: "td-tsc", label: "TD / TSC" },
+      { id: "td-timing", label: "TD / Timing" },
+      { id: "td-tensioner", label: "TD / Tensioner" },
+      { id: "td-op", label: "TD / OP" },
+      { id: "td-guide", label: "TD / CC Guide / Arm Guide" },
+      { id: "simple-pp-chain", label: "简化 / PP-Chain 子零件" },
+      { id: "simple-motor-chain", label: "简化 / Motor Chain" }
+    ];
+
+    const allSystemIds = systemTypes.map((item) => item.id);
+
+    let stages = [
+      {
+        id: "cko",
+        name: "CKO",
+        order: 1,
+        enabled: true,
+        description: "销售人员创建开发项目并完成系统默认 CKO 任务。",
+        tasks: [
+          {
+            id: "task-cko-01",
+            code: "CKO-001",
+            name: "创建开发项目",
+            description: "销售人员录入客户、产品、项目基础信息，生成开发项目。",
+            category: "Customer",
+            defaultVisible: true,
+            systemDefaults: [],
+            critical: true,
+            enabled: true
+          },
+          {
+            id: "task-cko-02",
+            code: "CKO-002",
+            name: "完成 CKO 默认任务",
+            description: "按系统预配置清单完成启动前检查，可由超级管理员维护任务内容。",
+            category: "Plan and Define",
+            defaultVisible: true,
+            systemDefaults: allSystemIds,
+            critical: false,
+            enabled: true
+          }
+        ]
+      },
+      {
+        id: "pko",
+        name: "PKO",
+        order: 2,
+        enabled: true,
+        description: "PM 发起项目启动会，输入客户与 BW 内部关键节点并分配 BOM 相关任务。",
+        tasks: [
+          {
+            id: "task-pko-01",
+            code: "PKO-001",
+            name: "录入项目关键节点",
+            description: "维护客户 OTS、PPAP、SOP 以及 BW 内部 OTS、PPAP、SOP 节点。",
+            category: "Plan and Define",
+            defaultVisible: true,
+            systemDefaults: allSystemIds,
+            critical: true,
+            enabled: true
+          },
+          {
+            id: "task-pko-02",
+            code: "PKO-002",
+            name: "创建 BOM 初稿",
+            description: "AE 创建产品 BOM 初稿并确认结构、材料和工程信息。",
+            category: "Product Design and Development",
+            defaultVisible: true,
+            systemDefaults: allSystemIds,
+            critical: true,
+            enabled: true
+          },
+          {
+            id: "task-pko-03",
+            code: "PKO-003",
+            name: "SCM 确认 BOM",
+            description: "SCM 确认供应链可行性、采购信息和供应商准备状态。",
+            category: "Supply Chain Definition",
+            defaultVisible: true,
+            systemDefaults: allSystemIds,
+            critical: false,
+            enabled: true
+          }
+        ]
+      },
+      {
+        id: "gate1",
+        name: "Gate1",
+        order: 3,
+        enabled: true,
+        description: "PM 根据 BOM 创建总成 APQP，AQE 拆解子任务并分配给 SQD。",
+        tasks: [
+          {
+            id: "task-g1-01",
+            code: "G1-001",
+            name: "根据 BOM 创建总成 APQP",
+            description: "PM 基于 SCM 确认后的 BOM 创建总成 APQP 计划。",
+            category: "Quality Plan",
+            defaultVisible: true,
+            systemDefaults: allSystemIds,
+            critical: true,
+            enabled: true
+          },
+          {
+            id: "task-g1-02",
+            code: "G1-002",
+            name: "拆解子总成和子零件开发任务",
+            description: "AQE 根据 BOM 将总成下的子总成、子零件开发任务分配给 SQD。",
+            category: "Process Design and Development",
+            defaultVisible: true,
+            systemDefaults: allSystemIds,
+            critical: false,
+            enabled: true
+          }
+        ]
+      },
+      ...["Gate2", "Gate3", "Gate4", "Gate5", "Gate6"].map((name, index) => ({
+        id: name.toLowerCase(),
+        name,
+        order: index + 4,
+        enabled: true,
+        description: "PM 主导门径任务分配、完成反馈与审批流转。",
+        tasks: [
+          {
+            id: `task-${name.toLowerCase()}-01`,
+            code: `${name.toUpperCase()}-001`,
+            name: `${name} 阶段任务完成确认`,
+            description: "各职能部门完成当前 Gate 任务并反馈完成情况。",
+            category: "Plan and Define",
+            defaultVisible: true,
+            systemDefaults: index < 2 ? allSystemIds : allSystemIds.filter((id) => !id.startsWith("simple")),
+            critical: index >= 2,
+            enabled: true
+          },
+          {
+            id: `task-${name.toLowerCase()}-02`,
+            code: `${name.toUpperCase()}-002`,
+            name: `${name} 阶段审批`,
+            description: "PM 组织团队审批当前阶段任务完成情况，通过后进入下一阶段。",
+            category: "Quality Plan",
+            defaultVisible: true,
+            systemDefaults: index < 2 ? allSystemIds : allSystemIds.filter((id) => !id.startsWith("simple")),
+            critical: true,
+            enabled: true
+          }
+        ]
+      }))
+    ];
+
+    let selectedStageId = "cko";
+    let editingStageId = null;
+    let editingTaskId = null;
+    let toastTimer;
+
+    const stageList = document.getElementById("stageList");
+    const taskTableBody = document.getElementById("taskTableBody");
+    const summaryStrip = document.getElementById("summaryStrip");
+    const taskPanelTitle = document.getElementById("taskPanelTitle");
+    const taskPanelSubtitle = document.getElementById("taskPanelSubtitle");
+    const taskKeyword = document.getElementById("taskKeyword");
+    const statusFilter = document.getElementById("statusFilter");
+    const categoryFilter = document.getElementById("categoryFilter");
+    const stageModal = document.getElementById("stageModal");
+    const taskModal = document.getElementById("taskModal");
+    const toast = document.getElementById("toast");
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      }[char]));
+    }
+
+    function uid(prefix) {
+      return `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+    }
+
+    function getSelectedStage() {
+      return stages.find((stage) => stage.id === selectedStageId) || stages[0];
+    }
+
+    function getStage(stageId) {
+      return stages.find((stage) => stage.id === stageId);
+    }
+
+    function showToast(message) {
+      clearTimeout(toastTimer);
+      toast.textContent = message;
+      toast.hidden = false;
+      toastTimer = setTimeout(() => {
+        toast.hidden = true;
+      }, 2400);
+    }
+
+    function renderCategoryOptions() {
+      categoryFilter.innerHTML = [
+        `<option value="all">全部分类</option>`,
+        ...defaultCategories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`)
+      ].join("");
+
+      document.getElementById("taskCategoryInput").innerHTML = defaultCategories.map((category) => (
+        `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`
+      )).join("");
+    }
+
+    function renderStages() {
+      const sortedStages = [...stages].sort((a, b) => a.order - b.order);
+      stageList.innerHTML = sortedStages.map((stage) => {
+        const enabledCount = stage.tasks.filter((task) => task.enabled).length;
+        const criticalCount = stage.tasks.filter((task) => task.critical).length;
+        return `
+          <article class="stage-item ${stage.id === selectedStageId ? "active" : ""} ${stage.enabled ? "" : "disabled"}" data-stage-id="${stage.id}">
+            <div class="stage-top">
+              <button class="stage-name" type="button" data-select-stage="${stage.id}">
+                <span class="stage-order">${stage.order}</span>
+                <span>${escapeHtml(stage.name)}</span>
+              </button>
+              <span class="status ${stage.enabled ? "" : "off"}">${stage.enabled ? "启用" : "停用"}</span>
+            </div>
+            <div class="stage-meta">
+              <span>${stage.tasks.length} 个任务</span>
+              <span>${enabledCount} 个启用</span>
+              <span>${criticalCount} 个关键</span>
+            </div>
+            <div class="action-row">
+              <button class="btn btn-sm" type="button" data-edit-stage="${stage.id}">编辑</button>
+              <button class="btn btn-sm" type="button" data-toggle-stage="${stage.id}">${stage.enabled ? "停用" : "启用"}</button>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function formatSystemDefaults(task) {
+      if (!task.systemDefaults.length) return `<span class="chip">未指定</span>`;
+      if (task.systemDefaults.length === allSystemIds.length) return `<span class="chip chip-blue">全部系统类型</span>`;
+      return task.systemDefaults.map((id) => {
+        const system = systemTypes.find((item) => item.id === id);
+        return `<span class="chip">${escapeHtml(system?.label || id)}</span>`;
+      }).join("");
+    }
+
+    function getFilteredTasks(stage) {
+      const keyword = taskKeyword.value.trim().toLowerCase();
+      const status = statusFilter.value;
+      const category = categoryFilter.value;
+      return stage.tasks.filter((task) => {
+        const text = `${task.name} ${task.code} ${task.category} ${task.description}`.toLowerCase();
+        const matchKeyword = !keyword || text.includes(keyword);
+        const matchStatus = status === "all" || (status === "enabled" ? task.enabled : !task.enabled);
+        const matchCategory = category === "all" || task.category === category;
+        return matchKeyword && matchStatus && matchCategory;
+      });
+    }
+
+    function renderSummary(stage) {
+      const enabledCount = stage.tasks.filter((task) => task.enabled).length;
+      const criticalCount = stage.tasks.filter((task) => task.critical).length;
+      const defaultVisibleCount = stage.tasks.filter((task) => task.defaultVisible).length;
+      const systemSpecificCount = stage.tasks.filter((task) => task.systemDefaults.length > 0 && task.systemDefaults.length < allSystemIds.length).length;
+
+      summaryStrip.innerHTML = [
+        ["任务总数", stage.tasks.length],
+        ["启用任务", enabledCount],
+        ["关键任务", criticalCount],
+        ["按系统配置", systemSpecificCount || defaultVisibleCount]
+      ].map(([label, value]) => `
+        <div class="metric">
+          <div class="metric-label">${label}</div>
+          <div class="metric-value">${value}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderTasks() {
+      const stage = getSelectedStage();
+      taskPanelTitle.textContent = `${stage.name} 任务管理`;
+      taskPanelSubtitle.textContent = stage.description || "配置当前阶段下的默认展示任务";
+      renderSummary(stage);
+
+      const tasks = getFilteredTasks(stage);
+      if (!tasks.length) {
+        taskTableBody.innerHTML = `<tr><td colspan="7"><div class="empty">暂无匹配任务，可新建任务或调整筛选条件</div></td></tr>`;
+        return;
+      }
+
+      taskTableBody.innerHTML = tasks.map((task) => `
+        <tr class="${task.enabled ? "" : "disabled-row"}" data-task-id="${task.id}">
+          <td>
+            <div class="task-name">
+              <span>${escapeHtml(task.name)}</span>
+            </div>
+            <div class="task-code">${escapeHtml(task.code)}</div>
+            <div class="task-desc">${escapeHtml(task.description || "-")}</div>
+          </td>
+          <td><span class="chip chip-blue">${escapeHtml(task.category)}</span></td>
+          <td>
+            <div class="chips">
+              <span class="chip ${task.defaultVisible ? "chip-green" : ""}">${task.defaultVisible ? "默认展示" : "默认不展示"}</span>
+            </div>
+          </td>
+          <td><div class="chips">${formatSystemDefaults(task)}</div></td>
+          <td><span class="chip ${task.critical ? "chip-orange" : ""}">${task.critical ? "是" : "否"}</span></td>
+          <td><span class="status ${task.enabled ? "" : "off"}">${task.enabled ? "启用" : "禁用"}</span></td>
+          <td>
+            <div class="action-row">
+              <button class="btn btn-sm" type="button" data-edit-task="${task.id}">编辑</button>
+              <button class="btn btn-sm" type="button" data-toggle-task="${task.id}">${task.enabled ? "禁用" : "启用"}</button>
+              <button class="btn btn-sm btn-danger" type="button" data-delete-task="${task.id}">删除</button>
+            </div>
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    function render() {
+      if (!getStage(selectedStageId) && stages.length) selectedStageId = stages[0].id;
+      renderStages();
+      renderTasks();
+    }
+
+    function openStageModal(stageId = null) {
+      editingStageId = stageId;
+      const stage = stageId ? getStage(stageId) : null;
+      document.getElementById("stageModalTitle").textContent = stage ? "编辑阶段" : "新建阶段";
+      document.getElementById("stageNameInput").value = stage?.name || "";
+      document.getElementById("stageOrderInput").value = stage?.order || stages.length + 1;
+      document.getElementById("stageDescInput").value = stage?.description || "";
+      document.getElementById("stageStatusInput").value = stage?.enabled === false ? "disabled" : "enabled";
+      stageModal.hidden = false;
+    }
+
+    function saveStage() {
+      const name = document.getElementById("stageNameInput").value.trim();
+      const order = Number(document.getElementById("stageOrderInput").value);
+      const description = document.getElementById("stageDescInput").value.trim();
+      const enabled = document.getElementById("stageStatusInput").value === "enabled";
+
+      if (!name || !order) {
+        showToast("阶段名称和排序必填。");
+        return;
+      }
+
+      const duplicate = stages.some((stage) => stage.name === name && stage.id !== editingStageId);
+      if (duplicate) {
+        showToast("阶段名称已存在。");
+        return;
+      }
+
+      if (editingStageId) {
+        const stage = getStage(editingStageId);
+        Object.assign(stage, { name, order, description, enabled });
+        showToast("阶段已更新。");
+      } else {
+        const id = uid("stage");
+        stages.push({ id, name, order, description, enabled, tasks: [] });
+        selectedStageId = id;
+        showToast("阶段已新建。");
+      }
+
+      stageModal.hidden = true;
+      render();
+    }
+
+    function renderSystemCheckboxes(selectedIds = []) {
+      const selected = new Set(selectedIds);
+      document.getElementById("systemCheckboxes").innerHTML = systemTypes.map((system) => `
+        <label class="checkbox-line">
+          <input type="checkbox" value="${system.id}" ${selected.has(system.id) ? "checked" : ""}>
+          <span>${escapeHtml(system.label)}</span>
+        </label>
+      `).join("");
+    }
+
+    function openTaskModal(taskId = null) {
+      editingTaskId = taskId;
+      const stage = getSelectedStage();
+      const task = taskId ? stage.tasks.find((item) => item.id === taskId) : null;
+      document.getElementById("taskModalTitle").textContent = task ? "编辑任务" : "新建任务";
+      document.getElementById("taskCodeInput").value = task?.code || `${stage.name.toUpperCase()}-${String(stage.tasks.length + 1).padStart(3, "0")}`;
+      document.getElementById("taskNameInput").value = task?.name || "";
+      document.getElementById("taskCategoryInput").value = task?.category || defaultCategories[0];
+      document.getElementById("taskStatusInput").value = task?.enabled === false ? "disabled" : "enabled";
+      document.getElementById("taskDescInput").value = task?.description || "";
+      document.getElementById("taskDefaultInput").value = task?.defaultVisible === false ? "no" : "yes";
+      document.getElementById("taskCriticalInput").value = task?.critical ? "yes" : "no";
+      renderSystemCheckboxes(task?.systemDefaults || []);
+      taskModal.hidden = false;
+    }
+
+    function saveTask() {
+      const stage = getSelectedStage();
+      const code = document.getElementById("taskCodeInput").value.trim();
+      const name = document.getElementById("taskNameInput").value.trim();
+      const category = document.getElementById("taskCategoryInput").value;
+      const description = document.getElementById("taskDescInput").value.trim();
+      const defaultVisible = document.getElementById("taskDefaultInput").value === "yes";
+      const critical = document.getElementById("taskCriticalInput").value === "yes";
+      const enabled = document.getElementById("taskStatusInput").value === "enabled";
+      const systemDefaults = Array.from(document.querySelectorAll("#systemCheckboxes input:checked")).map((item) => item.value);
+
+      if (!code || !name || !category) {
+        showToast("任务编码、任务名称和所属分类必填。");
+        return;
+      }
+
+      const duplicate = stage.tasks.some((task) => task.code === code && task.id !== editingTaskId);
+      if (duplicate) {
+        showToast("当前阶段下任务编码已存在。");
+        return;
+      }
+
+      const payload = { code, name, category, description, defaultVisible, systemDefaults, critical, enabled };
+      if (editingTaskId) {
+        const task = stage.tasks.find((item) => item.id === editingTaskId);
+        Object.assign(task, payload);
+        showToast("任务已更新。");
+      } else {
+        stage.tasks.push({ id: uid("task"), ...payload });
+        showToast("任务已新建。");
+      }
+
+      taskModal.hidden = true;
+      render();
+    }
+
+    document.getElementById("addStageButton").addEventListener("click", () => openStageModal());
+    document.getElementById("confirmStageButton").addEventListener("click", saveStage);
+    document.getElementById("addTaskButton").addEventListener("click", () => openTaskModal());
+    document.getElementById("confirmTaskButton").addEventListener("click", saveTask);
+    document.getElementById("saveAllButton").addEventListener("click", () => showToast("配置已保存。静态原型中数据保留在当前页面会话内。"));
+
+    document.querySelectorAll("[data-close-modal]").forEach((button) => {
+      button.addEventListener("click", () => {
+        document.getElementById(button.dataset.closeModal).hidden = true;
+      });
+    });
+
+    [stageModal, taskModal].forEach((modal) => {
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) modal.hidden = true;
+      });
+    });
+
+    stageList.addEventListener("click", (event) => {
+      const selectButton = event.target.closest("[data-select-stage]");
+      const editButton = event.target.closest("[data-edit-stage]");
+      const toggleButton = event.target.closest("[data-toggle-stage]");
+
+      if (selectButton) {
+        selectedStageId = selectButton.dataset.selectStage;
+        taskKeyword.value = "";
+        statusFilter.value = "all";
+        categoryFilter.value = "all";
+        render();
+      }
+
+      if (editButton) openStageModal(editButton.dataset.editStage);
+
+      if (toggleButton) {
+        const stage = getStage(toggleButton.dataset.toggleStage);
+        stage.enabled = !stage.enabled;
+        showToast(`${stage.name} 已${stage.enabled ? "启用" : "停用"}。`);
+        render();
+      }
+    });
+
+    taskTableBody.addEventListener("click", (event) => {
+      const editButton = event.target.closest("[data-edit-task]");
+      const toggleButton = event.target.closest("[data-toggle-task]");
+      const deleteButton = event.target.closest("[data-delete-task]");
+      const stage = getSelectedStage();
+
+      if (editButton) openTaskModal(editButton.dataset.editTask);
+
+      if (toggleButton) {
+        const task = stage.tasks.find((item) => item.id === toggleButton.dataset.toggleTask);
+        task.enabled = !task.enabled;
+        showToast(`任务已${task.enabled ? "启用" : "禁用"}。`);
+        render();
+      }
+
+      if (deleteButton) {
+        const task = stage.tasks.find((item) => item.id === deleteButton.dataset.deleteTask);
+        stage.tasks = stage.tasks.filter((item) => item.id !== deleteButton.dataset.deleteTask);
+        showToast(`任务「${task.name}」已删除。`);
+        render();
+      }
+    });
+
+    [taskKeyword, statusFilter, categoryFilter].forEach((control) => {
+      control.addEventListener("input", renderTasks);
+      control.addEventListener("change", renderTasks);
+    });
+
+    renderCategoryOptions();
+    render();
+  </script>
+</body>
+</html>

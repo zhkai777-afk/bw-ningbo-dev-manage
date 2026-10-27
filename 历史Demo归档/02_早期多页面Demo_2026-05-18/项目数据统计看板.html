@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>博格华纳（宁波）项目开发 - 数据统计看板</title>
+  <style>
+    :root {
+      --bg: #f5f6f8;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --line: #dde3ea;
+      --line-strong: #cfd8e3;
+      --text: #1f2329;
+      --secondary: #646a73;
+      --tertiary: #8f959e;
+      --primary: #1769ff;
+      --primary-soft: #edf4ff;
+      --success: #16a163;
+      --success-soft: #e9f8f0;
+      --warning: #f79009;
+      --warning-soft: #fff5e5;
+      --danger: #f04438;
+      --danger-soft: #fff1f0;
+      --cyan: #00a7b5;
+      --cyan-soft: #e7f8fa;
+      --violet: #7357d6;
+      --violet-soft: #f0edff;
+      --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 10px 28px rgba(16, 24, 40, .06);
+      --radius: 8px;
+      --radius-sm: 5px;
+      --font: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    button,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      width: min(100%, 1670px);
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 22px 28px 42px;
+    }
+
+    .topbar {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 280px;
+    }
+
+    .brand-mark {
+      width: 4px;
+      height: 32px;
+      border-radius: 4px;
+      background: var(--primary);
+    }
+
+    .title {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--tertiary);
+      font-size: 13px;
+    }
+
+    .toolbar {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .filter {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--secondary);
+      font-weight: 700;
+      min-width: 0;
+    }
+
+    .filter select {
+      min-width: 130px;
+      height: 32px;
+      border: 1px solid var(--line-strong);
+      background: #fff;
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      padding: 0 30px 0 10px;
+      outline: none;
+    }
+
+    .updated {
+      color: var(--tertiary);
+      font-size: 13px;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(150px, 1fr));
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+      min-height: 120px;
+      display: grid;
+      align-content: space-between;
+    }
+
+    .kpi-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .kpi-label {
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .icon.success {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .icon.warning {
+      color: var(--warning);
+      background: var(--warning-soft);
+    }
+
+    .icon.danger {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .icon.cyan {
+      color: var(--cyan);
+      background: var(--cyan-soft);
+    }
+
+    .kpi-value {
+      font-size: 30px;
+      font-weight: 850;
+      line-height: 1;
+      letter-spacing: 0;
+      margin: 12px 0 7px;
+    }
+
+    .kpi-note {
+      color: var(--tertiary);
+      font-size: 12px;
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(360px, .75fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .section-head {
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      background: #fbfcff;
+    }
+
+    .section-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-note {
+      color: var(--tertiary);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .section-body {
+      padding: 18px;
+    }
+
+    .stage-funnel {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
+      gap: 10px;
+      align-items: end;
+      min-height: 260px;
+    }
+
+    .stage-card {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--surface-soft);
+      min-height: 188px;
+      display: grid;
+      grid-template-rows: 1fr auto;
+      overflow: hidden;
+    }
+
+    .stage-bar-wrap {
+      display: flex;
+      align-items: end;
+      justify-content: center;
+      padding: 12px 12px 0;
+    }
+
+    .stage-bar {
+      width: 100%;
+      min-height: 22px;
+      border-radius: 5px 5px 0 0;
+      background: var(--primary);
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      color: #fff;
+      font-weight: 900;
+      padding-top: 8px;
+    }
+
+    .stage-meta {
+      border-top: 1px solid var(--line);
+      padding: 10px 9px;
+      background: #fff;
+    }
+
+    .stage-name {
+      font-weight: 850;
+      margin-bottom: 4px;
+    }
+
+    .stage-sub {
+      color: var(--tertiary);
+      font-size: 12px;
+    }
+
+    .insight-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .insight {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 13px 14px;
+      background: var(--surface-soft);
+      display: grid;
+      gap: 8px;
+    }
+
+    .insight strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      flex: 0 0 auto;
+    }
+
+    .dot.warning {
+      background: var(--warning);
+    }
+
+    .dot.danger {
+      background: var(--danger);
+    }
+
+    .dot.success {
+      background: var(--success);
+    }
+
+    .insight p {
+      margin: 0;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .split-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 16px;
+    }
+
+    .milestone {
+      display: grid;
+      grid-template-columns: 92px 1fr 76px;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .milestone-name {
+      font-weight: 850;
+    }
+
+    .track {
+      height: 12px;
+      border-radius: 99px;
+      background: #edf1f5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--primary);
+    }
+
+    .track-fill.warning {
+      background: var(--warning);
+    }
+
+    .track-fill.success {
+      background: var(--success);
+    }
+
+    .track-fill.danger {
+      background: var(--danger);
+    }
+
+    .milestone-value {
+      color: var(--secondary);
+      text-align: right;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .node-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .node {
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 12px;
+      background: var(--surface-soft);
+    }
+
+    .node-label {
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .node-date {
+      font-size: 18px;
+      font-weight: 850;
+      line-height: 1.15;
+    }
+
+    .node-sub {
+      color: var(--tertiary);
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .donut-wrap {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .donut {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: conic-gradient(var(--primary) 0 47%, var(--success) 47% 68%, var(--warning) 68% 86%, var(--danger) 86% 100%);
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .donut::after {
+      content: "";
+      position: absolute;
+      inset: 34px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .donut-center {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      z-index: 1;
+      font-weight: 850;
+    }
+
+    .legend {
+      display: grid;
+      gap: 10px;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 12px 1fr auto;
+      align-items: center;
+      gap: 9px;
+      color: var(--secondary);
+      font-weight: 700;
+    }
+
+    .swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      background: var(--primary);
+    }
+
+    .swatch.success {
+      background: var(--success);
+    }
+
+    .swatch.warning {
+      background: var(--warning);
+    }
+
+    .swatch.danger {
+      background: var(--danger);
+    }
+
+    .role-bars {
+      display: grid;
+      gap: 13px;
+    }
+
+    .role-row {
+      display: grid;
+      grid-template-columns: 72px 1fr 44px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .role-name {
+      font-weight: 850;
+    }
+
+    .mini-bar {
+      height: 9px;
+      border-radius: 99px;
+      background: #edf1f5;
+      overflow: hidden;
+    }
+
+    .mini-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: var(--cyan);
+    }
+
+    .role-value {
+      color: var(--secondary);
+      text-align: right;
+      font-weight: 800;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      color: var(--secondary);
+      background: #fbfcff;
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    td {
+      color: #344054;
+      font-weight: 650;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .project-cell {
+      min-width: 210px;
+    }
+
+    .project-code {
+      display: block;
+      color: var(--tertiary);
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 9px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 850;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+    .tag.success {
+      background: var(--success-soft);
+      color: var(--success);
+    }
+
+    .tag.warning {
+      background: var(--warning-soft);
+      color: var(--warning);
+    }
+
+    .tag.danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+
+    .tag.neutral {
+      background: #eef2f6;
+      color: #475467;
+    }
+
+    .trend {
+      height: 220px;
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 12px;
+    }
+
+    .y-axis {
+      display: grid;
+      grid-template-rows: repeat(5, 1fr);
+      color: var(--tertiary);
+      font-size: 11px;
+      text-align: right;
+      padding-top: 4px;
+    }
+
+    .trend-bars {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 14px;
+      align-items: end;
+      border-left: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      padding: 0 10px 0 14px;
+      position: relative;
+    }
+
+    .trend-bars::before {
+      content: "";
+      position: absolute;
+      inset: 0 10px 0 14px;
+      background:
+        linear-gradient(to bottom, var(--line) 1px, transparent 1px) 0 0 / 100% 25%;
+      pointer-events: none;
+      opacity: .6;
+    }
+
+    .month {
+      display: grid;
+      gap: 7px;
+      align-items: end;
+      justify-items: center;
+      z-index: 1;
+      height: 100%;
+    }
+
+    .month-bar {
+      width: min(100%, 34px);
+      border-radius: 5px 5px 0 0;
+      background: var(--primary);
+      display: grid;
+      align-items: start;
+      justify-items: center;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 850;
+      padding-top: 5px;
+    }
+
+    .month-label {
+      color: var(--secondary);
+      font-size: 12px;
+      font-weight: 800;
+      min-height: 18px;
+    }
+
+    .footnote {
+      margin-top: 12px;
+      color: var(--tertiary);
+      font-size: 12px;
+    }
+
+    @media (max-width: 1380px) {
+      .kpi-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .main-grid,
+      .split-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        padding: 16px 14px 30px;
+      }
+
+      .topbar,
+      .toolbar {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+
+      .updated {
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stage-funnel {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .donut-wrap,
+      .node-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .milestone,
+      .role-row {
+        grid-template-columns: 1fr;
+      }
+
+      .milestone-value,
+      .role-value {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        <div>
+          <h1 class="title">项目开发数据统计看板</h1>
+          <div class="subtitle">面向管理层的项目数量、阶段流转、关键节点与风险概览</div>
+        </div>
+      </div>
+    </header>
+
+    <section class="toolbar" aria-label="统计筛选">
+      <div class="filters">
+        <label class="filter">统计周期
+          <select id="periodFilter">
+            <option value="2026Q2">2026 Q2</option>
+            <option value="2026H1">2026 上半年</option>
+            <option value="2026">2026 全年</option>
+          </select>
+        </label>
+        <label class="filter">流程类型
+          <select id="flowFilter">
+            <option value="all">全部流程</option>
+            <option value="standard">标准流程</option>
+            <option value="simple">简化流程</option>
+          </select>
+        </label>
+        <label class="filter">产品系统
+          <select id="systemFilter">
+            <option value="all">全部系统</option>
+            <option value="VT">VT 系统</option>
+            <option value="TD">TD 系统</option>
+            <option value="PP">PP/Chain 子零件</option>
+          </select>
+        </label>
+      </div>
+      <div class="updated" id="updatedText">数据更新时间：2026-05-17 09:30</div>
+    </section>
+
+    <section class="kpi-grid" aria-label="关键指标">
+      <article class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">在研项目总数</span>
+          <span class="icon">P</span>
+        </div>
+        <div>
+          <div class="kpi-value" id="totalProjects">0</div>
+          <div class="kpi-note" id="totalNote">覆盖 CKO 至 Hand Over</div>
+        </div>
+      </article>
+      <article class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">本期新项目</span>
+          <span class="icon success">N</span>
+        </div>
+        <div>
+          <div class="kpi-value" id="newProjects">0</div>
+          <div class="kpi-note">由销售创建并完成 CKO 的项目</div>
+        </div>
+      </article>
+      <article class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">Gate 准时通过率</span>
+          <span class="icon cyan">G</span>
+        </div>
+        <div>
+          <div class="kpi-value" id="gateRate">0%</div>
+          <div class="kpi-note">按阶段计划完成日期统计</div>
+        </div>
+      </article>
+      <article class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">节点预警项目</span>
+          <span class="icon warning">!</span>
+        </div>
+        <div>
+          <div class="kpi-value" id="warningProjects">0</div>
+          <div class="kpi-note">OTS/PPAP/SOP 30 天内到期</div>
+        </div>
+      </article>
+      <article class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">逾期项目</span>
+          <span class="icon danger">R</span>
+        </div>
+        <div>
+          <div class="kpi-value" id="lateProjects">0</div>
+          <div class="kpi-note">存在 Gate 或关键任务逾期</div>
+        </div>
+      </article>
+      <article class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">Hand Over 完成</span>
+          <span class="icon success">H</span>
+        </div>
+        <div>
+          <div class="kpi-value" id="handoverProjects">0</div>
+          <div class="kpi-note">项目开发交接闭环数量</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="main-grid">
+      <article class="section">
+        <div class="section-head">
+          <h2 class="section-title">阶段分布与门径漏斗</h2>
+          <span class="section-note">用于判断项目是否集中卡在某个 Gate</span>
+        </div>
+        <div class="section-body">
+          <div class="stage-funnel" id="stageFunnel"></div>
+        </div>
+      </article>
+
+      <aside class="section">
+        <div class="section-head">
+          <h2 class="section-title">管理层关注摘要</h2>
+          <span class="section-note">按风险优先级排序</span>
+        </div>
+        <div class="section-body">
+          <div class="insight-list" id="insightList"></div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="split-grid">
+      <article class="section">
+        <div class="section-head">
+          <h2 class="section-title">OTS / PPAP / SOP 节点健康度</h2>
+          <span class="section-note">客户节点与 BW 内部 Gate4/5/6 对齐</span>
+        </div>
+        <div class="section-body">
+          <div class="timeline" id="milestoneHealth"></div>
+          <div class="node-grid">
+            <div class="node">
+              <div class="node-label">最近客户 OTS</div>
+              <div class="node-date" id="nextOts">-</div>
+              <div class="node-sub">BW 内部 OTS 对应 Gate4</div>
+            </div>
+            <div class="node">
+              <div class="node-label">最近客户 PPAP</div>
+              <div class="node-date" id="nextPpap">-</div>
+              <div class="node-sub">BW 内部 PPAP 对应 Gate5</div>
+            </div>
+            <div class="node">
+              <div class="node-label">最近客户 SOP</div>
+              <div class="node-date" id="nextSop">-</div>
+              <div class="node-sub">BW 内部 SOP 对应 Gate6</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="section">
+        <div class="section-head">
+          <h2 class="section-title">流程类型与风险构成</h2>
+          <span class="section-note">标准流程覆盖 Gate1-Gate6，简化流程覆盖 Gate1-Gate3</span>
+        </div>
+        <div class="section-body">
+          <div class="donut-wrap">
+            <div class="donut" aria-label="项目风险构成图">
+              <div class="donut-center"><span id="donutCenter">0<br>项目</span></div>
+            </div>
+            <div class="legend" id="riskLegend"></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="split-grid">
+      <article class="section">
+        <div class="section-head">
+          <h2 class="section-title">近 6 个月项目创建趋势</h2>
+          <span class="section-note">辅助识别销售导入节奏与资源需求</span>
+        </div>
+        <div class="section-body">
+          <div class="trend">
+            <div class="y-axis">
+              <span>12</span>
+              <span>9</span>
+              <span>6</span>
+              <span>3</span>
+              <span>0</span>
+            </div>
+            <div class="trend-bars" id="trendBars"></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="section">
+        <div class="section-head">
+          <h2 class="section-title">跨职能任务负载</h2>
+          <span class="section-note">PM、AE、SCM、AQE、SQD 待办压力</span>
+        </div>
+        <div class="section-body">
+          <div class="role-bars" id="roleBars"></div>
+          <div class="footnote">建议后续口径：区分“待接收、进行中、待审批、逾期”四类任务。</div>
+        </div>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2 class="section-title">重点项目节点清单</h2>
+        <span class="section-note">默认展示节点临近、逾期或处于 Gate 关键转换的项目</span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>项目</th>
+              <th>客户</th>
+              <th>产品系统</th>
+              <th>流程</th>
+              <th>当前阶段</th>
+              <th>客户 OTS</th>
+              <th>客户 PPAP</th>
+              <th>客户 SOP</th>
+              <th>责任 PM</th>
+              <th>状态</th>
+            </tr>
+          </thead>
+          <tbody id="projectRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const projects = [
+      { code: "BW-NB-26001", name: "VFS Gen2 北美平台", customer: "客户 A", system: "VT", flow: "standard", stage: "Gate4", createdMonth: "1月", pm: "王伟", status: "warning", ots: "2026-05-30", ppap: "2026-08-18", sop: "2026-11-05", gateOnTime: true, handover: false, tasks: { PM: 6, AE: 3, SCM: 2, AQE: 4, SQD: 7 } },
+      { code: "BW-NB-26002", name: "Timing Kit 新能源平台", customer: "客户 B", system: "TD", flow: "standard", stage: "Gate2", createdMonth: "1月", pm: "李娜", status: "normal", ots: "2026-07-12", ppap: "2026-10-15", sop: "2027-01-10", gateOnTime: true, handover: false, tasks: { PM: 4, AE: 5, SCM: 3, AQE: 2, SQD: 4 } },
+      { code: "BW-NB-26003", name: "PP 内部子零件国产化", customer: "内部项目", system: "PP", flow: "simple", stage: "Gate3", createdMonth: "2月", pm: "赵强", status: "normal", ots: "2026-06-20", ppap: "2026-09-01", sop: "2026-12-01", gateOnTime: true, handover: false, tasks: { PM: 2, AE: 4, SCM: 2, AQE: 3, SQD: 5 } },
+      { code: "BW-NB-26004", name: "Phaser 变更开发", customer: "客户 C", system: "VT", flow: "standard", stage: "Gate5", createdMonth: "2月", pm: "周敏", status: "late", ots: "2026-04-28", ppap: "2026-06-03", sop: "2026-09-21", gateOnTime: false, handover: false, tasks: { PM: 8, AE: 2, SCM: 3, AQE: 6, SQD: 8 } },
+      { code: "BW-NB-26005", name: "Chain Arm Guide 快速导入", customer: "客户 D", system: "TD", flow: "standard", stage: "PKO", createdMonth: "3月", pm: "陈晨", status: "new", ots: "2026-08-11", ppap: "2026-11-10", sop: "2027-03-18", gateOnTime: true, handover: false, tasks: { PM: 5, AE: 6, SCM: 4, AQE: 1, SQD: 2 } },
+      { code: "BW-NB-26006", name: "Motor Chain 场景验证", customer: "客户 E", system: "PP", flow: "simple", stage: "Gate1", createdMonth: "3月", pm: "王伟", status: "normal", ots: "2026-07-08", ppap: "2026-09-18", sop: "2026-12-12", gateOnTime: true, handover: false, tasks: { PM: 3, AE: 3, SCM: 2, AQE: 2, SQD: 3 } },
+      { code: "BW-NB-26007", name: "Tensioner 新客户项目", customer: "客户 F", system: "TD", flow: "standard", stage: "CKO", createdMonth: "4月", pm: "待分配", status: "new", ots: "2026-09-02", ppap: "2026-12-10", sop: "2027-04-22", gateOnTime: true, handover: false, tasks: { PM: 1, AE: 2, SCM: 0, AQE: 0, SQD: 0 } },
+      { code: "BW-NB-26008", name: "CCV 客户定制开发", customer: "客户 G", system: "VT", flow: "standard", stage: "Gate6", createdMonth: "4月", pm: "李娜", status: "warning", ots: "2026-03-20", ppap: "2026-05-22", sop: "2026-06-18", gateOnTime: true, handover: false, tasks: { PM: 6, AE: 1, SCM: 1, AQE: 4, SQD: 6 } },
+      { code: "BW-NB-26009", name: "OP 产品系列升级", customer: "客户 H", system: "TD", flow: "standard", stage: "Hand Over", createdMonth: "5月", pm: "周敏", status: "done", ots: "2026-02-12", ppap: "2026-04-16", sop: "2026-05-08", gateOnTime: true, handover: true, tasks: { PM: 1, AE: 0, SCM: 0, AQE: 1, SQD: 1 } },
+      { code: "BW-NB-26010", name: "CB 轻量化样件开发", customer: "客户 I", system: "VT", flow: "standard", stage: "Gate3", createdMonth: "5月", pm: "赵强", status: "normal", ots: "2026-06-25", ppap: "2026-09-22", sop: "2026-12-20", gateOnTime: true, handover: false, tasks: { PM: 4, AE: 5, SCM: 2, AQE: 3, SQD: 4 } },
+      { code: "BW-NB-26011", name: "CC Guide 内部替代件", customer: "内部项目", system: "PP", flow: "simple", stage: "Gate2", createdMonth: "5月", pm: "陈晨", status: "normal", ots: "2026-08-04", ppap: "2026-10-09", sop: "2027-01-26", gateOnTime: true, handover: false, tasks: { PM: 3, AE: 4, SCM: 3, AQE: 2, SQD: 3 } },
+      { code: "BW-NB-26012", name: "TSC 供应商切换项目", customer: "客户 J", system: "TD", flow: "standard", stage: "Gate4", createdMonth: "5月", pm: "王伟", status: "late", ots: "2026-05-10", ppap: "2026-07-28", sop: "2026-10-30", gateOnTime: false, handover: false, tasks: { PM: 7, AE: 2, SCM: 5, AQE: 5, SQD: 9 } }
+    ];
+
+    const stageOrder = ["CKO", "PKO", "Gate1", "Gate2", "Gate3", "Gate4", "Gate5", "Gate6", "Hand Over"];
+    const statusMap = {
+      new: { text: "新项目", className: "neutral" },
+      normal: { text: "正常", className: "success" },
+      warning: { text: "预警", className: "warning" },
+      late: { text: "逾期", className: "danger" },
+      done: { text: "已交接", className: "success" }
+    };
+
+    const stageText = {
+      CKO: "启动前期",
+      PKO: "项目启动",
+      Gate1: "项目准入",
+      Gate2: "开发推进",
+      Gate3: "设计验证",
+      Gate4: "内部 OTS",
+      Gate5: "内部 PPAP",
+      Gate6: "内部 SOP",
+      "Hand Over": "项目交接"
+    };
+
+    const formatDate = (dateText) => {
+      const date = new Date(dateText + "T00:00:00");
+      return `${date.getMonth() + 1}/${String(date.getDate()).padStart(2, "0")}`;
+    };
+
+    const getFilteredProjects = () => {
+      const flow = document.getElementById("flowFilter").value;
+      const system = document.getElementById("systemFilter").value;
+      return projects.filter((project) => {
+        const flowMatched = flow === "all" || project.flow === flow;
+        const systemMatched = system === "all" || project.system === system;
+        return flowMatched && systemMatched;
+      });
+    };
+
+    const sum = (items, mapper) => items.reduce((total, item) => total + mapper(item), 0);
+
+    const renderKpis = (items) => {
+      const total = items.length;
+      const newProjects = items.filter((project) => project.status === "new").length;
+      const warning = items.filter((project) => project.status === "warning").length;
+      const late = items.filter((project) => project.status === "late").length;
+      const handover = items.filter((project) => project.handover).length;
+      const gateRate = total ? Math.round(items.filter((project) => project.gateOnTime).length / total * 100) : 0;
+
+      document.getElementById("totalProjects").textContent = total;
+      document.getElementById("newProjects").textContent = newProjects;
+      document.getElementById("gateRate").textContent = `${gateRate}%`;
+      document.getElementById("warningProjects").textContent = warning;
+      document.getElementById("lateProjects").textContent = late;
+      document.getElementById("handoverProjects").textContent = handover;
+      document.getElementById("totalNote").textContent = `${items.filter((project) => project.flow === "standard").length} 个标准流程，${items.filter((project) => project.flow === "simple").length} 个简化流程`;
+    };
+
+    const renderStageFunnel = (items) => {
+      const counts = stageOrder.map((stage) => ({
+        stage,
+        count: items.filter((project) => project.stage === stage).length
+      })).filter((item) => item.count > 0 || item.stage !== "Hand Over");
+
+      const max = Math.max(...counts.map((item) => item.count), 1);
+      document.getElementById("stageFunnel").innerHTML = counts.map((item) => {
+        const height = Math.max(24, Math.round(item.count / max * 150));
+        const color = item.stage === "Hand Over" ? "var(--success)" : item.stage === "Gate5" || item.stage === "Gate6" ? "var(--warning)" : "var(--primary)";
+        return `
+          <div class="stage-card">
+            <div class="stage-bar-wrap">
+              <div class="stage-bar" style="height:${height}px;background:${color}">${item.count}</div>
+            </div>
+            <div class="stage-meta">
+              <div class="stage-name">${item.stage}</div>
+              <div class="stage-sub">${stageText[item.stage]}</div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    };
+
+    const renderInsights = (items) => {
+      const late = items.filter((project) => project.status === "late");
+      const warning = items.filter((project) => project.status === "warning");
+      const gate45 = items.filter((project) => ["Gate4", "Gate5", "Gate6"].includes(project.stage));
+      const sqdLoad = sum(items, (project) => project.tasks.SQD);
+      const scmWaiting = items.filter((project) => ["PKO", "Gate1"].includes(project.stage)).length;
+
+      const insights = [
+        { type: "danger", title: `${late.length} 个项目存在逾期风险`, text: late.length ? `重点关注 ${late.map((project) => project.name).join("、")}，建议 PM 组织节点复盘。` : "当前筛选范围内无逾期项目，保持 Gate 评审节奏。" },
+        { type: "warning", title: `${warning.length} 个项目进入关键节点预警`, text: warning.length ? "建议在周会中单独跟踪 OTS、PPAP、SOP 的客户承诺日期与 BW 内部日期差异。" : "短期内无临近节点预警。" },
+        { type: "success", title: `${gate45.length} 个项目处于 Gate4-Gate6`, text: "这些项目已经进入内部 OTS、PPAP、SOP 兑现阶段，管理层可重点看供应商交付与质量关闭情况。" },
+        { type: "primary", title: `SQD 当前关联任务 ${sqdLoad} 项`, text: sqdLoad > 35 ? "供应商开发任务压力偏高，可考虑按供应商或零件风险做资源复核。" : "供应商开发任务处于可控范围。" },
+        { type: "primary", title: `${scmWaiting} 个项目依赖 BOM 与供应链确认`, text: "PKO 到 Gate1 的转换效率，取决于 AE 创建 BOM 后 SCM 确认的及时性。" }
+      ];
+
+      document.getElementById("insightList").innerHTML = insights.map((item) => `
+        <div class="insight">
+          <strong><span class="dot ${item.type}"></span>${item.title}</strong>
+          <p>${item.text}</p>
+        </div>
+      `).join("");
+    };
+
+    const renderMilestones = (items) => {
+      const health = [
+        { name: "客户 OTS", key: "ots", ok: items.filter((item) => item.status !== "late").length, warning: items.filter((item) => item.status === "warning").length, late: items.filter((item) => item.status === "late").length },
+        { name: "客户 PPAP", key: "ppap", ok: items.filter((item) => item.status === "normal" || item.status === "done").length, warning: items.filter((item) => item.status === "warning" || item.status === "new").length, late: items.filter((item) => item.status === "late").length },
+        { name: "客户 SOP", key: "sop", ok: items.filter((item) => item.status !== "late").length, warning: items.filter((item) => item.status === "warning").length, late: items.filter((item) => item.status === "late").length }
+      ];
+
+      const total = Math.max(items.length, 1);
+      document.getElementById("milestoneHealth").innerHTML = health.map((item) => {
+        const okRate = Math.round(item.ok / total * 100);
+        const warningRate = Math.round(item.warning / total * 100);
+        const lateRate = Math.round(item.late / total * 100);
+        const fillClass = lateRate > 15 ? "danger" : warningRate > 20 ? "warning" : "success";
+        return `
+          <div class="milestone">
+            <div class="milestone-name">${item.name}</div>
+            <div class="track">
+              <div class="track-fill ${fillClass}" style="width:${Math.max(okRate, 8)}%"></div>
+            </div>
+            <div class="milestone-value">${okRate}% 健康</div>
+          </div>
+        `;
+      }).join("");
+
+      const byDate = (key) => items
+        .filter((item) => item[key])
+        .sort((a, b) => new Date(a[key]) - new Date(b[key]))[0];
+
+      const nextOts = byDate("ots");
+      const nextPpap = byDate("ppap");
+      const nextSop = byDate("sop");
+      document.getElementById("nextOts").textContent = nextOts ? formatDate(nextOts.ots) : "-";
+      document.getElementById("nextPpap").textContent = nextPpap ? formatDate(nextPpap.ppap) : "-";
+      document.getElementById("nextSop").textContent = nextSop ? formatDate(nextSop.sop) : "-";
+    };
+
+    const renderRisk = (items) => {
+      const riskItems = [
+        { label: "正常推进", count: items.filter((item) => item.status === "normal").length, className: "" },
+        { label: "已交接", count: items.filter((item) => item.status === "done").length, className: "success" },
+        { label: "节点预警", count: items.filter((item) => item.status === "warning" || item.status === "new").length, className: "warning" },
+        { label: "逾期风险", count: items.filter((item) => item.status === "late").length, className: "danger" }
+      ];
+      document.getElementById("donutCenter").innerHTML = `${items.length}<br>项目`;
+      document.getElementById("riskLegend").innerHTML = riskItems.map((item) => `
+        <div class="legend-item">
+          <span class="swatch ${item.className}"></span>
+          <span>${item.label}</span>
+          <strong>${item.count}</strong>
+        </div>
+      `).join("");
+    };
+
+    const renderTrend = (items) => {
+      const months = ["12月", "1月", "2月", "3月", "4月", "5月"];
+      const counts = months.map((month) => ({
+        month,
+        count: items.filter((item) => item.createdMonth === month).length
+      }));
+      const max = Math.max(...counts.map((item) => item.count), 1);
+      document.getElementById("trendBars").innerHTML = counts.map((item) => {
+        const height = Math.max(16, Math.round(item.count / max * 170));
+        return `
+          <div class="month">
+            <div class="month-bar" style="height:${height}px">${item.count}</div>
+            <div class="month-label">${item.month}</div>
+          </div>
+        `;
+      }).join("");
+    };
+
+    const renderRoles = (items) => {
+      const roles = ["PM", "AE", "SCM", "AQE", "SQD"].map((role) => ({
+        role,
+        count: sum(items, (item) => item.tasks[role])
+      }));
+      const max = Math.max(...roles.map((item) => item.count), 1);
+      document.getElementById("roleBars").innerHTML = roles.map((item) => `
+        <div class="role-row">
+          <div class="role-name">${item.role}</div>
+          <div class="mini-bar">
+            <div class="mini-fill" style="width:${Math.max(6, Math.round(item.count / max * 100))}%"></div>
+          </div>
+          <div class="role-value">${item.count}</div>
+        </div>
+      `).join("");
+    };
+
+    const renderTable = (items) => {
+      const priority = { late: 1, warning: 2, new: 3, normal: 4, done: 5 };
+      const rows = [...items].sort((a, b) => priority[a.status] - priority[b.status]).map((item) => {
+        const status = statusMap[item.status];
+        return `
+          <tr>
+            <td class="project-cell">${item.name}<span class="project-code">${item.code}</span></td>
+            <td>${item.customer}</td>
+            <td>${item.system}</td>
+            <td><span class="tag ${item.flow === "simple" ? "neutral" : ""}">${item.flow === "standard" ? "标准流程" : "简化流程"}</span></td>
+            <td>${item.stage}</td>
+            <td>${item.ots}</td>
+            <td>${item.ppap}</td>
+            <td>${item.sop}</td>
+            <td>${item.pm}</td>
+            <td><span class="tag ${status.className}">${status.text}</span></td>
+          </tr>
+        `;
+      }).join("");
+      document.getElementById("projectRows").innerHTML = rows || `<tr><td colspan="10">当前筛选条件下暂无项目数据</td></tr>`;
+    };
+
+    const render = () => {
+      const items = getFilteredProjects();
+      renderKpis(items);
+      renderStageFunnel(items);
+      renderInsights(items);
+      renderMilestones(items);
+      renderRisk(items);
+      renderTrend(items);
+      renderRoles(items);
+      renderTable(items);
+    };
+
+    document.querySelectorAll("select").forEach((select) => {
+      select.addEventListener("change", render);
+    });
+
+    render();
+  </script>
+</body>
+</html>

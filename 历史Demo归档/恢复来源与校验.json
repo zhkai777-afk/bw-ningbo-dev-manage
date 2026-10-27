@@ -1,0 +1,62 @@
+[
+  {
+    "folder": "01_最早原型_2026-05-16",
+    "commit": "63ceedeac6d44761a0d8538a8d46c023c11025e1\n2026-05-16 10:58:42 +0800\nInitial project detail prototype",
+    "files": [
+      {
+        "path": "index.html",
+        "sha256": "ed4ebfc2d4f7c43036661f4a5b074d00d0bf08dbf4f5fd5700853d9c3aac3a5f"
+      },
+      {
+        "path": "AGENTS.md",
+        "sha256": "a0f68e768805793afe4104959719676678f5d8453ff9ac21eb03a2d8cb494442"
+      }
+    ]
+  },
+  {
+    "folder": "02_早期多页面Demo_2026-05-18",
+    "commit": "efa5465e3fabb6c6d39d2c472e533990790f20eb\n2026-05-18 15:58:49 +0800\nAdd project management pages",
+    "files": [
+      {
+        "path": "task-management.html",
+        "sha256": "192ef2815b22df5e938dca7e2242c88526750e4582e9cf64ccf68c4f858a991e"
+      },
+      {
+        "path": "index.html",
+        "sha256": "82ce11fe7a02a1073fa039899a3e372f7d52d92902f4b047dc6aa1576ffd7f47"
+      },
+      {
+        "path": "task-management_副本.html",
+        "sha256": "192ef2815b22df5e938dca7e2242c88526750e4582e9cf64ccf68c4f858a991e"
+      },
+      {
+        "path": "项目开发管理.html",
+        "sha256": "6204c25c1b36cc5714db6ac6ea1b85fdd24c1a1f21e1b3141a3917ddbf7890c1"
+      },
+      {
+        "path": "项目数据统计看板.html",
+        "sha256": "df6e8b6fdb80b74a8f66298294f2acd9fc81930ef6a4fc29de610c8cc37fc0a2"
+      },
+      {
+        "path": ".gitignore",
+        "sha256": "cf237c7aff44efbe6e502e645c3e06da03a69d7bdeb43392108ef3348143417e"
+      },
+      {
+        "path": "子零件开发任务详情.html",
+        "sha256": "082c8872315ba8ce55c5062abbf146ef9698be42c6dd1fc5fad22903e50e348b"
+      },
+      {
+        "path": "待办任务中心.html",
+        "sha256": "624e5a157d42605655ed0fcb6243c075c26f0022398a4947d20b5b3e8af81e86"
+      },
+      {
+        "path": "子任务库管理.html",
+        "sha256": "db87da59eef3c4db3d7076c5f38e1d565a7befbc83d7fe981d0b6458a5519669"
+      },
+      {
+        "path": "AGENTS.md",
+        "sha256": "a0f68e768805793afe4104959719676678f5d8453ff9ac21eb03a2d8cb494442"
+      }
+    ]
+  }
+]
